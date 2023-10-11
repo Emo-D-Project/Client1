@@ -3,10 +3,11 @@ import 'category.dart';
 import 'calendar.dart';
 import 'diaryshare.dart';
 import 'home.dart';
+import 'style.dart' as style;
 
 void main() async{
 
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(theme: style.theme, home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text("AppBar"),
+        title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
       ),
       body: [category(), home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
