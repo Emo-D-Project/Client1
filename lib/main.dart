@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Text("화면"),
+      body: Text("화면입니다"),
     );
   }
 }
