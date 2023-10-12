@@ -25,9 +25,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
+<<<<<<< Updated upstream
         title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
+=======
+        title: Text("EMO:D"),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context)=>const category())
+            );
+          },
+          icon: Icon(Icons.menu),
+        ),
+>>>>>>> Stashed changes
       ),
-      body: [category(), home(), diaryshare(), calendar()][tab],
+      body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,//선택되지 않은 하단바의 label 숨기기
         showSelectedLabels: false, //선택된 하단바의 label 숨기기
@@ -41,19 +54,15 @@ class _MyAppState extends State<MyApp> {
         items: [
           BottomNavigationBarItem(
             label: '첫 번째 화면',
-            icon: Icon(Icons.heart_broken,),
+            icon: Icon(Icons.home,),
           ),
           BottomNavigationBarItem(
             label: '두 번째 화면',
-            icon: Icon(Icons.star, ),
+            icon: Icon(Icons.share, ),
           ),
           BottomNavigationBarItem(
             label: '세 번째 화면',
-            icon: Icon(Icons.square, ),
-          ),
-          BottomNavigationBarItem(
-            label: '첫 번째 화면',
-            icon: Icon(Icons.access_alarm_rounded,),
+            icon: Icon(Icons.calendar_month, ),
           ),
         ],
       ),

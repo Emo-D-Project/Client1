@@ -5,6 +5,8 @@ class calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Text("calendar"),
+    );
   }
 }
