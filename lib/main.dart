@@ -37,7 +37,19 @@ class _MyAppState extends State<MyApp> {
           },
           icon: Icon(Icons.menu),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=>const category())
+                );
+              },
+              icon: Icon(Icons.access_alarm_rounded)
+          )
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0.0,

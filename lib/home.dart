@@ -6,7 +6,18 @@ class home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("home"),
+      body: Center(
+          child: Container(
+            width: 100,
+            height: 10,
+          )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        child: Icon(Icons.edit),
+      ),
     );
   }
 }
