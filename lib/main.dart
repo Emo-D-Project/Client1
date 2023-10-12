@@ -25,10 +25,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-<<<<<<< Updated upstream
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
         title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
-=======
-        title: Text("EMO:D"),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
@@ -38,10 +37,11 @@ class _MyAppState extends State<MyApp> {
           },
           icon: Icon(Icons.menu),
         ),
->>>>>>> Stashed changes
       ),
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0.0,
+        backgroundColor: Color.fromRGBO(150, 140, 131, 100),
         showUnselectedLabels: false,//선택되지 않은 하단바의 label 숨기기
         showSelectedLabels: false, //선택된 하단바의 label 숨기기
         currentIndex: tab, //현재 select된 bar item의 index, 변수 tab부터 시작
