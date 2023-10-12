@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color.fromRGBO(248, 245, 235, 100),
         title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
         leading: IconButton(
           onPressed: () {
