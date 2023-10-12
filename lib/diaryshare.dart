@@ -6,6 +6,7 @@ class diaryshare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -91,6 +92,9 @@ class diaryshare extends StatelessWidget {
 
 
 
+=======
+      body: Text("diaryshare"),
+>>>>>>> b347fa574350def54fa6cb760869d19e07063382
     );
   }
 }
