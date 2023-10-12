@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color.fromRGBO(248, 245, 235, 100),
+        backgroundColor: Colors.transparent,
         title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
         leading: IconButton(
           onPressed: () {
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       extendBodyBehindAppBar: true,
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 0.0,
+        //elevation: 0.0,
         backgroundColor: Color.fromRGBO(150, 140, 131, 100),
         showUnselectedLabels: false,//선택되지 않은 하단바의 label 숨기기
         showSelectedLabels: false, //선택된 하단바의 label 숨기기

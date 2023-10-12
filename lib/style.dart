@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 var theme = ThemeData(
-  //scaffoldBackgroundColor: Color.fromRGBO(248, 245, 235, 100),
+  scaffoldBackgroundColor: Color.fromRGBO(248, 245, 235, 100),
   appBarTheme: AppBarTheme(
       //backgroundColor: Color.fromRGBO(248, 245, 235, 100),
       //elevation: 1,

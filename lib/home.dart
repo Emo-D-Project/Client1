@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'style.dart' as style;
 
 class home extends StatelessWidget {
   const home({super.key});
