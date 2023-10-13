@@ -52,8 +52,8 @@ class _MyAppState extends State<MyApp> {
       extendBodyBehindAppBar: true,
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
-        //elevation: 0.0,
-        backgroundColor: Color.fromRGBO(150, 140, 131, 100),
+        elevation: 0.0,
+        backgroundColor: Color.fromRGBO(248, 245, 235, 100),
         showUnselectedLabels: false,//선택되지 않은 하단바의 label 숨기기
         showSelectedLabels: false, //선택된 하단바의 label 숨기기
         currentIndex: tab, //현재 select된 bar item의 index, 변수 tab부터 시작
@@ -66,15 +66,15 @@ class _MyAppState extends State<MyApp> {
         items: [
           BottomNavigationBarItem(
             label: '첫 번째 화면',
-            icon: Icon(Icons.home,),
+            icon: Image.asset("images/bottom/free-icon-home-8637633.png", width: 30, height: 30, color: Colors.black,),
           ),
           BottomNavigationBarItem(
             label: '두 번째 화면',
-            icon: Icon(Icons.share, ),
+            icon: Image.asset("images/bottom/free-icon-globe-721998.png", width: 30, height:30, color: Colors.black,),
           ),
           BottomNavigationBarItem(
             label: '세 번째 화면',
-            icon: Icon(Icons.calendar_month, ),
+            icon: Image.asset("images/bottom/free-icon-calendar-5115146.png",width: 30, height: 30, color: Colors.black,),
           ),
         ],
       ),
