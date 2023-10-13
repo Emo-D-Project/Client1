@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'style.dart' as style;
 import 'writediary.dart';
 
-
 class home extends StatelessWidget {
   const home({super.key});
 
@@ -84,10 +83,7 @@ class home extends StatelessWidget {
           },
           child: Icon(Icons.edit),
         );
-
-      
       }),
-
     );
   }
 }
