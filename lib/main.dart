@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                     MaterialPageRoute(builder: (context)=>const category())
                 );
               },
-              icon: Icon(Icons.access_alarm_rounded)
+              icon: Icon(Icons.notifications_none)
           )
         ],
       ),
@@ -70,7 +70,11 @@ class _MyAppState extends State<MyApp> {
           ),
           BottomNavigationBarItem(
             label: '두 번째 화면',
+<<<<<<< Updated upstream
             icon: Image.asset("images/bottom/free-icon-globe-721998.png", width: 30, height:30, color: Colors.black,),
+=======
+            icon: Icon(Icons.language, ),
+>>>>>>> Stashed changes
           ),
           BottomNavigationBarItem(
             label: '세 번째 화면',
