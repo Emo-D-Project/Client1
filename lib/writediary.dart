@@ -18,7 +18,7 @@ class _writediaryState extends State<writediary> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        backgroundColor: Color.fromRGBO(248, 245, 235, 100),
+        backgroundColor: Color(0xFFF8F5EB),
         title: Icon(Icons.mood,size: 50,),
         leading: IconButton(
           onPressed: () {
@@ -35,7 +35,7 @@ class _writediaryState extends State<writediary> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(248, 245, 235, 100),
+          color: Color(0xFFF8F5EB),
         ),
         child: Column(
           children: [

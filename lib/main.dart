@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0.0,
-        backgroundColor: Color.fromRGBO(248, 245, 235, 100),
+        backgroundColor: Color(0xFFF8F5EB),
         showUnselectedLabels: false,//선택되지 않은 하단바의 label 숨기기
         showSelectedLabels: false, //선택된 하단바의 label 숨기기
         currentIndex: tab, //현재 select된 bar item의 index, 변수 tab부터 시작

@@ -6,6 +6,7 @@ class diaryshare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F5EB),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

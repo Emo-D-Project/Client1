@@ -10,7 +10,7 @@ class home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(248, 245, 235, 100),
+      backgroundColor: Color(0xFFF8F5EB),
       body: Center(
           child: Container(
             width: 100,
