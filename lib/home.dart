@@ -1,11 +1,9 @@
 import 'package:capston1/main.dart';
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream
 import 'style.dart' as style;
-=======
 import 'writediary.dart';
->>>>>>> Stashed changes
+
 
 class home extends StatelessWidget {
   const home({super.key});
@@ -16,22 +14,11 @@ class home extends StatelessWidget {
       backgroundColor: Color.fromRGBO(248, 245, 235, 100),
       body: Center(
           child: Container(
-<<<<<<< Updated upstream
             width: 100,
             height: 10,
             color: Colors.black,
           )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-
-        },
-        child: Icon(Icons.edit),
-      ),
-=======
-        width: 100,
-        height: 10,
-      )),
       floatingActionButton: Builder(builder: (context) {
         return FloatingActionButton(
           onPressed: () {
@@ -97,8 +84,10 @@ class home extends StatelessWidget {
           },
           child: Icon(Icons.edit),
         );
+
+      
       }),
->>>>>>> Stashed changes
+
     );
   }
 }
