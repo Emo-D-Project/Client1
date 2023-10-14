@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'style.dart' as style;
 import 'writediary.dart';
 
-
 class home extends StatelessWidget {
   const home({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(248, 245, 235, 100),
+      backgroundColor: Color(0xFFF8F5EB),
       body: Center(
           child: Container(
             width: 100,
@@ -85,10 +84,7 @@ class home extends StatelessWidget {
           },
           child: Icon(Icons.edit),
         );
-
-      
       }),
-
     );
   }
 }

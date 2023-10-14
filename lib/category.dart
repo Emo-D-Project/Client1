@@ -1,6 +1,7 @@
 import 'package:capston1/main.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'mypage.dart';
 
 class category extends StatelessWidget {
   const category({super.key});
@@ -13,7 +14,7 @@ class category extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color.fromRGBO(248, 245, 235, 100),
+        backgroundColor: Color(0xFFF8F5EB),
         title: Text(
           "EMO:D",
           style: TextStyle(fontFamily: 'fontnanum'),
@@ -30,7 +31,7 @@ class category extends StatelessWidget {
         //맨 밑에 깔린 body
         width: sizeX,
         height: sizeY,
-        color: Color.fromRGBO(248, 245, 235, 100),
+        color: Color(0xFFF8F5EB),
         child: Container(
           //흰 박스 올라온 화면
           //margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -73,7 +74,10 @@ class category extends StatelessWidget {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => const mypage()));
+                      },
                       child: Row(
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black54),

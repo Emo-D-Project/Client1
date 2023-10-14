@@ -9,7 +9,7 @@ class diaryshare extends StatelessWidget {
     final sizeY = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: SingleChildScrollView(
+    body: SingleChildScrollView(
         child: Container(
             width: sizeX,
             height: sizeY,
