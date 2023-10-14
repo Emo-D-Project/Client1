@@ -43,6 +43,7 @@ class home extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+
                                 IconButton(
                                     onPressed: () {}, icon: Icon(Icons.mood, size: 30,)),
                                 IconButton(

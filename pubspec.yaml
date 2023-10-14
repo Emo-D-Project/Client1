@@ -66,6 +66,13 @@ flutter:
   assets:
     - images/
     - images/bottom/
+    - images/emotion/1.png
+    - images/emotion/2.png
+    - images/emotion/3.png
+    - images/emotion/4.png
+    - images/emotion/5.png
+    - images/emotion/6.png
+    - images/emotion/7.png
 
 
 
