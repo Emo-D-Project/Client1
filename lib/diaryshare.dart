@@ -8,9 +8,9 @@ class diaryshare extends StatelessWidget {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Color(0xFFF8F5EB),
-      body: SingleChildScrollView(
+    return Container(
+      color: Color(0xFFF8F5EB),
+      child: SingleChildScrollView(
         child: Container(
           //감정 아이콘
           child: Column(

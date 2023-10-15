@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFFF8F5EB),
         title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
         leading: IconButton(
           onPressed: () {
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0.0,
