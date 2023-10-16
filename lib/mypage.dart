@@ -29,7 +29,7 @@ class _mypageState extends State<mypage> {
       body: Center(
         child: Container(
           decoration: BoxDecoration(
-            color: Color.fromRGBO(248, 245, 235, 100),
+            color: Color(0xFFF8F5EB),
           ),
           child: Container(
             margin: EdgeInsets.fromLTRB( 10, 0, 10, 20),
@@ -69,13 +69,19 @@ class _mypageState extends State<mypage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(child: Text("질문"),),
+                      Container(
+                        child: Text("최애 영화",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17, color: Color(0xFF7D5A50)),),
+                        padding: EdgeInsets.fromLTRB(0, 0, 50, 4),
+                      ),
                       Container(
                         //칸 나누는 줄
                         color: Colors.grey,
                         width: 280, height: 2,
                       ),
-                      SizedBox(child: Text("대답"),),
+                      Container(
+                        child: Text("신과 함께",style: TextStyle(fontSize: 15),),
+                        padding: EdgeInsets.fromLTRB(0, 5, 50, 0),
+                      ),
                     ],
                   ),
                 ),
@@ -90,13 +96,19 @@ class _mypageState extends State<mypage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(child: Text("질문"),),
+                      Container(
+                        child: Text("최애 노래",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17, color: Color(0xFF7D5A50)),),
+                        padding: EdgeInsets.fromLTRB(0, 0, 50, 4),
+                      ),
                       Container(
                         //칸 나누는 줄
                         color: Colors.grey,
                         width: 280, height: 2,
                       ),
-                      SizedBox(child: Text("대답"),),
+                      Container(
+                        child: Text("want so bad - straykids(leeknow, han)",style: TextStyle(fontSize: 15),),
+                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      ),
                     ],
                   ),
                 ),
@@ -108,16 +120,22 @@ class _mypageState extends State<mypage> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(child: Text("질문"),),
+                      Container(
+                        child: Text("MBTI",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17, color: Color(0xFF7D5A50)),),
+                        padding: EdgeInsets.fromLTRB(0, 0, 50, 4),
+                      ),
                       Container(
                         //칸 나누는 줄
                         color: Colors.grey,
                         width: 280, height: 2,
                       ),
-                      SizedBox(child: Text("대답"),),
+                      Container(
+                        child: Text("ISTP",style: TextStyle(fontSize: 15),),
+                        padding: EdgeInsets.fromLTRB(0, 5, 50, 0),
+                      ),
                     ],
                   ),
                 ),
