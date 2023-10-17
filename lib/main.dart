@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
-        title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum'),),
+        title: Text("EMO:D", style: TextStyle(fontFamily: 'fontnanum',color: Color(0xFF968C83)),),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
                 MaterialPageRoute(builder: (context)=>const category())
             );
           },
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.menu,color: Color(0xFF968C83),),
         ),
         actions: [
           IconButton(

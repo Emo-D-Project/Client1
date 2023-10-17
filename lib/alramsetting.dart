@@ -10,7 +10,11 @@ class alramsetting extends StatefulWidget {
 }
 
 class _alramsettingState extends State<alramsetting> {
-  bool _isChecked = false;
+  bool _isMessageOn = false;
+  bool _isMessageAlram = false;
+  bool _isMentionAlram = false;
+  bool _isHeartAlram = false;
+  bool _isAlram = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class _alramsettingState extends State<alramsetting> {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         //backgroundColor: Color.fromRGBO(248, 245, 235, 100),
-        title: Text("ALRAMSETTING"),
+        title: Text("ALRAMSETTING",style: TextStyle(color: Color(0xFF968C83)),),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
@@ -33,28 +37,105 @@ class _alramsettingState extends State<alramsetting> {
         child: Column(
           children: [
             Container(
+              margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
               child: Row(
                 children: [
                   Container(
-                      padding : EdgeInsets.fromLTRB(0, 10, 0, 20),
-                      child: Text("쪽지 허용"),
+                      padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
+                      child: Text("쪽지 허용",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
                   ),
                   CupertinoSwitch(
-                    value: _isChecked,
+                    value: _isMessageOn,
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (bool? value){
                       setState((){
-                        _isChecked = value ??false;
+                        _isMessageOn = value ??false;
                       });
                     },
                   ),
                 ],
               ),
             ),
-            Container(),
-            Container(),
-            Container(),
-            Container(),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Row(
+                children: [
+                  Container(
+                    padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
+                    child: Text("쪽지 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                  ),
+                  CupertinoSwitch(
+                    value: _isMessageAlram,
+                    activeColor: CupertinoColors.activeGreen,
+                    onChanged: (bool? value){
+                      setState((){
+                        _isMessageAlram = value ??false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Row(
+                children: [
+                  Container(
+                    padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
+                    child: Text("댓글 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                  ),
+                  CupertinoSwitch(
+                    value: _isMentionAlram,
+                    activeColor: CupertinoColors.activeGreen,
+                    onChanged: (bool? value){
+                      setState((){
+                        _isMentionAlram = value ??false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Row(
+                children: [
+                  Container(
+                    padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
+                    child: Text("공감 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                  ),
+                  CupertinoSwitch(
+                    value: _isHeartAlram,
+                    activeColor: CupertinoColors.activeGreen,
+                    onChanged: (bool? value){
+                      setState((){
+                        _isHeartAlram = value ??false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Row(
+                children: [
+                  Container(
+                    padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
+                    child: Text("활동 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                  ),
+                  CupertinoSwitch(
+                    value: _isAlram,
+                    activeColor: CupertinoColors.activeGreen,
+                    onChanged: (bool? value){
+                      setState((){
+                        _isAlram = value ??false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

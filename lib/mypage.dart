@@ -17,7 +17,7 @@ class _mypageState extends State<mypage> {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         //backgroundColor: Color.fromRGBO(248, 245, 235, 100),
-        title: Text("MYPAGE"),
+        title: Text("MYPAGE",style: TextStyle(color: Color(0xFF968C83)),),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
