@@ -1,7 +1,9 @@
+import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'mypage.dart';
+import 'alramsetting.dart';
 
 class category extends StatelessWidget {
   const category({super.key});
@@ -31,17 +33,17 @@ class category extends StatelessWidget {
         //맨 밑에 깔린 body
         width: sizeX,
         height: sizeY,
-        color: Color(0xFFF8F5EB),
+        decoration: BoxDecoration(color: Color(0xFFF8F5EB),),
         child: Container(
           //흰 박스 올라온 화면
-          //margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
           padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
+                  spreadRadius: 3,
+                  blurRadius: 5,
                   offset: Offset(0, 3),
                 ),
               ],
@@ -93,7 +95,10 @@ class category extends StatelessWidget {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => const alramsetting()));
+                      },
                       child: Row(
                         children: [
                           Icon(Icons.access_alarm, color: Colors.black54),
