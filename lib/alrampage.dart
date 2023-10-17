@@ -6,7 +6,7 @@ class alrampage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("alram"),
+      body: Center(child: Text("alram")),
     );
   }
 }
