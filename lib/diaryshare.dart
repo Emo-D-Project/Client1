@@ -5,14 +5,8 @@ class diaryshare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
 
     return Container(
       color: Color(0xFFF8F5EB),
@@ -20,375 +14,385 @@ class diaryshare extends StatelessWidget {
         child: Container(
           //감정 아이콘
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-          Container(
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 35,
-                height: 35,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/1.png'),
-                    fit: BoxFit.cover,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/1.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/2.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/3.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/4.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 40,
+                        height: 40,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/5.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/6.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/emotion/7.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  //color: Color.fromRGBO(248, 245, 235, 100),
+                  width: 1000,
+                  height: 65,
+                  padding: const EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(8.0),
                 ),
-              ),
-              Container(
-                width: 35,
-                height: 35,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/2.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: 35,
-                height: 35,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/3.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: 35,
-                height: 35,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/4.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: 40,
-                height: 40,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/5.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: 35,
-                height: 35,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/6.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: 35,
-                height: 35,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('images/emotion/7.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          //color: Color.fromRGBO(248, 245, 235, 100),
-          width: 1000,
-          height: 65,
-          padding: const EdgeInsets.all(8.0),
-          margin: const EdgeInsets.all(8.0),
-        ),
 
-        Expanded(
-          child: SingleChildScrollView(
-            //scrollDirection: Axis.vertical,
-              child:
-              Column(
-                children: [
-                  // 일기 화면1
-                  Container(
-                    width: 380,
-                    height: 300,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    //scrollDirection: Axis.vertical,
                     child: Column(
                       children: [
+                        // 일기 화면1
                         Container(
                           width: 380,
-                          height: 65,
-                          color: Colors.white54,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'images/emotion/6.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Spacer(), // 여백을 추가합니다.
-                              // 쪽지 보내기 아이콘
-                              Container(
-                                //  color: Colors.blue, // 배경색을 파란색으로 지정
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.question_answer_outlined,
-                                    color: Colors.black26, // 아이콘 색상을 흰색으로 지정
-                                  ),
-                                ),
-                              ),
-                            ],
+                          padding: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
-                        ),
-                        // 텍스트 컨테이너
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                          color: Colors.white54,
-
-                          child: Text(
-                            '안녕 예원아 해진아 나는 수진이야... '
-                                '배경색들은 컨테이너 구분되게 볼려고  '
-                                '잠시 넣어놨어 오해말아줘',
-                           // overflow:TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
-                          ),
-                          width: 350,
-                          // 너비를 800으로 설정
-                          height: 200, // 높이를 100으로 설정
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //좋아요,댓글
-                  Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          //좋아요
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: Column(
-                              children: [
-                                Icon(Icons.favorite_border),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                // 좋아요 숫자
-                                Text(
-                                  '10', // 좋아요 숫자를 여기에 넣으세요.
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //댓글
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Column(
-                              children: [
-                                Icon(Icons.chat_outlined),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                //댓글 숫자
-                                Text(
-                                  '10', // 좋아요 숫자를 여기에 넣으세요.
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )),
-
-                  //일기2
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    width: 380,
-                    height: 300,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 380,
-                          height: 65,
-                          color: Colors.white54, // 배경색을 흰색으로 지정
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'images/emotion/6.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Spacer(), // 여백을 추가합니다.
-                              Container(
-                                //  color: Colors.blue, // 배경색을 파란색으로 지정
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.question_answer_outlined,
-                                    color: Colors.black26, // 아이콘 색상을 흰색으로 지정
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // 텍스트 컨테이너
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                          color: Colors.white60,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: double.infinity, // 너비를 최대로 설정
-                                height: 30,
-                                decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(15))),
-                                // 높이를 30으로 설정 (원하는 높이로 조절하세요)
+                                width: 380,
+                                height: 65,
+                                color: Colors.white54,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
-                                      Icons.play_arrow,
-                                      color: Colors.black,
+                                    Expanded(
+                                      child: Align(
+                                         alignment: Alignment.center,
+                                        child: Container(
+                                          width: 35,
+                                          height: 35,
+                                          //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
+                                          margin: EdgeInsets.only(left: 35),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  'images/emotion/6.png'),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    Icon(
-                                      Icons.pause,
-                                      color: Colors.black,
+
+                                    // 쪽지 보내기 아이콘
+                                    Container(
+                                      child: Container(
+                                        width: 35,
+                                        height: 35,
+                                          margin: EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/send/send.png'),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 10), // 여백 추가 (원하는 크기로 조절하세요)
-                              Text(
-                                '안녕하십니까 수쟌입니다.이게 5시간 넘게 한 '
-                                    '저의 결과물입니다. 이건 녹음 버전 ㅋ '
-                           ,
 
-                              //  overflow:TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 16),
-                                textAlign: TextAlign.center,
-                              ),
+                              // 텍스트 컨테이너
+                              Container(
+                                  width: 380,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                                  color: Colors.white54,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '안녕 예원아 해진아 나는 수진이야... '
+                                        '배경색들은 컨테이너 구분되게 볼려고  '
+                                        '잠시 넣어놨어 오해말아줘',
+                                        // overflow:TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  )),
                             ],
                           ),
-                          width: 350,
-                          height: 200,
                         ),
+
+                        //좋아요,댓글
+                        Container(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            //좋아요
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.favorite_border),
+                                  SizedBox(
+                                    width: 9,
+                                  ),
+                                  // 좋아요 숫자
+                                  Text(
+                                    '10', // 좋아요 숫자를 여기에 넣으세요.
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //댓글
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.chat_outlined),
+                                  SizedBox(
+                                    width: 9,
+                                  ),
+                                  //댓글 숫자
+                                  Text(
+                                    '10', // 좋아요 숫자를 여기에 넣으세요.
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
+
+                        //일기2
+                        // 일기 화면1
+                        Container(
+                          width: 380,
+                          padding: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 380,
+                                height: 65,
+                                color: Colors.white54,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          width: 35,
+                                          height: 35,
+                                          //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
+                                          margin: EdgeInsets.only(left: 35),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  'images/emotion/6.png'),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // 쪽지 보내기
+                                    Container(
+                                      child: Container(
+                                        width: 35,
+                                        height: 35,
+                                        margin: EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/send/send.png'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              //녹음
+                              Container(
+                                width: 250, // 너비를 최대로 설정
+                                height: 25,
+                                decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                                child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.play_arrow,
+                                        color: Colors.black,
+                                      ),
+                                      Icon(
+                                        Icons.pause,
+                                        color: Colors.black,
+                                      ),
+                                    ]
+                                ),
+                              ),
+
+                              // 텍스트 컨테이너
+                              Container(
+                                  width: 380,
+                                  padding:
+                                  const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                                  color: Colors.white54,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '안녕하세요 저는 오늘 하루 너무 힘이 드네요.. 위로가 필요한 하루입니다..'
+                                            '힘이 너무 들어요 넘무 울고싶어요.. 모든게 제 마음대로 되는게 없어요'
+                                            '으아아ㅏ아아아아앙 ',
+                                        // overflow:TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                        ),
+
+                        //좋아요,댓글
+                        Container(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            //좋아요
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.favorite_border),
+                                  SizedBox(
+                                    width: 9,
+                                  ),
+                                  // 좋아요 숫자
+                                  Text(
+                                    '10', // 좋아요 숫자를 여기에 넣으세요.
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //댓글
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.chat_outlined),
+                                  SizedBox(
+                                    width: 9,
+                                  ),
+                                  //댓글 숫자
+                                  Text(
+                                    '10', // 좋아요 숫자를 여기에 넣으세요.
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
                       ],
                     ),
                   ),
-
-                  //좋아요,댓글
-                  Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          //좋아요
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: Column(
-                              children: [
-                                Icon(Icons.favorite_border),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                // 좋아요 숫자
-                                Text(
-                                  '10', // 좋아요 숫자를 여기에 넣으세요.
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //댓글
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Column(
-                              children: [
-                                Icon(Icons.chat_outlined),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                //댓글 숫자
-                                Text(
-                                  '10', // 좋아요 숫자를 여기에 넣으세요.
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )),
-                ],
-              ),
-          ),
+                ),
+              ]),
         ),
-            ]),
       ),
-    ),);
+    );
   }
 }
