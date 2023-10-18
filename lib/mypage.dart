@@ -16,8 +16,10 @@ class _mypageState extends State<mypage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        //backgroundColor: Color.fromRGBO(248, 245, 235, 100),
-        title: Text("MYPAGE",style: TextStyle(color: Color(0xFF968C83)),),
+        title: Text(
+          "MYPAGE",
+          style: TextStyle(color: Color(0xFF968C83)),
+        ),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
@@ -32,8 +34,9 @@ class _mypageState extends State<mypage> {
             color: Color(0xFFF8F5EB),
           ),
           child: Container(
-            margin: EdgeInsets.fromLTRB( 10, 0, 10, 20),
-            width: 330,height: 550,
+            margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+            width: 330,
+            height: 550,
             decoration: BoxDecoration(
               color: Color(0x4D968C83),
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -42,25 +45,35 @@ class _mypageState extends State<mypage> {
               children: [
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Text("내 닉네임",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                  child: Text(
+                    "내 닉네임",
+                    style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7D5A50)),
+                  ),
                 ),
                 Container(
                   //칸 나누는 줄
-                  color: Color.fromRGBO(125, 90, 80, 100),
-                  width: 300, height: 2,
+                  color: Colors.black54,
+                  width: 300, height: 1,
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 20, 250, 0),
-                  child: Text("소개",style: TextStyle(fontSize: 13),),
+                  child: Text(
+                    "소개",
+                    style: TextStyle(fontSize: 13),
+                  ),
                 ),
                 Container(
                   //칸 나누는 줄
-                  color: Color.fromRGBO(125, 90, 80, 100),
-                  width: 280, height: 2,
+                  color: Colors.black54,
+                  width: 280, height: 1,
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  width: 300,height: 70,
+                  width: 300,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -69,25 +82,48 @@ class _mypageState extends State<mypage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Text("최애 영화",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17, color: Color(0xFF7D5A50)),),
-                        padding: EdgeInsets.fromLTRB(0, 0, 50, 4),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            child: Text(
+                              "최애 영화",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  color: Color(0xFF7D5A50)),
+                            ),
+                          ),
+                        ],
                       ),
                       Container(
                         //칸 나누는 줄
                         color: Colors.grey,
-                        width: 280, height: 2,
+                        width: 280, height: 1,
+                        margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
                       ),
-                      Container(
-                        child: Text("신과 함께",style: TextStyle(fontSize: 15),),
-                        padding: EdgeInsets.fromLTRB(0, 5, 50, 0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Container(
+                            child: Text(
+                              "신과 함께",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  width: 300,height: 70,
+                  width: 300,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -96,25 +132,48 @@ class _mypageState extends State<mypage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Text("최애 노래",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17, color: Color(0xFF7D5A50)),),
-                        padding: EdgeInsets.fromLTRB(0, 0, 50, 4),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            child: Text(
+                              "최애 노래",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  color: Color(0xFF7D5A50)),
+                            ),
+                          ),
+                        ],
                       ),
                       Container(
                         //칸 나누는 줄
                         color: Colors.grey,
-                        width: 280, height: 2,
+                        width: 280, height: 1,
+                        margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
                       ),
-                      Container(
-                        child: Text("want so bad - straykids(leeknow, han)",style: TextStyle(fontSize: 15),),
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Container(
+                            child: Text(
+                              "want so bad - straykids",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  width: 300,height: 70,
+                  width: 300,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -123,26 +182,52 @@ class _mypageState extends State<mypage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Text("MBTI",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17, color: Color(0xFF7D5A50)),),
-                        padding: EdgeInsets.fromLTRB(0, 0, 50, 4),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            child: Text(
+                              "MBTI",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  color: Color(0xFF7D5A50)),
+                            ),
+                          ),
+                        ],
                       ),
                       Container(
                         //칸 나누는 줄
                         color: Colors.grey,
-                        width: 280, height: 2,
+                        width: 280, height: 1,
+                        margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
                       ),
-                      Container(
-                        child: Text("ISTP",style: TextStyle(fontSize: 15),),
-                        padding: EdgeInsets.fromLTRB(0, 5, 50, 0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Container(
+                            child: Text(
+                              "ISTP",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
                 IconButton(
-                    onPressed: (){},
-                    icon: Icon(Icons.add_circle,size: 40,)
-                )
+                    onPressed: () {
+                      plusDialog(context);
+                    },
+                    icon: Icon(
+                      Icons.add_circle,
+                      size: 40,
+                    ))
               ],
             ),
           ),
@@ -150,4 +235,20 @@ class _mypageState extends State<mypage> {
       ),
     );
   }
+}
+
+void plusDialog(context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        height: 300,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+        ),
+      );
+    },
+  );
 }
