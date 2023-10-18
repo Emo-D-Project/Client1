@@ -71,8 +71,7 @@ class category extends StatelessWidget {
                     margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Text("유저 설정",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),)
                   ), //유저 설정
-                  Container(
-                    width: 1000,
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -84,14 +83,14 @@ class category extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black54),
+                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("마이 페이지",style: TextStyle(color: Colors.black54,fontSize: 15)),
+                          Text("마이 페이지",style: TextStyle(color: Colors.black,fontSize: 15)),
                         ],
                       ),
                     ),
                   ), //마이페이지
-                  Container(
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -103,9 +102,9 @@ class category extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.access_alarm, color: Colors.black54),
+                          Icon(Icons.access_alarm, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("알람 설정",style: TextStyle(color: Colors.black54,fontSize: 15)),
+                          Text("알람 설정",style: TextStyle(color: Colors.black,fontSize: 15)),
                         ],
                       ),
                     ),
@@ -127,7 +126,7 @@ class category extends StatelessWidget {
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: Text("지원",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)))
                   ), //지원
-                  Container(
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -136,14 +135,14 @@ class category extends StatelessWidget {
                       onPressed: () {},
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black54),
+                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("의견 보내기",style: TextStyle(color: Colors.black54,fontSize: 15)),
+                          Text("의견 보내기",style: TextStyle(color: Colors.black,fontSize: 15)),
                         ],
                       ),
                     ),
                   ), //의견보내기
-                  Container(
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -152,9 +151,9 @@ class category extends StatelessWidget {
                       onPressed: () {},
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black54),
+                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("자주 하는 질문",style: TextStyle(color: Colors.black54,fontSize: 15)),
+                          Text("자주 하는 질문",style: TextStyle(color: Colors.black,fontSize: 15)),
                         ],
                       ),
                     ),
@@ -176,7 +175,7 @@ class category extends StatelessWidget {
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: Text("기타",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)))
                   ), //기타
-                  Container(
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -185,14 +184,14 @@ class category extends StatelessWidget {
                       onPressed: () {},
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black54),
+                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("앱 정보",style: TextStyle(color: Colors.black54,fontSize: 15)),
+                          Text("앱 정보",style: TextStyle(color: Colors.black,fontSize: 15)),
                         ],
                       ),
                     ),
                   ), //앱정보
-                  Container(
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -202,12 +201,12 @@ class category extends StatelessWidget {
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
-                          Text("로그아웃", style: TextStyle(color: Colors.black54)),
+                          Text("로그아웃", style: TextStyle(color: Colors.black)),
                         ],
                       ),
                     ),
                   ), //로그아웃
-                  Container(
+                  SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
@@ -217,7 +216,7 @@ class category extends StatelessWidget {
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
-                          Text("회원탈퇴", style: TextStyle(color: Colors.black54,fontSize: 15)),
+                          Text("회원탈퇴", style: TextStyle(color: Colors.black,fontSize: 15)),
                         ],
                       ),
                     ),
