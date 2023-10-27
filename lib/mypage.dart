@@ -264,7 +264,7 @@ void plusDialog(context) {
                   onPressed: (){
                     _showDialog(context);
                   }, 
-                  child: Text("최애 음식"),
+                  child: Text("슈잔"),
               ),
               //TextButton(onPressed: onPressed, child: child),
               //TextButton(onPressed: onPressed, child: child),
