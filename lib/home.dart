@@ -14,7 +14,7 @@ class home extends StatelessWidget {
       body: Center(
           child: Container(
             child: Image.asset('images/main/[ttm]+삼색고양이_기본형_최종-(1).gif',
-              width: 1000,
+              width: 1200,
               height : 1000,
               fit: BoxFit.contain,
 
@@ -47,11 +47,11 @@ class home extends StatelessWidget {
                               children: [
 
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood, size: 30,)),
+                                    onPressed: () {}, icon: Image.asset('images/emotion/1.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood_bad, size: 30,)),
+                                    onPressed: () {}, icon: Image.asset('images/emotion/2.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood, size: 30,))
+                                    onPressed: () {}, icon: Image.asset('images/emotion/3.gif'))
                               ],
                             ),
                           ), //감정 첫째줄
@@ -60,13 +60,13 @@ class home extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood, size: 30,)),
+                                    onPressed: () {}, icon: Image.asset('images/emotion/4.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood_bad, size: 30,)),
+                                    onPressed: () {}, icon: Image.asset('images/emotion/5.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood, size: 30,)),
+                                    onPressed: () {}, icon: Image.asset('images/emotion/6.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.mood_bad, size: 30,))
+                                    onPressed: () {}, icon: Image.asset('images/emotion/7.gif'))
                               ],
                             ),
                           ), //감정 둘째줄
@@ -85,7 +85,7 @@ class home extends StatelessWidget {
                   );
                 });
           },
-          child: Icon(Icons.edit),
+          child: Image.asset('images/emotion/8.gif'),
         );
       }),
     );
