@@ -13,9 +13,12 @@ class home extends StatelessWidget {
       backgroundColor: Color(0xFFF8F5EB),
       body: Center(
           child: Container(
-            width: 100,
-            height: 10,
-            color: Colors.black,
+            child: Image.asset('images/main/[ttm]+삼색고양이_기본형_최종-(1).gif',
+              width: 1000,
+              height : 1000,
+              fit: BoxFit.contain,
+
+            ),
           )
       ),
       floatingActionButton: Builder(builder: (context) {

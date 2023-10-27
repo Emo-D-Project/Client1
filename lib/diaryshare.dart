@@ -29,7 +29,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/1.png'),
+                            image: AssetImage('images/emotion/1.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -42,7 +42,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/2.png'),
+                            image: AssetImage('images/emotion/2.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -55,7 +55,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/3.png'),
+                            image: AssetImage('images/emotion/3.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -68,7 +68,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/4.png'),
+                            image: AssetImage('images/emotion/4.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -81,7 +81,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/5.png'),
+                            image: AssetImage('images/emotion/5.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -94,7 +94,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/6.png'),
+                            image: AssetImage('images/emotion/6.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -107,7 +107,7 @@ class diaryshare extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/emotion/7.png'),
+                            image: AssetImage('images/emotion/7.gif'),
                             fit: BoxFit.cover,
                           ),
                         ),
