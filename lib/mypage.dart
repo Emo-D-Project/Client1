@@ -11,6 +11,9 @@ class mypage extends StatefulWidget {
 class _mypageState extends State<mypage> {
   @override
   Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       appBar: AppBar(
@@ -30,6 +33,7 @@ class _mypageState extends State<mypage> {
       ),
       body: Center(
         child: Container(
+          width: sizeX*0.9, height: sizeY*0.8,
           decoration: BoxDecoration(
             color: Color(0xFFF8F5EB),
           ),
@@ -238,17 +242,56 @@ class _mypageState extends State<mypage> {
 }
 
 void plusDialog(context) {
+  final sizeY = MediaQuery.of(context).size.height;
+
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
       return Container(
-        height: 300,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+        height: sizeY*0.5,
+        color: Color(0xFF737373),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+          child: Column(
+            children: [
+              ElevatedButton(
+                  onPressed: (){
+                    _showDialog(context);
+                  }, 
+                  child: Text("최애 음식"),
+              ),
+              //TextButton(onPressed: onPressed, child: child),
+              //TextButton(onPressed: onPressed, child: child),
+              //TextButton(onPressed: onPressed, child: child),
+              //TextButton(onPressed: onPressed, child: child),
+            ],
+          ),
         ),
       );
     },
+  );
+}
+
+Future<dynamic> _showDialog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text('최애 음식'),
+      content: TextField(),
+      actions: [
+        ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('취소')),
+        ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인')),
+      ],
+    ),
   );
 }
