@@ -34,6 +34,26 @@ class _calendarState extends State<calendar>{
             firstDay: DateTime.utc(2021),
             lastDay: DateTime.utc(2025),
             focusedDay: DateTime.now(),
+            calendarBuilders: CalendarBuilders(
+              dowBuilder: (context,day){
+                switch(day.weekday){
+                  case 1:
+                    return Center(child: Text('M'),);
+                  case 2:
+                    return Center(child: Text('T'),);
+                  case 3:
+                    return Center(child: Text('W'),);
+                  case 4:
+                    return Center(child: Text('T'),);
+                  case 5:
+                    return Center(child: Text('F'),);
+                  case 6:
+                    return Center(child: Text('S'),);
+                  case 7:
+                    return Center(child: Text('S'),);
+                }
+              },
+            ),
           ),
         ),
     ),
