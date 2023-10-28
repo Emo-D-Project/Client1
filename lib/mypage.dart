@@ -215,7 +215,7 @@ class _mypageState extends State<mypage> {
                           ),
                           Container(
                             child: Text(
-                              "ISTP",
+                              "ISTP-T",
                               style: TextStyle(fontSize: 17),
                             ),
                           ),
