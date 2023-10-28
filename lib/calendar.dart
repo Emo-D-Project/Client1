@@ -38,19 +38,19 @@ class _calendarState extends State<calendar>{
               dowBuilder: (context,day){
                 switch(day.weekday){
                   case 1:
-                    return Center(child: Text('M'),);
+                    return Center(child: Text('M', style: TextStyle(fontWeight: FontWeight.bold),),);
                   case 2:
-                    return Center(child: Text('T'),);
+                    return Center(child: Text('T', style: TextStyle(fontWeight: FontWeight.bold),),);
                   case 3:
-                    return Center(child: Text('W'),);
+                    return Center(child: Text('W', style: TextStyle(fontWeight: FontWeight.bold),),);
                   case 4:
-                    return Center(child: Text('T'),);
+                    return Center(child: Text('T', style: TextStyle(fontWeight: FontWeight.bold),),);
                   case 5:
-                    return Center(child: Text('F'),);
+                    return Center(child: Text('F', style: TextStyle(fontWeight: FontWeight.bold),),);
                   case 6:
-                    return Center(child: Text('S'),);
+                    return Center(child: Text('S', style: TextStyle(fontWeight: FontWeight.bold),),);
                   case 7:
-                    return Center(child: Text('S'),);
+                    return Center(child: Text('S', style: TextStyle(color:Colors.red),),);
                 }
               },
             ),
