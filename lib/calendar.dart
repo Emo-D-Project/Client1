@@ -21,9 +21,6 @@ class _calendarState extends State<calendar>{
     final sizeY = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
-<<<<<<< Updated upstream
-
-
       body: Center(
         child: Container(
           width: 358,
@@ -39,14 +36,7 @@ class _calendarState extends State<calendar>{
             focusedDay: DateTime.now(),
           ),
         ),
-
-=======
-      body: Container(
-        width: 380,
-        height: 600,
-        color: Color(0xFF7DA5),
->>>>>>> Stashed changes
-      ),
+    ),
     );
   }
 }
