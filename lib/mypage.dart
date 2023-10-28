@@ -263,8 +263,12 @@ void plusDialog(context) {
               ElevatedButton(
                   onPressed: (){
                     _showDialog(context);
-                  }, 
-                  child: Text("슈잔"),
+                  },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0.0,
+                  backgroundColor: Colors.white,
+                ),
+                child: Text("최애 음식",style: TextStyle(color: Colors.black,fontSize: 15)),
               ),
               //TextButton(onPressed: onPressed, child: child),
               //TextButton(onPressed: onPressed, child: child),
