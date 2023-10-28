@@ -186,7 +186,7 @@ class diaryshare extends StatelessWidget {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(
-                                    'images/emotion/6.gif'),
+                                    'images/emotion/1.gif'),
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -210,6 +210,20 @@ class diaryshare extends StatelessWidget {
                     ],
                   ),
                 ),
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: PageView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        _buildPolaroid('images/send/sj3.jpg', '사진 1'),
+                        _buildPolaroid('images/send/sj1.jpg', '사진 2'),
+                        _buildPolaroid('images/send/sj2.jpg', '사진 3'),
+                      ],
+                    ),
+                  ),
+                ),
+
 
                 // 텍스트 컨테이너
                 Container(
@@ -220,9 +234,9 @@ class diaryshare extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          '안녕 예원아 해진아 나는 수진이야... '
-                              '배경색들은 컨테이너 구분되게 볼려고  '
-                              '잠시 넣어놨어 오해말아줘',
+                          '오늘 하루 아주 만족스러운 날이다. '
+                              '친구들이랑 맛있게 밥도 먹고'
+                              '하늘도 너무 이뻤다!',
                           // overflow:TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 16),
                           textAlign: TextAlign.center,
@@ -276,7 +290,6 @@ class diaryshare extends StatelessWidget {
               )),
 
           //일기2
-          // 일기 화면1
           Container(
             width: 380,
             padding: const EdgeInsets.all(8.0),
@@ -424,3 +437,51 @@ class diaryshare extends StatelessWidget {
     );
   }
 }
+
+Widget _buildPolaroid(String imagePath, String text) {
+  return Container(
+    margin: EdgeInsets.all(10), // 폴라로이드 간격 조절
+    decoration: BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black, // 액자 색상
+              width: 5, // 액자 두께
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(10),
+          color: Colors.white,
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
