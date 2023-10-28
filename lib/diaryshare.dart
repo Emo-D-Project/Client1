@@ -157,6 +157,7 @@ class diaryshare extends StatelessWidget {
           //scrollDirection: Axis.vertical,
           child: Column(
             children: [
+<<<<<<< Updated upstream
             // 일기 화면1
             Container(
             width: 380,
@@ -416,6 +417,99 @@ class diaryshare extends StatelessWidget {
               ],
             ),
           ),
+=======
+              Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/1.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/2.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/3.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/4.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: 40,
+                height: 40,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/5.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/6.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('images/emotion/7.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+>>>>>>> Stashed changes
             ],
           ),
         ),
