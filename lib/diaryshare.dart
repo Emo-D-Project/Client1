@@ -374,9 +374,7 @@ class diaryshare extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                '안녕하세요 저는 오늘 하루 너무 힘이 드네요.. 위로가 필요한 하루입니다..'
-                                    '힘이 너무 들어요 넘무 울고싶어요.. 모든게 제 마음대로 되는게 없어요'
-                                    '으아아ㅏ아아아아앙 ',
+                                '오늘은 기분이 좋은 하루네요~~ 굳굳 ',
                                 // overflow:TextOverflow.ellipsis,
                                 style: TextStyle(fontSize: 16),
                                 textAlign: TextAlign.center,
