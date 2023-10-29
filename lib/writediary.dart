@@ -1,4 +1,5 @@
 import 'package:capston1/main.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
@@ -105,36 +106,34 @@ class _writediaryState extends State<writediary> {
               ),
               child: Column(
                 children: [
-                  Container(), //날짜
+                  Container(), // 날짜
                   Container(
-                    width: 50,
-                    height: 50,
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 1/1,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
+                    margin: EdgeInsets.all(10),
+                    child: GridView.builder(
+                      padding: EdgeInsets.all(0),
+                      shrinkWrap: true,
+                      itemCount: images.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 1/1,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(
+                                File(images[index]!.path),
                               ),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: FileImage(
-                                              File(images[index]!.path)))),
-                                );
-                              }),
-                        )
-                      ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  ), //일기
+                  ), // 일기
                   Container(
                     child: Row(
                       children: [
@@ -148,13 +147,14 @@ class _writediaryState extends State<writediary> {
                             },
                             icon: Icon(Icons.add_a_photo_outlined),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  ), //사진추가,음성녹음
+                  ), // 사진 추가, 음성 녹음
                 ],
-              ),
+              )
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
