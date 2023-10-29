@@ -483,26 +483,20 @@ void plusDialog(BuildContext context) {
                   child: Column(
                   children: [
                     Container(
-                      color: Colors.grey,
-                      height: 450, //댓글창 컨테이너 크기
-                      width: double.infinity, // 가득 차도록 설정
+                      width: double.infinity,
                       child: Column(
-                        children: [
-                          SizedBox(
-                            height: 450, //댓글창 컨테이너 크기
-                            width: double.infinity, // 가득 차도록 설정
-                            child: Column(
                             children: [
+
                           //댓글 1
                           Container(
-                            height: 80, // 원하는 높이로 설정
-                            width: double.infinity, // 가득 차도록 설정
+                            height: 80,
+                            width: double.infinity,
                             child: Row(
                               children: [
                                 Container(
-                                  color: Colors.red, //임시 빨간색
                                   height: 60,
-                                  width: 60, // 원하는 너비로 설정
+                                  width: 60,
+                                  padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
                                   child: Image.asset(
                                     'images/emotion/1.gif',
                                     fit: BoxFit.contain,
@@ -512,20 +506,15 @@ void plusDialog(BuildContext context) {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      color: Colors.green,
-                                      // 첫 번째 컨테이너 색상 (초록색으로 설정)
                                       height: 25,
-                                      // 원하는 높이로 설정
                                       child: Text(
                                         ' 삼냥이 1',
                                         textAlign: TextAlign.left,
                                       ),
                                     ),
                                     Container(
-                                      color: Colors.blue,
-                                      // 두 번째 컨테이너 색상 (파란색으로 설정)
+
                                       height: 55,
-                                      // 원하는 높이로 설정
                                       child: Text(
                                         ' 우와 라멘 맛있겠다 저기는 어디야?',
                                         textAlign: TextAlign.left,
@@ -536,59 +525,19 @@ void plusDialog(BuildContext context) {
                               ],
                             ),
                           ),
-                          //댓글2
-                          Container(
-                            height: 80, // 원하는 높이로 설정
-                            width: double.infinity, // 가득 차도록 설정
-                            child: Row(
-                              children: [
-                                Container(
-                                  color: Colors.deepOrange,
-                                  height: 60,
-                                  width: 60,
-                                  child: Image.asset(
-                                    'images/emotion/4.gif',
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Colors.green,
-                                      // 첫 번째 컨테이너 색상 (초록색으로 설정)
-                                      height: 25,
-                                      child: Text(
-                                        ' 삼냥이 2',
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                    Container(
-                                      color: Colors.blue,
-                                      // 두 번째 컨테이너 색상 (파란색으로 설정)
-                                      height: 55,
-                                      child: Text(
-                                        ' 하늘 정말 이쁘다 사진 잘 찍는다',
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                              //댓글2
+
+                              //댓글 2
                               Container(
-                                height: 80, // 원하는 높이로 설정
-                                width: double.infinity, // 가득 차도록 설정
+                                height: 80,
+                                width: double.infinity,
                                 child: Row(
                                   children: [
                                     Container(
-                                      color: Colors.deepOrange,
                                       height: 60,
                                       width: 60,
+                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
                                       child: Image.asset(
-                                        'images/emotion/4.gif',
+                                        'images/emotion/1.gif',
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -596,8 +545,6 @@ void plusDialog(BuildContext context) {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          color: Colors.green,
-                                          // 첫 번째 컨테이너 색상 (초록색으로 설정)
                                           height: 25,
                                           child: Text(
                                             ' 삼냥이 2',
@@ -605,31 +552,30 @@ void plusDialog(BuildContext context) {
                                           ),
                                         ),
                                         Container(
-                                          color: Colors.blue,
-                                          // 두 번째 컨테이너 색상 (파란색으로 설정)
+
                                           height: 55,
                                           child: Text(
-                                            ' 하늘 정말 이쁘다 사진 잘 찍는다',
+                                            '오늘 아주 행복했겠구나',
                                             textAlign: TextAlign.left,
                                           ),
                                         ),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                              //댓글2
+                              //댓글 3
                               Container(
-                                height: 80, // 원하는 높이로 설정
-                                width: double.infinity, // 가득 차도록 설정
+                                height: 80,
+                                width: double.infinity,
                                 child: Row(
                                   children: [
                                     Container(
-                                      color: Colors.deepOrange,
                                       height: 60,
                                       width: 60,
+                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
                                       child: Image.asset(
-                                        'images/emotion/4.gif',
+                                        'images/emotion/7.gif',
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -637,117 +583,147 @@ void plusDialog(BuildContext context) {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          color: Colors.green,
-                                          // 첫 번째 컨테이너 색상 (초록색으로 설정)
                                           height: 25,
                                           child: Text(
-                                            ' 삼냥이 2',
+                                            ' 삼냥이 3',
                                             textAlign: TextAlign.left,
                                           ),
                                         ),
                                         Container(
-                                          color: Colors.blue,
-                                          // 두 번째 컨테이너 색상 (파란색으로 설정)
+
                                           height: 55,
                                           child: Text(
-                                            ' 하늘 정말 이쁘다 사진 잘 찍는다',
+                                            ' 난 오늘 일한다고 하늘을 한번도 못봤어',
                                             textAlign: TextAlign.left,
                                           ),
                                         ),
                                       ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              //댓글2
-                              Container(
-                                height: 80, // 원하는 높이로 설정
-                                width: double.infinity, // 가득 차도록 설정
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      color: Colors.deepOrange,
-                                      height: 60,
-                                      width: 60,
-                                      child: Image.asset(
-                                        'images/emotion/4.gif',
-                                        fit: BoxFit.contain,
-                                      ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          color: Colors.green,
-                                          // 첫 번째 컨테이너 색상 (초록색으로 설정)
-                                          height: 25,
-                                          child: Text(
-                                            ' 삼냥이 2',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                        Container(
-                                          color: Colors.blue,
-                                          // 두 번째 컨테이너 색상 (파란색으로 설정)
-                                          height: 55,
-                                          child: Text(
-                                            ' 하늘 정말 이쁘다 사진 잘 찍는다',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                      ],
-                                    )
                                   ],
                                 ),
                               ),
 
-                          //댓글3
-                          Container(
-                            height: 80, // 원하는 높이로 설정
-                            width: double.infinity, // 가득 차도록 설정
-                            child: Row(
-                              children: [
-                                Container(
-                                  color: Colors.teal,
-                                  height: 60,
-                                  width: 60,
-                                  child: Image.asset(
-                                    'images/emotion/6.gif',
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              //댓글 4
+                              Container(
+                                height: 80,
+                                width: double.infinity,
+                                child: Row(
                                   children: [
                                     Container(
-                                      color: Colors.green,
-                                      height: 25,
-                                      child: Text(
-                                        ' 삼냥이 3',
-                                        textAlign: TextAlign.left,
+                                      height: 60,
+                                      width: 60,
+                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
+                                      child: Image.asset(
+                                        'images/emotion/5.gif',
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
-                                    Container(
-                                      color: Colors.blue,
-                                      height: 55, // 원하는 높이로 설정
-                                      child: Text(
-                                        ' 아 배고프다..',
-                                        textAlign: TextAlign.left,
-                                      ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 25,
+                                          child: Text(
+                                            ' 삼냥이 4',
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 55,
+                                          child: Text(
+                                            ' 하늘 정말 이쁘당 사진 잘 찍는다..',
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                          ),
+                                ),
+                              ),
+
+                              //댓글 5
+                              Container(
+                                height: 80,
+                                width: double.infinity, // 가득 차도록 설정
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
+                                      child: Image.asset(
+                                        'images/emotion/6.gif',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 25,
+                                          child: Text(
+                                            ' 삼냥이 5',
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                        Container(
+
+                                          height: 55,
+                                          child: Text(
+                                            ' 아 배고파',
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              //댓글 6
+                              Container(
+                                height: 80,
+                                width: double.infinity,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
+                                      child: Image.asset(
+                                        'images/emotion/4.gif',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 25,
+                                          child: Text(
+                                            ' 삼냥이 6',
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                        Container(
+
+                                          height: 55,
+                                          child: Text(
+                                            ' 나도 한식 잘 먹는데',
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
                         ],
                       ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
                 ),
               ),
 
