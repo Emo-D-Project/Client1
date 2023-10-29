@@ -52,7 +52,7 @@ class _calendarState extends State<calendar> {
               ),
               child: TableCalendar(
                 //locale: 'ko_KR',
-
+                
                 rowHeight: 65,
                 firstDay: DateTime.utc(2021),
                 lastDay: DateTime.utc(2025),
@@ -150,7 +150,7 @@ class _calendarState extends State<calendar> {
                 ),
                 calendarStyle: CalendarStyle(
                   cellAlignment: Alignment.center,
-                  isTodayHighlighted: false,
+                  isTodayHighlighted: true,
                   outsideDaysVisible: false,
                   weekendTextStyle: const TextStyle(
                     color: Colors.red,
@@ -164,6 +164,13 @@ class _calendarState extends State<calendar> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
+                  todayTextStyle: TextStyle(color: Colors.transparent),
+                  todayDecoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('images/emotion/1.gif'))
+                  ),
+
+
                 ),
               ),
             ),

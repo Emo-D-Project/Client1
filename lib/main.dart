@@ -4,6 +4,7 @@ import 'category.dart';
 import 'calendar.dart';
 import 'diaryshare.dart';
 import 'home.dart';
+import 'login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 
