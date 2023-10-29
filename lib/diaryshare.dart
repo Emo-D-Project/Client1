@@ -3,19 +3,11 @@ import 'package:flutter/material.dart';
 class diaryshare extends StatelessWidget {
   const diaryshare({super.key});
 
-
   @override
-
   Widget build(BuildContext context) {
     bool isLiked = false;
-    final sizeX = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
     return Container(
       color: Color(0xFFF8F5EB),
       child: Column(
@@ -29,21 +21,22 @@ class diaryshare extends StatelessWidget {
               children: [
                 DropdownButton<String>(
                   value: '최신순',
-                  items: <String>['최신순', '오래된순', '추천순']
-                      .map((String value) {
+                  items: <String>['최신순', '오래된순', '추천순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
-                  })
-                      .toList(),
+                  }).toList(),
                   onChanged: (String? newValue) {},
-                  underline: Container(  // 이 부분을 추가해서 드롭박스의 테두리를 설정합니다.
+                  underline: Container(
+                    // 이 부분을 추가해서 드롭박스의 테두리를 설정합니다.
                     height: 2,
                     color: Colors.brown, // 테두리 선 색을 검정으로 설정
                   ),
-                  dropdownColor: Color(0xFFF8F5EB), // 드롭다운 메뉴의 배경색
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.brown), // 드롭다운 화살표 아이콘 색상
+                  dropdownColor: Color(0xFFF8F5EB),
+                  // 드롭다운 메뉴의 배경색
+                  icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
+                  // 드롭다운 화살표 아이콘 색상
                   style: TextStyle(color: Colors.grey),
                 ),
                 SizedBox(width: 25),
@@ -84,7 +77,7 @@ class diaryshare extends StatelessWidget {
                   width: 37,
                   height: 37,
                   padding: const EdgeInsets.all(8.0),
-                  margin:  const EdgeInsets.fromLTRB(8, 0, 8, 7),
+                  margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('images/emotion/3.gif'),
@@ -123,7 +116,6 @@ class diaryshare extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   margin: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-
                     image: DecorationImage(
                       image: AssetImage('images/emotion/6.gif'),
                       fit: BoxFit.contain,
@@ -136,7 +128,6 @@ class diaryshare extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   margin: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-
                     image: DecorationImage(
                       image: AssetImage('images/emotion/7.gif'),
                       fit: BoxFit.contain,
@@ -185,8 +176,8 @@ class diaryshare extends StatelessWidget {
                                     margin: EdgeInsets.only(left: 35),
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage(
-                                            'images/emotion/1.gif'),
+                                        image:
+                                            AssetImage('images/emotion/1.gif'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -201,8 +192,7 @@ class diaryshare extends StatelessWidget {
                                   margin: EdgeInsets.only(right: 10),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                          'images/send/send.png'),
+                                      image: AssetImage('images/send/send.png'),
                                     ),
                                   ),
                                 ),
@@ -210,33 +200,45 @@ class diaryshare extends StatelessWidget {
                             ],
                           ),
                         ),
+
                         SingleChildScrollView(
                           child: Container(
-                            height: MediaQuery.of(context).size.height,
+                            width: 200,
+                            height: 150, // 이미지 높이 조절
                             child: PageView(
-                              scrollDirection: Axis.horizontal,
+                              scrollDirection: Axis.horizontal, // 수평으로 스크롤
                               children: <Widget>[
-                                _buildPolaroid('images/send/sj3.jpg', '사진 1'),
-                                _buildPolaroid('images/send/sj1.jpg', '사진 2'),
-                                _buildPolaroid('images/send/sj2.jpg', '사진 3'),
+                                Container(
+                                  child: Center(
+                                      child:
+                                          Image.asset('images/send/sj3.jpg')),
+                                ),
+                                Container(
+                                  child: Center(
+                                      child:
+                                          Image.asset('images/send/sj1.jpg')),
+                                ),
+                                Container(
+                                  child: Center(
+                                      child:
+                                          Image.asset('images/send/sj2.jpg')),
+                                ),
                               ],
                             ),
                           ),
                         ),
 
-
                         // 텍스트 컨테이너
                         Container(
                             width: 380,
-                            padding:
-                            const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                            padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
                             color: Colors.white54,
                             child: Column(
                               children: [
                                 Text(
                                   '오늘 하루 아주 만족스러운 날이다. '
-                                      '친구들이랑 맛있게 밥도 먹고'
-                                      '하늘도 너무 이뻤다!',
+                                  '친구들이랑 맛있게 밥도 먹고'
+                                  '하늘도 너무 이뻤다!',
                                   // overflow:TextOverflow.ellipsis,
                                   style: TextStyle(fontSize: 16),
                                   textAlign: TextAlign.center,
@@ -250,44 +252,49 @@ class diaryshare extends StatelessWidget {
                   //좋아요,댓글
                   Container(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          //좋아요
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: Column(
-                              children: [
-                                Icon(Icons.favorite_border),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                // 좋아요 숫자
-                                Text(
-                                  '10', // 좋아요 숫자를 여기에 넣으세요.
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      //좋아요
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        child: Column(
+                          children: [
+                            Icon(Icons.favorite_border),
+                            SizedBox(
+                              width: 9,
                             ),
-                          ),
-                          //댓글
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Column(
-                              children: [
-                                Icon(Icons.chat_outlined),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                //댓글 숫자
-                                Text(
-                                  '10', // 좋아요 숫자를 여기에 넣으세요.
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
+                            // 좋아요 숫자
+                            Text(
+                              '10', // 좋아요 숫자를 여기에 넣으세요.
+                              style: TextStyle(fontSize: 12),
                             ),
-                          ),
-                        ],
-                      )),
+                          ],
+                        ),
+                      ),
+                      //댓글
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                plusDialog(context);
+                              },
+                              child: Icon(Icons.chat_outlined),
+                            ),
+                            SizedBox(
+                              width: 9,
+                            ),
+                            //댓글 숫자
+                            Text(
+                              '10', // 좋아요 숫자를 여기에 넣으세요.
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
 
                   //일기2
                   Container(
@@ -316,10 +323,9 @@ class diaryshare extends StatelessWidget {
                                     //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
                                     margin: EdgeInsets.only(left: 35),
                                     decoration: BoxDecoration(
-
                                       image: DecorationImage(
-                                        image: AssetImage(
-                                            'images/emotion/6.gif'),
+                                        image:
+                                            AssetImage('images/emotion/6.gif'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -334,8 +340,7 @@ class diaryshare extends StatelessWidget {
                                   margin: EdgeInsets.only(right: 10),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                          'images/send/send.png'),
+                                      image: AssetImage('images/send/send.png'),
                                     ),
                                   ),
                                 ),
@@ -350,7 +355,8 @@ class diaryshare extends StatelessWidget {
                           height: 25,
                           decoration: const BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(15))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
                           child: Row(
                             children: [
                               Icon(
@@ -368,8 +374,7 @@ class diaryshare extends StatelessWidget {
                         // 텍스트 컨테이너
                         Container(
                           width: 380,
-                          padding:
-                          const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                          padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
                           color: Colors.white54,
                           child: Column(
                             children: [
@@ -430,55 +435,154 @@ class diaryshare extends StatelessWidget {
                 ],
               ),
             ),
-          )],
+          )
+        ],
       ),
     );
   }
 }
+// 댓글 기능 누르면 뜨는 창
+void plusDialog(BuildContext context) {
+  final sizeY = MediaQuery.of(context).size.height;
 
-Widget _buildPolaroid(String imagePath, String text) {
-  return Container(
-    margin: EdgeInsets.all(10), // 폴라로이드 간격 조절
-    decoration: BoxDecoration(
-      color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(0, 3),
-        ),
-      ],
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      //흰색 창
+      return Container(
+        height: sizeY * 0.8,
+        color: Color(0xFF737373),
+        child: Container(
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black, // 액자 색상
-              width: 5, // 액자 두께
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-            ),
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  width: 100,
+                  height: 5,
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                  color: Color.fromRGBO(117, 117, 117, 100),
+                ),
+              ),// 맨위에 회색 줄
+
+              // 댓글창
+              Container(
+                color: Colors.brown,
+                height: 460, //댓글창 컨테이너 크기
+                width: double.infinity, // 가득 차도록 설정
+                child: Column(
+                  children: [
+                    //댓글 1
+                    Container(
+                      height: 80, // 원하는 높이로 설정
+                      width: double.infinity, // 가득 차도록 설정
+                      child: Row(
+
+                        children: [
+                          Container(
+                            color: Colors.red, //임시 빨간색
+                            height: 60,
+                            width: 60, // 원하는 너비로 설정
+                            child: Image.asset('images/emotion/1.gif',fit:BoxFit.contain,),
+                          ),
+
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  color: Colors.green, // 첫 번째 컨테이너 색상 (초록색으로 설정)
+                                  height: 25, // 원하는 높이로 설정
+                                  child: Text(' 삼냥이 1',textAlign: TextAlign.left,),
+                                ),
+                                Container(
+                                  color: Colors.blue, // 두 번째 컨테이너 색상 (파란색으로 설정)
+                                  height: 55, // 원하는 높이로 설정
+                                  child: Text(' 우와 라멘 맛있겠다 저기는 어디야?',textAlign:TextAlign.left,),
+
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //댓글2
+                    Container(
+
+                      height: 80, // 원하는 높이로 설정
+                      width: double.infinity, // 가득 차도록 설정
+                      child: Row(
+                        children: [
+                          Container(
+                            color: Colors.deepOrange,
+                            height: 60,
+                            width:  60,
+                            child: Image.asset('images/emotion/4.gif',fit:BoxFit.contain,),
+                          ),
+                          Expanded(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                color: Colors.green, // 첫 번째 컨테이너 색상 (초록색으로 설정)
+                                height: 25,
+                                child: Text(' 삼냥이 2',textAlign: TextAlign.left,),
+                              ),
+                              Container(
+                                color: Colors.blue, // 두 번째 컨테이너 색상 (파란색으로 설정)
+                                height: 55,
+                                child: Text(' 하늘 정말 이쁘다 사진 잘 찍는다',textAlign:TextAlign.left,),
+                              ),
+                            ],
+                          ))
+                        ],
+                      ),
+                    ),
+
+                    //댓글 3
+                    Container(
+                      height: 80, // 원하는 높이로 설정
+                      width: double.infinity, // 가득 차도록 설정
+                      child: Row(
+                        children: [
+                          Container(
+                            color: Colors.teal,
+                            height: 60,
+                            width: 60,
+                            child: Image.asset('images/emotion/6.gif',fit:BoxFit.contain,),
+                          ),
+                          Expanded(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                color: Colors.green,
+                                height: 25,
+                                child: Text(' 삼냥이 3',textAlign: TextAlign.left,),
+                              ),
+                              Container(
+                                color: Colors.blue,
+                                height: 55, // 원하는 높이로 설정
+                                child: Text(' 아 배고프다..',textAlign:TextAlign.left,),
+                              ),
+                            ],
+                          ))
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        Container(
-          padding: EdgeInsets.all(10),
-          color: Colors.white,
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ),
-      ],
-    ),
+      );
+    },
   );
 }
