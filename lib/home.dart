@@ -35,14 +35,14 @@ class home extends StatelessWidget {
                       height: 270,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: Color(0xFFD2C6BC),
+                        color: Color(0xFFF8F5EB),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                            child: Image.asset('images/emotion/catimage.png',width: 60,height: 60,),
+                            child: Image.asset('images/emotion/pinkcatimage.png',width: 60,height: 60,),
                           ), //냥발바닥
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
