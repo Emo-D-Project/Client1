@@ -57,7 +57,7 @@ class category extends StatelessWidget {
             children: [
               Center(
                 child: Container(
-                  width: 100,
+                  width: 130,
                   height: 5,
                   margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
                   color: Color.fromRGBO(117, 117, 117, 100),

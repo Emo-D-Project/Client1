@@ -175,7 +175,7 @@ class _mypageState extends State<mypage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
                   width: 300,
                   height: 70,
                   decoration: BoxDecoration(
@@ -241,7 +241,10 @@ class _mypageState extends State<mypage> {
   }
 }
 
+
+
 void plusDialog(context) {
+  final sizeX = MediaQuery.of(context).size.width;
   final sizeY = MediaQuery.of(context).size.height;
 
   showModalBottomSheet(
@@ -258,23 +261,73 @@ void plusDialog(context) {
               topRight: Radius.circular(30),
             ),
           ),
-          child: Column(
-            children: [
-              ElevatedButton(
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                    width: 130,
+                    height: 5,
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                    color: Color.fromRGBO(117, 117, 117, 100),
+                ),
+                SizedBox(child: Text("질문 선택",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,fontFamily: 'fontnanum'),),),
+                Container(//칸 나누는 줄
+                  margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  color: Colors.black54,
+                  width: sizeX, height: 1,
+                ),
+                ElevatedButton(
+                    onPressed: (){
+                      _showDialog(context);
+                    },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Text("질문 1",style: TextStyle(color: Colors.black,fontSize: 15)),
+                ),
+                ElevatedButton(
                   onPressed: (){
                     _showDialog(context);
                   },
-                style: ElevatedButton.styleFrom(
-                  elevation: 0.0,
-                  backgroundColor: Colors.white,
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Text("질문 2",style: TextStyle(color: Colors.black,fontSize: 15)),
                 ),
-                child: Text("최애 음식",style: TextStyle(color: Colors.black,fontSize: 15)),
-              ),
-              //TextButton(onPressed: onPressed, child: child),
-              //TextButton(onPressed: onPressed, child: child),
-              //TextButton(onPressed: onPressed, child: child),
-              //TextButton(onPressed: onPressed, child: child),
-            ],
+                ElevatedButton(
+                  onPressed: (){
+                    _showDialog(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Text("질문 3",style: TextStyle(color: Colors.black,fontSize: 15)),
+                ),
+                ElevatedButton(
+                  onPressed: (){
+                    _showDialog(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Text("질문 4",style: TextStyle(color: Colors.black,fontSize: 15)),
+                ),
+                ElevatedButton(
+                  onPressed: (){
+                    _showDialog(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Text("질문 5",style: TextStyle(color: Colors.black,fontSize: 15)),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -290,11 +343,21 @@ Future<dynamic> _showDialog(BuildContext context) {
       content: TextField(),
       actions: [
         ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0.0,
+              backgroundColor: Colors.amber,
+                minimumSize: Size(150, 30)
+            ),
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('취소')),
+            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20))),
         ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0.0,
+              backgroundColor: Colors.blue,
+              minimumSize: Size(150, 30)
+            ),
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('확인')),
+            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20))),
       ],
     ),
   );
