@@ -197,7 +197,9 @@ class category extends StatelessWidget {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _showLogoutDialog(context);
+                      },
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
@@ -212,7 +214,9 @@ class category extends StatelessWidget {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _showDialog(context);
+                      },
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
@@ -229,4 +233,75 @@ class category extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<dynamic> _showLogoutDialog(BuildContext context) {
+  final sizeY = MediaQuery.of(context).size.height;
+
+  return showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text(' '),
+      content: SizedBox(
+        height: sizeY*0.05,
+        child: Center(child: Text("정말 로그아웃 하시겠습니까?"))
+      ),
+      actions: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                backgroundColor: Colors.amber,
+                minimumSize: Size(150, 30)
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20))),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                backgroundColor: Colors.blue,
+                minimumSize: Size(150, 30)
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20))),
+      ],
+    ),
+  );
+}
+
+Future<dynamic> _showDialog(BuildContext context) {
+  final sizeY = MediaQuery.of(context).size.height;
+
+  return showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text(' '),
+      content: SizedBox(
+        height: sizeY*0.07,
+        child: Center(
+          child: Text("회원 탈퇴 시, 작성된 일기들은 "
+              "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?"),
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                backgroundColor: Colors.amber,
+                minimumSize: Size(150, 30)
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20))),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                backgroundColor: Colors.blue,
+                minimumSize: Size(150, 30)
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20))),
+      ],
+    ),
+  );
 }

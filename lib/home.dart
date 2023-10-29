@@ -47,11 +47,32 @@ class home extends StatelessWidget {
                               children: [
 
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/1.gif')),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context)=>writediary(emotion: 'smile',)
+                                        )
+                                      );
+                                    }, icon: Image.asset('images/emotion/1.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/2.gif')),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context)=>writediary(emotion: 'flutter',)
+                                          )
+                                      );
+                                    }, icon: Image.asset('images/emotion/2.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/3.gif'))
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context)=>writediary(emotion: 'angry',)
+                                          )
+                                      );
+                                    }, icon: Image.asset('images/emotion/3.gif'))
                               ],
                             ),
                           ), //감정 첫째줄
@@ -60,25 +81,44 @@ class home extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/4.gif')),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context)=>writediary(emotion: 'annoying',)
+                                          )
+                                      );
+                                    }, icon: Image.asset('images/emotion/4.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/5.gif')),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context)=>writediary(emotion: 'tired',)
+                                          )
+                                      );
+                                    }, icon: Image.asset('images/emotion/5.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/6.gif')),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context)=>writediary(emotion: 'sad',)
+                                          )
+                                      );
+                                    }, icon: Image.asset('images/emotion/6.gif')),
                                 IconButton(
-                                    onPressed: () {}, icon: Image.asset('images/emotion/7.gif'))
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context)=>writediary(emotion: 'calmness',)
+                                          )
+                                      );
+                                    }, icon: Image.asset('images/emotion/7.gif'))
                               ],
                             ),
                           ), //감정 둘째줄
-                          Container(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => const writediary()));
-                              },
-                              child: Text("확인"),
-                            ),
-                          ), //확인 버튼
                         ],
                       ),
                     ),
