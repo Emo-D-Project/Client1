@@ -14,7 +14,6 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

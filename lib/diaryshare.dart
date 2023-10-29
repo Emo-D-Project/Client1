@@ -29,9 +29,8 @@ class diaryshare extends StatelessWidget {
                   }).toList(),
                   onChanged: (String? newValue) {},
                   underline: Container(
-                    // 이 부분을 추가해서 드롭박스의 테두리를 설정합니다.
                     height: 2,
-                    color: Colors.brown, // 테두리 선 색을 검정으로 설정
+                    color: Colors.brown,
                   ),
                   dropdownColor: Color(0xFFF8F5EB),
                   // 드롭다운 메뉴의 배경색
@@ -287,7 +286,7 @@ class diaryshare extends StatelessWidget {
                             ),
                             //댓글 숫자
                             Text(
-                              '10', // 좋아요 숫자를 여기에 넣으세요.
+                              '3', //
                               style: TextStyle(fontSize: 12),
                             ),
                           ],
@@ -332,6 +331,7 @@ class diaryshare extends StatelessWidget {
                                   ),
                                 ),
                               ),
+
                               // 쪽지 보내기
                               Container(
                                 child: Container(
@@ -417,13 +417,18 @@ class diaryshare extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                           child: Column(
                             children: [
-                              Icon(Icons.chat_outlined),
+                              GestureDetector(
+                                onTap: () {
+                                  plusDialog(context);
+                                },
+                                child: Icon(Icons.chat_outlined),
+                              ),
                               SizedBox(
                                 width: 9,
                               ),
                               //댓글 숫자
                               Text(
-                                '10', // 좋아요 숫자를 여기에 넣으세요.
+                                '3', //
                                 style: TextStyle(fontSize: 12),
                               ),
                             ],
@@ -441,6 +446,8 @@ class diaryshare extends StatelessWidget {
     );
   }
 }
+
+
 // 댓글 기능 누르면 뜨는 창
 void plusDialog(BuildContext context) {
   final sizeY = MediaQuery.of(context).size.height;
@@ -472,10 +479,13 @@ void plusDialog(BuildContext context) {
                 ),
               ),// 맨위에 회색 줄
 
-              // 댓글창
-              Container(
-                color: Colors.brown,
-                height: 460, //댓글창 컨테이너 크기
+              Expanded(
+                child:
+              ListView(
+                children:[
+                Container(
+                color: Colors.grey,
+                height: 450, //댓글창 컨테이너 크기
                 width: double.infinity, // 가득 차도록 설정
                 child: Column(
                   children: [
@@ -484,7 +494,6 @@ void plusDialog(BuildContext context) {
                       height: 80, // 원하는 높이로 설정
                       width: double.infinity, // 가득 차도록 설정
                       child: Row(
-
                         children: [
                           Container(
                             color: Colors.red, //임시 빨간색
@@ -493,8 +502,7 @@ void plusDialog(BuildContext context) {
                             child: Image.asset('images/emotion/1.gif',fit:BoxFit.contain,),
                           ),
 
-                          Expanded(
-                            child: Column(
+                          Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
@@ -510,13 +518,11 @@ void plusDialog(BuildContext context) {
                                 ),
                               ],
                             ),
-                          ),
                         ],
                       ),
                     ),
                     //댓글2
                     Container(
-
                       height: 80, // 원하는 높이로 설정
                       width: double.infinity, // 가득 차도록 설정
                       child: Row(
@@ -527,7 +533,7 @@ void plusDialog(BuildContext context) {
                             width:  60,
                             child: Image.asset('images/emotion/4.gif',fit:BoxFit.contain,),
                           ),
-                          Expanded(child: Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
@@ -541,12 +547,12 @@ void plusDialog(BuildContext context) {
                                 child: Text(' 하늘 정말 이쁘다 사진 잘 찍는다',textAlign:TextAlign.left,),
                               ),
                             ],
-                          ))
+                          )
                         ],
                       ),
                     ),
 
-                    //댓글 3
+                    //댓글3
                     Container(
                       height: 80, // 원하는 높이로 설정
                       width: double.infinity, // 가득 차도록 설정
@@ -558,7 +564,7 @@ void plusDialog(BuildContext context) {
                             width: 60,
                             child: Image.asset('images/emotion/6.gif',fit:BoxFit.contain,),
                           ),
-                          Expanded(child: Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
@@ -572,13 +578,67 @@ void plusDialog(BuildContext context) {
                                 child: Text(' 아 배고프다..',textAlign:TextAlign.left,),
                               ),
                             ],
-                          ))
+                          )
                         ],
                       ),
                     ),
                   ],
                 ),
+                ),
+                ],
               ),
+              ),
+
+
+              //댓글 달 수 있는 칸
+              Container(
+                height: 70,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 350,
+                     // padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            width: 280,
+                            height: 30,
+                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                            child: Text(
+                              '내용을 입력해주세요',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            margin: EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/send/send.png'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -586,3 +646,5 @@ void plusDialog(BuildContext context) {
     },
   );
 }
+
+

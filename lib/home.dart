@@ -23,6 +23,7 @@ class home extends StatelessWidget {
       ),
       floatingActionButton: Builder(builder: (context) {
         return FloatingActionButton(
+          backgroundColor: Color(0xFFD2C6BC),
           onPressed: () {
             showDialog(
                 context: context,
@@ -36,7 +37,7 @@ class home extends StatelessWidget {
                         children: [
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                            child: Icon(Icons.favorite,size: 50,),
+                            child: Icon(Icons.favorite,size: 40,),
                           ), //냥발바닥
                           Container(
                             child: Text("오늘의 감정을 선택해주세요.",style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
@@ -125,7 +126,7 @@ class home extends StatelessWidget {
                   );
                 });
           },
-          child: Image.asset('images/emotion/8.gif'),
+          child: Image.asset('images/emotion/catimage.png',width: 40,height: 40,),
         );
       }),
     );
