@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' hide TokenManager;
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 
 void main() async {
@@ -22,19 +23,18 @@ class MyLogin extends StatefulWidget {
 }
 
 Future<void> _handleKakaoLogin() async {
-  String tmpKakaoAccessToken = "rAAxmDh64Nk9q5h6ZiZJyfGY0Qr0sX5fZjYKPXPrAAABi4BgqsOxu3fh8M0xkQ";
-  sendTokenToServer(tmpKakaoAccessToken);
 
+  OAuthToken token;
 
-  // try {
-  //   token = await UserApi.instance.loginWithKakaoTalk();
-  //   print('카카오톡으로 로그인 성공 ${token.accessToken}');
-  //
-  //   sendTokenToServer(token.accessToken); // 토큰을 문자열로 전달
-  //
-  // } catch (error) {
-  //   print('카카오톡으로 로그인 실패 $error');
-  // }
+  try {
+     token = await UserApi.instance.loginWithKakaoTalk();
+     print('카카오톡으로 로그인 성공 ${token.accessToken}');
+
+     sendTokenToServer(token.accessToken); // 토큰을 문자열로 전달
+
+   } catch (error) {
+     print('카카오톡으로 로그인 실패 $error');
+   }
 }
 
 
@@ -74,9 +74,28 @@ Future<void> sendTokenToServer(String token) async {
   }
 }
 
+Future<void> login() async {
+  final url = Uri.parse('http://34.64.78.183:8080/test');
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final responseBody = jsonDecode(response.body);
+    print(responseBody); // 처리된 결과 출력 (로그인 성공, 실패 메시지 등)
+  } else {
+    print('Error: ${response.statusCode}');
+  }
+}
 
 class _MyLoginState extends State<MyLogin> {
   var tab = 0;
+
+  late Future<void> user;
+
+  void initState(){
+    super.initState();
+    user = login();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +103,7 @@ class _MyLoginState extends State<MyLogin> {
       backgroundColor: Color(0xFFD1CBC2),
       body: Center(
         child: Container(
+
           height: 355,
           width: 329,
           decoration: BoxDecoration(
@@ -123,8 +143,10 @@ class _MyLoginState extends State<MyLogin> {
                 ),
               ),
               ButtonTheme(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   child: IconButton(
+
                 onPressed: () {
                   _handleKakaoLogin();
                   // Navigator.push(context,
