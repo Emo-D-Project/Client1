@@ -46,6 +46,7 @@ dependencies:
   drift: ^2.3.0
   image_picker: ^1.0.4
   http: ^0.13.4
+  timer_builder: ^2.0.0
 
 
 dev_dependencies:
