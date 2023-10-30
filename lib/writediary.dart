@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:timer_builder/timer_builder.dart';
+import 'package:intl/intl.dart';
+
+final String now = DateTime.now().toString();
+String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 
 class writediary extends StatefulWidget {
   const writediary({super.key, required this.emotion});
@@ -27,6 +32,7 @@ class _writediaryState extends State<writediary> {
     final sizeY = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
@@ -104,37 +110,70 @@ class _writediaryState extends State<writediary> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(), // 날짜
                   Container(
-                    margin: EdgeInsets.all(10),
-                    child: GridView.builder(
-                      padding: EdgeInsets.all(0),
-                      shrinkWrap: true,
-                      itemCount: images.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 1/1,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: FileImage(
-                                File(images[index]!.path),
+                    margin: EdgeInsets.fromLTRB(0, 20, 120, 20),
+                    child: Text(formattedDate, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold,fontFamily: 'fontnanum',),
+                    ),//날짜 변경 해야함
+                  ),// 날짜
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SingleChildScrollView(
+                            child: SizedBox(
+                              width: 200,
+                              height: 150, // 이미지 높이 조절
+                              child: PageView(
+                                scrollDirection: Axis.horizontal, // 수평으로 스크롤
+                                children: <Widget>[
+                                  SizedBox(
+                                    child: Center(
+                                        child:
+                                        Image.asset('images/send/sj3.jpg')),
+                                  ),
+                                  SizedBox(
+                                    child: Center(
+                                        child:
+                                        Image.asset('images/send/sj1.jpg')),
+                                  ),
+                                  SizedBox(
+                                    child: Center(
+                                        child:
+                                        Image.asset('images/send/sj2.jpg')),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        );
-                      },
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            width: 250, height: 20,
+                            color: Colors.black87,
+                          ),//음성
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10, 10,10,10),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: "텍스트 입력받을 위치",
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.green,
+                                    width: 1.0,
+                                  )
+                                )
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ), // 일기
+                  ),//일기 내용
                   Container(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
                           child: IconButton(
@@ -144,7 +183,15 @@ class _writediaryState extends State<writediary> {
                                 images.addAll(multiImage);
                               });
                             },
-                            icon: Icon(Icons.add_a_photo_outlined),
+                            icon: Icon(Icons.add_a_photo_outlined,size: 30),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: IconButton(
+                            onPressed: () {
+                            },
+                            icon: Icon(Icons.mic_none,size: 30,),
                           ),
                         ),
                       ],

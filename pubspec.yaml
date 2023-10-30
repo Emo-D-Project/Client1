@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.18.0
   drift: ^2.3.0
   image_picker: ^1.0.4
+  timer_builder: ^2.0.0
 
 dev_dependencies:
   flutter_test:
