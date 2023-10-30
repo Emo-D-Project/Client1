@@ -8,10 +8,10 @@ import 'login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 
-void main() async {
+/*void main() async {
   await initializeDateFormatting();
   runApp(MaterialApp(theme: style.theme, home: MyApp()));
-}
+}*/
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text(

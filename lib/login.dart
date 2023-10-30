@@ -4,7 +4,6 @@ import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 void main() async {
   await initializeDateFormatting();
   runApp(MaterialApp(theme: style.theme, home: MyLogin()));
@@ -28,7 +27,6 @@ class _MyLoginState extends State<MyLogin> {
         child: Container(
           height: 355,
           width: 329,
-
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -39,28 +37,48 @@ class _MyLoginState extends State<MyLogin> {
               ),
             ],
             color: Color(0xFFEBE9E5),
-             borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Column(
-
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text('EMO:D', style: TextStyle(color: Color(0xFF7D5A50), fontWeight: FontWeight.bold, fontFamily: 'fontnanum', fontSize: 40),),
+                child: Text(
+                  'EMO:D',
+                  style: TextStyle(
+                      color: Color(0xFF7D5A50),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'fontnanum',
+                      fontSize: 40),
+                ),
               ),
-               ElevatedButton(onPressed: (){
-                 Navigator.push(
-                   context,
-                   MaterialPageRoute(builder: (context)=> const home())
-                 );
-               }, child: Image.asset('images/bottom/free-icon-home-1828871.png'),
-                 style: ElevatedButton.styleFrom(fixedSize: Size(200, 30)),
-               ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text(
+                  'SNS로 간편 로그인 하기',
+                  style: TextStyle(
+                      color: Color(0xFF414040),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'fontnanum'),
+                ),
+              ),
+              ButtonTheme(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  child: IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyApp()));
+                },
+                icon: Image.asset(
+                  'images/main/kaka.png',
+                  fit: BoxFit.contain,
+                ),
+                iconSize: 230,
+              ))
             ],
           ),
-
         ),
-
       ),
     );
   }
