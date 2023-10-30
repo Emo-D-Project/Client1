@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 
-class diaryshare extends StatelessWidget {
-  const diaryshare({super.key});
+class diaryshare extends StatefulWidget {
+  diaryshare({Key? key}) : super(key: key);
+
+  @override
+  State<diaryshare> createState() => _diaryshareState();
+}
+
+
+class _diaryshareState extends State<diaryshare> {
+
+  int _likeCount = 0;
+  bool _isLiked = false;
+
+  void _toggleLike() {
+    setState(() {
+      if (_isLiked) {
+        _likeCount -= 1;
+      } else {
+        _likeCount += 1;
+      }
+      _isLiked = !_isLiked;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isLiked = false;
+
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
     return Container(
@@ -21,6 +42,7 @@ class diaryshare extends StatelessWidget {
               children: [
                 DropdownButton<String>(
                   value: '최신순',
+
                   items: <String>['최신순', '오래된순', '추천순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -249,30 +271,31 @@ class diaryshare extends StatelessWidget {
                   ),
 
                   //좋아요,댓글
-                  Container(
-                      child: Row(
+                Container(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      //좋아요
                       Container(
                         padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                         child: Column(
                           children: [
-                            Icon(Icons.favorite_border),
-                            SizedBox(
-                              width: 9,
+                            IconButton(
+                              icon: _isLiked ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border),
+                              onPressed: _toggleLike,
                             ),
-                            // 좋아요 숫자
                             Text(
-                              '10', // 좋아요 숫자를 여기에 넣으세요.
+                              '$_likeCount',
                               style: TextStyle(fontSize: 12),
+
                             ),
                           ],
                         ),
                       ),
+
+
                       //댓글
                       Container(
-                        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        padding: EdgeInsets.fromLTRB(0, 10, 20, 0),
                         child: Column(
                           children: [
                             GestureDetector(
@@ -281,12 +304,10 @@ class diaryshare extends StatelessWidget {
                               },
                               child: Icon(Icons.chat_outlined),
                             ),
-                            SizedBox(
-                              width: 9,
-                            ),
+                            SizedBox(height: 10),
                             //댓글 숫자
                             Text(
-                              '3', //
+                              '6', //
                               style: TextStyle(fontSize: 12),
                             ),
                           ],
@@ -324,7 +345,7 @@ class diaryshare extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image:
-                                            AssetImage('images/emotion/6.gif'),
+                                            AssetImage('images/emotion/1.gif'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -395,26 +416,26 @@ class diaryshare extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        //좋아요
                         Container(
                           padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                           child: Column(
                             children: [
-                              Icon(Icons.favorite_border),
-                              SizedBox(
-                                width: 9,
+                              IconButton(
+                                icon: _isLiked ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border),
+                                onPressed: _toggleLike,
                               ),
-                              // 좋아요 숫자
-                              Text(
-                                '10', // 좋아요 숫자를 여기에 넣으세요.
-                                style: TextStyle(fontSize: 12),
+                              Container(
+                                child: Text(
+                                  '$_likeCount',
+                                  style: TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
                         ),
                         //댓글
                         Container(
-                          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          padding: EdgeInsets.fromLTRB(0, 10, 20, 0),
                           child: Column(
                             children: [
                               GestureDetector(
@@ -423,12 +444,10 @@ class diaryshare extends StatelessWidget {
                                 },
                                 child: Icon(Icons.chat_outlined),
                               ),
-                              SizedBox(
-                                width: 9,
-                              ),
+                              SizedBox(height: 15),
                               //댓글 숫자
                               Text(
-                                '3', //
+                                '6', //
                                 style: TextStyle(fontSize: 12),
                               ),
                             ],
@@ -486,7 +505,6 @@ void plusDialog(BuildContext context) {
                       width: double.infinity,
                       child: Column(
                             children: [
-
                           //댓글 1
                           Container(
                             height: 80,
@@ -728,54 +746,59 @@ void plusDialog(BuildContext context) {
               ),
 
               //댓글 달 수 있는 칸
-              Container(
-                height: 70,
-                width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              SingleChildScrollView(
+                child: Column(
                   children: [
                     Container(
-                      height: 40,
-                      width: 350,
-                      // padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
+                      height: 70,
+                      width: double.infinity,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 280,
-                            height: 30,
-                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                            child: Text(
-                              '내용을 입력해주세요',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            margin: EdgeInsets.only(right: 10),
+                            height: 40,
+                            width: 350,
+                            // padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                             decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('images/send/send.png'),
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1.0,
                               ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  width: 280,
+                                  height: 30,
+                                  padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                  child: TextField(
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 30,
+                                  width: 30,
+                                  margin: EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('images/send/send.png'),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
