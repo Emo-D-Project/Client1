@@ -23,10 +23,10 @@ class MyLogin extends StatefulWidget {
 }
 
 Future<void> _handleKakaoLogin() async {
+  String tmpKakaoAccessToken = "rAAxmDh64Nk9q5h6ZiZJyfGY0Qr0sX5fZjYKPXPrAAABi4BgqsOxu3fh8M0xkQ";
+  sendTokenToServer(tmpKakaoAccessToken);
 
-  OAuthToken token;
-
-  try {
+ /* try {
      token = await UserApi.instance.loginWithKakaoTalk();
      print('카카오톡으로 로그인 성공 ${token.accessToken}');
 
@@ -34,7 +34,7 @@ Future<void> _handleKakaoLogin() async {
 
    } catch (error) {
      print('카카오톡으로 로그인 실패 $error');
-   }
+   }*/
 }
 
 
@@ -148,7 +148,7 @@ class _MyLoginState extends State<MyLogin> {
                   child: IconButton(
 
                 onPressed: () {
-                  _handleKakaoLogin();
+                  login();
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => MyApp()));
                 },
