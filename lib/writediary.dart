@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_sound/flutter_sound.dart' as sound;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 final String now = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -25,7 +28,99 @@ List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
 class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
+  //녹음에 필요한 것들
+  final recorder = sound.FlutterSoundRecorder();
+  bool isRecorderReady = false;
 
+  //재생에 필요한 것들
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  @override
+  void initState(){
+    super.initState();
+
+    setAudio();
+
+    initRecorder();
+
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == (PlayerState.playing);
+      });
+    });
+
+    audioPlayer.onDurationChanged.listen((newDuration){
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    audioPlayer.onPositionChanged.listen((newPosition){
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
+  Future setAudio() async{
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+    String url = ' ';
+    audioPlayer.setSourceUrl(url);
+  }
+  @override
+  void dispose(){
+    recorder.closeRecorder();
+    audioPlayer.dispose();
+
+    super.dispose();
+  }
+
+  Future initRecorder() async{
+    final status = await Permission.microphone.request();
+
+    if(status != PermissionStatus.granted){
+      throw 'Microphone permission not granted';
+    }
+
+    await recorder.openRecorder();
+    isRecorderReady = true;
+
+    recorder.setSubscriptionDuration(
+      const Duration(milliseconds: 500),
+    );
+  }
+
+  Future record() async{
+    if(!isRecorderReady) return;
+    await recorder.startRecorder(toFile: 'audio');
+  }
+
+  Future stop() async {
+    if(!isRecorderReady) return;
+
+    final path = await recorder.stopRecorder();
+    final audioFile = File(path!);
+
+    print('Recorded audio: $audioFile');
+  }
+
+
+  String formatTime(Duration duration){
+    String twoDigits(int n) => n.toString().padLeft(2,'0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inMinutes.remainder(60));
+
+    return [
+      if(duration.inHours >0) hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -148,10 +243,52 @@ class _writediaryState extends State<writediary> {
                               ),
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            width: 250, height: 20,
-                            color: Colors.black87,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 20,backgroundColor: Colors.transparent,
+                                child: IconButton(
+                                  icon: Icon(
+                                    isPlaying ? Icons.pause : Icons.play_arrow,
+                                  ),
+                                  iconSize: 20,
+                                  onPressed: () async {
+                                    if(isPlaying){
+                                      await audioPlayer.pause();
+                                    }else{
+                                      await audioPlayer.resume();
+                                    }
+                                  },
+                                ),
+                              ),
+                            Column(
+                              children: [
+                                Slider(
+                                  min: 0,
+                                  max: duration.inSeconds.toDouble(),
+                                  value: position.inSeconds.toDouble(),
+                                  onChanged: (value) async {
+                                    final position = Duration(seconds: value.toInt());
+                                    await audioPlayer.seek(position);
+
+                                    await audioPlayer.resume();
+                                  },
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(formatTime(position)),
+                                      SizedBox(width: 20,),
+                                      Text(formatTime(duration-position)),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                              ]
                           ),//음성
                           Container(
                             margin: EdgeInsets.fromLTRB(10, 10,10,10),
@@ -172,10 +309,11 @@ class _writediaryState extends State<writediary> {
                     ),
                   ),//일기 내용
                   Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 3, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
+                        SizedBox(
                           child: IconButton(
                             onPressed: () async {
                               multiImage = await picker.pickMultiImage();
@@ -186,13 +324,58 @@ class _writediaryState extends State<writediary> {
                             icon: Icon(Icons.add_a_photo_outlined,size: 30),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: IconButton(
-                            onPressed: () {
-                            },
-                            icon: Icon(Icons.mic_none,size: 30,),
-                          ),
+                        Column(
+                          children: [
+                            /*StreamBuilder<sound.RecordingDisposition>(
+                                stream: recorder.onProgress,
+                                builder: (context,snapshot) {
+                                  final duration = snapshot.hasData
+                                      ? snapshot.data!.duration
+                                      : Duration.zero;
+                                  
+                                  String twoDigits(int n) => n.toString().padLeft(10);
+                                  final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+                                  final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+
+                                  return Text('$twoDigitMinutes:$twoDigitSeconds',style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),);
+                                },
+                            ),
+                            const SizedBox(height: 5),*/
+                            /*SizedBox(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0.0,
+                                  backgroundColor: Colors.red,
+                                  minimumSize: Size(20, 30)
+                                ),
+                                child: Icon(recorder.isRecording ? Icons.stop : Icons.mic,size: 30,color: Colors.black,),
+                                onPressed: ()async{
+                                  if(recorder.isRecording){
+                                    await stop();
+                                  }else{
+                                    await record();
+                                  }
+
+                                  setState(() {
+
+                                  });
+                                },
+                              ),
+                            ),*/
+                            SizedBox(
+                              child: IconButton(
+                                onPressed: ()async{
+                                  if(recorder.isRecording){
+                                    await stop();
+                                  }else{
+                                    await record();
+                                  }
+                                  setState(() {
+                                  });
+                                }, icon: Icon(recorder.isRecording ? Icons.stop : Icons.mic,size: 30,color: Colors.black,),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
