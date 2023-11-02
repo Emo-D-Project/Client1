@@ -7,11 +7,10 @@ class diaryshare extends StatefulWidget {
   State<diaryshare> createState() => _diaryshareState();
 }
 
-
 class _diaryshareState extends State<diaryshare> {
-
   int _likeCount = 0;
   bool _isLiked = false;
+  String selectedImagePath = 'images/emotion/1.gif'; // 기본값으로 초기화합니다.
 
   void _toggleLike() {
     setState(() {
@@ -26,7 +25,6 @@ class _diaryshareState extends State<diaryshare> {
 
   @override
   Widget build(BuildContext context) {
-
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
     return Container(
@@ -42,7 +40,6 @@ class _diaryshareState extends State<diaryshare> {
               children: [
                 DropdownButton<String>(
                   value: '최신순',
-
                   items: <String>['최신순', '오래된순', '추천순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -70,88 +67,141 @@ class _diaryshareState extends State<diaryshare> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/1.gif'),
-                      fit: BoxFit.contain,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/1.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/1.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/2.gif'),
-                      fit: BoxFit.contain,
+
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/2.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/2.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/3.gif'),
-                      fit: BoxFit.cover,
+
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/3.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/3.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/4.gif'),
-                      fit: BoxFit.contain,
+
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/4.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/4.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    //    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/5.gif'),
-                      fit: BoxFit.contain,
+
+
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/5.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/5.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/6.gif'),
-                      fit: BoxFit.contain,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/6.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/6.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/emotion/7.gif'),
-                      fit: BoxFit.contain,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedImagePath = 'images/emotion/7.gif';
+                    });
+                  },
+                  child: Container(
+                    width: 37,
+                    height: 37,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/emotion/7.gif'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -190,16 +240,21 @@ class _diaryshareState extends State<diaryshare> {
                               Expanded(
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
-                                    margin: EdgeInsets.only(left: 35),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image:
-                                            AssetImage('images/emotion/1.gif'),
-                                        fit: BoxFit.contain,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 35,
+                                      height: 35,
+                                      //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
+                                      margin: EdgeInsets.only(left: 35),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              selectedImagePath),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -271,27 +326,28 @@ class _diaryshareState extends State<diaryshare> {
                   ),
 
                   //좋아요,댓글
-                Container(
-                  child: Row(
+                  Container(
+                      child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
                         padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                         child: Column(
                           children: [
+
                             IconButton(
-                              icon: _isLiked ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border),
+                              icon: _isLiked
+                                  ? Icon(Icons.favorite, color: Colors.red)
+                                  : Icon(Icons.favorite_border),
                               onPressed: _toggleLike,
                             ),
                             Text(
                               '$_likeCount',
                               style: TextStyle(fontSize: 12),
-
                             ),
                           ],
                         ),
                       ),
-
 
                       //댓글
                       Container(
@@ -337,16 +393,21 @@ class _diaryshareState extends State<diaryshare> {
                               Expanded(
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Container(
-                                    width: 33,
-                                    height: 33,
-                                    //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
-                                    margin: EdgeInsets.only(left: 35),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image:
-                                            AssetImage('images/emotion/1.gif'),
-                                        fit: BoxFit.contain,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 35,
+                                      height: 35,
+                                      //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
+                                      margin: EdgeInsets.only(left: 35),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              selectedImagePath),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -421,7 +482,9 @@ class _diaryshareState extends State<diaryshare> {
                           child: Column(
                             children: [
                               IconButton(
-                                icon: _isLiked ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border),
+                                icon: _isLiked
+                                    ? Icon(Icons.favorite, color: Colors.red)
+                                    : Icon(Icons.favorite_border),
                                 onPressed: _toggleLike,
                               ),
                               Container(
@@ -486,6 +549,7 @@ void plusDialog(BuildContext context) {
               topRight: Radius.circular(30),
             ),
           ),
+
           child: Column(
             children: [
               Center(
@@ -500,248 +564,248 @@ void plusDialog(BuildContext context) {
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                            children: [
-                          //댓글 1
-                          Container(
-                            height: 80,
-                            width: double.infinity,
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 60,
-                                  width: 60,
-                                  padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
-                                  child: Image.asset(
-                                    'images/emotion/1.gif',
-                                    fit: BoxFit.contain,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            //댓글 1
+                            Container(
+                              height: 80,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    padding: EdgeInsets.fromLTRB(7, 0, 7, 25),
+                                    child: Image.asset(
+                                      'images/emotion/1.gif',
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 25,
-                                      child: Text(
-                                        ' 삼냥이 1',
-                                        textAlign: TextAlign.left,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        child: Text(
+                                          ' 삼냥이 1',
+                                          textAlign: TextAlign.left,
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-
-                                      height: 55,
-                                      child: Text(
-                                        ' 우와 라멘 맛있겠다 저기는 어디야?',
-                                        textAlign: TextAlign.left,
+                                      Container(
+                                        height: 55,
+                                        child: Text(
+                                          ' 우와 라멘 맛있겠다 저기는 어디야?',
+                                          textAlign: TextAlign.left,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
 
-                              //댓글 2
-                              Container(
-                                height: 80,
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
-                                      child: Image.asset(
-                                        'images/emotion/1.gif',
-                                        fit: BoxFit.contain,
+                            //댓글 2
+                            Container(
+                              height: 80,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    padding: EdgeInsets.fromLTRB(7, 0, 7, 25),
+                                    child: Image.asset(
+                                      'images/emotion/1.gif',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        child: Text(
+                                          ' 삼냥이 2',
+                                          textAlign: TextAlign.left,
+                                        ),
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 25,
-                                          child: Text(
-                                            ' 삼냥이 2',
-                                            textAlign: TextAlign.left,
-                                          ),
+                                      Container(
+                                        height: 55,
+                                        child: Text(
+                                          '오늘 아주 행복했겠구나',
+                                          textAlign: TextAlign.left,
                                         ),
-                                        Container(
-
-                                          height: 55,
-                                          child: Text(
-                                            '오늘 아주 행복했겠구나',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //댓글 3
-                              Container(
-                                height: 80,
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
-                                      child: Image.asset(
-                                        'images/emotion/7.gif',
-                                        fit: BoxFit.contain,
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 25,
-                                          child: Text(
-                                            ' 삼냥이 3',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                        Container(
-
-                                          height: 55,
-                                          child: Text(
-                                            ' 난 오늘 일한다고 하늘을 한번도 못봤어',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                ],
                               ),
-
-                              //댓글 4
-                              Container(
-                                height: 80,
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
-                                      child: Image.asset(
-                                        'images/emotion/5.gif',
-                                        fit: BoxFit.contain,
+                            ),
+                            //댓글 3
+                            Container(
+                              height: 80,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    padding: EdgeInsets.fromLTRB(7, 0, 7, 25),
+                                    child: Image.asset(
+                                      'images/emotion/7.gif',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        child: Text(
+                                          ' 삼냥이 3',
+                                          textAlign: TextAlign.left,
+                                        ),
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 25,
-                                          child: Text(
-                                            ' 삼냥이 4',
-                                            textAlign: TextAlign.left,
-                                          ),
+                                      Container(
+                                        height: 55,
+                                        child: Text(
+                                          ' 난 오늘 일한다고 하늘을 한번도 못봤어',
+                                          textAlign: TextAlign.left,
                                         ),
-                                        Container(
-                                          height: 55,
-                                          child: Text(
-                                            ' 하늘 정말 이쁘당 사진 잘 찍는다..',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              //댓글 5
-                              Container(
-                                height: 80,
-                                width: double.infinity, // 가득 차도록 설정
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
-                                      child: Image.asset(
-                                        'images/emotion/6.gif',
-                                        fit: BoxFit.contain,
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 25,
-                                          child: Text(
-                                            ' 삼냥이 5',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                        Container(
-
-                                          height: 55,
-                                          child: Text(
-                                            ' 아 배고파',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                ],
                               ),
+                            ),
 
-                              //댓글 6
-                              Container(
-                                height: 80,
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding: EdgeInsets.fromLTRB(7, 0, 7 , 25),
-                                      child: Image.asset(
-                                        'images/emotion/4.gif',
-                                        fit: BoxFit.contain,
+                            //댓글 4
+                            Container(
+                              height: 80,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    padding: EdgeInsets.fromLTRB(7, 0, 7, 25),
+                                    child: Image.asset(
+                                      'images/emotion/5.gif',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        child: Text(
+                                          ' 삼냥이 4',
+                                          textAlign: TextAlign.left,
+                                        ),
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 25,
-                                          child: Text(
-                                            ' 삼냥이 6',
-                                            textAlign: TextAlign.left,
-                                          ),
+                                      Container(
+                                        height: 55,
+                                        child: Text(
+                                          ' 하늘 정말 이쁘당 사진 잘 찍는다..',
+                                          textAlign: TextAlign.left,
                                         ),
-                                        Container(
-
-                                          height: 55,
-                                          child: Text(
-                                            ' 나도 한식 잘 먹는데',
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
+                            ),
 
-                        ],
+                            //댓글 5
+                            Container(
+                              height: 80,
+                              width: double.infinity, // 가득 차도록 설정
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    padding: EdgeInsets.fromLTRB(7, 0, 7, 25),
+                                    child: Image.asset(
+                                      'images/emotion/6.gif',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        child: Text(
+                                          ' 삼냥이 5',
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 55,
+                                        child: Text(
+                                          ' 아 배고파',
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //댓글 6
+                            Container(
+                              height: 80,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    padding: EdgeInsets.fromLTRB(7, 0, 7, 25),
+                                    child: Image.asset(
+                                      'images/emotion/4.gif',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        child: Text(
+                                          ' 삼냥이 6',
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 55,
+                                        child: Text(
+                                          ' 나도 한식 잘 먹는데',
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                          ),
-                        ],
-                      ),
+                    ],
+                  ),
                 ),
               ),
 
