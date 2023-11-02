@@ -535,21 +535,23 @@ void plusDialog(BuildContext context) {
 
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true,
+    isScrollControlled: true, // 키보드가 나타날 때 텍스트 필드가 상단으로 이동
     builder: (BuildContext context) {
-      //흰색 창
-      return Container(
-        height: sizeY * 0.8,
-        color: Color(0xFF737373),
+      return SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-          ),
 
+          //키보드가 나타날 때 텍스트 필드가 상단으로 이동
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          height: sizeY * 0.8,
+          color: Color(0xFF737373),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
           child: Column(
             children: [
               Center(
@@ -822,7 +824,6 @@ void plusDialog(BuildContext context) {
                           Container(
                             height: 40,
                             width: 350,
-                            // padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.black,
@@ -836,11 +837,16 @@ void plusDialog(BuildContext context) {
                                 Container(
                                   width: 280,
                                   height: 30,
-                                  padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                  padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                                   child: TextField(
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: '내용을 입력해주세요', // 힌트 텍스트 추가
+                                      hintStyle: TextStyle(color: Colors.grey),
                                     ),
                                   ),
                                 ),
@@ -864,6 +870,7 @@ void plusDialog(BuildContext context) {
                 ),
               ),
             ],
+          ),
           ),
         ),
       );
