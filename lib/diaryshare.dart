@@ -10,6 +10,7 @@ class diaryshare extends StatefulWidget {
 class _diaryshareState extends State<diaryshare> {
   int _likeCount = 0;
   bool _isLiked = false;
+  String selectedValue = '최신순';
   String selectedImagePath = 'images/emotion/1.gif'; // 기본값으로 초기화합니다.
 
   void _toggleLike() {
@@ -39,23 +40,25 @@ class _diaryshareState extends State<diaryshare> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 DropdownButton<String>(
-                  value: '최신순',
+                  value: selectedValue, // 현재 선택된 값
                   items: <String>['최신순', '오래된순', '추천순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
                   }).toList(),
-                  onChanged: (String? newValue) {},
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedValue = value!; // 선택된 값 업데이트
+                    });
+                  },
                   underline: Container(
                     height: 2,
                     color: Colors.brown,
                   ),
                   dropdownColor: Color(0xFFF8F5EB),
-                  // 드롭다운 메뉴의 배경색
                   icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
-                  // 드롭다운 화살표 아이콘 색상
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.black),
                 ),
                 SizedBox(width: 25),
               ],
@@ -334,7 +337,6 @@ class _diaryshareState extends State<diaryshare> {
                         padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                         child: Column(
                           children: [
-
                             IconButton(
                               icon: _isLiked
                                   ? Icon(Icons.favorite, color: Colors.red)
