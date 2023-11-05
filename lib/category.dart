@@ -17,7 +17,7 @@ class category extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
-        title: Text("EMO:D",
+        title: Text("CATEGORY",
           style: TextStyle(fontWeight:FontWeight.bold,fontFamily: 'fontnanum',color: Color(0xFF968C83),),
         ),
         leading: IconButton(
