@@ -48,7 +48,7 @@ class statistics extends StatelessWidget {
                                   builder: (context) => monthlyStatistics()));
                         },
                         icon: Image.asset(
-                          'images/emotion/pinkcatimage.png',
+                          'images/emotion/catimage.png',
                         )),
                   ),
                   Text("이달의 감정")
@@ -73,7 +73,7 @@ class statistics extends StatelessWidget {
                                     builder: (context) => gatherEmotion()));
                           },
                           icon: Image.asset(
-                            'images/emotion/pinkcatimage.png',
+                            'images/emotion/catimage.png',
                           )),
                     ),
                     Text("감정 모아보기")
@@ -97,7 +97,7 @@ class statistics extends StatelessWidget {
                                   builder: (context) => fullStatistics()));
                         },
                         icon: Image.asset(
-                          'images/emotion/pinkcatimage.png',
+                          'images/emotion/catimage.png',
                         )),
                   ),
                   Text("감정 누적")

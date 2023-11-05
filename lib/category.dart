@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'mypage.dart';
 import 'alramsetting.dart';
+import 'diaryReplay.dart';
 
 class category extends StatelessWidget {
   const category({super.key});
@@ -181,7 +182,10 @@ class category extends StatelessWidget {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => diaryReplay(date: '20230725')));
+                      },
                       child: Row(
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),

@@ -293,11 +293,11 @@ class _writediaryState extends State<writediary> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10, 10,10,10),
                             child: TextField(
+                              maxLines: 10,
                               decoration: InputDecoration(
-                                hintText: "텍스트 입력받을 위치",
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                    color: Colors.green,
+                                    color: Colors.transparent,
                                     width: 1.0,
                                   )
                                 )
