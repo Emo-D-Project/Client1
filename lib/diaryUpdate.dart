@@ -9,22 +9,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
 
-class diaryReplay extends StatefulWidget {
-  const diaryReplay({super.key, required this.date});
+class diaryUpdate extends StatefulWidget {
+  const diaryUpdate({super.key, required this.date});
 
   final String date;
   final String emotion = "smile";
 
   @override
-  State<diaryReplay> createState() => _writediaryState();
+  State<diaryUpdate> createState() => _diaryUpdateState();
 }
 
-/*
-final picker = ImagePicker();
-List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
-List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
-*/
-class _writediaryState extends State<diaryReplay> {
+class _diaryUpdateState extends State<diaryUpdate> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
@@ -146,6 +141,7 @@ class _writediaryState extends State<diaryReplay> {
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.upload))],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -164,26 +160,16 @@ class _writediaryState extends State<diaryReplay> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '     ${widget.date}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => diaryUpdate(date: '20230725')));
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              size: 30,
-                            )),
-                      ]), //날짜
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0,11,250,10),
+                    child: Text(
+                      '     ${widget.date}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ), //날짜
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
