@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'statistics.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class fullStatistics extends StatefulWidget {
   const fullStatistics({super.key});
@@ -83,15 +84,16 @@ class _fullStatisticsState extends State<fullStatistics> {
                       padding: const EdgeInsets.all(8.0),
                       margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFFD2C6BC),
+                        //color: Color(0xFFD2C6BC),
                         borderRadius: BorderRadius.circular(15),
+
                       ),
                       child: Column(
                         children: [
                           Container(
-                            width: 370,
+                            width: 380,
                             height: 300,
-                            color: Colors.blue,
+                            color: Color(0xFFE1DED6),
                             margin: const EdgeInsets.all(8.0),
                           ),
 
@@ -100,8 +102,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                    width: 37,
-                                    height: 37,
+                                    width: 35,
+                                    height: 35,
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
@@ -112,8 +114,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     ),
                                   ),
                                 Container(
-                                    width: 37,
-                                    height: 37,
+                                    width: 35,
+                                    height: 35,
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
@@ -126,8 +128,8 @@ class _fullStatisticsState extends State<fullStatistics> {
 
 
                                  Container(
-                                    width: 37,
-                                    height: 37,
+                                    width: 35,
+                                    height: 35,
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
                                     decoration: BoxDecoration(
@@ -153,8 +155,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                   ),
 
                             Container(
-                                    width: 37,
-                                    height: 37,
+                                    width: 35,
+                                    height: 35,
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
@@ -166,8 +168,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                   ),
 
                                Container(
-                                    width: 37,
-                                    height: 37,
+                                    width: 35,
+                                    height: 35,
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
@@ -180,8 +182,8 @@ class _fullStatisticsState extends State<fullStatistics> {
 
 
                               Container(
-                                    width: 37,
-                                    height: 37,
+                                    width: 35,
+                                    height: 35,
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
@@ -208,7 +210,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                         padding: const EdgeInsets.all(8.0),
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                        color: Color(0xFFD2C6BC),
+                          color: Color(0xFFE1DED6),
                           borderRadius: BorderRadius.circular(
                               15),
                         ),
@@ -260,7 +262,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                         padding: const EdgeInsets.all(8.0),
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          color: Color(0xFFD2C6BC),
+                          color: Color(0xFFDAD4CC),
                           borderRadius: BorderRadius.circular(
                               15),
                         ),
@@ -303,7 +305,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                         padding: const EdgeInsets.all(8.0),
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          color: Color(0xFFD2C6BC),
+                          color: Color(0xFFDACFC4),
                           borderRadius: BorderRadius.circular(
                               15),
                         ),
@@ -344,11 +346,11 @@ class _fullStatisticsState extends State<fullStatistics> {
                     // 가장 많이 공감 받은 일기
                     Container(
                       width: 380,
-                      height: 100,
+                      height: 500,
                       padding: const EdgeInsets.all(8.0),
                       margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey,
+                        color: Color(0xFFD7D4CC),
                         borderRadius: BorderRadius.circular(
                             15),
                       ),
