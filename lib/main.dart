@@ -7,6 +7,7 @@ import 'home.dart';
 import 'login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
+import 'alrampage.dart';
 
 void main() async {
   await initializeDateFormatting();
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
           IconButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const category()));
+                  MaterialPageRoute(builder: (context) => alrampage()));
             },
             icon: Image.asset(
               'images/bottom/free-icon-alarm-bell-2088595.png',

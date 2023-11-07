@@ -10,6 +10,11 @@ class fullStatistics extends StatefulWidget {
 }
 
 class _fullStatisticsState extends State<fullStatistics> {
+  
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,34 +38,17 @@ class _fullStatisticsState extends State<fullStatistics> {
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(5),
+        //.    padding: EdgeInsets.all(5),
             child: Column(
               children: [
                 Container(
-                    width: double.infinity,
-                    child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.brown,
-                                fontWeight: FontWeight.w900),
-                            children: [
-                              TextSpan(text: '2023.',), //년도
-                              TextSpan(text: '7.'), //달
-                              TextSpan(text: '25 '), //일
-                              TextSpan(text: '부터'),
-                            ]))
-                ),
-                Container(
-
                     width: 300,
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                     child: RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 19,
                                 color: Colors.brown,
                                 fontWeight: FontWeight.w900),
                             children: [
@@ -75,135 +63,153 @@ class _fullStatisticsState extends State<fullStatistics> {
           Expanded(
             child: SingleChildScrollView(
               child: Container(
+                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
                 width: double.infinity,
                 child: Column(
                   // 감정 그래프
                   children: [
-                    Container(
-                      width: 380,
-                      padding: const EdgeInsets.all(8.0),
-                      margin: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        //color: Color(0xFFD2C6BC),
-                        borderRadius: BorderRadius.circular(15),
+                    DottedBorder(
+                      borderType: BorderType.RRect,
+                      color: Color(0xFF745A52),
+                      strokeWidth: 2,
+                      radius: Radius.circular(20),
+                      dashPattern: [13, 13],
+                      child: Container(
+                        width: 380,
+                        //padding: const EdgeInsets.all(8.0),
+                        //margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          //color: Color(0xFFD2C6BC),
+                          //borderRadius: BorderRadius.circular(15),
 
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 380,
-                            height: 300,
-                            color: Color(0xFFE1DED6),
-                            margin: const EdgeInsets.all(8.0),
-                          ),
+                        ),
 
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/1.gif'),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/2.gif'),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-
-
-                                 Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/3.gif'),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-
-
+                        //감정 그래프 (기둥같은거..)
+                        child: Column(
+                          children: [
                             Container(
-                                    width: 37,
-                                    height: 37,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/4.gif'),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
+                              width: 380,
+                              height: 230,
+                              color: Color(0xFFE1DED6),
+                              margin: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
 
+                                ],
+                              ),
+                            ),
+
+                            //감정 이모션 사진
                             Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/5.gif'),
-                                        fit: BoxFit.contain,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 35,
+                                      height: 35,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/1.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  Container(
+                                      width: 35,
+                                      height: 35,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/2.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
 
-                               Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/6.gif'),
-                                        fit: BoxFit.contain,
+
+                                   Container(
+                                      width: 35,
+                                      height: 35,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/3.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
-                                  ),
 
 
                               Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/emotion/7.gif'),
-                                        fit: BoxFit.contain,
+                                      width: 37,
+                                      height: 37,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/4.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
 
+                              Container(
+                                      width: 35,
+                                      height: 35,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/5.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+
+                                 Container(
+                                      width: 35,
+                                      height: 35,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/6.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+
+
+                                Container(
+                                      width: 35,
+                                      height: 35,
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/emotion/7.gif'),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+
+                                ),
+                              //color: Color.fromRGBO(248, 245, 235, 100),
+                                ],
                               ),
-                            //color: Color.fromRGBO(248, 245, 235, 100),
-                              ],
-                            ),
-                          ), // 이 부분이 누락되어 있었습니다. 추가했습니다.
-                        ],
+                            ), // 이 부분이 누락되어 있었습니다. 추가했습니다.
+                          ],
+                        ),
                       ),
                     ),
+                    SizedBox(height: 8,),
 
 
-              // 작성된 일기 수
+                    // 작성된 일기 수
                     Container(
                         width: 380,
                         height: 100,
