@@ -16,10 +16,6 @@ class _mypageState extends State<mypage> {
   //String another = "another";
 
 
-  TokenManager tokenManager = TokenManager();
-  //tokenManager.getServerToken(kakaoToken);
-
-
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;

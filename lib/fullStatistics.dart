@@ -11,7 +11,6 @@ class fullStatistics extends StatefulWidget {
 }
 
 class _fullStatisticsState extends State<fullStatistics> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
