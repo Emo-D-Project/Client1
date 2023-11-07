@@ -25,7 +25,36 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
           icon: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: Text("달별 감정 통계-해진"),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(10),
+        itemCount: 10,
+        itemBuilder: (BuildContext context, int index){
+          return Container(
+
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10)),
+              color: Colors.white,
+            ),
+            child: ExpansionTile(title: Text("2023년 10월의 감정 통지서", style: TextStyle(fontFamily: "nanum", fontSize: 25,color: Color(0xFF968C83),),),
+              initiallyExpanded: false,
+              //backgroundColor: Colors.white,
+              children: <Widget>[
+                Container(height: 50, child: Padding(padding: EdgeInsets.all(5),
+                  child: Row(
+                    children: [
+                      SizedBox(child: Text('hi'))
+                    ],
+                  ),
+                ),
+                ),
+              ],
+            ),
+          );
+        }, separatorBuilder: (BuildContext context, int index) => Divider(
+        height: 10,
+        color: Colors.white,
+      ),
+          ),
     );
   }
 }
