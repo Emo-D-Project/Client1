@@ -36,6 +36,7 @@ class alrampage extends StatelessWidget {
             ),
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(), // 스와이프 비활성화
             children: [
               FirstScreen(),
               SecondScreen(),
@@ -87,6 +88,8 @@ class FirstScreen extends StatelessWidget {
 }
 
 class SecondScreen extends StatelessWidget {
+
+  final name = '삼냥이';
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -123,7 +126,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 1',
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -178,7 +181,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 2',
+                                     name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -193,10 +196,7 @@ class SecondScreen extends StatelessWidget {
                                     child: Text(
                                       '우와 나 라멘 진짜 좋아하는데!! 저기 맛있겠다 저기는 어디야?'
                                           '하.. 갑자기 또 라멘 먹고싶네'
-                                          ' 일본 갔다올게'
-                                          'ㅇㅇㅇㅇㅇㅇ'
-                                          'ㅇㅇㅇㅇ'
-                                          'ㅇㅇㅇㅇㅇ',
+                                          ,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 13),
                                       overflow: TextOverflow.ellipsis,
@@ -236,7 +236,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 3',
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -287,7 +287,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 4',
+                                     name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -340,7 +340,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 5',
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -391,7 +391,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 6',
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -442,7 +442,7 @@ class SecondScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '삼냥이 7',
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
