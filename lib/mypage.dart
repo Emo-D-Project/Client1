@@ -1,5 +1,7 @@
+import 'package:capston1/tokenManager.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
+import 'tokenManager.dart';
 
 class mypage extends StatefulWidget {
   const mypage({super.key});
@@ -12,6 +14,9 @@ class _mypageState extends State<mypage> {
   String login = "mine"; // 내 로그인 정보 담아두고
   String mine = "mine";  // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
   //String another = "another";
+
+  TokenManager tokenManager = TokenManager();
+  tokenManager.getServerToken(kakaoToken);
 
   @override
   Widget build(BuildContext context) {
