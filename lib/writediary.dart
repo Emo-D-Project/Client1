@@ -1,4 +1,5 @@
 import 'package:capston1/main.dart';
+import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
@@ -19,6 +20,7 @@ class writediary extends StatefulWidget {
 
   @override
   State<writediary> createState() => _writediaryState();
+
 }
 
 final picker = ImagePicker();
@@ -26,6 +28,58 @@ List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택�
 List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
 
 class _writediaryState extends State<writediary> {
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  late String title;
+  late String content;
+
+
+  Future<void> GetExample(String endpoint) async {
+
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+
+      // 요청 응답 받기
+      final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+
+      title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  // onpress():
+  //      PostExample("/api/message");
+  //
+  // 다른버튼 onperss():
+  //       PostExample("api/title");
+
+  Future<void> PostExample(String endpoint) async {
+    ApiManager apiManager = ApiManager().getApiManager();
+
+    try {
+      final postData = { // 보낼 데이터 (BODY에 들어감)
+        'title': title,
+        'content': content,
+        // 'like' : like,
+      };
+
+      final response = await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+
+      // 응답
+      final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+
+      title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+
+// ------------
   bool _isChecked = false;
   bool _isCheckedShare = false;
   //녹음에 필요한 것들

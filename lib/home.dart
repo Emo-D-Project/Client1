@@ -52,7 +52,6 @@ class home extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
