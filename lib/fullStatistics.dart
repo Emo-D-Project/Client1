@@ -86,23 +86,23 @@ class _fullStatisticsState extends State<fullStatistics> {
                             Container(
                               width: 380,
                               height: 230,
+                              padding: EdgeInsets.fromLTRB(0,20,0,0),
                               color: Color(0xFFE1DED6),
                               margin: const EdgeInsets.all(8.0),
                               child: Center(
                                 child: CustomPaint(
-                                  size: Size(300, 300),
+                                  size: Size(400, 400),
                                   foregroundPainter: BarChart(
-                                    data: <double>[105, 55, 99, 150, 300, 500, 120, 1000, 1800],
+                                    data: <double>[200, 190, 150, 80, 50, 40, 5],
                                     labels: <String>[
-                                      '2013',
-                                      '2014',
+                                      '200',
+                                      '190',
                                       '2015',
                                       '2016',
                                       '2017',
                                       '2018',
                                       '2019',
-                                      '2020',
-                                      '2021'
+
                                     ],
                                     color: Colors.deepOrange,
                                   ),
@@ -447,9 +447,9 @@ class BarChart extends CustomPainter {
     List<Offset> coordinates = getCoordinates(size);
 
     drawBar(canvas, size, coordinates);
-    drawXLabels(canvas, size, coordinates);
-    drawYLabels(canvas, size, coordinates);
-    drawLines(canvas, size, coordinates);
+    //drawXLabels(canvas, size, coordinates);
+    // drawYLabels(canvas, size, coordinates);
+    // drawLines(canvas, size, coordinates);
   }
 
   @override
@@ -458,10 +458,11 @@ class BarChart extends CustomPainter {
   }
 
   void setTextPadding(Size size) {
+
     // 세로 크기의 1/10만큼 텍스트 패딩
-    bottomPadding = size.height / 10;
+    bottomPadding = size.height / 30;
     // 가로 길이 1/10만큼 텍스트 패딩
-    leftPadding = size.width / 10;
+    leftPadding = size.width / 30;
   }
 
   void drawBar(Canvas canvas, Size size, List<Offset> coordinates) {
@@ -488,110 +489,110 @@ class BarChart extends CustomPainter {
   }
 
   // x축 텍스트(레이블)를 그린다.
-  void drawXLabels(Canvas canvas, Size size, List<Offset> coordinates) {
-    // 화면 크기에 따라 유동적으로 폰트 크기를 계산한다.
-    double fontSize = calculateFontSize(labels[0], size, xAxis: true);
-
-    for (int index = 0; index < labels.length; index++) {
-      TextSpan span = TextSpan(
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: fontSize,
-          fontFamily: 'Roboto',
-          fontWeight: FontWeight.w400,
-        ),
-        text: labels[index],
-      );
-      TextPainter tp =
-      TextPainter(text: span, textDirection: TextDirection.ltr);
-      tp.layout();
-
-      Offset offset = coordinates[index];
-      double dx = offset.dx;
-      double dy = size.height - tp.height;
-
-      tp.paint(canvas, Offset(dx, dy));
-    }
-  }
-
-  // Y축 텍스트(레이블)를 그린다. 최저값과 최고값을 Y축에 표시한다.
-  void drawYLabels(Canvas canvas, Size size, List<Offset> coordinates) {
-    double bottomY = coordinates[0].dy;
-    double topY = coordinates[0].dy;
-    int indexOfMin = 0;
-    int indexOfMax = 0;
-
-    for (int index = 0; index < coordinates.length; index++) {
-      double dy = coordinates[index].dy;
-      if (bottomY < dy) {
-        bottomY = dy;
-        indexOfMin = index;
-      }
-      if (topY > dy) {
-        topY = dy;
-        indexOfMax = index;
-      }
-    }
-    String minValue = '${data[indexOfMin].toInt()}';
-    String maxValue = '${data[indexOfMax].toInt()}';
-
-    double fontSize = calculateFontSize(maxValue, size, xAxis: false);
-
-    drawYText(canvas, minValue, fontSize, bottomY);
-    drawYText(canvas, maxValue, fontSize, topY);
-  }
+  // void drawXLabels(Canvas canvas, Size size, List<Offset> coordinates) {
+  //   // 화면 크기에 따라 유동적으로 폰트 크기를 계산한다.
+  //   double fontSize = calculateFontSize(labels[0], size, xAxis: true);
+  //
+  //   for (int index = 0; index < labels.length; index++) {
+  //     TextSpan span = TextSpan(
+  //       style: TextStyle(
+  //         color: Colors.black,
+  //         fontSize: fontSize,
+  //         fontFamily: 'Roboto',
+  //         fontWeight: FontWeight.w400,
+  //       ),
+  //       text: labels[index],
+  //     );
+  //     TextPainter tp =
+  //     TextPainter(text: span, textDirection: TextDirection.ltr);
+  //     tp.layout();
+  //
+  //     Offset offset = coordinates[index];
+  //     double dx = offset.dx;
+  //     double dy = size.height - tp.height;
+  //
+  //     tp.paint(canvas, Offset(dx, dy));
+  //   }
+  // }
+  //
+  // // Y축 텍스트(레이블)를 그린다. 최저값과 최고값을 Y축에 표시한다.
+  // void drawYLabels(Canvas canvas, Size size, List<Offset> coordinates) {
+  //   double bottomY = coordinates[0].dy;
+  //   double topY = coordinates[0].dy;
+  //   int indexOfMin = 0;
+  //   int indexOfMax = 0;
+  //
+  //   for (int index = 0; index < coordinates.length; index++) {
+  //     double dy = coordinates[index].dy;
+  //     if (bottomY < dy) {
+  //       bottomY = dy;
+  //       indexOfMin = index;
+  //     }
+  //     if (topY > dy) {
+  //       topY = dy;
+  //       indexOfMax = index;
+  //     }
+  //   }
+  //   String minValue = '${data[indexOfMin].toInt()}';
+  //   String maxValue = '${data[indexOfMax].toInt()}';
+  //
+  //   double fontSize = calculateFontSize(maxValue, size, xAxis: false);
+  //
+  //   drawYText(canvas, minValue, fontSize, bottomY);
+  //   drawYText(canvas, maxValue, fontSize, topY);
+  // }
 
   // 화면 크기에 비례해 폰트 크기를 계산한다.
-  double calculateFontSize(String value, Size size, {required bool xAxis}) {
-    // 글자수에 따라 폰트 크기를 계산하기 위함
-    int numberOfCharacters = value.length;
-    // width가 600일 때 100글자를 적어야 한다면, fontSize는 글자 하나당 6이어야 한다.
-    double fontSize = (size.width / numberOfCharacters) / data.length;
-
-    if (xAxis) {
-      fontSize *= textScaleFactorXAxis;
-    } else {
-      fontSize *= textScaleFactorYAxis;
-    }
-    return fontSize;
-  }
+  // double calculateFontSize(String value, Size size, {required bool xAxis}) {
+  //   // 글자수에 따라 폰트 크기를 계산하기 위함
+  //   int numberOfCharacters = value.length;
+  //   // width가 600일 때 100글자를 적어야 한다면, fontSize는 글자 하나당 6이어야 한다.
+  //   double fontSize = (size.width / numberOfCharacters) / data.length;
+  //
+  //   if (xAxis) {
+  //     fontSize *= textScaleFactorXAxis;
+  //   } else {
+  //     fontSize *= textScaleFactorYAxis;
+  //   }
+  //   return fontSize;
+  // }
 
   // x축 & y축 구분하는 선을 그린다.
-  void drawLines(Canvas canvas, Size size, List<Offset> coordinates) {
-    Paint paint = Paint()
-      ..color = Colors.blueGrey[100]!
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.8;
+  // void drawLines(Canvas canvas, Size size, List<Offset> coordinates) {
+  //   Paint paint = Paint()
+  //     ..color = Colors.blueGrey[100]!
+  //     ..strokeCap = StrokeCap.round
+  //     ..style = PaintingStyle.stroke
+  //     ..strokeWidth = 1.8;
+  //
+  //   double bottom = size.height - bottomPadding;
+  //   double left = coordinates[0].dx;
+  //
+  //   Path path = Path();
+  //   path.moveTo(left, 0);
+  //   path.lineTo(left, bottom);
+  //   path.lineTo(size.width, bottom);
+  //
+  //   canvas.drawPath(path, paint);
+  // }
 
-    double bottom = size.height - bottomPadding;
-    double left = coordinates[0].dx;
-
-    Path path = Path();
-    path.moveTo(left, 0);
-    path.lineTo(left, bottom);
-    path.lineTo(size.width, bottom);
-
-    canvas.drawPath(path, paint);
-  }
-
-  void drawYText(Canvas canvas, String text, double fontSize, double y) {
-    TextSpan span = TextSpan(
-      style: TextStyle(
-        fontSize: fontSize,
-        color: Colors.black,
-        fontFamily: 'Roboto',
-        fontWeight: FontWeight.w600,
-      ),
-      text: text,
-    );
-    TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
-
-    tp.layout();
-
-    Offset offset = Offset(0.0, y);
-    tp.paint(canvas, offset);
-  }
+  // void drawYText(Canvas canvas, String text, double fontSize, double y) {
+  //   TextSpan span = TextSpan(
+  //     style: TextStyle(
+  //       fontSize: fontSize,
+  //       color: Colors.black,
+  //       fontFamily: 'Roboto',
+  //       fontWeight: FontWeight.w600,
+  //     ),
+  //     text: text,
+  //   );
+  //   TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+  //
+  //   tp.layout();
+  //
+  //   Offset offset = Offset(0.0, y);
+  //   tp.paint(canvas, offset);
+  // }
 
   List<Offset> getCoordinates(Size size) {
     List<Offset> coordinates = <Offset>[];
