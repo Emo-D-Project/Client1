@@ -9,6 +9,19 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
 
+TextEditingController _diaryController =
+    TextEditingController(text: '오늘 하루 아주 만족스러운 날이다. '
+        '친구들이랑 맛있게 밥도 먹고'
+        ' 하늘도 너무 이뻤다!'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
+        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에');
+
 class diaryUpdate extends StatefulWidget {
   const diaryUpdate({super.key, required this.date});
 
@@ -258,29 +271,20 @@ class _diaryUpdateState extends State<diaryUpdate> {
                                 ]),
                           ), //음성
                           Container(
-                              width: 380,
-                              padding:
-                                  const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                            margin: EdgeInsets.fromLTRB(11, 10,11,10),
                               color: Colors.white54,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '오늘 하루 아주 만족스러운 날이다. '
-                                    '친구들이랑 맛있게 밥도 먹고'
-                                    ' 하늘도 너무 이뻤다!'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에',
-                                    style: TextStyle(fontSize: 15),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              )),
+                              child: TextFormField(
+                                controller: _diaryController,
+                                maxLines: 30,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                        )
+                                    )
+                                ),
+                              ),
+                          ),
                         ],
                       ),
                     ),
