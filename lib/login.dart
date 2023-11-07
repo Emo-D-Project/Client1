@@ -9,6 +9,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' hide TokenManager;
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'tokenManager.dart' as tk;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,32 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+
+  //카카오 어세스 토큰을 사용해 서버의 어세스 토큰 및 리프레시 토큰 어플에 저장 함수
+  Future<void> authenticate(String token) async{
+    tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
+
+    final url = Uri.parse(
+        'http://34.64.78.183:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
+
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'kakaoAccessToken': token,
+    });
+
+    if(response.statusCode == 200){
+      var jsonResponse = jsonDecode(response.body);
+
+      tokenManager.setAccessToken(jsonResponse["access_token"]);
+      tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
+      print("access 토큰: " + tokenManager.getAccessToken());
+      print("refresh 토큰: " + tokenManager.getRefreshToken());
+    }
+    else{
+      throw Exception('Faild to authenticate');
+    }
+  }
+
   Future<int> _handleKakaoLogin() async {
     OAuthToken? token;
 
@@ -33,8 +60,7 @@ class _MyLoginState extends State<MyLogin> {
         print(await KakaoSdk.origin);
         token = await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공 ${token.accessToken}');
-
-        sendTokenToServer(token.accessToken); // 토큰을 문자열로 전달
+        authenticate(token.accessToken); //토큰 전달
         return 1;
       } catch (error) {
         print(await KakaoSdk.origin);
@@ -47,8 +73,9 @@ class _MyLoginState extends State<MyLogin> {
         }
         // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
         try {
-          await UserApi.instance.loginWithKakaoAccount();
+          token = await UserApi.instance.loginWithKakaoAccount();
           print('카카오계정으로 로그인 성공');
+          authenticate(token.accessToken);
           return 1;
         } catch (error) {
           print('카카오계정으로 로그인 실패 $error');
@@ -59,63 +86,12 @@ class _MyLoginState extends State<MyLogin> {
       try {
         token = await UserApi.instance.loginWithKakaoAccount();
         print('카카오계정으로 로그인 성공');
+        authenticate(token.accessToken);
         return 1;
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
         return 0;
       }
-    }
-  }
-
-  Future<void> authrnticate(String token) async{
-    final url = Uri.parse(
-        'http://34.64.78.183:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
-
-    final response = await http.post(url, headers: {
-      'Content-Type': 'application/json',
-      'kakaoAccessToken': token,
-    });
-
-    if(response.statusCode == 200){
-      var jsonResponse = jsonDecode(response.body);
-      return jsonResponse['access_token'];
-    }
-    else{
-      throw Exception('Faild to authenticate');
-    }
-  }
-
-  Future<void> sendTokenToServer(String token) async {
-
-    final url = Uri.parse(
-        'http://34.64.78.183:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
-
-    final response = await http.get(url, headers: {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'kakaoAccessToken': token,
-    });
-
-    if (response.statusCode == 200) {
-      // 요청 성공, 서버에서의 추가 작업 처리
-      // 요청 성공 시 메시지 박스 표시
-      Fluttertoast.showToast(
-          msg: '요청이 성공했습니다.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white);
-    } else {
-      // 요청 실패 처리
-      Fluttertoast.showToast(
-        msg: '요청이 실패했습니다.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
     }
   }
 
