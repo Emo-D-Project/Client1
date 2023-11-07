@@ -11,7 +11,6 @@ import 'dart:async';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: '002001aad48dcca2375e4c52bb8c1281');
   await initializeDateFormatting();
@@ -25,57 +24,77 @@ class MyLogin extends StatefulWidget {
   State<MyLogin> createState() => _MyLoginState();
 }
 
-
 class _MyLoginState extends State<MyLogin> {
-  void _handleKakaoLogin() async {
+  Future<int> _handleKakaoLogin() async {
     OAuthToken? token;
 
-    //String tmpKakaoAccessToken = "rAAxmDh64Nk9q5h6ZiZJyfGY0Qr0sX5fZjYKPXPrAAABi4BgqsOxu3fh8M0xkQ";
-    //sendTokenToServer(tmpKakaoAccessToken);
-    if(await isKakaoTalkInstalled()){
-    try {
-      token = await UserApi.instance.loginWithKakaoTalk();
-      //debugPrint('카카오톡으로 로그인 성공');
+    if (await isKakaoTalkInstalled()) {
+      try {
+        print(await KakaoSdk.origin);
+        token = await UserApi.instance.loginWithKakaoTalk();
+        print('카카오톡으로 로그인 성공 ${token.accessToken}');
 
-      print('카카오톡으로 로그인 성공 ${token.accessToken}');
+        sendTokenToServer(token.accessToken); // 토큰을 문자열로 전달
+        return 1;
+      } catch (error) {
+        print(await KakaoSdk.origin);
+        print('카카오톡으로 로그인 실패 $error');
 
-      sendTokenToServer(token.accessToken);// 토큰을 문자열로 전달
-
-    } catch (error) {
-      print('카카오톡으로 로그인 실패 $error');
-      if(error is PlatformException && error.code == 'CANCELED'){
-        return;
+        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+        if (error is PlatformException && error.code == 'CANCELED') {
+          return 0;
+        }
+        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+        try {
+          await UserApi.instance.loginWithKakaoAccount();
+          print('카카오계정으로 로그인 성공');
+          return 1;
+        } catch (error) {
+          print('카카오계정으로 로그인 실패 $error');
+          return 0;
+        }
       }
+    } else {
       try {
         token = await UserApi.instance.loginWithKakaoAccount();
         print('카카오계정으로 로그인 성공');
-      }catch(error){
+        return 1;
+      } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
-      }
-
-    }}
-    else{
-      try{
-        token = await UserApi.instance.loginWithKakaoAccount();
-        print('카카오계정으로 로그인 성공');
-      }catch(error){
-        print('카카오계정으로 로그인 실패 $error');
+        return 0;
       }
     }
-    }
+  }
 
-
-  Future<void> sendTokenToServer(String token) async {
+  Future<void> authrnticate(String token) async{
     final url = Uri.parse(
         'http://34.64.78.183:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
 
-    final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'kakaoAccessToken': token,
-        }
-    );
+    final response = await http.post(url, headers: {
+      'Content-Type': 'application/json',
+      'kakaoAccessToken': token,
+    });
+
+    if(response.statusCode == 200){
+      var jsonResponse = jsonDecode(response.body);
+      return jsonResponse['access_token'];
+    }
+    else{
+      throw Exception('Faild to authenticate');
+    }
+  }
+
+  Future<void> sendTokenToServer(String token) async {
+
+    final url = Uri.parse(
+        'http://34.64.78.183:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
+
+    final response = await http.get(url, headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+      'kakaoAccessToken': token,
+    });
 
     if (response.statusCode == 200) {
       // 요청 성공, 서버에서의 추가 작업 처리
@@ -86,8 +105,7 @@ class _MyLoginState extends State<MyLogin> {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
-          textColor: Colors.white
-      );
+          textColor: Colors.white);
     } else {
       // 요청 실패 처리
       Fluttertoast.showToast(
@@ -106,64 +124,94 @@ class _MyLoginState extends State<MyLogin> {
     return Scaffold(
       backgroundColor: Color(0xFFD1CBC2),
       body: Center(
-      child: Container(
-
-      height: 355,
-      width: 329,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFFC5C4C4),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: Offset(4, 4),
+        child: Container(
+          height: 355,
+          width: 329,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFC5C4C4),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: Offset(4, 4),
+              ),
+            ],
+            color: Color(0xFFEBE9E5),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-        ],
-        color: Color(0xFFEBE9E5),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text(
+                  'EMO:D',
+                  style: TextStyle(
+                      color: Color(0xFF7D5A50),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'fontnanum',
+                      fontSize: 40),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text(
+                  'SNS로 간편 로그인 하기',
+                  style: TextStyle(
+                      color: Color(0xFF414040),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'fontnanum'),
+                ),
+              ),
+              ButtonTheme(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: IconButton(
+                  onPressed: () async {
+                    if(await _handleKakaoLogin() == 1){ // 카카오 로그인 성공 시
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+                    }else{
+                      // 카카오 로그인 실패시
+                      showDialog(context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context){
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          title: Column(
+                            children: <Widget>[
+                              new Text("로그인 실패"),
+                            ],
+                          ),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("카카오톡 로그인에 실패했습니다."),
+                            ],
+                          ),
+                          actions: [
+                             ElevatedButton(child: new Text("확인"),
+                            onPressed:(){
+                               Navigator.pop(context);
+                            },),
+
+                          ],
+                        );
+                          },
+                      );
+                    }
+                  },
+                  icon: Image.asset(
+                    'images/main/kaka.png',
+                    fit: BoxFit.contain,
+                  ),
+                  iconSize: 230,
+                ),
+              )
+            ],
+          ),
+        ),
       ),
-      child: Column(
-          children: [
-      Padding(
-      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-      child: Text(
-        'EMO:D',
-        style: TextStyle(
-            color: Color(0xFF7D5A50),
-            fontWeight: FontWeight.bold,
-            fontFamily: 'fontnanum',
-            fontSize: 40),
-      ),
-    ),
-    Padding(
-    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-    child: Text(
-    'SNS로 간편 로그인 하기',
-    style: TextStyle(
-    color: Color(0xFF414040),
-    fontSize: 15,
-    fontWeight: FontWeight.w900,
-    fontFamily: 'fontnanum'),
-    ),
-    ),
-    ButtonTheme(
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(10)),
-    child: IconButton(
-    onPressed: () {
-      _handleKakaoLogin();
-    },
-    icon: Image.asset(
-    'images/main/kaka.png',
-    fit: BoxFit.contain,
-    ),
-    iconSize: 230,
-    ),
-    )
-    ],
-    ),
-    ),
-    ),
     );
-    }
   }
+}

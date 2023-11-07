@@ -32,10 +32,8 @@ dependencies:
     sdk: flutter
 
   fluttertoast: ^8.0.8
-
   kakao_flutter_sdk: ^1.6.1
-  kakao_flutter_sdk_user: ^1.6.1 # 카카오 로그인
-  kakao_flutter_sdk_talk: ^1.6.1
+  kakao_flutter_sdk_user: ^1.6.1
   shared_preferences: ^2.2.1
 
 
