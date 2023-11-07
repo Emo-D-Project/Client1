@@ -31,6 +31,7 @@ class _writediaryState extends State<writediary> {
 
   //late String title;
   late String content = _contentEditController.text;
+  late String sendemotion = widget.emotion;
 
   Future<void> GetExample(String endpoint) async {
     try {
@@ -60,6 +61,9 @@ class _writediaryState extends State<writediary> {
         // 보낼 데이터 (BODY에 들어감)
         //'title': title,
         'content': content,
+        'emotion': sendemotion,
+        'is_share': _isCheckedShare,
+        'is_comm': _isChecked,
         // 'like' : like,
       };
 
@@ -246,7 +250,7 @@ class _writediaryState extends State<writediary> {
         actions: [
           IconButton(
               onPressed: () {
-                PostExample("/api/diaries");
+                PostExample("/api/diaries/create");
               },
               icon: Icon(Icons.upload))
         ],

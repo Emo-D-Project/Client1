@@ -15,8 +15,10 @@ class _mypageState extends State<mypage> {
   String mine = "mine";  // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
   //String another = "another";
 
-  //TokenManager tokenManager = TokenManager();
- // tokenManager.getServerToken(kakaoToken);
+
+  TokenManager tokenManager = TokenManager();
+  //tokenManager.getServerToken(kakaoToken);
+
 
   @override
   Widget build(BuildContext context) {
