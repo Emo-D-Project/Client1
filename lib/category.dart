@@ -1,13 +1,31 @@
 import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
+import 'package:capston1/notification.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'mypage.dart';
 import 'alramsetting.dart';
 import 'diaryReplay.dart';
+import 'notification.dart';
 
-class category extends StatelessWidget {
+class category extends StatefulWidget {
   const category({super.key});
+
+  @override
+  State<category> createState() => _categoryState();
+}
+
+class _categoryState extends State<category> {
+
+  // @override
+  // void initState(){
+  //   FlutterLocalNotification.init();
+  //
+  //   Future.delayed(const Duration(seconds: 3),
+  //     FlutterLocalNotification.requestNotificationPermission()
+  //   );
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +151,7 @@ class category extends StatelessWidget {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: (){}, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
