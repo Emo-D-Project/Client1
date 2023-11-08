@@ -31,12 +31,12 @@ class _mypageState extends State<mypage> {
             if (login == mine) {
               return Text(
                 "MYPAGE",
-                style: TextStyle(color: Color(0xFF968C83)),
+                style: TextStyle(color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
               );
             } else {
               return Text(
                 "PROFILE",
-                style: TextStyle(color: Color(0xFF968C83)),
+                style: TextStyle(color: Color(0xFF968C83), fontFamily: 'kim',fontSize:30),
               );
             }
           })(),
@@ -70,7 +70,7 @@ class _mypageState extends State<mypage> {
                             "토비",
                             style: TextStyle(
                                 fontSize: 28,
-                                fontWeight: FontWeight.bold,
+                                fontFamily: 'soojin',
                                 color: Color(0xFF7D5A50)),
                           );
                         } else {
@@ -78,7 +78,7 @@ class _mypageState extends State<mypage> {
                             "삼냥이",
                             style: TextStyle(
                                 fontSize: 28,
-                                fontWeight: FontWeight.bold,
+                                fontFamily: 'soojin',
                                 color: Color(0xFF7D5A50)),
                           );
                         }
@@ -122,7 +122,7 @@ class _mypageState extends State<mypage> {
                                 child: Text(
                                   "최애 영화",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'soojin',
                                       fontSize: 17,
                                       color: Color(0xFF7D5A50)),
                                 ),
@@ -143,7 +143,7 @@ class _mypageState extends State<mypage> {
                               Container(
                                 child: Text(
                                   "신과 함께",
-                                  style: TextStyle(fontSize: 17),
+                                  style: TextStyle(fontSize: 17, fontFamily: 'soojin',),
                                 ),
                               ),
                             ],
@@ -172,7 +172,7 @@ class _mypageState extends State<mypage> {
                                 child: Text(
                                   "최애 노래",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'soojin',
                                       fontSize: 17,
                                       color: Color(0xFF7D5A50)),
                                 ),
@@ -193,7 +193,7 @@ class _mypageState extends State<mypage> {
                               Container(
                                 child: Text(
                                   "want so bad - straykids",
-                                  style: TextStyle(fontSize: 17),
+                                  style: TextStyle(fontSize: 17, fontFamily: 'soojin',),
                                 ),
                               ),
                             ],
@@ -222,7 +222,7 @@ class _mypageState extends State<mypage> {
                                 child: Text(
                                   "MBTI",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'soojin',
                                       fontSize: 17,
                                       color: Color(0xFF7D5A50)),
                                 ),
@@ -243,7 +243,7 @@ class _mypageState extends State<mypage> {
                               Container(
                                 child: Text(
                                   "ISTP-T",
-                                  style: TextStyle(fontSize: 17),
+                                  style: TextStyle(fontSize: 17, fontFamily: 'soojin',),
                                 ),
                               ),
                             ],
@@ -260,6 +260,7 @@ class _mypageState extends State<mypage> {
                               },
                               icon: Icon(
                                 Icons.add_circle,
+                                color: Color(0xFF7D5A50),
                                 size: 40,
                               )
                           );
@@ -342,9 +343,9 @@ void plusDialog(context) {
                   child: Text(
                     "질문 선택",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7D5A50),
                         fontSize: 14,
-                        fontFamily: 'fontnanum'),
+                        fontFamily: 'soojin'),
                   ),
                 ),
                 Container(
@@ -361,8 +362,8 @@ void plusDialog(context) {
                     elevation: 0.0,
                     backgroundColor: Colors.white,
                   ),
-                  child: Text("질문 1",
-                      style: TextStyle(color: Colors.black, fontSize: 15)),
+                  child: Text("최애 드라마",
+                      style: TextStyle(color: Color(0xFF7D5A50), fontSize: 15,fontFamily: 'soojin')),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -372,8 +373,8 @@ void plusDialog(context) {
                     elevation: 0.0,
                     backgroundColor: Colors.white,
                   ),
-                  child: Text("질문 2",
-                      style: TextStyle(color: Colors.black, fontSize: 15)),
+                  child: Text("취미",
+                      style: TextStyle(color: Color(0xFF7D5A50), fontSize: 15, fontFamily: 'soojin')),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -383,8 +384,8 @@ void plusDialog(context) {
                     elevation: 0.0,
                     backgroundColor: Colors.white,
                   ),
-                  child: Text("질문 3",
-                      style: TextStyle(color: Colors.black, fontSize: 15)),
+                  child: Text("별자리",
+                      style: TextStyle(color: Color(0xFF7D5A50), fontSize: 15, fontFamily: 'soojin')),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -394,8 +395,8 @@ void plusDialog(context) {
                     elevation: 0.0,
                     backgroundColor: Colors.white,
                   ),
-                  child: Text("질문 4",
-                      style: TextStyle(color: Colors.black, fontSize: 15)),
+                  child: Text("최애 색깔",
+                      style: TextStyle(color: Color(0xFF7D5A50), fontSize: 15, fontFamily: 'soojin')),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -405,8 +406,8 @@ void plusDialog(context) {
                     elevation: 0.0,
                     backgroundColor: Colors.white,
                   ),
-                  child: Text("질문 5",
-                      style: TextStyle(color: Colors.black, fontSize: 15)),
+                  child: Text("최애 계절",
+                      style: TextStyle(color: Color(0xFF7D5A50), fontSize: 15, fontFamily: 'soojin')),
                 ),
               ],
             ),
@@ -421,25 +422,25 @@ Future<dynamic> _showDialog(BuildContext context) {
   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: Text('최애 음식'),
+      title: Text('최애 드라마', style: TextStyle(fontFamily: 'soojin', color: Color(0xFF7D5A50),),),
       content: TextField(),
       actions: [
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
-                backgroundColor: Colors.amber,
+                backgroundColor: Color(0x4D968C83),
                 minimumSize: Size(150, 30)),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소',
-                style: TextStyle(color: Colors.black, fontSize: 20))),
+                style: TextStyle(color: Colors.black, fontSize: 20,fontFamily: 'soojin'))),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
-                backgroundColor: Colors.blue,
+                backgroundColor: Color(0xFF7D5A50),
                 minimumSize: Size(150, 30)),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('확인',
-                style: TextStyle(color: Colors.black, fontSize: 20))),
+                style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
       ],
     ),
   );

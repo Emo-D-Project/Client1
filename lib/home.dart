@@ -1,8 +1,6 @@
-import 'package:capston1/main.dart';
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
-import 'style.dart' as style;
-import 'writediary.dart';
+
 
 class home extends StatelessWidget {
   const home({super.key});
@@ -17,7 +15,6 @@ class home extends StatelessWidget {
               width: 1200,
               height : 1000,
               fit: BoxFit.contain,
-
             ),
           )
       ),

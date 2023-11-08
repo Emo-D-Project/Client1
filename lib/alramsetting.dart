@@ -23,8 +23,7 @@ class _alramsettingState extends State<alramsetting> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        //backgroundColor: Color.fromRGBO(248, 245, 235, 100),
-        title: Text("ALRAMSETTING",style: TextStyle(color: Color(0xFF968C83)),),
+        title: Text("ALRAMSETTING",style: TextStyle(color: Color(0xFF968C83),fontFamily: 'kim', fontSize: 30,),),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
@@ -42,7 +41,7 @@ class _alramsettingState extends State<alramsetting> {
                 children: [
                   Container(
                       padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
-                      child: Text("쪽지 허용",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                      child: Text("쪽지 허용",style: TextStyle(fontSize: 17,fontFamily: 'soojin',color: Color(0xFF7D5A50)),),
                   ),
                   CupertinoSwitch(
                     value: _isMessageOn,
@@ -62,7 +61,7 @@ class _alramsettingState extends State<alramsetting> {
                 children: [
                   Container(
                     padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
-                    child: Text("쪽지 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                    child: Text("쪽지 알림",style: TextStyle(fontSize: 17,fontFamily: 'soojin',color: Color(0xFF7D5A50)),),
                   ),
                   CupertinoSwitch(
                     value: _isMessageAlram,
@@ -82,7 +81,7 @@ class _alramsettingState extends State<alramsetting> {
                 children: [
                   Container(
                     padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
-                    child: Text("댓글 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                    child: Text("댓글 알림",style: TextStyle(fontSize: 17,fontFamily: 'soojin',color: Color(0xFF7D5A50)),),
                   ),
                   CupertinoSwitch(
                     value: _isMentionAlram,
@@ -102,7 +101,7 @@ class _alramsettingState extends State<alramsetting> {
                 children: [
                   Container(
                     padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
-                    child: Text("공감 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                    child: Text("공감 알림",style: TextStyle(fontSize: 17,fontFamily: 'soojin',color: Color(0xFF7D5A50)),),
                   ),
                   CupertinoSwitch(
                     value: _isHeartAlram,
@@ -122,7 +121,7 @@ class _alramsettingState extends State<alramsetting> {
                 children: [
                   Container(
                     padding : EdgeInsets.fromLTRB(70, 0, 170, 0),
-                    child: Text("활동 알림",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),),
+                    child: Text("활동 알림",style: TextStyle(fontSize: 17,fontFamily: 'soojin',color: Color(0xFF7D5A50)),),
                   ),
                   CupertinoSwitch(
                     value: _isAlram,

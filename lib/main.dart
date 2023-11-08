@@ -31,13 +31,11 @@ class _MyAppState extends State<MyApp> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text(
-
           "EMO:D",
           style: TextStyle(
             fontSize: 30,
-            fontWeight: FontWeight.w900,
-
-            fontFamily: 'kim',color: Color(0xFF968C83),
+            fontFamily: 'kim',
+            color: Color(0xFF968C83),
           ),
         ),
         leading: IconButton(
@@ -75,7 +73,6 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      //extendBodyBehindAppBar: true,
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 5.0,
