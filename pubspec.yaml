@@ -83,6 +83,18 @@ flutter:
     - family: fontnanum
       fonts:
         - asset: fonts/NanumSquareNeo-Variable.ttf
+    - family: soojin
+      fonts:
+        - asset: fonts/ImcreSoojin.ttf
+    - family: GM
+      fonts:
+        - asset: fonts/GmarketSansTTFMedium.ttf
+    - family: GL
+      fonts:
+        - asset: fonts/GmarketSansTTFLight.ttf
+    - family: kim
+      fonts:
+        - asset: fonts/KimjungchulGothic-Regular.ttf
 
   assets:
     - images/
