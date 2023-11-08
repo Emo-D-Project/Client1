@@ -19,7 +19,7 @@ class category extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text("CATEGORY",
-          style: TextStyle(fontWeight:FontWeight.bold,fontFamily: 'fontnanum',color: Color(0xFF968C83),),
+          style: TextStyle(fontSize: 30, fontFamily: 'kim',color: Color(0xFF968C83),),
         ),
         leading: IconButton(
           onPressed: () {
@@ -70,7 +70,7 @@ class category extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Text("유저 설정",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)),)
+                      child: Text("유저 설정",style: TextStyle(fontSize: 15,fontFamily: 'soojin',color: Color(0xFF7D5A50)),)
                   ), //유저 설정
                   SizedBox(
                     child: ElevatedButton(
@@ -86,7 +86,7 @@ class category extends StatelessWidget {
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("마이 페이지",style: TextStyle(color: Colors.black,fontSize: 15)),
+                          Text("마이 페이지",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -105,7 +105,7 @@ class category extends StatelessWidget {
                         children: [
                           Icon(Icons.access_alarm, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("알람 설정",style: TextStyle(color: Colors.black,fontSize: 15)),
+                          Text("알람 설정",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -125,7 +125,7 @@ class category extends StatelessWidget {
                 children: [
                   Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Text("지원",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)))
+                      child: Text("지원",style: TextStyle(fontSize: 15,fontFamily: 'soojin',color: Color(0xFF7D5A50)))
                   ), //지원
                   SizedBox(
                     child: ElevatedButton(
@@ -138,7 +138,7 @@ class category extends StatelessWidget {
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("의견 보내기",style: TextStyle(color: Colors.black,fontSize: 15)),
+                          Text("의견 보내기",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -154,7 +154,7 @@ class category extends StatelessWidget {
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("자주 하는 질문",style: TextStyle(color: Colors.black,fontSize: 15)),
+                          Text("자주 하는 질문",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -174,7 +174,7 @@ class category extends StatelessWidget {
                 children: [
                   Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Text("기타",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Color(0xFF7D5A50)))
+                      child: Text("기타",style: TextStyle(fontSize: 15,fontFamily: 'soojin',color: Color(0xFF7D5A50)))
                   ), //기타
                   SizedBox(
                     child: ElevatedButton(
@@ -190,7 +190,7 @@ class category extends StatelessWidget {
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
                           SizedBox(width: 5,),
-                          Text("앱 정보",style: TextStyle(color: Colors.black,fontSize: 15)),
+                          Text("앱 정보",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -207,7 +207,7 @@ class category extends StatelessWidget {
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
-                          Text("로그아웃", style: TextStyle(color: Colors.black)),
+                          Text("로그아웃", style: TextStyle(color: Colors.black, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -224,7 +224,7 @@ class category extends StatelessWidget {
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
-                          Text("회원탈퇴", style: TextStyle(color: Colors.black,fontSize: 15)),
+                          Text("회원탈퇴", style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -249,7 +249,7 @@ Future<dynamic> _showLogoutDialog(BuildContext context) {
       title: Text(' '),
       content: SizedBox(
         height: sizeY*0.05,
-        child: Center(child: Text("정말 로그아웃 하시겠습니까?"))
+        child: Center(child: Text("정말 로그아웃 하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),))
       ),
       actions: [
         ElevatedButton(
@@ -259,7 +259,7 @@ Future<dynamic> _showLogoutDialog(BuildContext context) {
                 minimumSize: Size(150, 30)
             ),
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20))),
+            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20, fontFamily: 'soojin'))),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
@@ -267,7 +267,7 @@ Future<dynamic> _showLogoutDialog(BuildContext context) {
                 minimumSize: Size(150, 30)
             ),
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20))),
+            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20, fontFamily: 'soojin'))),
       ],
     ),
   );
@@ -285,7 +285,7 @@ Future<dynamic> _showDialog(BuildContext context) {
         height: sizeY*0.07,
         child: Center(
           child: Text("회원 탈퇴 시, 작성된 일기들은 "
-              "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?"),
+              "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),),
         ),
       ),
       actions: [

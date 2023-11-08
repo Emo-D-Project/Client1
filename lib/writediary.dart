@@ -32,8 +32,12 @@ class _writediaryState extends State<writediary> {
   //late String title;
   late String content = _contentEditController.text;
   late String sendEmotion = widget.emotion;
+  DateTime dateTime = DateTime.now();
+  late String created_at = dateTime.toIso8601String();
+  bool _isChecked = false;
+  bool _isCheckedShare = false;
 
-  Future<void> GetExample(String endpoint) async {
+  /*Future<void> GetExample(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
 
@@ -45,7 +49,7 @@ class _writediaryState extends State<writediary> {
     } catch (e) {
       print('Error: $e');
     }
-  }
+  }*/
 
   // onpress():
   //      PostExample("/api/message");
@@ -64,26 +68,17 @@ class _writediaryState extends State<writediary> {
         'emotion': sendEmotion,
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
+        'createdAt': created_at,
         // 'like' : like,
       };
 
       print(postData);
 
       await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-
-      // // 응답
-      // final value = response['key']; // 키를 통해 value를 받아오기
-      // print('Data: $value');
-      //
-      // //title = response['title'];
     } catch (e) {
       print('Error: $e');
     }
   }
-
-// -------------------------------------------------------------------------
-  bool _isChecked = false;
-  bool _isCheckedShare = false;
 
   final _contentEditController = TextEditingController();
 
@@ -251,6 +246,7 @@ class _writediaryState extends State<writediary> {
         actions: [
           IconButton(
               onPressed: () {
+                print("PostExample 실행");
                 PostExample("/api/diaries/create");
               },
               icon: Icon(Icons.upload))

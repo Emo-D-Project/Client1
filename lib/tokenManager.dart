@@ -1,8 +1,8 @@
 
 class TokenManager {
   static final TokenManager tokenManager = new TokenManager();
-  late String accessToken;
-  late String refreshToken;
+  String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhcGRkbDVAbmF2ZXIuY29tIiwiaWF0IjoxNjk4OTE1NTk4LCJleHAiOjE3MDAxMjUxOTgsInN1YiI6ImFwZGRsNUBuYXZlci5jb20iLCJpZCI6MzZ9._Pb7ja4jgSp0XNk9Vgtub61v1TGdNbJ5lQngsEkjYzg";
+  String refreshToken = "";
 
 
   TokenManager getTokenManager(){
