@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,6 +10,8 @@ class diaryshare extends StatefulWidget {
 
   @override
   State<diaryshare> createState() => _diaryshareState();
+
+
 }
 
 class _diaryshareState extends State<diaryshare> {
@@ -16,6 +19,14 @@ class _diaryshareState extends State<diaryshare> {
   List<bool> isLiked = [false, false, false, false, false, false, false];
   String selectedValue = '최신순';
   String selectedImagePath = 'images/emotion/7.gif'; // 기본값은 무표정으로 함
+
+  static const List<String> _dropdownList =  ['최신순', '공감순'];
+  String _dropdownValue = '최신순';
+
+  OverlayEntry? _overlayEntry;
+ final LayerLink _layerLink = LayerLink();
+ static const double _dropdownWidth = 200 ;
+ static const double _dropdownHeight = 50;
 
   @override
   Widget build(BuildContext context) {
@@ -553,7 +564,16 @@ class _diaryshareState extends State<diaryshare> {
       ),
     );
   }
+
+
+
 }
+
+
+
+
+
+
 
 // 댓글 기능 누르면 뜨는 창
 void plusDialog(BuildContext context) {
