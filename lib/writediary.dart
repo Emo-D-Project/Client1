@@ -251,6 +251,7 @@ class _writediaryState extends State<writediary> {
         actions: [
           IconButton(
               onPressed: () {
+                print("PostExample 실행");
                 PostExample("/api/diaries/create");
               },
               icon: Icon(Icons.upload))
