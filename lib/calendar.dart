@@ -10,6 +10,9 @@ class calendar extends StatefulWidget {
 }
 
 class _calendarState extends State<calendar> {
+  DateTime? selectedDay;
+  DateTime focusedDay = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -34,7 +37,6 @@ class _calendarState extends State<calendar> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: TableCalendar(
-            //locale: 'ko_KR',
 
             rowHeight: 65,
             firstDay: DateTime.utc(2021),

@@ -1,7 +1,8 @@
+import 'package:capston1/MyInfo.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
-import 'tokenManager.dart';
+import 'network/api_manager.dart';
 
 class mypage extends StatefulWidget {
   const mypage({super.key});
@@ -11,15 +12,47 @@ class mypage extends StatefulWidget {
 }
 
 class _mypageState extends State<mypage> {
+  ApiManager apiManager = ApiManager().getApiManager();
   String login = "mine"; // 내 로그인 정보 담아두고
   String mine = "mine";  // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
   //String another = "another";
 
+  Future<void> GetMyPage(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  /*Future<void> PostMyPage(String endpoint) async {
+    ApiManager apiManager = ApiManager().getApiManager();
+
+    try {
+      final postData = {
+
+      };
+
+      print(postData);
+
+      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+    } catch (e) {
+      print('Error: $e');
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
+
+    MyInfo myInfo = MyInfo().getMyInfo();
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -67,7 +100,7 @@ class _mypageState extends State<mypage> {
                       child: (() {
                         if (login == mine) {
                           return Text(
-                            "토비",
+                            myInfo.getNickName(),
                             style: TextStyle(
                                 fontSize: 28,
                                 fontFamily: 'soojin',
