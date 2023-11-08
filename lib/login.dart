@@ -1,3 +1,4 @@
+import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'style.dart' as style;
@@ -46,6 +47,9 @@ class _MyLoginState extends State<MyLogin> {
       tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
       print("access 토큰: " + tokenManager.getAccessToken());
       print("refresh 토큰: " + tokenManager.getRefreshToken());
+
+      ApiManager apiManager = ApiManager().getApiManager();
+      apiManager.tokenManager = tokenManager;
     }
     else{
       throw Exception('Faild to authenticate');

@@ -31,7 +31,7 @@ class _writediaryState extends State<writediary> {
 
   //late String title;
   late String content = _contentEditController.text;
-  late String sendemotion = widget.emotion;
+  late String sendEmotion = widget.emotion;
 
   Future<void> GetExample(String endpoint) async {
     try {
@@ -61,20 +61,21 @@ class _writediaryState extends State<writediary> {
         // 보낼 데이터 (BODY에 들어감)
         //'title': title,
         'content': content,
-        'emotion': sendemotion,
+        'emotion': sendEmotion,
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
         // 'like' : like,
       };
 
-      final response =
-          await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+      print(postData);
 
-      // 응답
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
+      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
 
-      //title = response['title'];
+      // // 응답
+      // final value = response['key']; // 키를 통해 value를 받아오기
+      // print('Data: $value');
+      //
+      // //title = response['title'];
     } catch (e) {
       print('Error: $e');
     }

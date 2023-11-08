@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
-  TokenManager tokenManager = TokenManager().getTokenManager();
+  late TokenManager tokenManager;
   ApiManager getApiManager(){
     return apiManager;
   }
@@ -35,7 +35,7 @@ class ApiManager {
     final response = await http.post(
       Uri.parse('$baseUrl/$endpoint'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8', // 요청 헤더 설정
+        'Content-Type': 'application/json', // 요청 헤더 설정
         'Authorization': 'Bearer $accessToken',
 
       },
@@ -43,6 +43,7 @@ class ApiManager {
     );
 
     if (response.statusCode == 200) { // 성공적인 응답
+      print("post 응답 성공");
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data from the API');
