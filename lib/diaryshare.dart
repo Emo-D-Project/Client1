@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dropbox.dart';
+
 
 final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -11,7 +12,6 @@ class diaryshare extends StatefulWidget {
   @override
   State<diaryshare> createState() => _diaryshareState();
 
-
 }
 
 class _diaryshareState extends State<diaryshare> {
@@ -20,13 +20,7 @@ class _diaryshareState extends State<diaryshare> {
   String selectedValue = '최신순';
   String selectedImagePath = 'images/emotion/7.gif'; // 기본값은 무표정으로 함
 
-  static const List<String> _dropdownList =  ['최신순', '공감순'];
-  String _dropdownValue = '최신순';
 
-  OverlayEntry? _overlayEntry;
- final LayerLink _layerLink = LayerLink();
- static const double _dropdownWidth = 200 ;
- static const double _dropdownHeight = 50;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +31,8 @@ class _diaryshareState extends State<diaryshare> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+
+
           // 드롭박스
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -46,7 +42,7 @@ class _diaryshareState extends State<diaryshare> {
                 DropdownButton<String>(
                   value: selectedValue,
                   // 현재 선택된 값
-                  items: <String>['최신순', '오래된순', '추천순'].map((String value) {
+                  items: <String>['최신순', '추천순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -64,6 +60,7 @@ class _diaryshareState extends State<diaryshare> {
                   dropdownColor: Color(0xFFF8F5EB),
                   icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
                   style: TextStyle(color: Colors.black),
+
                 ),
                 SizedBox(width: 25),
               ],
@@ -226,7 +223,7 @@ class _diaryshareState extends State<diaryshare> {
               ],
             ),
             //color: Color.fromRGBO(248, 245, 235, 100),
-           // width: 1000,
+            // width: 1000,
             //height: 60,
             padding: const EdgeInsets.all(5.0),
             //margin: const EdgeInsets.all(5.0),
@@ -304,17 +301,17 @@ class _diaryshareState extends State<diaryshare> {
                                 Container(
                                   child: Center(
                                       child:
-                                          Image.asset('images/send/sj3.jpg')),
+                                      Image.asset('images/send/sj3.jpg')),
                                 ),
                                 Container(
                                   child: Center(
                                       child:
-                                          Image.asset('images/send/sj1.jpg')),
+                                      Image.asset('images/send/sj1.jpg')),
                                 ),
                                 Container(
                                   child: Center(
                                       child:
-                                          Image.asset('images/send/sj2.jpg')),
+                                      Image.asset('images/send/sj2.jpg')),
                                 ),
                               ],
                             ),
@@ -330,8 +327,8 @@ class _diaryshareState extends State<diaryshare> {
                               children: [
                                 Text(
                                   '오늘 하루 아주 만족스러운 날이다. '
-                                  '친구들이랑 맛있게 밥도 먹고'
-                                  ' 하늘도 너무 이뻤다!',
+                                      '친구들이랑 맛있게 밥도 먹고'
+                                      ' 하늘도 너무 이뻤다!',
                                   // overflow:TextOverflow.ellipsis,
                                   style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
                                   textAlign: TextAlign.center,
@@ -345,59 +342,59 @@ class _diaryshareState extends State<diaryshare> {
                   //좋아요,댓글
                   Container(
                       child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (isLiked[0]) {
-                                    favoriteCounts[0]--;
-                                  } else {
-                                    favoriteCounts[0]++;
-                                  }
-                                  isLiked[0] = !isLiked[0];
-                                });
-                              },
-                              onLongPress: () {},
-                              child: Icon(
-                                Icons.favorite,
-                                color: isLiked[0] ? Colors.red : Colors.grey,
-                              ),
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (isLiked[0]) {
+                                        favoriteCounts[0]--;
+                                      } else {
+                                        favoriteCounts[0]++;
+                                      }
+                                      isLiked[0] = !isLiked[0];
+                                    });
+                                  },
+                                  onLongPress: () {},
+                                  child: Icon(
+                                    Icons.favorite,
+                                    color: isLiked[0] ? Colors.red : Colors.grey,
+                                  ),
+                                ),
+                                Text(
+                                  '${favoriteCounts[0]}',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                              ],
                             ),
-                            Text(
-                              '${favoriteCounts[0]}',
-                              style: TextStyle(fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ),
+                          ),
 
-                      //댓글
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                plusDialog(context);
-                              },
-                              child:
+                          //댓글
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    plusDialog(context);
+                                  },
+                                  child:
                                   Icon(Icons.chat_outlined, color: Colors.grey),
+                                ),
+                                //댓글 숫자
+                                Text(
+                                  '6', //
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                              ],
                             ),
-                            //댓글 숫자
-                            Text(
-                              '6', //
-                              style: TextStyle(fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
+                          ),
+                        ],
+                      )),
 
                   //일기2
                   Container(
@@ -464,7 +461,7 @@ class _diaryshareState extends State<diaryshare> {
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
+                              BorderRadius.all(Radius.circular(15))),
                           child: Row(
                             children: [
                               Icon(
@@ -587,7 +584,7 @@ void plusDialog(BuildContext context) {
         child: Container(
           //키보드가 나타날 때 텍스트 필드가 상단으로 이동
           padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           height: sizeY * 0.8,
           color: Color(0xFF737373),
           child: Container(
@@ -626,7 +623,7 @@ void plusDialog(BuildContext context) {
                                       width: 60,
                                       height: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/5.gif',
                                         fit: BoxFit.contain,
@@ -635,11 +632,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 1',
                                               textAlign: TextAlign.left,
@@ -647,13 +644,13 @@ void plusDialog(BuildContext context) {
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color(0xFF7D5A50),
-                                                fontFamily: 'soojin'
+                                                  fontFamily: 'soojin'
                                               ),
                                             ),
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '난 오늘 너무 힘든 하루였어..',
                                               textAlign: TextAlign.left,
@@ -679,7 +676,7 @@ void plusDialog(BuildContext context) {
                                       height: 60,
                                       width: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/6.gif',
                                         fit: BoxFit.contain,
@@ -688,11 +685,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 2',
                                               textAlign: TextAlign.left,
@@ -700,19 +697,19 @@ void plusDialog(BuildContext context) {
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color(0xFF7D5A50),
-                                                fontFamily: 'soojin'),
+                                                  fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '우와 나 라멘 진짜 좋아하는데!! 저기 맛있겠다 저기는 어디야?'
-                                              '   하.. 갑자기 또 라멘 먹고싶네'
-                                              ' 일본 갔다올게'
-                                              'ㅇㅇㅇㅇㅇㅇ'
-                                              'ㅇㅇㅇㅇ'
-                                              'ㅇㅇㅇㅇㅇ',
+                                                  '   하.. 갑자기 또 라멘 먹고싶네'
+                                                  ' 일본 갔다올게'
+                                                  'ㅇㅇㅇㅇㅇㅇ'
+                                                  'ㅇㅇㅇㅇ'
+                                                  'ㅇㅇㅇㅇㅇ',
                                               textAlign: TextAlign.left,
                                               style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
@@ -736,7 +733,7 @@ void plusDialog(BuildContext context) {
                                       height: 60,
                                       width: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/7.gif',
                                         fit: BoxFit.contain,
@@ -745,11 +742,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 3',
                                               textAlign: TextAlign.left,
@@ -762,7 +759,7 @@ void plusDialog(BuildContext context) {
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '난 오늘 일한다고 하늘을 한번도 못봤어ㅜ',
                                               textAlign: TextAlign.left,
@@ -788,7 +785,7 @@ void plusDialog(BuildContext context) {
                                       height: 60,
                                       width: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/2.gif',
                                         fit: BoxFit.contain,
@@ -797,11 +794,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 4',
                                               textAlign: TextAlign.left,
@@ -814,11 +811,11 @@ void plusDialog(BuildContext context) {
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '하늘 정말 이쁘다 그리고 너 사진 잘 찍는당'
-                                              '. 휴대폰 기종이 뭐야? '
-                                              '쪽지 보낼게!!',
+                                                  '. 휴대폰 기종이 뭐야? '
+                                                  '쪽지 보낼게!!',
                                               textAlign: TextAlign.left,
                                               style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
@@ -842,7 +839,7 @@ void plusDialog(BuildContext context) {
                                       height: 60,
                                       width: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/2.gif',
                                         fit: BoxFit.contain,
@@ -851,11 +848,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 5',
                                               textAlign: TextAlign.left,
@@ -868,7 +865,7 @@ void plusDialog(BuildContext context) {
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '아 배고파 ..',
                                               textAlign: TextAlign.left,
@@ -894,7 +891,7 @@ void plusDialog(BuildContext context) {
                                       height: 60,
                                       width: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/4.gif',
                                         fit: BoxFit.contain,
@@ -903,11 +900,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 6',
                                               textAlign: TextAlign.left,
@@ -920,7 +917,7 @@ void plusDialog(BuildContext context) {
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '나도 한식 잘 먹는데',
                                               textAlign: TextAlign.left,
@@ -946,7 +943,7 @@ void plusDialog(BuildContext context) {
                                       height: 60,
                                       width: 60,
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
                                         'images/emotion/3.gif',
                                         fit: BoxFit.contain,
@@ -955,11 +952,11 @@ void plusDialog(BuildContext context) {
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '삼냥이 7',
                                               textAlign: TextAlign.left,
@@ -972,7 +969,7 @@ void plusDialog(BuildContext context) {
                                           ),
                                           Container(
                                             padding:
-                                                EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
                                             child: Text(
                                               '나랑 같은 곳이였나보네 ',
                                               textAlign: TextAlign.left,
@@ -1018,7 +1015,7 @@ void plusDialog(BuildContext context) {
                               ),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
                                     width: 280,
@@ -1027,14 +1024,14 @@ void plusDialog(BuildContext context) {
                                     child: TextField(
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12,
+                                          color: Colors.grey,
+                                          fontSize: 12,
                                           fontFamily: 'soojin'
                                       ),
                                       decoration: InputDecoration(
                                         hintText: '내용을 입력해주세요', // 힌트 텍스트 추가
                                         hintStyle:
-                                            TextStyle(color: Colors.grey),
+                                        TextStyle(color: Colors.grey),
                                       ),
                                     ),
                                   ),
@@ -1045,7 +1042,7 @@ void plusDialog(BuildContext context) {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image:
-                                            AssetImage('images/send/send.png'),
+                                        AssetImage('images/send/send.png'),
                                       ),
                                     ),
                                   ),
