@@ -31,7 +31,11 @@ class _writediaryState extends State<writediary> {
 
   //late String title;
   late String content = _contentEditController.text;
-  late String sendemotion = widget.emotion;
+  late String sendEmotion = widget.emotion;
+  DateTime dateTime = DateTime.now();
+  late String created_at = dateTime.toIso8601String();
+  bool _isChecked = false;
+  bool _isCheckedShare = false;
 
   Future<void> GetExample(String endpoint) async {
     try {
@@ -58,31 +62,19 @@ class _writediaryState extends State<writediary> {
 
     try {
       final postData = {
-        // 보낼 데이터 (BODY에 들어감)
-        //'title': title,
         'content': content,
-        'emotion': sendemotion,
+        'emotion': sendEmotion,
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
-        // 'like' : like,
       };
 
-      final response =
-          await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+      print(postData);
 
-      // 응답
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-
-      //title = response['title'];
+      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
     } catch (e) {
       print('Error: $e');
     }
   }
-
-// -------------------------------------------------------------------------
-  bool _isChecked = false;
-  bool _isCheckedShare = false;
 
   final _contentEditController = TextEditingController();
 
@@ -198,44 +190,44 @@ class _writediaryState extends State<writediary> {
               case 'smile':
                 return Image.asset(
                   'images/emotion/1.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
               case 'flutter':
                 return Image.asset(
                   'images/emotion/2.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
               case 'angry':
                 return Image.asset(
                   'images/emotion/3.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
               case 'annoying':
                 return Image.asset(
                   'images/emotion/4.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
               case 'tired':
                 return Image.asset(
                   'images/emotion/5.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
               case 'sad':
                 return Image.asset(
                   'images/emotion/6.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
               case 'calmness':
                 return Image.asset(
                   'images/emotion/7.gif',
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                 );
             }
           })(),
@@ -245,14 +237,20 @@ class _writediaryState extends State<writediary> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MyApp()));
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83),),
         ),
         actions: [
           IconButton(
               onPressed: () {
+                print("PostExample 실행");
                 PostExample("/api/diaries/create");
               },
-              icon: Icon(Icons.upload))
+              icon: Image.asset(
+                "images/send/upload.png",
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
+              ),)
         ],
       ),
       body: Container(
@@ -278,10 +276,9 @@ class _writediaryState extends State<writediary> {
                       child: Text(
                         formattedDate,
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Color(0xFF7D5A50),
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'fontnanum',
+                          fontFamily: 'soojin',
                         ),
                       ), //날짜 변경 해야함
                     ), // 날짜
@@ -326,8 +323,10 @@ class _writediaryState extends State<writediary> {
                                         isPlaying
                                             ? Icons.pause
                                             : Icons.play_arrow,
+
                                       ),
                                       iconSize: 20,
+                                      color: Color(0xFF968C83),
                                       onPressed: () async {
                                         if (isPlaying) {
                                           await audioPlayer.pause();
@@ -373,6 +372,7 @@ class _writediaryState extends State<writediary> {
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextField(
+                                style: TextStyle(fontFamily: 'soojin'),
                                 controller: _contentEditController,
                                 maxLines: 10,
                                 decoration: InputDecoration(
@@ -400,7 +400,12 @@ class _writediaryState extends State<writediary> {
                                   images.addAll(multiImage);
                                 });
                               },
-                              icon: Icon(Icons.add_a_photo_outlined, size: 30),
+                              icon: Image.asset(
+                                "images/main/gallery.png",
+                                width: 35,
+                                height: 35,
+                                color: Color(0xFF968C83),
+                              ),
                             ),
                           ),
                           Column(

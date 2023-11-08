@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  dio: ^5.0.0
   flutter:
     sdk: flutter
 
@@ -51,6 +52,8 @@ dependencies:
   permission_handler: ^11.0.1
   audioplayers: ^5.2.0
   dotted_border: ^2.1.0
+  fl_chart: ^0.60.0
+  flutter_local_notifications: ^16.1.0
 
 
 dev_dependencies:
@@ -83,6 +86,18 @@ flutter:
     - family: fontnanum
       fonts:
         - asset: fonts/NanumSquareNeo-Variable.ttf
+    - family: soojin
+      fonts:
+        - asset: fonts/ImcreSoojin.ttf
+    - family: GM
+      fonts:
+        - asset: fonts/GmarketSansTTFMedium.ttf
+    - family: GL
+      fonts:
+        - asset: fonts/GmarketSansTTFLight.ttf
+    - family: kim
+      fonts:
+        - asset: fonts/KimjungchulGothic-Regular.ttf
 
   assets:
     - images/

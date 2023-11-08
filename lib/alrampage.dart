@@ -49,35 +49,60 @@ class alrampage extends StatelessWidget {
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+
     return Center(
       child:Column(
         children: [
-          Expanded(child: SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              color: Colors.pink,
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.yellow,
-                    width: 300,
-                    height: 300,
-                  ),
-                  Container(
-                    color: Colors.black,
-                    width: 300,
-                    height: 300,
-                  )
-                ],
+          Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(10),
+                itemCount: 7,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    width: sizeX * 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 5,),
+                        Container(
+                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                            child: Text("오늘",style: TextStyle(fontFamily: '',fontSize: 17),)
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children:[
+                                  Icon(Icons.favorite),
+                                  Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),)
+                                ],
+                              ),
+                              SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
+                              SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
+                              SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  height: 10,
+                  thickness: 1.0,
+                  color: Colors.black,
+                ),
               ),
-
-            ),
-
-          )),
+          ),
           Container(
             width: double.infinity,
             height: 50,
             color: Colors.orange,
+            child: Text("알림은 30일 이후 순차적으로 지워집니다",style: TextStyle(fontFamily: "",fontSize: 13), textAlign: TextAlign.center),
           ),
         ],
 
@@ -87,7 +112,7 @@ class FirstScreen extends StatelessWidget {
   }
 }
 
-class SecondScreen extends StatelessWidget {
+class SecddScreen extends StatelessWidget {
 
   final name = '삼냥이';
   @override
@@ -481,6 +506,82 @@ class SecondScreen extends StatelessWidget {
 
 
 
+    );
+  }
+}
+class SecondScreen extends StatelessWidget {
+  final name = '삼냥이';
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(10),
+            itemCount: 7,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                width: sizeX * 0.9,
+                child: Container(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        padding:
+                        EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Image.asset(
+                          'images/emotion/5.gif',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding:
+                              EdgeInsets.fromLTRB(0, 3, 0, 0),
+                              child: Text(
+                                name,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                              ),
+                            ),
+                            Container(
+                              width: 100,
+                              padding:
+                              EdgeInsets.fromLTRB(0, 3, 0, 0),
+                              child: Text(
+                                '쪽지 내용',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 13),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) => Divider(
+              height: 10,
+              thickness: 1.0,
+              color: Color(0xff7D5A50),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

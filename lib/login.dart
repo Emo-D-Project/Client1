@@ -1,3 +1,5 @@
+import 'package:capston1/MyInfo.dart';
+import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'style.dart' as style;
@@ -29,6 +31,7 @@ class _MyLoginState extends State<MyLogin> {
 
   //카카오 어세스 토큰을 사용해 서버의 어세스 토큰 및 리프레시 토큰 어플에 저장 함수
   Future<void> authenticate(String token) async{
+    MyInfo myInfo = MyInfo().getMyInfo();
     tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
 
     final url = Uri.parse(
@@ -40,12 +43,19 @@ class _MyLoginState extends State<MyLogin> {
     });
 
     if(response.statusCode == 200){
-      var jsonResponse = jsonDecode(response.body);
+      String responseBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> jsonResponse = json.decode(responseBody);
 
       tokenManager.setAccessToken(jsonResponse["access_token"]);
       tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
       print("access 토큰: " + tokenManager.getAccessToken());
       print("refresh 토큰: " + tokenManager.getRefreshToken());
+
+      myInfo.setNickName(jsonResponse["properties"]["nickname"]);
+      print("nickname: " + myInfo.getNickName());
+
+      ApiManager apiManager = ApiManager().getApiManager();
+      apiManager.tokenManager = tokenManager;
     }
     else{
       throw Exception('Faild to authenticate');
@@ -53,6 +63,7 @@ class _MyLoginState extends State<MyLogin> {
   }
 
   Future<int> _handleKakaoLogin() async {
+    MyInfo myInfo = MyInfo().getMyInfo();
     OAuthToken? token;
 
     if (await isKakaoTalkInstalled()) {
@@ -61,6 +72,7 @@ class _MyLoginState extends State<MyLogin> {
         token = await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공 ${token.accessToken}');
         authenticate(token.accessToken); //토큰 전달
+
         return 1;
       } catch (error) {
         print(await KakaoSdk.origin);

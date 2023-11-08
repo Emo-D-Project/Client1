@@ -28,13 +28,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text(
           "EMO:D",
           style: TextStyle(
-            fontFamily: 'fontnanum',color: Color(0xFF968C83),
+            fontSize: 30,
+            fontFamily: 'kim',
+            color: Color(0xFF968C83),
           ),
         ),
         leading: IconButton(
@@ -72,7 +73,6 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      //extendBodyBehindAppBar: true,
       body: [home(), diaryshare(), calendar()][tab],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 5.0,

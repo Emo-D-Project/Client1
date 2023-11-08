@@ -76,16 +76,17 @@ class _diaryshareState extends State<diaryshare> {
             child: Text(
               formattedDate,
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
+                color: Color(0xFF7D5A50),
+                fontSize: 17,
                 fontWeight: FontWeight.w900,
-                fontFamily: 'fontnanum',
+                fontFamily: 'soojin',
               ),
             ), //날짜
           ),
 
           //감정 아이콘
-          Container(
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -225,10 +226,10 @@ class _diaryshareState extends State<diaryshare> {
               ],
             ),
             //color: Color.fromRGBO(248, 245, 235, 100),
-            width: 1000,
-            height: 60,
+           // width: 1000,
+            //height: 60,
             padding: const EdgeInsets.all(5.0),
-            margin: const EdgeInsets.all(5.0),
+            //margin: const EdgeInsets.all(5.0),
           ),
 
           Expanded(
@@ -332,7 +333,7 @@ class _diaryshareState extends State<diaryshare> {
                                   '친구들이랑 맛있게 밥도 먹고'
                                   ' 하늘도 너무 이뻤다!',
                                   // overflow:TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -487,8 +488,7 @@ class _diaryshareState extends State<diaryshare> {
                             children: [
                               Text(
                                 '오늘은 기분이 좋은 하루네요~~ 굳굳 ',
-                                // overflow:TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(fontSize: 16, fontFamily: 'soojin'),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -646,7 +646,9 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                fontFamily: 'soojin'
+                                              ),
                                             ),
                                           ),
                                           Container(
@@ -655,7 +657,7 @@ void plusDialog(BuildContext context) {
                                             child: Text(
                                               '난 오늘 너무 힘든 하루였어..',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -697,7 +699,8 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
@@ -711,7 +714,7 @@ void plusDialog(BuildContext context) {
                                               'ㅇㅇㅇㅇ'
                                               'ㅇㅇㅇㅇㅇ',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -753,7 +756,8 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                  fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
@@ -762,7 +766,7 @@ void plusDialog(BuildContext context) {
                                             child: Text(
                                               '난 오늘 일한다고 하늘을 한번도 못봤어ㅜ',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -804,7 +808,8 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                  fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
@@ -815,7 +820,7 @@ void plusDialog(BuildContext context) {
                                               '. 휴대폰 기종이 뭐야? '
                                               '쪽지 보낼게!!',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -857,7 +862,8 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                  fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
@@ -866,7 +872,7 @@ void plusDialog(BuildContext context) {
                                             child: Text(
                                               '아 배고파 ..',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -908,7 +914,8 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                  fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
@@ -917,7 +924,7 @@ void plusDialog(BuildContext context) {
                                             child: Text(
                                               '나도 한식 잘 먹는데',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -959,7 +966,8 @@ void plusDialog(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.brown),
+                                                  color: Color(0xFF7D5A50),
+                                                  fontFamily: 'soojin'),
                                             ),
                                           ),
                                           Container(
@@ -968,7 +976,7 @@ void plusDialog(BuildContext context) {
                                             child: Text(
                                               '나랑 같은 곳이였나보네 ',
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13),
+                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                                             ),
                                           ),
                                         ],
@@ -1021,6 +1029,7 @@ void plusDialog(BuildContext context) {
                                       style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 12,
+                                          fontFamily: 'soojin'
                                       ),
                                       decoration: InputDecoration(
                                         hintText: '내용을 입력해주세요', // 힌트 텍스트 추가
