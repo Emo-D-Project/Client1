@@ -11,6 +11,9 @@ class fullStatistics extends StatefulWidget {
 }
 
 class _fullStatisticsState extends State<fullStatistics> {
+
+  List<double> emotioncount = [200, 190, 150, 80, 50, 40, 5];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +49,13 @@ class _fullStatisticsState extends State<fullStatistics> {
                             style: TextStyle(
                                 fontSize: 19,
                                 color: Colors.brown,
-                                fontWeight: FontWeight.w900),
+                                fontWeight: FontWeight.w900
+                            ),
                             children: [
                               TextSpan(text: '현재까지 쌓인 감정이에요 :D'),
-                            ]))
+                            ]
+                        )
+                    )
                 ),
               ],
             ),
@@ -62,7 +68,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                 padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
                 width: double.infinity,
                 child: Column(
-                  // 감정 그래프
                   children: [
                     DottedBorder(
                       borderType: BorderType.RRect,
@@ -70,17 +75,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                       strokeWidth: 2,
                       radius: Radius.circular(20),
                       dashPattern: [13, 13],
-                      child: Container(
+                      child: SizedBox(//감정 그래프 (barchart)
                         width: 380,
-                        //padding: const EdgeInsets.all(8.0),
-                        //margin: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          //color: Color(0xFFD2C6BC),
-                          //borderRadius: BorderRadius.circular(15),
-
-                        ),
-
-                        //감정 그래프 (기둥같은거..)
                         child: Column(
                           children: [
                             Container(
@@ -93,18 +89,17 @@ class _fullStatisticsState extends State<fullStatistics> {
                                 child: CustomPaint(
                                   size: Size(400, 400),
                                   foregroundPainter: BarChart(
-                                    data: <double>[200, 190, 150, 80, 50, 40, 5],
+                                    data: emotioncount,
                                     labels: <String>[
-                                      '200',
-                                      '190',
-                                      '2015',
-                                      '2016',
-                                      '2017',
-                                      '2018',
-                                      '2019',
-
+                                      '${emotioncount[0].toInt()}',
+                                      '${emotioncount[1].toInt()}',
+                                      '${emotioncount[2].toInt()}',
+                                      '${emotioncount[3].toInt()}',
+                                      '${emotioncount[4].toInt()}',
+                                      '${emotioncount[5].toInt()}',
+                                      '${emotioncount[6].toInt()}',
                                     ],
-                                    color: Colors.deepOrange,
+                                    color: Color(0xFFF2E0E0),
                                   ),
                                 ),
                               ),
@@ -115,18 +110,25 @@ class _fullStatisticsState extends State<fullStatistics> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'images/emotion/1.gif'),
-                                        fit: BoxFit.contain,
+                                  Column(
+                                    children: [
+                                      // Container(
+                                      //   child: Text('${emotioncount[0].toInt()}',),
+                                      // ),
+                                      Container(
+                                        width: 35,
+                                        height: 35,
+                                        padding: const EdgeInsets.all(8.0),
+                                        margin: const EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/emotion/1.gif'),
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                   Container(
                                     width: 35,
@@ -141,14 +143,11 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                   ),
-
-
                                   Container(
                                     width: 35,
                                     height: 35,
                                     padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.fromLTRB(
-                                        8, 0, 8, 7),
+                                    margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(
@@ -157,8 +156,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                   ),
-
-
                                   Container(
                                     width: 37,
                                     height: 37,
@@ -172,7 +169,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                   ),
-
                                   Container(
                                     width: 35,
                                     height: 35,
@@ -186,7 +182,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                   ),
-
                                   Container(
                                     width: 35,
                                     height: 35,
@@ -200,8 +195,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                   ),
-
-
                                   Container(
                                     width: 35,
                                     height: 35,
@@ -225,8 +218,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                       ),
                     ),
                     SizedBox(height: 8,),
-
-
                     // 작성된 일기 수
                     Container(
                         width: 380,
@@ -447,9 +438,9 @@ class BarChart extends CustomPainter {
     List<Offset> coordinates = getCoordinates(size);
 
     drawBar(canvas, size, coordinates);
-    //drawXLabels(canvas, size, coordinates);
-    // drawYLabels(canvas, size, coordinates);
-    // drawLines(canvas, size, coordinates);
+    drawXLabels(canvas, size, coordinates);
+    //drawYLabels(canvas, size, coordinates);
+    //drawLines(canvas, size, coordinates);
   }
 
   @override
@@ -460,9 +451,9 @@ class BarChart extends CustomPainter {
   void setTextPadding(Size size) {
 
     // 세로 크기의 1/10만큼 텍스트 패딩
-    bottomPadding = size.height / 30;
+    bottomPadding = size.height / 15;
     // 가로 길이 1/10만큼 텍스트 패딩
-    leftPadding = size.width / 30;
+    leftPadding = size.width / 25;
   }
 
   void drawBar(Canvas canvas, Size size, List<Offset> coordinates) {
@@ -472,7 +463,7 @@ class BarChart extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     // 막대 그래프가 겹치지 않게 간격을 준다.
-    double barWidthMargin = size.width * 0.09;
+    double barWidthMargin = size.width * 0.08;
 
     for (int index = 0; index < coordinates.length; index++) {
       Offset offset = coordinates[index];
@@ -488,32 +479,34 @@ class BarChart extends CustomPainter {
     }
   }
 
-  // x축 텍스트(레이블)를 그린다.
-  // void drawXLabels(Canvas canvas, Size size, List<Offset> coordinates) {
-  //   // 화면 크기에 따라 유동적으로 폰트 크기를 계산한다.
-  //   double fontSize = calculateFontSize(labels[0], size, xAxis: true);
-  //
-  //   for (int index = 0; index < labels.length; index++) {
-  //     TextSpan span = TextSpan(
-  //       style: TextStyle(
-  //         color: Colors.black,
-  //         fontSize: fontSize,
-  //         fontFamily: 'Roboto',
-  //         fontWeight: FontWeight.w400,
-  //       ),
-  //       text: labels[index],
-  //     );
-  //     TextPainter tp =
-  //     TextPainter(text: span, textDirection: TextDirection.ltr);
-  //     tp.layout();
-  //
-  //     Offset offset = coordinates[index];
-  //     double dx = offset.dx;
-  //     double dy = size.height - tp.height;
-  //
-  //     tp.paint(canvas, Offset(dx, dy));
-  //   }
-  // }
+  //x축 텍스트(레이블)를 그린다.
+  void drawXLabels(Canvas canvas, Size size, List<Offset> coordinates) {
+    // 화면 크기에 따라 유동적으로 폰트 크기를 계산한다.
+    double fontSize = calculateFontSize(labels[0], size, xAxis: true);
+
+    for (int index = 0; index < labels.length; index++) {
+      TextSpan span = TextSpan(
+
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: fontSize,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w400,
+
+        ),
+        text: labels[index],
+      );
+      TextPainter tp =
+      TextPainter(text: span, textDirection: TextDirection.ltr);
+      tp.layout();
+
+      Offset offset = coordinates[index];
+      double dx = offset.dx+ (size.width * 0.08 / 3);
+      double dy = size.height - tp.height;
+
+      tp.paint(canvas, Offset(dx, dy));
+    }
+  }
   //
   // // Y축 텍스트(레이블)를 그린다. 최저값과 최고값을 Y축에 표시한다.
   // void drawYLabels(Canvas canvas, Size size, List<Offset> coordinates) {
@@ -543,19 +536,19 @@ class BarChart extends CustomPainter {
   // }
 
   // 화면 크기에 비례해 폰트 크기를 계산한다.
-  // double calculateFontSize(String value, Size size, {required bool xAxis}) {
-  //   // 글자수에 따라 폰트 크기를 계산하기 위함
-  //   int numberOfCharacters = value.length;
-  //   // width가 600일 때 100글자를 적어야 한다면, fontSize는 글자 하나당 6이어야 한다.
-  //   double fontSize = (size.width / numberOfCharacters) / data.length;
-  //
-  //   if (xAxis) {
-  //     fontSize *= textScaleFactorXAxis;
-  //   } else {
-  //     fontSize *= textScaleFactorYAxis;
-  //   }
-  //   return fontSize;
-  // }
+  double calculateFontSize(String value, Size size, {required bool xAxis}) {
+    // 글자수에 따라 폰트 크기를 계산하기 위함
+    int numberOfCharacters = value.length;
+    // width가 600일 때 100글자를 적어야 한다면, fontSize는 글자 하나당 6이어야 한다.
+    double fontSize = (size.width / numberOfCharacters) / data.length;
+
+    if (xAxis) {
+      fontSize *= textScaleFactorXAxis;
+    } else {
+      fontSize *= textScaleFactorYAxis;
+    }
+    return fontSize;
+  }
 
   // x축 & y축 구분하는 선을 그린다.
   // void drawLines(Canvas canvas, Size size, List<Offset> coordinates) {
