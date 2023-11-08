@@ -13,7 +13,7 @@ class MyBarGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BarData myBarData = BarData(
-      smail: emotioncount[0],
+      smile: emotioncount[0],
       flutter: emotioncount[1],
       angry: emotioncount[2],
       annoying: emotioncount[3],

@@ -53,6 +53,7 @@ dependencies:
   audioplayers: ^5.2.0
   dotted_border: ^2.1.0
   fl_chart: ^0.60.0
+  flutter_local_notifications: ^16.1.0
 
 
 dev_dependencies:

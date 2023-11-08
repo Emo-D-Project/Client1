@@ -1,7 +1,7 @@
 import 'individual_bar.dart';
 
 class BarData{
-  final double smail;
+  final double smile;
   final double flutter;
   final double angry;
   final double annoying;
@@ -10,7 +10,7 @@ class BarData{
   final double calmness;
 
   BarData({
-    required this.smail,
+    required this.smile,
     required this.flutter,
     required this.angry,
     required this.annoying,
@@ -22,7 +22,7 @@ class BarData{
   List<IndividualBar> barData = [];
   void initializeBarData(){
     barData = [
-      IndividualBar(x: 0, y: smail),
+      IndividualBar(x: 0, y: smile),
       IndividualBar(x: 1, y: flutter),
       IndividualBar(x: 2, y: angry),
       IndividualBar(x: 3, y: annoying),
