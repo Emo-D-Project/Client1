@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+class Event{
+  String title;
+  final DateTime date;
+  Event(this.title, this.date);
+
+}
+
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
 
@@ -11,7 +18,15 @@ class calendar extends StatefulWidget {
 
 class _calendarState extends State<calendar> {
   DateTime? selectedDay;
-  DateTime focusedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+
+
+  Map<DateTime, List> _events = {
+    DateTime(2023, 11, 25): ['Holiday'], // 2023년 11월 25일을 휴일로 추가
+    // 다른 이벤트를 필요에 따라 추가
+  };
+
+  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +52,27 @@ class _calendarState extends State<calendar> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: TableCalendar(
-
             rowHeight: 65,
             firstDay: DateTime.utc(2021),
             lastDay: DateTime.utc(2025),
-            focusedDay: DateTime.now(),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
             daysOfWeekHeight: 40,
             weekendDays: [DateTime.sunday],
+            holidayPredicate: (day){
+              return day.weekday >= 6;
+            },
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              setState(() {
+                _focusedDay = focusedDay;
+              });
+            },
+
             calendarBuilders: CalendarBuilders(
               dowBuilder: (context, day) {
                 switch (day.weekday) {
@@ -154,6 +183,11 @@ class _calendarState extends State<calendar> {
                 image: DecorationImage(
                     image: AssetImage('images/emotion/1.gif'))
               ),
+              holidayDecoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('images/emotion/1.gif'))
+              ),
+              holidayTextStyle: TextStyle(color: Colors.transparent),
         ),
       ),
     ),
