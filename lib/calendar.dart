@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Event{
-  String title;
-  final DateTime date;
-  Event(this.title, this.date);
-
+enum Emotion{
+  Angry,
 }
-
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
 
@@ -21,10 +17,12 @@ class _calendarState extends State<calendar> {
   DateTime _focusedDay = DateTime.now();
 
 
-  Map<DateTime, List> _events = {
-    DateTime(2023, 11, 25): ['Holiday'], // 2023년 11월 25일을 휴일로 추가
-    // 다른 이벤트를 필요에 따라 추가
-  };
+
+
+  Map<DateTime,dynamic> eventSource = {
+    DateTime(2023,11,3) : Emotion.Angry,
+    DateTime(2023,11,5) : Emotion.Angry,
+    };
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -72,8 +70,22 @@ class _calendarState extends State<calendar> {
                 _focusedDay = focusedDay;
               });
             },
-
             calendarBuilders: CalendarBuilders(
+              defaultBuilder: (context, day, _calendarState){
+                if(day.hashCode == DateTime(2023,11,3).hashCode){
+                  print("dateTimeCorrect");
+                  return IconButton(
+                      iconSize: 40,
+                      onPressed: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context)=>writediary(emotion: 'smile',)
+                        //     )
+                        // );
+                      }, icon: Image.asset('images/emotion/1.gif',width: 50,height: 50,));
+                }
+              },
               dowBuilder: (context, day) {
                 switch (day.weekday) {
                   case 1:
@@ -183,10 +195,12 @@ class _calendarState extends State<calendar> {
                 //image: DecorationImage(
                   //  image: AssetImage('images/emotion/1.gif'))
               //),
+
               holidayDecoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('images/emotion/1.gif'))
               ),
+
 
               holidayTextStyle: TextStyle(color: Colors.transparent),
         ),
