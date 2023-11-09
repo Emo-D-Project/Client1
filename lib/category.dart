@@ -7,6 +7,7 @@ import 'mypage.dart';
 import 'alramsetting.dart';
 import 'diaryReplay.dart';
 import 'notification.dart';
+import 'package:capston1/pieGraph/pie_chart.dart';
 
 class category extends StatefulWidget {
   const category({super.key});
@@ -151,7 +152,10 @@ class _categoryState extends State<category> {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: (){}, //=> FlutterLocalNotification.showNotification(),
+                      onPressed: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => const MyPieChart()));
+                      }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [
                           Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
