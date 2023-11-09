@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'statistics.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'dart:math';
+import 'package:intl/intl.dart';
+
+final String start = DateTime.now().toString();
+String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 
 class fullStatistics extends StatefulWidget {
   const fullStatistics({super.key});
@@ -13,6 +17,39 @@ class fullStatistics extends StatefulWidget {
 
 class _fullStatisticsState extends State<fullStatistics> {
   List<double> emotioncount = [200, 190, 150, 80, 50, 40, 5];
+
+  //사진
+
+  String smile = 'images/emotion/1.gif';
+  String flutter = 'images/emotion/2.gif';
+  String angry = 'images/emotion/3.gif';
+  String annoying = 'images/emotion/4.gif';
+  String tired = 'images/emotion/5.gif';
+  String sad = 'images/emotion/6.gif';
+  String calmness = 'images/emotion/7.gif';
+
+
+  int num_comment = 25; // 공유된 일기 중 가장 많은 댓글 수
+  int num_like = 3; // 공유된 일기 중 가장 많은 좋아요 수
+  String name = '수진'; //닉네임
+
+  // 가장 많이 일기를 작성한  시간대
+  String Dawn = '새벽(00~06)';
+  String morning = '아침(06~12)';
+  String Am = '오전(12~18)';
+  String Pm = '밤(18~00)';
+
+  // 이때까지 몇개의 일기를 작성한지
+  int count = 0; // 맨 처음 시작한 일기는 0으로 시작
+
+  void writeDiary() {
+    setState(() {
+      count++; // 다음 일기를 작성하면 1 증가
+    });
+  }
+
+  // 몇월 - 몇개로 가장 많은 일기 수
+  int w_diary = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +133,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       margin: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/1.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/1.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -109,8 +146,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       margin: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/2.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/2.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -122,8 +159,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                           const EdgeInsets.fromLTRB(8, 0, 8, 7),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/3.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/3.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -134,8 +171,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       margin: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/4.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/4.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -146,8 +183,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       margin: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/5.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/5.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -158,8 +195,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       margin: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/6.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/6.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -170,8 +207,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       margin: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image:
-                                              AssetImage('images/emotion/7.gif'),
+                                          image: AssetImage(
+                                              'images/emotion/7.gif'),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -235,7 +272,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             color: Colors.brown,
                                             fontWeight: FontWeight.w900),
                                         children: [
-                                          TextSpan(text: '177'),
+                                          TextSpan(text: '$count'),
                                           TextSpan(text: '개'),
                                         ]))),
                           ],
@@ -262,7 +299,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: '수진',
+                                          text: name,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
@@ -274,7 +311,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               fontSize: 18,
                                               color: Colors.brown)), //
                                       TextSpan(
-                                          text: '밤(18~00) ',
+                                          text: Pm,
                                           style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.w900,
@@ -332,19 +369,19 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               fontWeight: FontWeight.w900,
                                               color: Colors.brown)),
                                       TextSpan(
-                                          text: '9월 ',
+                                          text: '9월',
                                           style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.w900,
                                               color: Colors.brown)),
                                       TextSpan(
-                                          text: '에',
+                                          text: '에 ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
                                               color: Colors.brown)),
                                       TextSpan(
-                                          text: ' 25개 ',
+                                          text: '$w_diary',
                                           style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.w900,
@@ -376,7 +413,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                     // 가장 많이 공감 받은 일기
                     Container(
                       width: 380,
-                      height: 500,
+                      //height: 500,
                       padding: const EdgeInsets.all(8.0),
                       margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
@@ -385,26 +422,167 @@ class _fullStatisticsState extends State<fullStatistics> {
                       ),
                       child: Column(
                         children: [
+                          // ~ 님의 공유된 일기 중 가장 많은 공감을 얻은 일기에요~
                           Container(
-                            height: 100,
                             width: double.infinity,
-                            color: Colors.blue,
-                            margin: const EdgeInsets.only(bottom: 8.0),
+                            //      color: Colors.blue,
+                            //margin: const EdgeInsets.only(bottom: 8.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                    //color: Colors.cyan,
+                                    width: 300,
+                                    height: 40,
+                                    padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                                    child: RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                            children: [
+                                              TextSpan(text: name), //닉네임
+                                              TextSpan(text: '님의 공유된 일기 중'), //일
+                                            ]))),
+                                Container(
+                                    width: 300,
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                            children: [
+                                              TextSpan(
+                                                  text: '가장 많은 공감을 얻은 일기에요 :D'),
+                                            ])))
+                              ],
+                            ),
                           ),
+
+                          // 가장 공감 많이 받은 일기 보여줌
                           Container(
-                            height: 100,
-                            width: double.infinity,
-                            color: Colors.green,
-                            margin: const EdgeInsets.only(bottom: 8.0),
+                            width: 380,
+                            padding: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 380,
+                                  //  height: 65,
+                                  color: Colors.white54,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                        child: Text(
+                                          formattedDate,
+                                          style: TextStyle(
+                                            color: Color(0xFF7D5A50),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'soojin',
+                                          ),
+                                        ), //날짜
+                                      ),
+                                      Container(
+                                        width: 35,
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image:
+                                                AssetImage(calmness),
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+
+                                SingleChildScrollView(
+                                  child: Container(
+                                    width: 200,
+                                    height: 150, // 이미지 높이 조절
+                                    child: PageView(
+                                      scrollDirection: Axis.horizontal,
+                                      // 수평으로 스크롤
+                                      children: <Widget>[
+                                        Container(
+                                          child: Center(
+                                              child: Image.asset(
+                                                  'images/send/sj3.jpg')),
+                                        ),
+                                        Container(
+                                          child: Center(
+                                              child: Image.asset(
+                                                  'images/send/sj1.jpg')),
+                                        ),
+                                        Container(
+                                          child: Center(
+                                              child: Image.asset(
+                                                  'images/send/sj2.jpg')),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                // 텍스트 컨테이너
+                                Container(
+                                    width: 380,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        35, 10, 35, 10),
+                                    color: Colors.white54,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '오늘 하루 아주 만족스러운 날이다. '
+                                          '친구들이랑 맛있게 밥도 먹고'
+                                          ' 하늘도 너무 이뻤다!',
+                                          // overflow:TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'soojin'),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    )),
+                              ],
+                            ),
                           ),
+                          // ~개의 공감과 ~개의 댓글을 받았어요
                           Container(
-                            height: 100,
-                            width: double.infinity,
-                            color: Colors.red,
-                          ),
+                            //  color: Colors.cyan,
+                              width: 300,
+                              //height: 40,
+                              padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                              child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                      children: [
+                                        TextSpan(text: '$num_comment'), //댓글
+                                        TextSpan(text: '개의 공감과 '), //일
+
+                                        TextSpan(text: '$num_like'), //댓글
+                                        TextSpan(text: '개의 댓글을 받았어요'), //일
+                                      ]))),
                         ],
                       ),
-
                     ),
                     SizedBox(
                       height: 15,
