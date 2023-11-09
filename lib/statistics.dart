@@ -16,7 +16,8 @@ class statistics extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           "EMO:D",
-          style: TextStyle(color: Color(0xFF968C83)),
+          style: TextStyle(
+              color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
         ),
         leading: IconButton(
           onPressed: () {

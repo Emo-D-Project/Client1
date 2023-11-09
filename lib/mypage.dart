@@ -111,8 +111,8 @@ class _mypageState extends State<mypage> {
                           child: (() {
                             if (login == mine) {
                               return Text(
-                                "해지니",
-                                //myInfo.getNickName(),
+                                //"해지니",
+                                myInfo.getNickName(),
                                 style: TextStyle(
                                     fontSize: 28,
                                     fontFamily: 'soojin',

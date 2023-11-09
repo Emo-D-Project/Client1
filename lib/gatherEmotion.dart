@@ -2,6 +2,13 @@ import 'package:capston1/diaryReplay.dart';
 import 'package:flutter/material.dart';
 import 'statistics.dart';
 
+class ListData{
+  final DateTime date;
+
+  ListData(this.date);
+}
+
+
 class gatherEmotion extends StatefulWidget {
   const gatherEmotion({super.key});
 
@@ -15,7 +22,8 @@ class _gatherEmotionState extends State<gatherEmotion> {
   List<String> items = ['기본','기쁨','슬픔','화남','짜증','피곤','설렘'];
   String? selectedItem = '기본';
 
-  
+  final List<ListData> datas = [
+ ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,8 @@ class _gatherEmotionState extends State<gatherEmotion> {
         backgroundColor: Colors.transparent,
         title: Text(
           "EMO:D",
-          style: TextStyle(color: Color(0xFF968C83)),
+          style: TextStyle(
+              color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
         ),
         leading: IconButton(
           onPressed: () {
