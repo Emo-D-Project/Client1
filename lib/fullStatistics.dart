@@ -60,7 +60,7 @@ class _fullStatisticsState extends State<fullStatistics> {
         backgroundColor: Colors.transparent,
         title: Text(
           "EMO:D",
-          style: TextStyle(color: Color(0xFF968C83)),
+          style: TextStyle(fontSize: 30, fontFamily: 'kim',color: Color(0xFF968C83),),
         ),
         leading: IconButton(
           onPressed: () {
@@ -84,6 +84,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                             style: TextStyle(
+                              fontFamily: 'soojin',
                                 fontSize: 19,
                                 color: Colors.brown,
                                 fontWeight: FontWeight.w900),
@@ -128,22 +129,22 @@ class _fullStatisticsState extends State<fullStatistics> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 35,
-                                      height: 35,
-                                      margin: const EdgeInsets.all(8.0),
+                                      width: 33,
+                                      height: 33,
+                                      margin: const EdgeInsets.all(6.3),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
-                                              'images/emotion/1.gif'),
+                                              'images/emotion/1.gif',),
                                           fit: BoxFit.contain,
                                         ),
                                       ),
                                     ),
 
                                     Container(
-                                      width: 35,
-                                      height: 35,
-                                      margin: const EdgeInsets.all(8.0),
+                                      width: 33,
+                                      height: 33,
+                                      margin: const EdgeInsets.all(6.5),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -153,8 +154,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     Container(
-                                      width: 35,
-                                      height: 35,
+                                      width: 33,
+                                      height: 33,
                                       margin:
                                           const EdgeInsets.fromLTRB(8, 0, 8, 7),
                                       decoration: BoxDecoration(
@@ -166,9 +167,9 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     Container(
-                                      width: 37,
-                                      height: 37,
-                                      margin: const EdgeInsets.all(8.0),
+                                      width: 33,
+                                      height: 33,
+                                      margin: const EdgeInsets.all(6.5),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -178,9 +179,9 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     Container(
-                                      width: 35,
-                                      height: 35,
-                                      margin: const EdgeInsets.all(8.0),
+                                      width: 33,
+                                      height: 33,
+                                      margin: const EdgeInsets.all(6.5),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -190,9 +191,9 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     Container(
-                                      width: 35,
-                                      height: 35,
-                                      margin: const EdgeInsets.all(8.0),
+                                      width: 33,
+                                      height: 33,
+                                      margin: const EdgeInsets.all(6.5),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -202,9 +203,9 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     Container(
-                                      width: 35,
-                                      height: 35,
-                                      margin: const EdgeInsets.all(8.0),
+                                      width: 33,
+                                      height: 33,
+                                      margin: const EdgeInsets.all(6.5),
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -248,6 +249,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                         style: TextStyle(
+                                            fontFamily: 'soojin',
                                             fontSize: 18,
                                             color: Colors.brown,
                                             fontWeight: FontWeight.w600),
@@ -268,6 +270,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                         style: TextStyle(
+                                            fontFamily: 'soojin',
                                             fontSize: 25,
                                             color: Colors.brown,
                                             fontWeight: FontWeight.w900),
@@ -301,24 +304,28 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       TextSpan(
                                           text: name,
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
                                               color: Colors.brown)), //닉네임
                                       TextSpan(
                                           text: ' 님은 ',
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
                                               color: Colors.brown)), //
                                       TextSpan(
                                           text: Pm,
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontSize: 25,
                                               fontWeight: FontWeight.w900,
                                               color: Colors.brown)), //시간
                                       TextSpan(
                                           text: '에',
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
                                               color: Colors.brown)),
@@ -331,6 +338,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                         style: TextStyle(
+                                            fontFamily: 'soojin',
                                             fontSize: 18,
                                             color: Colors.brown,
                                             fontWeight: FontWeight.w600),
@@ -363,32 +371,30 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: '2023년 ',
+                                          text: '2023년 9월',
                                           style: TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.brown)),
-                                      TextSpan(
-                                          text: '9월',
-                                          style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontSize: 25,
                                               fontWeight: FontWeight.w900,
                                               color: Colors.brown)),
                                       TextSpan(
                                           text: '에 ',
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
                                               color: Colors.brown)),
                                       TextSpan(
                                           text: '$w_diary',
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontSize: 25,
                                               fontWeight: FontWeight.w900,
                                               color: Colors.brown)),
                                       TextSpan(
                                           text: '로',
                                           style: TextStyle(
+                                              fontFamily: 'soojin',
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18,
                                               color: Colors.brown)),
@@ -401,6 +407,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                         style: TextStyle(
+                                            fontFamily: 'soojin',
                                             fontSize: 18,
                                             color: Colors.brown,
                                             fontWeight: FontWeight.w600),
@@ -438,6 +445,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         textAlign: TextAlign.center,
                                         text: TextSpan(
                                             style: TextStyle(
+                                                fontFamily: 'soojin',
                                                 fontSize: 18,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600),
@@ -452,6 +460,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         textAlign: TextAlign.center,
                                         text: TextSpan(
                                             style: TextStyle(
+                                                fontFamily: 'soojin',
                                                 fontSize: 18,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600),
@@ -571,6 +580,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
                                       style: TextStyle(
+                                          fontFamily: 'soojin',
                                           fontSize: 18,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600),
