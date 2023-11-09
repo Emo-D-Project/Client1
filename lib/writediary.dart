@@ -292,7 +292,7 @@ class _writediaryState extends State<writediary> {
                           children: [
                             Container(
                                 margin: EdgeInsets.all(10),
-                                color: Colors.amber,
+                                //color: Colors.amber,
                                 width: 200, height: 150,
                                 child: GridView.builder(
                                     padding: EdgeInsets.all(0),
@@ -312,9 +312,9 @@ class _writediaryState extends State<writediary> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             image: DecorationImage(
-                                                fit: BoxFit.cover,
+                                               fit: BoxFit.cover,
                                                 image: FileImage(
-                                                  File(images[index]!.path),
+                                                  File(images[index]!.path ),
                                                 ))),
                                       );
                                     })),

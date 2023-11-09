@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 enum Emotion{
-  Angry,
+  Angry, Flutter
 }
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
@@ -15,9 +15,6 @@ class calendar extends StatefulWidget {
 class _calendarState extends State<calendar> {
   DateTime? selectedDay;
   DateTime _focusedDay = DateTime.now();
-
-
-
 
   Map<DateTime,dynamic> eventSource = {
     DateTime(2023,11,3) : Emotion.Angry,
@@ -72,8 +69,18 @@ class _calendarState extends State<calendar> {
             },
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, _calendarState){
-                if(day.hashCode == DateTime(2023,11,3).hashCode){
+                // 특정 날짜 캐릭터 아이콘 넣어주기
+                if(day.hashCode == DateTime(2023,11,3).hashCode){ // 데이트 타임 대신 Diary.DateTime
                   print("dateTimeCorrect");
+                  String image;
+                  switch(Emotion){
+                    case Emotion.Angry:
+                      image = 'images/emotion/3.gif'; // 앵그리 이거 아님 바꿔야됨
+                      break;
+                    case Emotion.Flutter:
+                      image = 'images/emotion/2.gif';
+                      break;
+                  }
                   return IconButton(
                       iconSize: 40,
                       onPressed: () {
@@ -190,11 +197,6 @@ class _calendarState extends State<calendar> {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
-              //todayTextStyle: TextStyle(color: Colors.transparent),
-              //todayDecoration: BoxDecoration(
-                //image: DecorationImage(
-                  //  image: AssetImage('images/emotion/1.gif'))
-              //),
 
               holidayDecoration: BoxDecoration(
                   image: DecorationImage(
