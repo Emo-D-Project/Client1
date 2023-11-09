@@ -347,9 +347,35 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                       Container(
                                         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                         child: DottedBorder(
+                                          borderType: BorderType.RRect,
+                                          color: Color(0xFF745A52),
+                                          strokeWidth: 2,
+                                          radius: Radius.circular(20),
+                                          dashPattern: [13, 13],
                                             child: SizedBox(
                                                 width: 380,
-                                                height: 150,),
+                                                height: 150,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset('images/main/free-icon-communication-3820107.png',width: 20, height: 20),
+                                                  Column(
+                                                    children: [
+                                                      Container(
+                                                        width:200,
+                                                        height: 70,
+                                                        color: Colors.cyan,
+                                                      ),
+                                                      Container(
+                                                        width: 200,
+                                                        height: 70,
+                                                        color: Colors.amber,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                       ),
                                       ),
                                     ],

@@ -28,12 +28,10 @@ List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
 
 class _writediaryState extends State<writediary> {
   ApiManager apiManager = ApiManager().getApiManager();
-
-  //late String title;
+  
+  DateTime dateTime = DateTime.now();
   late String content = _contentEditController.text;
   late String sendEmotion = widget.emotion;
-  DateTime dateTime = DateTime.now();
-  late String created_at = dateTime.toIso8601String();
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
@@ -307,6 +305,7 @@ class _writediaryState extends State<writediary> {
                                     ),
                                     itemBuilder:
                                         (BuildContext context, int index) {
+                                          print("Image size: ${File(images[index]!.path).lengthSync()} bytes");
                                       return Container(
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -315,7 +314,8 @@ class _writediaryState extends State<writediary> {
                                                fit: BoxFit.cover,
                                                 image: FileImage(
                                                   File(images[index]!.path ),
-                                                ))),
+                                                ),
+                                            )),
                                       );
                                     })),
                             Row(
