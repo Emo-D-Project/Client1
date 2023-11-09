@@ -59,6 +59,7 @@ class _mypageState extends State<mypage> {
 
   @override
   Widget build(BuildContext context) {
+    print("item1 ${widget.item1}");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -175,9 +176,13 @@ class _mypageState extends State<mypage> {
                                   color: Colors.transparent,
                                   width: 300,
                                   height: 70,
-                                  child: _showContainer(
-                                    item2: widget.item1,
-                                  ),
+                                  child: (() {
+                                    if (widget.item1 != 0) {
+                                      _showContainer(
+                                        item2: widget.item1,
+                                      );
+                                    }
+                                  })(),
                                 ),
                               ),
                             ),
@@ -295,7 +300,6 @@ void plusDialog(context) {
                   onPressed: () {
                     if (answer[0] == null) {
                       _showDialogex(context, 0);
-                      mypage(item1: 0);
                     } else
                       ;
                   },
@@ -439,6 +443,8 @@ Future<dynamic> _showDialogex(BuildContext context, int item) {
               //print(question);
               //print(answer);
               Navigator.of(context).pop();
+              mypage(item1: item);
+              print("item: $item");
             }, //showContainer로 데이터 넘기기 // 디비에 저장하기
             child: Text('확인',
                 style: TextStyle(
@@ -455,7 +461,7 @@ class _showContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(item2);
+    print("item2 $item2");
     return Container(
       //margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       width: 300,
@@ -496,13 +502,11 @@ class _showContainer extends StatelessWidget {
                 width: 25,
               ),
               Container(
-                child: (() {
-                  return Text("${answer[item2]}",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontFamily: 'soojin',
-                      ));
-                })(),
+                child: Text("${answer[item2]}",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontFamily: 'soojin',
+                    )),
               )
             ],
           ),
