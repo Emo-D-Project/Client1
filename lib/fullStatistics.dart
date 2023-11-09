@@ -383,6 +383,28 @@ class _fullStatisticsState extends State<fullStatistics> {
                         color: Color(0xFFD7D4CC),
                         borderRadius: BorderRadius.circular(15),
                       ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: double.infinity,
+                            color: Colors.blue,
+                            margin: const EdgeInsets.only(bottom: 8.0),
+                          ),
+                          Container(
+                            height: 100,
+                            width: double.infinity,
+                            color: Colors.green,
+                            margin: const EdgeInsets.only(bottom: 8.0),
+                          ),
+                          Container(
+                            height: 100,
+                            width: double.infinity,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+
                     ),
                     SizedBox(
                       height: 15,

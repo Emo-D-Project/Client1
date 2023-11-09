@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 class alrampage extends StatelessWidget {
   const alrampage({super.key});
 
+  final String cat_image = 'images/emotion/catimage.png';
+  final IconData f_icon = Icons.favorite;
+  final IconData m_icon =  Icons.mail;
+  final String send_image = 'images/emotion/send/send.png';
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -55,55 +59,71 @@ class FirstScreen extends StatelessWidget {
       child:Column(
         children: [
           Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(10),
-                itemCount: 7,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: sizeX * 0.9,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 5,),
-                        Container(
-                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                            child: Text("오늘",style: TextStyle(fontFamily: '',fontSize: 17),)
+            child: ListView.separated(
+              padding: const EdgeInsets.all(10),
+              itemCount: 7,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: sizeX * 0.9,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 5,),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                          child: Text("오늘",style: TextStyle(fontFamily: '',fontSize: 17,color: Colors.brown),)
+                      ),
+                      SizedBox(height: 5,),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children:[
+                                Icon(Icons.favorite),
+                                Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),)
+                              ],
+                            ),
+                            SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
+                            SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
+                            SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
+                          ],
                         ),
-                        SizedBox(height: 5,),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children:[
-                                  Icon(Icons.favorite),
-                                  Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),)
-                                ],
-                              ),
-                              SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
-                              SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
-                              SizedBox(child: Text("알람",style: TextStyle(fontFamily: '',fontSize: 15),),),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => Divider(
-                  height: 10,
-                  thickness: 1.0,
-                  color: Colors.black,
+                      ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 10,
+                thickness: 1.0,
+                color:Color(0xFFCEC5BE),
+              ),
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                height: 1,
+                color:Color(0xFFCEC5BE),
+              ),
+              Container(
+                width: double.infinity,
+                height: 50,
+                //    color: Colors.orange,
+                child: Center(
+                  child: Text(
+                    "알림은 30일 이후 순차적으로 지워집니다",
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
+
+            ],
           ),
-          Container(
-            width: double.infinity,
-            height: 50,
-            color: Colors.orange,
-            child: Text("알림은 30일 이후 순차적으로 지워집니다",style: TextStyle(fontFamily: "",fontSize: 13), textAlign: TextAlign.center),
-          ),
+
         ],
 
       ),
@@ -206,7 +226,7 @@ class SecddScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                     name,
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
@@ -221,7 +241,7 @@ class SecddScreen extends StatelessWidget {
                                     child: Text(
                                       '우와 나 라멘 진짜 좋아하는데!! 저기 맛있겠다 저기는 어디야?'
                                           '하.. 갑자기 또 라멘 먹고싶네'
-                                          ,
+                                      ,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 13),
                                       overflow: TextOverflow.ellipsis,
@@ -312,7 +332,7 @@ class SecddScreen extends StatelessWidget {
                                     padding:
                                     EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                     name,
+                                      name,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                           fontSize: 13,
