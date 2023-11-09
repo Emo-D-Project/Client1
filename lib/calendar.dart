@@ -178,15 +178,16 @@ class _calendarState extends State<calendar> {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
-              todayTextStyle: TextStyle(color: Colors.transparent),
-              todayDecoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('images/emotion/1.gif'))
-              ),
+              //todayTextStyle: TextStyle(color: Colors.transparent),
+              //todayDecoration: BoxDecoration(
+                //image: DecorationImage(
+                  //  image: AssetImage('images/emotion/1.gif'))
+              //),
               holidayDecoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('images/emotion/1.gif'))
               ),
+
               holidayTextStyle: TextStyle(color: Colors.transparent),
         ),
       ),

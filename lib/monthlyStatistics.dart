@@ -72,7 +72,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                 initiallyExpanded: false,
                 //backgroundColor: Colors.white,
                 children: <Widget>[
-                  Container(child: Padding(padding: EdgeInsets.all(5),
+                  Padding(padding: EdgeInsets.all(5),
                     child: Expanded(
                       child: SingleChildScrollView(
                         child: Container(
@@ -91,12 +91,18 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                   dashPattern: [13, 13],
                                   child: SizedBox(
                                     width: 400,
-                                    child: Column(
+                                    height: 250,
+                                    child: Row(
                                       children: [
                                         SizedBox(
-                                          height: 250,
-
-
+                                          width: 200,
+                                          child: MyPieChart(),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Container(color: Colors.cyan,),
+                                            Container(color: Colors.deepOrange,),
+                                          ],
                                         ),
 
                                       ],
@@ -311,7 +317,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                         ),
                       ),
                     )
-                  ),
                   ),
                 ],
               ),

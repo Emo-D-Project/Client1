@@ -153,8 +153,6 @@ class _categoryState extends State<category> {
                         backgroundColor: Colors.white,
                       ),
                       onPressed: (){
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const MyPieChart()));
                       }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [
