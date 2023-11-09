@@ -163,7 +163,8 @@ class alrampage extends StatelessWidget {
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: Colors.transparent,
-            title: Text(""),
+            title: Text("EMO:D", style: TextStyle(
+                color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),),
             bottom: TabBar(
               labelColor: Colors.black,
               indicatorColor: Colors.brown,

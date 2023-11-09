@@ -1,6 +1,9 @@
 import 'package:capston1/diaryReplay.dart';
 import 'package:flutter/material.dart';
 import 'statistics.dart';
+import 'package:intl/intl.dart';
+
+
 
 class ListData{
   final DateTime date;
@@ -23,6 +26,10 @@ class _gatherEmotionState extends State<gatherEmotion> {
   String? selectedItem = '기본';
 
   final List<ListData> datas = [
+    ListData(DateTime(2023,10)),
+    ListData(DateTime(2023,09)),
+    ListData(DateTime(2023,08)),
+
  ];
 
   @override
@@ -58,7 +65,7 @@ class _gatherEmotionState extends State<gatherEmotion> {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.all(10),
-                itemCount: 5,
+                itemCount: datas.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                     width: sizeX * 0.9,

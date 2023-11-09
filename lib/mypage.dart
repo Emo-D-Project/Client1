@@ -5,7 +5,9 @@ import 'category.dart';
 import 'network/api_manager.dart';
 
 class mypage extends StatefulWidget {
-  const mypage({super.key});
+  const mypage({super.key, this.item1});
+
+  final item1;
 
   @override
   State<mypage> createState() => _mypageState();
@@ -21,7 +23,7 @@ class _mypageState extends State<mypage> {
   //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
   String login = "mine"; // 내 로그인 정보 담아두고
-  String mine = "mibe"; // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
+  String mine = "mine"; // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
   //String another = "another";
 
   Future<void> GetMyPage(String endpoint) async {
@@ -57,6 +59,7 @@ class _mypageState extends State<mypage> {
 
   @override
   Widget build(BuildContext context) {
+    print("item1 ${widget.item1}");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -114,8 +117,8 @@ class _mypageState extends State<mypage> {
                           child: (() {
                             if (login == mine) {
                               return Text(
-                                //"해지니",
-                                myInfo.getNickName(),
+                                "해지니",
+                                //myInfo.getNickName(),
                                 style: TextStyle(
                                     fontSize: 28,
                                     fontFamily: 'soojin',
@@ -162,48 +165,26 @@ class _mypageState extends State<mypage> {
                         ),
                         SizedBox(
                           width: 300,
-                          height: 430,
+                          //height: 430,
                           child: Expanded(
                             child: SingleChildScrollView(
                               padding: const EdgeInsets.all(10),
+                              child: Container(
+                                //width: sizeX * 0.9,
                                 child: Container(
-                                  //width: sizeX * 0.9,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        color: Colors.transparent,
-                                        width: 300, height: 70,
-                                        child: _showContainer(item2: 0,),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        color: Colors.transparent,
-                                        width: 300, height: 70,
-                                        child: _showContainer(item2: 1,),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        color: Colors.transparent,
-                                        width: 300, height: 70,
-                                        child: _showContainer(item2: 2,),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        color: Colors.transparent,
-                                        width: 300, height: 70,
-                                        child: _showContainer(item2: 3,),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        color: Colors.transparent,
-                                        width: 300, height: 70,
-                                        child: _showContainer(item2: 4,),
-                                      ),
-                                    ],
-                                  ),
+                                  margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  color: Colors.transparent,
+                                  width: 300,
+                                  height: 70,
+                                  child: (() {
+                                    if (widget.item1 != 0) {
+                                      _showContainer(
+                                        item2: widget.item1,
+                                      );
+                                    }
+                                  })(),
                                 ),
+                              ),
                             ),
                           ),
                         ),
@@ -222,7 +203,7 @@ class _mypageState extends State<mypage> {
                             }
                           })(),
                         ),
-                        Container(
+                        /*Container(
                           width: sizeX * 0.8,
                           child: (() {
                             if (login != mine) {
@@ -258,12 +239,11 @@ class _mypageState extends State<mypage> {
                               );
                             }
                           })(),
-                        )
+                        )*/
                       ],
                     ),
                   ],
                 ),
-
               ),
             ],
           ),
@@ -271,8 +251,6 @@ class _mypageState extends State<mypage> {
       ),
     );
   }
-
-
 }
 
 //질문 선택 창
@@ -412,7 +390,6 @@ void plusDialog(context) {
   );
 }
 
-
 Future<dynamic> _showDialogex(BuildContext context, int item) {
   final sizeY = MediaQuery.of(context).size.height;
 
@@ -443,7 +420,6 @@ Future<dynamic> _showDialogex(BuildContext context, int item) {
           ),
         ),
         controller: _answerEditController,
-
       ),
       actions: [
         ElevatedButton(
@@ -463,10 +439,12 @@ Future<dynamic> _showDialogex(BuildContext context, int item) {
             onPressed: () {
               String answerText = _answerEditController.text;
               //print(answerText);
-              answer[item]= answerText;
+              answer[item] = answerText;
               //print(question);
               //print(answer);
               Navigator.of(context).pop();
+              mypage(item1: item);
+              print("item: $item");
             }, //showContainer로 데이터 넘기기 // 디비에 저장하기
             child: Text('확인',
                 style: TextStyle(
@@ -476,8 +454,6 @@ Future<dynamic> _showDialogex(BuildContext context, int item) {
   );
 }
 
-
-
 //마이페이지에 나타나는 질답컨테이너
 class _showContainer extends StatelessWidget {
   const _showContainer({Key? key, this.item2}) : super(key: key);
@@ -485,6 +461,7 @@ class _showContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("item2 $item2");
     return Container(
       //margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       width: 300,
@@ -525,21 +502,12 @@ class _showContainer extends StatelessWidget {
                 width: 25,
               ),
               Container(
-                child: (() {
-                  if(answer[item2]==null) {
-                    return Text(" ");
-                  }
-                  else{
-                    return Text(
-                      "${answer[item2]}",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontFamily: 'soojin',
-                      ),
-                    );
-                  }
-                })(),
-              ),
+                child: Text("${answer[item2]}",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontFamily: 'soojin',
+                    )),
+              )
             ],
           ),
         ],
@@ -732,59 +700,3 @@ Future<dynamic> _showchadanDialog(BuildContext context) {
     ),
   );
 }
-
-// Container _showContainer(){//클래스로 바꾸고 데이터 받아오기
-//   return Container(
-//     margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-//     width: 300,
-//     height: 70,
-//     decoration: BoxDecoration(
-//       color: Colors.white,
-//       borderRadius: BorderRadius.all(Radius.circular(10)),
-//     ),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Row(
-//           children: [
-//             SizedBox(
-//               width: 20,
-//             ),
-//             Container(
-//               child: Text(
-//                 "$question[]",
-//                 style: TextStyle(
-//                     fontFamily: 'soojin',
-//                     fontSize: 17,
-//                     color: Color(0xFF7D5A50)),
-//               ),
-//             ),
-//           ],
-//         ),
-//         Container(
-//           //칸 나누는 줄
-//           color: Colors.grey,
-//           width: 280, height: 1,
-//           margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
-//         ),
-//         Row(
-//           children: [
-//             SizedBox(
-//               width: 25,
-//             ),
-//             Container(
-//               child: Text(
-//                 "$_contentEditController",
-//                 style: TextStyle(
-//                   fontSize: 17, fontFamily: 'soojin',),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ],
-//     ),
-//   );
-// }
-
-

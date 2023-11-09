@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Event{
-  String title;
-  final DateTime date;
-  Event(this.title, this.date);
-
+enum Emotion{
+  Angry, Flutter
 }
-
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
 
@@ -20,11 +16,10 @@ class _calendarState extends State<calendar> {
   DateTime? selectedDay;
   DateTime _focusedDay = DateTime.now();
 
-
-  Map<DateTime, List> _events = {
-    DateTime(2023, 11, 25): ['Holiday'], // 2023년 11월 25일을 휴일로 추가
-    // 다른 이벤트를 필요에 따라 추가
-  };
+  Map<DateTime,dynamic> eventSource = {
+    DateTime(2023,11,3) : Emotion.Angry,
+    DateTime(2023,11,5) : Emotion.Angry,
+    };
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -72,8 +67,32 @@ class _calendarState extends State<calendar> {
                 _focusedDay = focusedDay;
               });
             },
-
             calendarBuilders: CalendarBuilders(
+              defaultBuilder: (context, day, _calendarState){
+                // 특정 날짜 캐릭터 아이콘 넣어주기
+                if(day.hashCode == DateTime(2023,11,3).hashCode){ // 데이트 타임 대신 Diary.DateTime
+                  print("dateTimeCorrect");
+                  String image;
+                  switch(Emotion){
+                    case Emotion.Angry:
+                      image = 'images/emotion/3.gif'; // 앵그리 이거 아님 바꿔야됨
+                      break;
+                    case Emotion.Flutter:
+                      image = 'images/emotion/2.gif';
+                      break;
+                  }
+                  return IconButton(
+                      iconSize: 40,
+                      onPressed: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context)=>writediary(emotion: 'smile',)
+                        //     )
+                        // );
+                      }, icon: Image.asset('images/emotion/1.gif',width: 50,height: 50,));
+                }
+              },
               dowBuilder: (context, day) {
                 switch (day.weekday) {
                   case 1:
@@ -178,15 +197,12 @@ class _calendarState extends State<calendar> {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
-              //todayTextStyle: TextStyle(color: Colors.transparent),
-              //todayDecoration: BoxDecoration(
-                //image: DecorationImage(
-                  //  image: AssetImage('images/emotion/1.gif'))
-              //),
+
               holidayDecoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('images/emotion/1.gif'))
               ),
+
 
               holidayTextStyle: TextStyle(color: Colors.transparent),
         ),
