@@ -5,9 +5,9 @@ import 'category.dart';
 import 'network/api_manager.dart';
 
 class mypage extends StatefulWidget {
-  const mypage({super.key, this.item1});
+  mypage({super.key, this.item1});
 
-  final item1;
+  var item1;
 
   @override
   State<mypage> createState() => _mypageState();
@@ -19,12 +19,25 @@ final _answerEditController = TextEditingController(); //질문에 대한 답변
 List question = ['최애 영화', '최애 노래', '최애 드라마', '취미', 'MBTI'];
 List answer = [null, null, null, null, null];
 
+enum question_enum {
+  movie, music, drama, hobby, mbti
+}
+
 class _mypageState extends State<mypage> {
   //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
   String login = "mine"; // 내 로그인 정보 담아두고
   String mine = "mine"; // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
   //String another = "another";
+
+// 화면을 갱신하는 메서드
+  void _updateScreen() {
+    // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
+    setState(() {
+      //myData = '갱신된 값';
+    });
+  }
+
 
   Future<void> GetMyPage(String endpoint) async {
     try {
@@ -56,6 +69,215 @@ class _mypageState extends State<mypage> {
     }
   }*/
   //-------------------------------------------------------------------------------
+
+  //질문 선택 창
+  void plusDialog(context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: sizeY * 0.5,
+          color: Color(0xFF737373),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  Container(
+                    width: 130,
+                    height: 5,
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                    color: Color.fromRGBO(117, 117, 117, 100),
+                  ),
+                  SizedBox(
+                    child: Text(
+                      "질문 선택",
+                      style: TextStyle(
+                          color: Color(0xFF7D5A50),
+                          fontSize: 14,
+                          fontFamily: 'soojin'),
+                    ),
+                  ),
+                  Container(
+                    //칸 나누는 줄
+                    margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    color: Colors.black54,
+                    width: sizeX, height: 1,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (answer[0] == null) {
+                        _showDialogex(context, 0);
+                      } else
+                        ;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                    ),
+                    child: Text("${question[0]}",
+                        style: TextStyle(
+                            color: Color(0xFF7D5A50),
+                            fontSize: 15,
+                            fontFamily: 'soojin')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (answer[1] == null) {
+                        _showDialogex(context, 1);
+                      } else
+                        ;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                    ),
+                    child: Text("${question[1]}",
+                        style: TextStyle(
+                            color: Color(0xFF7D5A50),
+                            fontSize: 15,
+                            fontFamily: 'soojin')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (answer[2] == null) {
+                        _showDialogex(context, 2);
+                      } else
+                        ;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                    ),
+                    child: Text("${question[2]}",
+                        style: TextStyle(
+                            color: Color(0xFF7D5A50),
+                            fontSize: 15,
+                            fontFamily: 'soojin')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (answer[3] == null) {
+                        _showDialogex(context, 3);
+                      } else
+                        ;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                    ),
+                    child: Text("${question[3]}",
+                        style: TextStyle(
+                            color: Color(0xFF7D5A50),
+                            fontSize: 15,
+                            fontFamily: 'soojin')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (answer[4] == null) {
+                        _showDialogex(context, 4);
+
+                      } else
+                        ;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                    ),
+                    child: Text("${question[4]}",
+                        style: TextStyle(
+                            color: Color(0xFF7D5A50),
+                            fontSize: 15,
+                            fontFamily: 'soojin')),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _showDialogex(BuildContext context, int item) {
+    final sizeY = MediaQuery.of(context).size.height;
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+          '${question[item]}',
+          style: TextStyle(
+            fontFamily: 'soojin',
+            color: Color(0xFF7D5A50),
+          ),
+        ),
+        content: TextField(
+          maxLength: 20,
+          decoration: InputDecoration(
+            hintText: '20자 이내로 작성해주세요.',
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black54,
+              ),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black54,
+              ),
+            ),
+          ),
+          controller: _answerEditController,
+        ),
+        actions: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 0.0,
+                  backgroundColor: Color(0x4D968C83),
+                  minimumSize: Size(150, 30)),
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('취소',
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 0.0,
+                  backgroundColor: Color(0xFF7D5A50),
+                  minimumSize: Size(150, 30)),
+              onPressed: () {
+                String answerText = _answerEditController.text;
+                //print(answerText);
+                answer[item] = answerText;
+                //print(question);
+                //print(answer);
+                Navigator.of(context).pop();
+                // mypage(item1: item);
+                // 버튼이 눌리면 화면을 갱신
+                setState(() {
+                  widget.item1 = item;
+                });
+
+                print("item: $item");
+              }, //showContainer로 데이터 넘기기 // 디비에 저장하기
+              child: Text('확인',
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+        ],
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +399,7 @@ class _mypageState extends State<mypage> {
                                   width: 300,
                                   height: 70,
                                   child: (() {
-                                    if (widget.item1 != 0) {
+                                    if (widget.item1 == 0) {
                                       _showContainer(
                                         item2: widget.item1,
                                       );
@@ -253,206 +475,9 @@ class _mypageState extends State<mypage> {
   }
 }
 
-//질문 선택 창
-void plusDialog(context) {
-  final sizeX = MediaQuery.of(context).size.width;
-  final sizeY = MediaQuery.of(context).size.height;
 
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return Container(
-        height: sizeY * 0.5,
-        color: Color(0xFF737373),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-          ),
-          child: Center(
-            child: Column(
-              children: [
-                Container(
-                  width: 130,
-                  height: 5,
-                  margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                  color: Color.fromRGBO(117, 117, 117, 100),
-                ),
-                SizedBox(
-                  child: Text(
-                    "질문 선택",
-                    style: TextStyle(
-                        color: Color(0xFF7D5A50),
-                        fontSize: 14,
-                        fontFamily: 'soojin'),
-                  ),
-                ),
-                Container(
-                  //칸 나누는 줄
-                  margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  color: Colors.black54,
-                  width: sizeX, height: 1,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (answer[0] == null) {
-                      _showDialogex(context, 0);
-                    } else
-                      ;
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text("${question[0]}",
-                      style: TextStyle(
-                          color: Color(0xFF7D5A50),
-                          fontSize: 15,
-                          fontFamily: 'soojin')),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (answer[1] == null) {
-                      _showDialogex(context, 1);
-                    } else
-                      ;
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text("${question[1]}",
-                      style: TextStyle(
-                          color: Color(0xFF7D5A50),
-                          fontSize: 15,
-                          fontFamily: 'soojin')),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (answer[2] == null) {
-                      _showDialogex(context, 2);
-                    } else
-                      ;
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text("${question[2]}",
-                      style: TextStyle(
-                          color: Color(0xFF7D5A50),
-                          fontSize: 15,
-                          fontFamily: 'soojin')),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (answer[3] == null) {
-                      _showDialogex(context, 3);
-                    } else
-                      ;
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text("${question[3]}",
-                      style: TextStyle(
-                          color: Color(0xFF7D5A50),
-                          fontSize: 15,
-                          fontFamily: 'soojin')),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (answer[4] == null) {
-                      _showDialogex(context, 4);
-                    } else
-                      ;
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text("${question[4]}",
-                      style: TextStyle(
-                          color: Color(0xFF7D5A50),
-                          fontSize: 15,
-                          fontFamily: 'soojin')),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
 
-Future<dynamic> _showDialogex(BuildContext context, int item) {
-  final sizeY = MediaQuery.of(context).size.height;
 
-  return showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) => AlertDialog(
-      title: Text(
-        '${question[item]}',
-        style: TextStyle(
-          fontFamily: 'soojin',
-          color: Color(0xFF7D5A50),
-        ),
-      ),
-      content: TextField(
-        maxLength: 20,
-        decoration: InputDecoration(
-          hintText: '20자 이내로 작성해주세요.',
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black54,
-            ),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black54,
-            ),
-          ),
-        ),
-        controller: _answerEditController,
-      ),
-      actions: [
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                backgroundColor: Color(0x4D968C83),
-                minimumSize: Size(150, 30)),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('취소',
-                style: TextStyle(
-                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                backgroundColor: Color(0xFF7D5A50),
-                minimumSize: Size(150, 30)),
-            onPressed: () {
-              String answerText = _answerEditController.text;
-              //print(answerText);
-              answer[item] = answerText;
-              //print(question);
-              //print(answer);
-              Navigator.of(context).pop();
-              mypage(item1: item);
-              print("item: $item");
-            }, //showContainer로 데이터 넘기기 // 디비에 저장하기
-            child: Text('확인',
-                style: TextStyle(
-                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
-      ],
-    ),
-  );
-}
 
 //마이페이지에 나타나는 질답컨테이너
 class _showContainer extends StatelessWidget {

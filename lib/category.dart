@@ -100,7 +100,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const mypage()));
+                            MaterialPageRoute(builder: (context) => mypage()));
                       },
                       child: Row(
                         children: [
