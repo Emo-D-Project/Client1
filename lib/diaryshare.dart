@@ -21,7 +21,6 @@ class _diaryshareState extends State<diaryshare> {
   String selectedImagePath = 'images/emotion/7.gif'; // 기본값은 무표정으로 함
 
 
-
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -60,7 +59,6 @@ class _diaryshareState extends State<diaryshare> {
                   dropdownColor: Color(0xFFF8F5EB),
                   icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
                   style: TextStyle(color: Colors.black),
-
                 ),
                 SizedBox(width: 25),
               ],
