@@ -237,20 +237,24 @@ class _writediaryState extends State<writediary> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MyApp()));
           },
-          icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83),),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFF968C83),
+          ),
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                print("PostExample 실행");
-                PostExample("/api/diaries/create");
-              },
-              icon: Image.asset(
-                "images/send/upload.png",
-                width: 30,
-                height: 30,
-                color: Color(0xFF968C83),
-              ),)
+            onPressed: () {
+              print("PostExample 실행");
+              PostExample("/api/diaries/create");
+            },
+            icon: Image.asset(
+              "images/send/upload.png",
+              width: 30,
+              height: 30,
+              color: Color(0xFF968C83),
+            ),
+          )
         ],
       ),
       body: Container(
@@ -286,32 +290,34 @@ class _writediaryState extends State<writediary> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SingleChildScrollView(
-                              child: SizedBox(
-                                width: 200,
-                                height: 150, // 이미지 높이 조절
-                                child: PageView(
-                                  scrollDirection: Axis.horizontal, // 수평으로 스크롤
-                                  children: <Widget>[
-                                    SizedBox(
-                                      child: Center(
-                                          child: Image.asset(
-                                              'images/send/sj3.jpg')),
+                            Container(
+                                margin: EdgeInsets.all(10),
+                                color: Colors.amber,
+                                width: 200, height: 150,
+                                child: GridView.builder(
+                                    padding: EdgeInsets.all(0),
+                                    shrinkWrap: true,
+                                    itemCount: images.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 1 / 1,
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10,
                                     ),
-                                    SizedBox(
-                                      child: Center(
-                                          child: Image.asset(
-                                              'images/send/sj1.jpg')),
-                                    ),
-                                    SizedBox(
-                                      child: Center(
-                                          child: Image.asset(
-                                              'images/send/sj2.jpg')),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: FileImage(
+                                                  File(images[index]!.path),
+                                                ))),
+                                      );
+                                    })),
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -323,7 +329,6 @@ class _writediaryState extends State<writediary> {
                                         isPlaying
                                             ? Icons.pause
                                             : Icons.play_arrow,
-
                                       ),
                                       iconSize: 20,
                                       color: Color(0xFF968C83),
@@ -424,8 +429,8 @@ class _writediaryState extends State<writediary> {
                                   return Text('$twoDigitMinutes:$twoDigitSeconds',style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),);
                                 },
                             ),
-                            const SizedBox(height: 5),*/
-                              /*SizedBox(
+                            const SizedBox(height: 5),
+                              SizedBox(
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0.0,

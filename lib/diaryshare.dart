@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dropbox.dart';
+import 'package:capston1/network/api_manager.dart';
+
 
 
 final String start = DateTime.now().toString();
@@ -15,6 +17,39 @@ class diaryshare extends StatefulWidget {
 }
 
 class _diaryshareState extends State<diaryshare> {
+  //----------------------------------------------------------
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  Future<void> GetDiaryShare(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> PostDiaryShare(String endpoint) async {
+    ApiManager apiManager = ApiManager().getApiManager();
+
+    try {
+      final postData = {
+        //보낼 변수 넣기
+      };
+
+      print(postData);
+
+      //await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+  //-----------------------------------------------------------
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
   String selectedValue = '최신순';
