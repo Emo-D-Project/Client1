@@ -3,17 +3,16 @@ import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
 
 //알람 좋아요 텍스트 형태
-Widget A_good= Row(
+Widget A_good = Row(
   children: [
     Column(
       children: [
         Container(
-       //   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          //   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Image.asset(
             'images/send/heart.png',
             width: 16,
           ),
-
         ),
       ],
     ),
@@ -22,10 +21,11 @@ Widget A_good= Row(
       "누군가 회원님의 일기에 공감햡니다.",
       style: TextStyle(fontFamily: 'soojin', fontSize: 13),
     ),
- //   SizedBox(height: 25,)
+    SizedBox(
+      height: 25,
+    )
   ],
 );
-
 
 //알람 - 이모디 새소식
 Widget A_Emod = Row(
@@ -38,7 +38,6 @@ Widget A_Emod = Row(
             'images/send/cat_real_image.png',
             width: 16,
           ),
-
         ),
       ],
     ),
@@ -48,19 +47,22 @@ Widget A_Emod = Row(
       children: [
         Text(
           "EMO:D 가 새 소식을 보냈습니다.",
-          style: TextStyle(fontFamily: 'soojin', fontSize: 13,),
+          style: TextStyle(
+            fontFamily: 'soojin',
+            fontSize: 13,
+          ),
         ),
-
         Text(
           "9월의 감정 통지서가 도착했어요 !",
           style: TextStyle(fontFamily: 'soojin', fontSize: 13),
         ),
       ],
     ),
-    SizedBox(height: 45,)
+    SizedBox(
+      height: 45,
+    )
   ],
 );
-
 
 //알람 - 댓글 알람
 Widget A_Chat = Row(
@@ -72,7 +74,6 @@ Widget A_Chat = Row(
             'images/send/real_chat.png',
             width: 15,
           ),
-
         ),
       ],
     ),
@@ -81,10 +82,11 @@ Widget A_Chat = Row(
       "새로운 댓글이 달렸습니다",
       style: TextStyle(fontFamily: 'soojin', fontSize: 13),
     ),
-    SizedBox(height: 10,)
+    SizedBox(
+      height: 10,
+    )
   ],
 );
-
 
 //알람 - 문의내역 알람
 Widget A_Question = Row(
@@ -92,12 +94,11 @@ Widget A_Question = Row(
     Column(
       children: [
         Container(
-           padding: EdgeInsets.fromLTRB(0, 0, 0, 28),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 28),
           child: Image.asset(
             'images/send/question.png',
             width: 15,
           ),
-
         ),
       ],
     ),
@@ -107,7 +108,10 @@ Widget A_Question = Row(
       children: [
         Text(
           "문의 내역",
-          style: TextStyle(fontFamily: 'soojin', fontSize: 13,),
+          style: TextStyle(
+            fontFamily: 'soojin',
+            fontSize: 13,
+          ),
         ),
         Text(
           "남겨주신 문의에 답변이 등록 되었어요.\nEMO:D : '문의 주셔서 감사합...'",
@@ -115,10 +119,11 @@ Widget A_Question = Row(
         ),
       ],
     ),
-    SizedBox(height: 10,)
+    SizedBox(
+      height: 50,
+    )
   ],
 );
-
 
 //알람- 쪽지 알람
 Widget A_Message = Row(
@@ -127,8 +132,8 @@ Widget A_Message = Row(
       children: [
         Container(
           child: Image.asset(
-            'images/send/real_send.png',
-            width: 20,
+            'images/send/mail.png',
+            width: 15,
           ),
         ),
       ],
@@ -138,9 +143,14 @@ Widget A_Message = Row(
       "쪽지가 왔습니다!",
       style: TextStyle(fontFamily: 'soojin', fontSize: 13),
     ),
-    SizedBox(height: 30,)
+    SizedBox(
+      height: 30,
+    )
   ],
 );
+
+
+
 
 
 
@@ -189,6 +199,14 @@ class alrampage extends StatelessWidget {
   }
 }
 
+
+// 언제 뭔 알람 온지
+class Item {
+  String title;
+  List<Widget> contentList;
+
+  Item({required this.title, required this.contentList});
+}
 //알람
 class FirstScreen extends StatelessWidget {
   @override
@@ -196,11 +214,11 @@ class FirstScreen extends StatelessWidget {
     final sizeX = MediaQuery.of(context).size.width;
 
     List<Item> itemList = [
-      Item(title: '오늘', contentList: [A_good, A_Emod,A_Question]),
+      Item(title: '오늘', contentList: [A_good, A_good, A_Emod, A_Question]),
       Item(title: '어제', contentList: [A_Chat, A_Message]),
-      Item(title: '5일전', contentList: [A_Question, A_good,A_good]),
-    ];
+      Item(title: '5일전', contentList: [A_Question, A_good, A_good]),
 
+    ];
 
     return Center(
       child: Column(
@@ -216,7 +234,9 @@ class FirstScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Container(
                         padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                         child: Text(
@@ -229,17 +249,23 @@ class FirstScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Container(
                         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 6,),
+                            SizedBox(
+                              height: 6,
+                            ),
                             Column(
                               children: item.contentList,
                             ),
-                            SizedBox(height: 6,),
+                            SizedBox(
+                              height: 6,
+                            ),
                           ],
                         ),
                       ),
@@ -283,16 +309,27 @@ class FirstScreen extends StatelessWidget {
   }
 }
 
-class Item {
-  String title;
-  List<Widget> contentList;
 
-  Item({required this.title, required this.contentList});
-}
 
 // 메세지 파트
+
 class SecondScreen extends StatelessWidget {
-  final name = '삼냥이';
+
+ static String smile = 'images/emotion/1.gif';
+ static String flutter = 'images/emotion/2.gif';
+ static String angry = 'images/emotion/3.gif';
+ static String annoying = 'images/emotion/4.gif';
+  static String tired = 'images/emotion/5.gif';
+  static String sad = 'images/emotion/6.gif';
+  static String calmness = 'images/emotion/7.gif';
+
+
+  final List<MessageData> messages = [
+    MessageData(content: '안녕', imagePath: angry,),
+
+    MessageData(content: '너한테 쪽지 보내요', imagePath: flutter)
+  ];
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -301,59 +338,12 @@ class SecondScreen extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             padding: const EdgeInsets.all(10),
-            itemCount: 7,
+            itemCount: messages.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                width: sizeX * 0.9,
-                child: Container(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        padding:
-                        EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Image.asset(
-                          'images/emotion/5.gif',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding:
-                              EdgeInsets.fromLTRB(0, 3, 0, 0),
-                              child: Text(
-                                name,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.brown),
-                              ),
-                            ),
-                            Container(
-                              width: 100,
-                              padding:
-                              EdgeInsets.fromLTRB(0, 3, 0, 0),
-                              child: Text(
-                                '쪽지 내용',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 13),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              return CustomContainer(
+                name: '삼냥이',
+                content: messages[index].content,
+                imagePath: messages[index].imagePath,
               );
             },
             separatorBuilder: (BuildContext context, int index) => Divider(
@@ -364,6 +354,82 @@ class SecondScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class MessageData {
+  final String content;
+  final String imagePath;
+
+  MessageData({
+    required this.content,
+    required this.imagePath,
+  });
+}
+
+class CustomContainer extends StatelessWidget {
+  final String name;
+  final String content;
+  final String imagePath;
+
+  CustomContainer({
+    required this.name,
+    required this.content,
+    required this.imagePath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    return Container(
+      width: sizeX * 0.9,
+      child: Container(
+        width: double.infinity,
+        child: Row(
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                    child: Text(
+                      name,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                    child: Text(
+                      content,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 13),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
