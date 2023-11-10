@@ -28,7 +28,7 @@ List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
 
 class _writediaryState extends State<writediary> {
   ApiManager apiManager = ApiManager().getApiManager();
-  
+
   DateTime dateTime = DateTime.now();
   late String content = _contentEditController.text;
   late String sendEmotion = widget.emotion;

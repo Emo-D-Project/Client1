@@ -151,9 +151,6 @@ Widget A_Message = Row(
 
 
 
-
-
-
 class alrampage extends StatelessWidget {
   const alrampage({super.key});
 
@@ -320,14 +317,13 @@ class SecondScreen extends StatelessWidget {
  static String flutter = 'images/emotion/2.gif';
  static String angry = 'images/emotion/3.gif';
  static String annoying = 'images/emotion/4.gif';
-  static String tired = 'images/emotion/5.gif';
-  static String sad = 'images/emotion/6.gif';
-  static String calmness = 'images/emotion/7.gif';
+ static String tired = 'images/emotion/5.gif';
+ static String sad = 'images/emotion/6.gif';
+ static String calmness = 'images/emotion/7.gif';
 
 
   final List<MessageData> messages = [
     MessageData(content: '안녕', imagePath: angry,),
-
     MessageData(content: '너한테 쪽지 보내요', imagePath: flutter)
   ];
 

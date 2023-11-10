@@ -53,19 +53,31 @@ class _diaryshareState extends State<diaryshare> {
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
   String selectedValue = '최신순';
-  String selectedImagePath = 'images/emotion/7.gif'; // 기본값은 무표정으로 함
+  String selectedImagePath = 'images/emotion/7.gif';
 
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
+
+
+    final List<String> imagePaths = [
+      'images/emotion/1.gif',
+      'images/emotion/2.gif',
+      'images/emotion/angry.png',
+      'images/emotion/4.gif',
+      'images/emotion/5.gif',
+      'images/emotion/6.gif',
+      'images/emotion/7.gif',
+    ];
+
+
     return Container(
       color: Color(0xFFF8F5EB),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
 
           // 드롭박스
           Container(
@@ -114,153 +126,35 @@ class _diaryshareState extends State<diaryshare> {
             ), //날짜
           ),
 
+
+
           //감정 아이콘
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            physics: ClampingScrollPhysics(),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/1.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/1.gif'),
-                        fit: BoxFit.contain,
-                      ),
+              children: imagePaths.map((path) {
+                return Padding(
+                  padding: EdgeInsets.all(3),
+                  child: IconButton(
+                    icon: Image.asset(
+                      path,
+                      width: 50,
+                      height: 50,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        selectedImagePath = path; // 선택한 아이콘의 경로로 변경
+                      });
+                    },
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/2.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/2.gif'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/3.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.fromLTRB(8, 0, 8, 7),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/3.gif'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/4.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/4.gif'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/5.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/5.gif'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/6.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/6.gif'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedImagePath = 'images/emotion/7.gif';
-                    });
-                  },
-                  child: Container(
-                    width: 37,
-                    height: 37,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/emotion/7.gif'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                );
+              }).toList(),
             ),
-            //color: Color.fromRGBO(248, 245, 235, 100),
-            // width: 1000,
-            //height: 60,
-            padding: const EdgeInsets.all(5.0),
-            //margin: const EdgeInsets.all(5.0),
           ),
+
+
+
 
           Expanded(
             child: SingleChildScrollView(
@@ -290,7 +184,9 @@ class _diaryshareState extends State<diaryshare> {
                                   alignment: Alignment.center,
                                   child: GestureDetector(
                                     onTap: () {
-                                      setState(() {});
+                                      setState(() {
+                                      //  selectedImagePath = path;
+                                      });
                                     },
                                     child: Container(
                                       width: 35,
@@ -315,7 +211,7 @@ class _diaryshareState extends State<diaryshare> {
                                   margin: EdgeInsets.only(right: 10),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage('images/send/send.png'),
+                                      image: AssetImage('images/send/real_send.png'),
                                     ),
                                   ),
                                 ),
@@ -594,12 +490,19 @@ class _diaryshareState extends State<diaryshare> {
       ),
     );
   }
-
-
-
 }
 
 
+class custom extends StatelessWidget {
+  const custom({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+
+
+  }
+}
 
 
 
