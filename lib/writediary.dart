@@ -21,7 +21,7 @@ class writediary extends StatefulWidget {
   @override
   State<writediary> createState() => _writediaryState();
 }
-
+var audioFile ;
 final picker = ImagePicker();
 List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
 List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
@@ -35,7 +35,7 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
-  Future<void> GetExample(String endpoint) async {
+  Future<void> GetWriteDiary(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
 
@@ -55,7 +55,7 @@ class _writediaryState extends State<writediary> {
   // 다른버튼 onperss():
   //       PostExample("api/title");
 
-  Future<void> PostExample(String endpoint) async {
+  Future<void> PostWriteDiary(String endpoint) async {
     ApiManager apiManager = ApiManager().getApiManager();
 
     try {
@@ -64,6 +64,7 @@ class _writediaryState extends State<writediary> {
         'emotion': sendEmotion,
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
+        //오디오 전송
       };
 
       print(postData);
@@ -244,7 +245,7 @@ class _writediaryState extends State<writediary> {
           IconButton(
             onPressed: () {
               print("PostExample 실행");
-              PostExample("/api/diaries/create");
+              PostWriteDiary("/api/diaries/create");
             },
             icon: Image.asset(
               "images/send/upload.png",
@@ -456,10 +457,12 @@ class _writediaryState extends State<writediary> {
                                   onPressed: () async {
                                     if (recorder.isRecording) {
                                       await stop();
+                                      PostWriteDiary("/api/diaries/create");
                                     } else {
                                       await record();
                                     }
-                                    setState(() {});
+                                    setState(() {
+                                    });
                                   },
                                   icon: Icon(
                                     recorder.isRecording
