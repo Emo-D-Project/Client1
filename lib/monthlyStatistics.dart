@@ -25,17 +25,9 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
     ListData('2023년 10월의 감정 통지서'),
     ListData('2023년 09월의 감정 통지서'),
     ListData('2023년 08월의 감정 통지서'),
-    ListData('2023년 10월의 감정 통지서'),
-    ListData('2023년 09월의 감정 통지서'),
-    ListData('2023년 08월의 감정 통지서'),
-    ListData('2023년 10월의 감정 통지서'),
-    ListData('2023년 09월의 감정 통지서'),
-    ListData('2023년 08월의 감정 통지서'),
-    ListData('2023년 10월의 감정 통지서'),
-    ListData('2023년 09월의 감정 통지서'),
-    ListData('2023년 08월의 감정 통지서'),
   ];
   List<double> emotioncount = [10, 5, 2, 8, 1, 0, 2];
+  String selectedValue = '최신순';
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +58,47 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DropdownButton<String>(
+                    value: selectedValue,
+                    // 현재 선택된 값
+                    items: <String>['최신순', '오래된순'].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedValue = value!;
+                        // 선택된 값 업데이트
+                        if (selectedValue == '최신순') {
+                          datas.sort((a, b) => b.title.compareTo(a.title));
+                        } else {
+                          datas.sort((a, b) => a.title.compareTo(b.title));
+                        }
+
+                      });
+                    },
+                    underline: Container(
+                      height: 2,
+                      color: Colors.brown,
+                    ),
+                    dropdownColor: Color(0xFFF8F5EB),
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  SizedBox(width: 25),
+                ],
+              ),
+            ),
             ListView.separated(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.all(10),
               itemCount: datas.length,
               itemBuilder: (BuildContext context, int index) {

@@ -3,7 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 enum Emotion{
-  Angry, Flutter
+  smile,
+  flutter,
+  angry,
+  annoying,
+  tired,
+  sad,
+  calmness,
 }
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
@@ -17,8 +23,8 @@ class _calendarState extends State<calendar> {
   DateTime _focusedDay = DateTime.now();
 
   Map<DateTime,dynamic> eventSource = {
-    DateTime(2023,11,3) : Emotion.Angry,
-    DateTime(2023,11,5) : Emotion.Angry,
+    DateTime(2023,11,3) : Emotion.angry,
+    DateTime(2023,11,5) : Emotion.angry,
     };
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -74,12 +80,14 @@ class _calendarState extends State<calendar> {
                   print("dateTimeCorrect");
                   String image;
                   switch(Emotion){
-                    case Emotion.Angry:
+                    case Emotion.angry:
                       image = 'images/emotion/3.gif'; // 앵그리 이거 아님 바꿔야됨
                       break;
-                    case Emotion.Flutter:
+                    case Emotion.flutter:
                       image = 'images/emotion/2.gif';
                       break;
+                    case Emotion.smile:
+
                   }
                   return IconButton(
                       iconSize: 40,
