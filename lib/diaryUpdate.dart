@@ -116,7 +116,7 @@ class _diaryUpdateState extends State<diaryUpdate> {
                 );
               case 'angry':
                 return Image.asset(
-                  'images/emotion/3.gif',
+                  'images/emotion/angry.png',
                   height: 50,
                   width: 50,
                 );

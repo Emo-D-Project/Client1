@@ -3,6 +3,7 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +22,9 @@ class writediary extends StatefulWidget {
   @override
   State<writediary> createState() => _writediaryState();
 }
-var audioFile ;
+
+var audioFile;
+
 final picker = ImagePicker();
 List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
 List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
@@ -66,9 +69,7 @@ class _writediaryState extends State<writediary> {
         'is_comm': _isChecked,
         //오디오 전송
       };
-
-      print(postData);
-
+      //print(postData);
       await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
     } catch (e) {
       print('Error: $e');
@@ -117,8 +118,15 @@ class _writediaryState extends State<writediary> {
   Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.loop);
 
-    String url = ' ';
-    audioPlayer.setSourceUrl(url);
+    //String url = ' ';
+    //audioPlayer.setSourceUrl(url);
+    
+    //final result = await FilePicker.platform.pickFiles();
+    
+    //if(result !=null){
+      //final file = File(result.files.single.path!);
+      audioPlayer.setSourceUrl('/data/user/0/com.example.capston1/cache/audio', );
+    //}
   }
 
   @override
@@ -155,8 +163,62 @@ class _writediaryState extends State<writediary> {
     final path = await recorder.stopRecorder();
     final audioFile = File(path!);
 
+    run(audioFile as String);
+   //파일 서버에 보내기
+
     print('Recorded audio: $audioFile');
   }
+
+  Future<String> run(String audioUrl) async {
+    String openApiURL = " ";
+    String accessKey = " "; // 발급받은 API Key
+    String languageCode = "korean"; // 언어 코드
+    String audioFilePath = audioUrl; // 녹음된 음성 파일 경로
+    String audioContents;
+    var gson = JsonCodec();
+
+    Map<String, dynamic> request = {
+      'argument': {'language_code': languageCode},
+    };
+
+    try {
+      var file = File(audioFilePath);
+      var audioBytes = await file.readAsBytes();
+      audioContents = base64.encode(audioBytes);
+    } catch (e) {
+      print(e.toString());
+    }
+
+   // request['argument']['audio'] = audioContents;
+
+    var url = Uri.parse(openApiURL);
+    var responseCode;
+    var responseBody;
+
+    try {
+      var request = await HttpClient().postUrl(url);
+      request.headers.set('Content-Type', 'application/json; charset=UTF-8');
+      request.headers.set('Authorization', accessKey);
+
+      request.write(json.encode(request));
+      var response = await request.close();
+
+      responseCode = response.statusCode;
+      var contents = await utf8.decodeStream(response);
+      responseBody = contents;
+
+      print('[responseCode] $responseCode');
+      print('[responseBody]');
+      print(responseBody);
+
+      return 'responseBody: $responseBody';
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return '';
+  }
+
 
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -200,7 +262,7 @@ class _writediaryState extends State<writediary> {
                 );
               case 'angry':
                 return Image.asset(
-                  'images/emotion/3.gif',
+                  'images/emotion/angry.png',
                   height: 45,
                   width: 45,
                 );
@@ -292,7 +354,8 @@ class _writediaryState extends State<writediary> {
                             Container(
                                 margin: EdgeInsets.all(10),
                                 //color: Colors.amber,
-                                width: 200, height: 150,
+                                width: 200,
+                                height: 150,
                                 child: GridView.builder(
                                     padding: EdgeInsets.all(0),
                                     shrinkWrap: true,
@@ -306,16 +369,17 @@ class _writediaryState extends State<writediary> {
                                     ),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                          print("Image size: ${File(images[index]!.path).lengthSync()} bytes");
+                                      print(
+                                          "Image size: ${File(images[index]!.path).lengthSync()} bytes");
                                       return Container(
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             image: DecorationImage(
-                                               fit: BoxFit.cover,
-                                                image: FileImage(
-                                                  File(images[index]!.path ),
-                                                ),
+                                              fit: BoxFit.cover,
+                                              image: FileImage(
+                                                File(images[index]!.path),
+                                              ),
                                             )),
                                       );
                                     })),
@@ -352,7 +416,6 @@ class _writediaryState extends State<writediary> {
                                           final position =
                                               Duration(seconds: value.toInt());
                                           await audioPlayer.seek(position);
-
                                           await audioPlayer.resume();
                                         },
                                       ),
@@ -461,8 +524,7 @@ class _writediaryState extends State<writediary> {
                                     } else {
                                       await record();
                                     }
-                                    setState(() {
-                                    });
+                                    setState(() {});
                                   },
                                   icon: Icon(
                                     recorder.isRecording

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'bar graph/bar_graph_month.dart';
 import 'statistics.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'statistics.dart';
 import 'package:capston1/pieGraph/pie_chart.dart';
-import 'package:capston1/bar%20graph/bar_graph.dart';
 
 class ListData {
   final String title;
@@ -81,7 +79,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                         } else {
                           datas.sort((a, b) => a.title.compareTo(b.title));
                         }
-
+                        // 리스트 뷰 값 반대로
                       });
                     },
                     underline: Container(
@@ -143,8 +141,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                         child: Row(
                                           children: [
                                             Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                    10, 0, 0, 0)),
+                                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                                             SizedBox(
                                               width: 180,
                                               child: MyPieChart(),
@@ -152,8 +149,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                             Column(
                                               children: [
                                                 Padding(
-                                                    padding: EdgeInsets.fromLTRB(
-                                                        130, 7, 0, 0)),
+                                                    padding: EdgeInsets.fromLTRB(130, 7, 0, 0)),
                                                 Container(
                                                   height: 120,
                                                   width: 130,
@@ -226,7 +222,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                               emotioncount: emotioncount,
                                             ),
                                           ),
-
                                           //감정 이모션 사진
                                           Container(
                                             child: Row(
@@ -261,12 +256,11 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                 Container(
                                                   width: 28,
                                                   height: 28,
-                                                  margin: const EdgeInsets.fromLTRB(
-                                                      8, 0, 8, 7),
+                                                  margin: const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/3.gif'),
+                                                          'images/emotion/angry.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
