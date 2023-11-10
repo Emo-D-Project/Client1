@@ -881,7 +881,7 @@ void plusDialog(BuildContext context) {
                                       padding:
                                       EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       child: Image.asset(
-                                        'images/emotion/3.gif',
+                                        'images/emotion/angry.png',
                                         fit: BoxFit.contain,
                                       ),
                                     ),

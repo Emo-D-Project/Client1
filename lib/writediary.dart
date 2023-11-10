@@ -21,7 +21,9 @@ class writediary extends StatefulWidget {
   @override
   State<writediary> createState() => _writediaryState();
 }
-var audioFile ;
+
+var audioFile;
+
 final picker = ImagePicker();
 List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
 List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
@@ -66,9 +68,7 @@ class _writediaryState extends State<writediary> {
         'is_comm': _isChecked,
         //오디오 전송
       };
-
-      print(postData);
-
+      //print(postData);
       await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
     } catch (e) {
       print('Error: $e');
@@ -200,7 +200,7 @@ class _writediaryState extends State<writediary> {
                 );
               case 'angry':
                 return Image.asset(
-                  'images/emotion/3.gif',
+                  'images/emotion/angry.png',
                   height: 45,
                   width: 45,
                 );
@@ -292,7 +292,8 @@ class _writediaryState extends State<writediary> {
                             Container(
                                 margin: EdgeInsets.all(10),
                                 //color: Colors.amber,
-                                width: 200, height: 150,
+                                width: 200,
+                                height: 150,
                                 child: GridView.builder(
                                     padding: EdgeInsets.all(0),
                                     shrinkWrap: true,
@@ -306,16 +307,17 @@ class _writediaryState extends State<writediary> {
                                     ),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                          print("Image size: ${File(images[index]!.path).lengthSync()} bytes");
+                                      print(
+                                          "Image size: ${File(images[index]!.path).lengthSync()} bytes");
                                       return Container(
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             image: DecorationImage(
-                                               fit: BoxFit.cover,
-                                                image: FileImage(
-                                                  File(images[index]!.path ),
-                                                ),
+                                              fit: BoxFit.cover,
+                                              image: FileImage(
+                                                File(images[index]!.path),
+                                              ),
                                             )),
                                       );
                                     })),
@@ -352,7 +354,6 @@ class _writediaryState extends State<writediary> {
                                           final position =
                                               Duration(seconds: value.toInt());
                                           await audioPlayer.seek(position);
-
                                           await audioPlayer.resume();
                                         },
                                       ),
@@ -461,8 +462,7 @@ class _writediaryState extends State<writediary> {
                                     } else {
                                       await record();
                                     }
-                                    setState(() {
-                                    });
+                                    setState(() {});
                                   },
                                   icon: Icon(
                                     recorder.isRecording

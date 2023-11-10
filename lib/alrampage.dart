@@ -315,7 +315,7 @@ class SecondScreen extends StatelessWidget {
 
  static String smile = 'images/emotion/1.gif';
  static String flutter = 'images/emotion/2.gif';
- static String angry = 'images/emotion/3.gif';
+ static String angry = 'images/emotion/angry.png';
  static String annoying = 'images/emotion/4.gif';
  static String tired = 'images/emotion/5.gif';
  static String sad = 'images/emotion/6.gif';

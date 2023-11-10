@@ -4,7 +4,6 @@ import 'category.dart';
 import 'calendar.dart';
 import 'diaryshare.dart';
 import 'home.dart';
-import 'login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
@@ -57,7 +56,8 @@ class _MyAppState extends State<MyApp> {
             icon: Image.asset(
               'images/bottom/free-icon-stats-223407.png',
               width: 30,
-              height: 30,color: Color(0xFF968C83),
+              height: 30,
+              color: Color(0xFF968C83),
             ),
           ),
           IconButton(
@@ -68,7 +68,8 @@ class _MyAppState extends State<MyApp> {
             icon: Image.asset(
               'images/bottom/free-icon-alarm-bell-2088595.png',
               width: 30,
-              height: 30,color: Color(0xFF968C83),
+              height: 30,
+              color: Color(0xFF968C83),
             ),
           )
         ],

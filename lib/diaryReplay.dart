@@ -108,7 +108,7 @@ class _writediaryState extends State<diaryReplay> {
                 );
               case 'angry':
                 return Image.asset(
-                  'images/emotion/3.gif',
+                  'images/emotion/angry.png',
                   height: 50,
                   width: 50,
                 );
@@ -281,15 +281,7 @@ class _writediaryState extends State<diaryReplay> {
                                   Text(
                                     '오늘 하루 아주 만족스러운 날이다. '
                                     '친구들이랑 맛있게 밥도 먹고'
-                                    ' 하늘도 너무 이뻤다!'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-                                    ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에',
+                                    ' 하늘도 너무 이뻤다!',
                                     style: TextStyle(fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),

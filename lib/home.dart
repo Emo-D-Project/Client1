@@ -1,7 +1,6 @@
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
 
-
 class home extends StatelessWidget {
   const home({super.key});
 
@@ -43,7 +42,10 @@ class home extends StatelessWidget {
                           ), //냥발바닥
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                            child: Text("오늘의 감정을 선택해주세요.",style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,fontFamily: 'fontnanum'),),
+                            child: Text("오늘의 감정을 선택해주세요.",
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,fontFamily: 'fontnanum'
+                              ),
+                            ),
                           ), //오늘의 감정을 선택해주세요
                           SizedBox(
                             child: Row(
@@ -58,7 +60,9 @@ class home extends StatelessWidget {
                                             builder: (context)=>writediary(emotion: 'smile',)
                                         )
                                       );
-                                    }, icon: Image.asset('images/emotion/1.gif',width: 50,height: 50,)),
+                                    },
+                                    icon: Image.asset('images/emotion/1.gif',width: 50,height: 50,)
+                                ),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -68,7 +72,8 @@ class home extends StatelessWidget {
                                               builder: (context)=>writediary(emotion: 'flutter',)
                                           )
                                       );
-                                    }, icon: Image.asset('images/emotion/2.gif')),
+                                    },
+                                    icon: Image.asset('images/emotion/2.gif')),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
                                   child: IconButton(
@@ -80,7 +85,9 @@ class home extends StatelessWidget {
                                                 builder: (context)=>writediary(emotion: 'angry',)
                                             )
                                         );
-                                      }, icon: Image.asset('images/emotion/3.gif')),
+                                      },
+                                      icon: Image.asset('images/emotion/angry.png')
+                                  ),
                                 )
                               ],
                             ),
@@ -98,7 +105,9 @@ class home extends StatelessWidget {
                                               builder: (context)=>writediary(emotion: 'annoying',)
                                           )
                                       );
-                                    }, icon: Image.asset('images/emotion/4.gif')),
+                                    },
+                                    icon: Image.asset('images/emotion/4.gif')
+                                ),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -108,7 +117,9 @@ class home extends StatelessWidget {
                                               builder: (context)=>writediary(emotion: 'tired',)
                                           )
                                       );
-                                    }, icon: Image.asset('images/emotion/5.gif')),
+                                    },
+                                    icon: Image.asset('images/emotion/5.gif')
+                                ),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -118,7 +129,9 @@ class home extends StatelessWidget {
                                               builder: (context)=>writediary(emotion: 'sad',)
                                           )
                                       );
-                                    }, icon: Image.asset('images/emotion/6.gif')),
+                                    },
+                                    icon: Image.asset('images/emotion/6.gif')
+                                ),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -128,7 +141,9 @@ class home extends StatelessWidget {
                                               builder: (context)=>writediary(emotion: 'calmness',)
                                           )
                                       );
-                                    }, icon: Image.asset('images/emotion/7.gif'))
+                                    },
+                                    icon: Image.asset('images/emotion/7.gif')
+                                )
                               ],
                             ),
                           ), //감정 둘째줄
@@ -136,7 +151,8 @@ class home extends StatelessWidget {
                       ),
                     ),
                   );
-                });
+                }
+                );
           },
           child: Image.asset('images/emotion/catimage.png',width: 40,height: 40,),
         );
