@@ -9,6 +9,7 @@ import 'diaryReplay.dart';
 import 'notification.dart';
 import 'package:capston1/pieGraph/pie_chart.dart';
 import 'message_write.dart';
+import 'message.dart';
 
 class category extends StatefulWidget {
   const category({super.key});
@@ -154,6 +155,9 @@ class _categoryState extends State<category> {
                         backgroundColor: Colors.white,
                       ),
                       onPressed: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => const message()));
+
                       }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [

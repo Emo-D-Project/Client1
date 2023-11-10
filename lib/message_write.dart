@@ -7,12 +7,21 @@ class message_write extends StatefulWidget {
   @override
   State<message_write> createState() => _message_writeState();
 }
-class _message_writeState extends State<message_write> {
-  @override
 
-  late String content = _contentEditController.text;
+class _message_writeState extends State<message_write> {
+
+
+
   final _contentEditController = TextEditingController();
 
+  // 메세지 전송 함수 - 전송 버튼을 눌렀을 때 호출이 되는 함수
+  void _sendMessage() {
+    String message = _contentEditController.text; // 이건 쪽지 내용..
+    print('전송된 메세지: $message'); //콘솔창에 뜸
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -21,7 +30,7 @@ class _message_writeState extends State<message_write> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text(
-          "쪽지보내기",
+          "쪽지를 보내보세용 ",
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'kim',
@@ -40,22 +49,26 @@ class _message_writeState extends State<message_write> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              // "전송" 버튼이 눌렸을 때 실행되는 코드
+              _sendMessage(); // 메세지를 전송하는 함수 호출
             },
             child: Text("전송"),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF968C83), // 버튼의 배경색
-              onPrimary: Colors.white, // 버튼 텍스트의 색상
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0), // 버튼의 모양을 조절합니다.
-              ),
-              minimumSize: Size(50, 50),
-              padding: EdgeInsets.fromLTRB(8, 12, 8, 12),// 버튼의 최소 크기
-              textStyle: TextStyle(fontSize: 12), // 버튼 텍스트 스타일
+              primary: Color(0xFF968C83),
+              onPrimary: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+              minimumSize: Size(54, 54), // 버튼의 최소 크기 설정
+              padding: EdgeInsets.all(5), // 동그라미 모양에 맞게 여백 조절
+              textStyle: TextStyle(fontSize: 13),
+              
             ),
           ),
+
         ],
       ),
+
+      // 전송버튼 누르면
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -67,25 +80,26 @@ class _message_writeState extends State<message_write> {
                 children: [
                   Container(
                     width: double.infinity,
-                    color: Colors.yellow,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
-                          width: 400,
-                          height: 700,
-                          color: Colors.deepOrange,
+                          width: 350,
+                          height: 600,
                           padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                           child: TextField(
                             style: TextStyle(fontFamily: 'soojin'),
                             controller: _contentEditController,
                             maxLines: 10,
                             decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
-                                    ))),
+                              hintText: '여기에 입력을 해주세요',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -99,5 +113,5 @@ class _message_writeState extends State<message_write> {
       ),
     );
   }
-}
 
+}

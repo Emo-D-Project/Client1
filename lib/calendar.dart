@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-enum Emotion{
-  Angry, Flutter
+enum Emotion {
+  smile,
+  flutter,
+  angry,
+  annoying,
+  tired,
+  sad,
+  calmness,
 }
+
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
 
@@ -16,10 +23,10 @@ class _calendarState extends State<calendar> {
   DateTime? selectedDay;
   DateTime _focusedDay = DateTime.now();
 
-  Map<DateTime,dynamic> eventSource = {
-    DateTime(2023,11,3) : Emotion.Angry,
-    DateTime(2023,11,5) : Emotion.Angry,
-    };
+  Map<DateTime, dynamic> eventSource = {
+    DateTime(2023, 11, 3): Emotion.angry,
+    DateTime(2023, 11, 5): Emotion.angry,
+  };
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -44,7 +51,8 @@ class _calendarState extends State<calendar> {
               ),
             ],
             color: Color(0xFFD2C6BC),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(10)
+            ),
           ),
           child: TableCalendar(
             rowHeight: 65,
@@ -54,7 +62,7 @@ class _calendarState extends State<calendar> {
             calendarFormat: _calendarFormat,
             daysOfWeekHeight: 40,
             weekendDays: [DateTime.sunday],
-            holidayPredicate: (day){
+            holidayPredicate: (day) {
               return day.weekday >= 6;
             },
             onFormatChanged: (format) {
@@ -68,18 +76,35 @@ class _calendarState extends State<calendar> {
               });
             },
             calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, _calendarState){
+              defaultBuilder: (context, day, _calendarState) {
                 // 특정 날짜 캐릭터 아이콘 넣어주기
-                if(day.hashCode == DateTime(2023,11,3).hashCode){ // 데이트 타임 대신 Diary.DateTime
+                if (day.hashCode == DateTime(2023, 11, 3).hashCode) {
+                  // 데이트 타임 대신 Diary.DateTime
                   print("dateTimeCorrect");
                   String image;
-                  switch(Emotion){
-                    case Emotion.Angry:
-                      image = 'images/emotion/3.gif'; // 앵그리 이거 아님 바꿔야됨
+                  switch (Emotion) {
+                    case Emotion.angry:
+                      image = 'images/emotion/angry.png';
                       break;
-                    case Emotion.Flutter:
+                    case Emotion.flutter:
                       image = 'images/emotion/2.gif';
                       break;
+                    case Emotion.smile:
+                      image = 'images/emotion/1.gif';
+                      break;
+                    case Emotion.annoying:
+                      image = 'images/emotion/4.gif';
+                      break;
+                    case Emotion.sad:
+                      image = 'images/emotion/6.gif';
+                      break;
+                    case Emotion.calmness:
+                      image = 'images/emotion/7.gif';
+                      break;
+                    case Emotion.tired:
+                      image = 'images/emotion/5.gif';
+                      break;
+                    default:
                   }
                   return IconButton(
                       iconSize: 40,
@@ -90,7 +115,13 @@ class _calendarState extends State<calendar> {
                         //         builder: (context)=>writediary(emotion: 'smile',)
                         //     )
                         // );
-                      }, icon: Image.asset('images/emotion/1.gif',width: 50,height: 50,));
+                      },
+                      icon: Image.asset(
+                        'images/emotion/1.gif',
+                        width: 50,
+                        height: 50,
+                      )
+                  );
                 }
               },
               dowBuilder: (context, day) {
@@ -160,7 +191,8 @@ class _calendarState extends State<calendar> {
                       child: Text(
                         'S',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red),
+                            fontWeight: FontWeight.bold, color: Colors.red
+                        ),
                       ),
                     );
                 }
@@ -197,17 +229,9 @@ class _calendarState extends State<calendar> {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
-
-              holidayDecoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('images/emotion/1.gif'))
-              ),
-
-
-              holidayTextStyle: TextStyle(color: Colors.transparent),
+            ),
+          ),
         ),
-      ),
-    ),
       ),
     );
   }
