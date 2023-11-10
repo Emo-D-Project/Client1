@@ -327,41 +327,44 @@ class SecondScreen extends StatelessWidget {
     MessageData(content: '너한테 쪽지 보내요', imagePath: flutter)
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(10),
-            itemCount: messages.length,
-            itemBuilder: (BuildContext context, int index) {
-              return CustomContainer(
-                name: '삼냥이',
-                content: messages[index].content,
-                imagePath: messages[index].imagePath,
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => Divider(
-              height: 10,
-              thickness: 1.0,
-              color: Color(0xff7D5A50),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+
+ @override
+ Widget build(BuildContext context) {
+   return Column(
+     children: [
+       Expanded(
+         child: ListView.separated(
+           padding: const EdgeInsets.all(10),
+           itemCount: messages.length,
+           itemBuilder: (BuildContext context, int index) {
+             return CustomContainer(
+               name: '삼냥이',
+               content: messages[index].content,
+               imagePath: messages[index].imagePath,
+               messageData: messages[index],
+             );
+           },
+           separatorBuilder: (BuildContext context, int index) => Divider(
+             height: 10,
+             thickness: 1.0,
+             color: Color(0xff7D5A50),
+           ),
+         ),
+       ),
+     ],
+   );
+ }
 }
 
 class MessageData {
   final String content;
   final String imagePath;
+  bool isRead; // 읽음 여부를 보여줌
 
   MessageData({
     required this.content,
     required this.imagePath,
+    this.isRead = false, // 기본값은 안읽음
   });
 }
 
@@ -369,62 +372,81 @@ class CustomContainer extends StatelessWidget {
   final String name;
   final String content;
   final String imagePath;
+  final MessageData messageData;
 
   CustomContainer({
     required this.name,
     required this.content,
     required this.imagePath,
+    required this.messageData,
   });
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
-    return Container(
-      width: sizeX * 0.9,
+    bool isRead = messageData.isRead;
+
+    return GestureDetector(
+      onTap: () {
+        if (!isRead) {
+          messageData.isRead = true;
+        }
+      },
       child: Container(
-        width: double.infinity,
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.contain,
+        width: sizeX * 0.9,
+        child: Container(
+          width: double.infinity,
+          child: Row(
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                    child: Text(
-                      name,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                      child: Text(
+                        name,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 100,
-                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                    child: Text(
-                      content,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 13),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: 100,
+                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                      child: Text(
+                        content,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 13),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              // 빨간색 아이콘 (읽으면 없어지고 안읽으면 있음)
+              if (!messageData.isRead)
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  width: 20,
+                  height: 20,
+                  child: Icon(Icons.circle, color: Colors.redAccent, size: 10),
+                ),
+            ],
+          ),
         ),
       ),
     );
