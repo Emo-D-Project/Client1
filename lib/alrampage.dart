@@ -341,7 +341,7 @@ class SecondScreen extends StatelessWidget {
                name: '삼냥이',
                content: messages[index].content,
                imagePath: messages[index].imagePath,
-               messageData: messages[index],
+               isRead: messages[index],
              );
            },
            separatorBuilder: (BuildContext context, int index) => Divider(
@@ -368,29 +368,34 @@ class MessageData {
   });
 }
 
-class CustomContainer extends StatelessWidget {
+class CustomContainer extends StatefulWidget {
   final String name;
   final String content;
   final String imagePath;
-  final MessageData messageData;
+  final MessageData isRead;
 
   CustomContainer({
     required this.name,
     required this.content,
     required this.imagePath,
-    required this.messageData,
+    required this.isRead,
   });
 
   @override
+  _CustomContainerState createState() => _CustomContainerState();
+}
+
+class _CustomContainerState extends State<CustomContainer> {
+  @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
-    bool isRead = messageData.isRead;
 
+    // 메세지를 누르면 읽음으로 표시가 됨
     return GestureDetector(
       onTap: () {
-        if (!isRead) {
-          messageData.isRead = true;
-        }
+        setState(() {
+          widget.isRead.isRead = true;
+        });
       },
       child: Container(
         width: sizeX * 0.9,
@@ -403,7 +408,7 @@ class CustomContainer extends StatelessWidget {
                 height: 60,
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Image.asset(
-                  imagePath,
+                  widget.imagePath,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -412,9 +417,10 @@ class CustomContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                      width: 100,
                       padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                       child: Text(
-                        name,
+                        widget.name,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 13,
@@ -427,7 +433,7 @@ class CustomContainer extends StatelessWidget {
                       width: 100,
                       padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                       child: Text(
-                        content,
+                        widget.content,
                         textAlign: TextAlign.left,
                         style: TextStyle(fontSize: 13),
                         maxLines: 1,
@@ -437,14 +443,18 @@ class CustomContainer extends StatelessWidget {
                   ],
                 ),
               ),
+
+
               // 빨간색 아이콘 (읽으면 없어지고 안읽으면 있음)
-              if (!messageData.isRead)
-                Container(
+              Visibility(
+                visible: !widget.isRead.isRead,
+                child: Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                   width: 20,
                   height: 20,
                   child: Icon(Icons.circle, color: Colors.redAccent, size: 10),
                 ),
+              ),
             ],
           ),
         ),

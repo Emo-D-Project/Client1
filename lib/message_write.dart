@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
+import 'message.dart';
+import 'package:intl/intl.dart';
 
 class message_write extends StatefulWidget {
-  const message_write({super.key});
+  const message_write({Key? key}) : super(key: key);
 
   @override
   State<message_write> createState() => _message_writeState();
 }
 
 class _message_writeState extends State<message_write> {
-
-
-
   final _contentEditController = TextEditingController();
 
   // 메세지 전송 함수 - 전송 버튼을 눌렀을 때 호출이 되는 함수
   void _sendMessage() {
-    String message = _contentEditController.text; // 이건 쪽지 내용..
-    print('전송된 메세지: $message'); //콘솔창에 뜸
-
+    String message = _contentEditController.text;
+    String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
+    print('전송된 메세지: $message, 전송 시간: $sentTime');
   }
 
   @override
@@ -55,20 +54,16 @@ class _message_writeState extends State<message_write> {
             style: ElevatedButton.styleFrom(
               primary: Color(0xFF968C83),
               onPrimary: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-              minimumSize: Size(54, 54), // 버튼의 최소 크기 설정
-              padding: EdgeInsets.all(5), // 동그라미 모양에 맞게 여백 조절
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              minimumSize: Size(54, 54),
+              padding: EdgeInsets.all(5),
               textStyle: TextStyle(fontSize: 13),
-              
             ),
           ),
-
         ],
       ),
-
-      // 전송버튼 누르면
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -92,7 +87,7 @@ class _message_writeState extends State<message_write> {
                             controller: _contentEditController,
                             maxLines: 10,
                             decoration: InputDecoration(
-                              hintText: '여기에 입력을 해주세요',
+                              hintText: '내용을 입력해주세요',
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
@@ -113,5 +108,4 @@ class _message_writeState extends State<message_write> {
       ),
     );
   }
-
 }
