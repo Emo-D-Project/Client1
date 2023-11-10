@@ -13,6 +13,7 @@ class diaryReplay extends StatefulWidget {
   const diaryReplay({super.key, required this.date});
 
   final String date;
+
   final String emotion = "smile";
 
   @override
