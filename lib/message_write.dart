@@ -12,12 +12,25 @@ class message_write extends StatefulWidget {
 
 class _message_writeState extends State<message_write> {
   final _contentEditController = TextEditingController();
+  List<Map<String, dynamic>> messages = [];
 
-  // 메세지 전송 함수 - 전송 버튼을 눌렀을 때 호출이 되는 함수
+  // 메세지 전송 함수 - 전송 버튼을 눌렀을 때 호출되는 함수
   void _sendMessage() {
     String message = _contentEditController.text;
-    String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
-    print('전송된 메세지: $message, 전송 시간: $sentTime');
+
+    if (message.isNotEmpty) {
+      String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
+
+
+      setState(() {
+        messages.add({'message': message, 'isSent': true, 'sentTime': sentTime});
+      });
+
+      print('보낸 사람: true , 전송된 메세지: $message, 전송 시간: $sentTime');
+
+      // Clear the text field after sending the message
+   //   _contentEditController.clear();
+    }
   }
 
   @override
@@ -48,7 +61,11 @@ class _message_writeState extends State<message_write> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              _sendMessage(); // 메세지를 전송하는 함수 호출
+              _sendMessage();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => message(messages: messages)),
+              );// 메세지를 전송하는 함수 호출
             },
             child: Text("전송"),
             style: ElevatedButton.styleFrom(

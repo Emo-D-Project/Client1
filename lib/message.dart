@@ -3,20 +3,18 @@ import 'package:capston1/main.dart';
 import 'message_write.dart';
 import 'package:intl/intl.dart';
 
-final String start = DateTime.now().toString();
-String formattedDate = DateFormat('MM/dd h:mm').format(DateTime.now());
-
-
 class message extends StatefulWidget {
-  const message({super.key});
+  final List<Map<String, dynamic>> messages;
 
- 
+  const message({Key? key, required this.messages}) : super(key: key);
+
+
   @override
-  State<message> createState() => _messageState();
+  State<message> createState() => _MessageState();
 }
 
-//채팅방
-class _messageState extends State<message> {
+class _MessageState extends State<message> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +40,16 @@ class _messageState extends State<message> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => message_write()),
+                  MaterialPageRoute(builder: (context) => message_write()
+
+                  ),
                 );
               },
+
               icon: Image.asset(
                 'images/send/real_send.png',
                 height: 50, // 이미지 높이 조절
-                width: 30,  // 이미지 너비 조절
+                width: 30, // 이미지 너비 조절
               ),
             ),
           ],
@@ -65,16 +66,18 @@ class _messageState extends State<message> {
       ),
       body: Column(
         children: [
-          customContainer(
-            message: "안녕하세요!",
-            isSent: true,
-
-
-
-          ),
-          customContainer(
-            message: "안녕하세요!",
-            isSent: false,
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.messages.length,
+              itemBuilder: (context, index) {
+                var message = widget.messages[index];
+                return CustomContainer(
+                  message: message['message'],
+                  isSent: message['isSent'],
+                  sentTime: message['sentTime'],
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -83,23 +86,26 @@ class _messageState extends State<message> {
 }
 
 
-//컨테이너 만들었어요
-class customContainer extends StatefulWidget {
+class CustomContainer extends StatefulWidget {
+  final String message; // 내용
+  final bool isSent; // true - 보낸거 false - 받은거
+  final String sentTime;
 
-  final String message;  // 내용
-  final bool isSent;  // true - 보낸거 false - 받은거
-
-  const customContainer({
+  const CustomContainer({
     Key? key,
     required this.message,
     required this.isSent,
+    required this.sentTime,
   }) : super(key: key);
 
   @override
-  State<customContainer> createState() => _customContainerState();
+  State<CustomContainer> createState() => _CustomContainerState();
 }
 
-class _customContainerState extends State<customContainer> {
+class _CustomContainerState extends State<CustomContainer> {
+//보낸 쪽지 시간
+  String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -120,29 +126,29 @@ class _customContainerState extends State<customContainer> {
                         children: [
                           Row(
                             children: [
+                              //보낸 쪽지인지 받은 쪽지인지
                               Container(
                                 width: 100,
-                             //   color: Colors.cyan,
                                 padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                 child: Text(
                                   widget.isSent ? "보낸 쪽지" : "받은 쪽지",
-                                  //이름은 고정
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: widget.isSent ? Colors.blue : Colors.green,
-                                  //보낸 쪽지- blue 받은 쪽지 - green
+                                    color: widget.isSent
+                                        ? Colors.blue //보낸 쪽지
+                                        : Colors.green, //받은 쪽지
                                   ),
                                 ),
                               ),
                               Expanded(child: Container()),
+                              //시간
                               Container(
                                 width: 100,
-                          //      color: Colors.cyan,
                                 padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                 child: Text(
-                                  formattedDate, // 현재 날짜와 시간을 표시
+                                  widget.isSent ? sentTime : '',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: 15,
@@ -153,9 +159,10 @@ class _customContainerState extends State<customContainer> {
                               ),
                             ],
                           ),
+
+                          //채팅 내용
                           Container(
                             width: double.infinity,
-               //           color: Colors.lightGreen,
                             padding: EdgeInsets.fromLTRB(10, 3, 0, 0),
                             child: Text(
                               widget.message,
@@ -163,7 +170,9 @@ class _customContainerState extends State<customContainer> {
                               style: TextStyle(fontSize: 14),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             height: 1,
                             color: Color(0xFFCEC5BE),
