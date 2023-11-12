@@ -12,15 +12,14 @@ class message_write extends StatefulWidget {
 
 class _message_writeState extends State<message_write> {
   final _contentEditController = TextEditingController();
-  List<Map<String, dynamic>> messages = [];
+  List<Map<String, dynamic>> messages = [];   // 메세지 내용, true , 보낸 시간
 
-  // 메세지 전송 함수 - 전송 버튼을 눌렀을 때 호출되는 함수
+  // 메세지 전송 함수임 - 전송 버튼을 눌렀을 때  근데.. 이제 이게 보낸 쪽지가 되는..?
   void _sendMessage() {
     String message = _contentEditController.text;
 
     if (message.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
-
 
       setState(() {
         messages.add({'message': message, 'isSent': true, 'sentTime': sentTime});
@@ -42,7 +41,7 @@ class _message_writeState extends State<message_write> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text(
-          "쪽지를 보내보세용 ",
+          "쪽지를 보내보세여 ",
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'kim',

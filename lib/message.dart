@@ -4,7 +4,7 @@ import 'message_write.dart';
 import 'package:intl/intl.dart';
 
 class message extends StatefulWidget {
-  final List<Map<String, dynamic>> messages;
+  final List<Map<String, dynamic>> messages; // massages 변수 생성
 
   const message({Key? key, required this.messages}) : super(key: key);
 
@@ -41,11 +41,9 @@ class _MessageState extends State<message> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => message_write()
-
                   ),
                 );
               },
-
               icon: Image.asset(
                 'images/send/real_send.png',
                 height: 50, // 이미지 높이 조절
@@ -68,13 +66,13 @@ class _MessageState extends State<message> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: widget.messages.length,
-              itemBuilder: (context, index) {
-                var message = widget.messages[index];
+              itemCount: widget.messages.length, // widget.messages의 길이를 사용하여 메시지 목록의 항목 수 나타내기
+              itemBuilder: (context, index) {   // itmeBuilder는 아이템을 어떻게 생성을 할 지 정의하는 함수임
+                var message = widget.messages[index]; // 그리고 여기서는  widget.messages에서 해당 인덱스에 해당하는 메시지를 가져와 CustomContainer 위젯으로 반환함
                 return CustomContainer(
-                  message: message['message'],
-                  isSent: message['isSent'],
-                  sentTime: message['sentTime'],
+                  message: message['message'],  // 메세지 내용
+                  isSent: message['isSent'], // 보낸 사람
+                  sentTime: message['sentTime'], // 보낸 시간
                 );
               },
             ),
@@ -89,7 +87,7 @@ class _MessageState extends State<message> {
 class CustomContainer extends StatefulWidget {
   final String message; // 내용
   final bool isSent; // true - 보낸거 false - 받은거
-  final String sentTime;
+  final String sentTime; // 보낸 시간
 
   const CustomContainer({
     Key? key,
