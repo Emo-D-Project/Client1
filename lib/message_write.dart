@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
 import 'message.dart';
 import 'package:intl/intl.dart';
+import 'models/Message.dart';
 
 class message_write extends StatefulWidget {
   const message_write({Key? key}) : super(key: key);
@@ -11,21 +12,30 @@ class message_write extends StatefulWidget {
 }
 
 class _message_writeState extends State<message_write> {
+
   final _contentEditController = TextEditingController();
-  List<Map<String, dynamic>> messages = [];   // 메세지 내용, true , 보낸 시간
+  List<Map<String, dynamic>> messages = [];
 
   // 메세지 전송 함수임 - 전송 버튼을 눌렀을 때  근데.. 이제 이게 보낸 쪽지가 되는..?
   void _sendMessage() {
     String message = _contentEditController.text;
+    // // Message 클래스를 사용하여 메시지 객체 생성
+    // Message newMessage = Message(
+    //   senderId: 1, // 현재 사용자의 ID
+    //   receiverId: 2, // 선택된 대화 상대방의 ID
+    //   content: _contentEditController.text, // 텍스트 입력 필드에서 얻은 메시지 내용
+    //   dateTime: DateTime.now(), // 현재 날짜와 시간
+    // );
+
 
     if (message.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
 
       setState(() {
-        messages.add({'message': message, 'isSent': true, 'sentTime': sentTime});
+        messages.add({'content': message, 'receiverId': 2, 'senderId': 1, 'sendtime': DateTime.now(),
+        });
       });
-
-      print('보낸 사람: true , 전송된 메세지: $message, 전송 시간: $sentTime');
+      print('보낸 사람: ${messages.last['senderId']}, 전송된 메세지: $message, 전송 시간: $sentTime');
 
       // Clear the text field after sending the message
    //   _contentEditController.clear();

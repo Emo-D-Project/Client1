@@ -70,9 +70,11 @@ class _MessageState extends State<message> {
               itemBuilder: (context, index) {   // itmeBuilder는 아이템을 어떻게 생성을 할 지 정의하는 함수임
                 var message = widget.messages[index]; // 그리고 여기서는  widget.messages에서 해당 인덱스에 해당하는 메시지를 가져와 CustomContainer 위젯으로 반환함
                 return CustomContainer(
-                  message: message['message'],  // 메세지 내용
-                  isSent: message['isSent'], // 보낸 사람
-                  sentTime: message['sentTime'], // 보낸 시간
+                  content: message['content'],  // 메세지 내용
+                  sendtime: message['sendtime'], // 보낸 사람
+                  receiverId: message['receiverId'], // 받은 쪽지
+                  senderId: message['senderId'],//보낸 쪽지
+
                 );
               },
             ),
@@ -83,17 +85,21 @@ class _MessageState extends State<message> {
   }
 }
 
+//------------------------------------------------------------------------------------
 
 class CustomContainer extends StatefulWidget {
-  final String message; // 내용
-  final bool isSent; // true - 보낸거 false - 받은거
-  final String sentTime; // 보낸 시간
+  final int senderId;   //보낸 아이디
+  final int receiverId; //받은 아이디
+  final String content; // 내용
+  final DateTime sendtime;   //보낸 시간
 
   const CustomContainer({
     Key? key,
-    required this.message,
-    required this.isSent,
-    required this.sentTime,
+    required this.content,
+    required this.receiverId,
+    required this.senderId,
+    required this.sendtime
+
   }) : super(key: key);
 
   @override
@@ -102,7 +108,7 @@ class CustomContainer extends StatefulWidget {
 
 class _CustomContainerState extends State<CustomContainer> {
 //보낸 쪽지 시간
-  String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
+  String sendtime = DateFormat('MM/dd hh:mm').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -124,29 +130,41 @@ class _CustomContainerState extends State<CustomContainer> {
                         children: [
                           Row(
                             children: [
-                              //보낸 쪽지인지 받은 쪽지인지
+                              // 보낸 쪽지인지 받은 쪽지인지
                               Container(
                                 width: 100,
                                 padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                 child: Text(
-                                  widget.isSent ? "보낸 쪽지" : "받은 쪽지",
+                                  // senderId와 receiverId를 비교하여 쪽지 유형 결정
+                                      () {
+                                    if (widget.senderId == widget.receiverId) {
+                                      return "받은 쪽지";
+                                    } else {
+                                      return "보낸 쪽지";
+                                    }
+                                  }(),
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: widget.isSent
-                                        ? Colors.blue //보낸 쪽지
-                                        : Colors.green, //받은 쪽지
+                                    color: () {
+                                      if (widget.senderId == widget.receiverId) {
+                                        return Colors.green; // 받은 쪽지
+                                      } else {
+                                        return Colors.blue; // 보낸 쪽지
+                                      }
+                                    }(),
                                   ),
                                 ),
                               ),
+
                               Expanded(child: Container()),
-                              //시간
+                              // 시간
                               Container(
                                 width: 100,
                                 padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                 child: Text(
-                                  widget.isSent ? sentTime : '',
+                                  sendtime, // 보낸 쪽지든 받은 쪽지든 모두 시간 표시
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: 15,
@@ -163,7 +181,7 @@ class _CustomContainerState extends State<CustomContainer> {
                             width: double.infinity,
                             padding: EdgeInsets.fromLTRB(10, 3, 0, 0),
                             child: Text(
-                              widget.message,
+                              widget.content,
                               textAlign: TextAlign.left,
                               style: TextStyle(fontSize: 14),
                             ),
