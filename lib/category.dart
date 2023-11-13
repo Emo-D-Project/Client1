@@ -156,7 +156,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: (){
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const message()));
+                            MaterialPageRoute(builder: (context) => const message(messages: [],)));
 
                       }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
