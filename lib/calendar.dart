@@ -28,8 +28,6 @@ class _calendarState extends State<calendar> {
     DateTime(2023, 11, 5): Emotion.angry,
   };
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -59,22 +57,8 @@ class _calendarState extends State<calendar> {
             firstDay: DateTime.utc(2021),
             lastDay: DateTime.utc(2025),
             focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
             daysOfWeekHeight: 40,
             weekendDays: [DateTime.sunday],
-            holidayPredicate: (day) {
-              return day.weekday >= 6;
-            },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onPageChanged: (focusedDay) {
-              setState(() {
-                _focusedDay = focusedDay;
-              });
-            },
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, _calendarState) {
                 // 특정 날짜 캐릭터 아이콘 넣어주기
@@ -191,8 +175,7 @@ class _calendarState extends State<calendar> {
                       child: Text(
                         'S',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red
-                        ),
+                            fontWeight: FontWeight.bold, color: Colors.red),
                       ),
                     );
                 }
