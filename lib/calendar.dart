@@ -62,7 +62,7 @@ class _calendarState extends State<calendar> {
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, _calendarState) {
                 // 특정 날짜 캐릭터 아이콘 넣어주기
-                if (day.hashCode == DateTime(2023, 11, 3).hashCode) {
+                if (day.year == 2023 && day.month == 10 && day.day == 3 || day.year == 2023 && day.month == 10 && day.day == 5 || day.year == 2023 && day.month == 10 && day.day == 6 || day.year == 2023 && day.month == 10 && day.day == 10 || day.year == 2023 && day.month == 10 && day.day == 11 || day.year == 2023 && day.month == 10 && day.day == 12 || day.year == 2023 && day.month == 10 && day.day == 13 || day.year == 2023 && day.month == 10 && day.day == 14 || day.year == 2023 && day.month == 10 && day.day == 20 || day.year == 2023 && day.month == 10 && day.day == 21 || day.year == 2023 && day.month == 10 && day.day == 22) {
                   // 데이트 타임 대신 Diary.DateTime
                   print("dateTimeCorrect");
                   String image;
