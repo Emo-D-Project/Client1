@@ -203,6 +203,7 @@ class _mypageState extends State<mypage> {
             style: TextStyle(fontFamily: 'soojin', color: Color(0xFF7D5A50),),
           ),
           content: TextField(
+
             maxLength: 20,
             decoration: InputDecoration(
               hintText: '20자 이내로 작성해주세요.',
@@ -214,6 +215,7 @@ class _mypageState extends State<mypage> {
               ),
             ),
             controller: _answerEditController,
+
           ),
           actions: <Widget>[
             ElevatedButton(
@@ -236,6 +238,7 @@ class _mypageState extends State<mypage> {
                   setState(() {
                     String answerText = _answerEditController.text;
                     answer.add(answerText);
+                    _answerEditController.clear();
                   });
                   Navigator.of(context).pop();
                 }, //showContainer로 데이터 넘기기 // 디비에 저장하기

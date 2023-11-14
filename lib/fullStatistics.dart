@@ -27,7 +27,7 @@ class _fullStatisticsState extends State<fullStatistics> {
   String sad = 'images/emotion/6.gif';
   String calmness = 'images/emotion/7.gif';
 
-
+//enum으로 바꿔보기
   int num_comment = 25; // 공유된 일기 중 가장 많은 댓글 수
   int num_like = 3; // 공유된 일기 중 가장 많은 좋아요 수
   String name = '수진'; //닉네임
