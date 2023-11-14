@@ -158,13 +158,15 @@ class _MessageState extends State<message> {
               itemCount: widget.messages.length, // widget.messages의 길이를 사용하여 메시지 목록의 항목 수 나타내기
               itemBuilder: (context, index) {   // itmeBuilder는 아이템을 어떻게 생성을 할 지 정의하는 함수임
                 var message = widget.messages[index]; // 그리고 여기서는  widget.messages에서 해당 인덱스에 해당하는 메시지를 가져와 CustomContainer 위젯으로 반환함
-                return CustomContainer(
-
-                  content: message['content'],  // 메세지 내용
-                  sendtime: message['sendtime'], // 보낸 사람
-                  receiverId: message['receiverId'], // 받은 쪽지
-                  senderId: message['senderId'],//보낸 쪽지
-
+                return Column(
+                  children: [
+                    CustomContainer(
+                      content: message['content'],  // 메세지 내용
+                      sendtime: message['sendtime'], // 보낸 사람
+                      receiverId: message['receiverId'], // 받은 쪽지
+                      senderId: message['senderId'],//보낸 쪽지
+                    ),
+                  ],
                 );
               },
             ),

@@ -1,10 +1,21 @@
 import 'package:capston1/alrampage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dropbox.dart';
 import 'package:capston1/network/api_manager.dart';
+//import 'sharewidget/customwidget.dart';
+//import 'sharewidget/customwidget2.dart';
+import 'comment.dart';
 import 'message_write.dart';
-import 'package:image_picker/image_picker.dart';
+
+
+enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
+
+final List<String> imagepath = ['images/emotion/1.gif', 'images/emotion/2.gif'];
+final List<String> diaryimage = ['images/send/sj3.jpg', 'noimage'];
+final List<String> voice = ["yes", "no"];
+final List<String> diarycomment = ['일기1', '일기2'];
+final List<int> favoritcount = [4, 5];
+final List<bool> favoritcolor = [true, false];
 
 //----------------------------------------
 
@@ -32,7 +43,6 @@ final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 
 //----------------------------------------
-
 
 class diaryshare extends StatefulWidget {
   diaryshare({Key? key}) : super(key: key);
@@ -162,13 +172,35 @@ class _diaryshareState extends State<diaryshare> {
               }).toList(),
             ),
           ),
-          ListView(
-            shrinkWrap: true,
-            children: [
-              customwidget1(),
-              customwidget1(),
-              customwidget1(),
-            ],
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(10),
+              //itemCount: customwidget.,
+              itemBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  child: (() {
+                    if (diaryimage != "noimage" && voice == "no") {
+                      return customWidget1(
+                          simagePath: imagepath[index],
+                          sdiaryImage: diaryimage[index],
+                          scomment: diarycomment[index],
+                          sfavoritColor: favoritcolor[index],
+                          sfavoritCount: favoritcount[index]
+                      );
+                    }
+                    else if (diaryimage == "noimage" && voice == "no") {
+                      return customWidget2(
+                        scomment: diarycomment[index],
+                        sfavoritColor: favoritcolor[index],
+                        sfavoritCount: favoritcount[index],
+                        simagePath: imagepath[index],
+                      );
+                    }
+                  })(),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -176,17 +208,45 @@ class _diaryshareState extends State<diaryshare> {
   }
 }
 
+//음성 데이터 추가해야함
+class shareData{
+  final String imagePath;
+  final String diaryImage;
+  final String diarycomment;
+  final int favoritCount;
+  final bool favoritColor;
 
-// 일기 버전 1 - 그냥 텍스트만있는..
-
-class customwidget1 extends StatefulWidget {
-  const customwidget1({super.key});
-
-  @override
-  State<customwidget1> createState() => _customwidget1State();
+  shareData({
+    required this.imagePath,
+    required this.diaryImage,
+    required this.diarycomment,
+    required this.favoritColor,
+    required this.favoritCount,
+  });
 }
 
-class _customwidget1State extends State<customwidget1> {
+// 일기 버전 1 - 텍스트 + 사진
+class customWidget1 extends StatefulWidget {
+  final String simagePath;
+  final String sdiaryImage;
+  final String scomment;
+  final int sfavoritCount;
+  final bool sfavoritColor;
+
+  const customWidget1({super.key,
+    required this.simagePath,
+    required this.sdiaryImage,
+    required this.scomment,
+    required this.sfavoritColor,
+    required this.sfavoritCount,
+  });
+
+  @override
+  State<customWidget1> createState() => _customWidget1State();
+}
+
+class _customWidget1State extends State<customWidget1> {
+
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
   final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
@@ -203,177 +263,23 @@ class _customwidget1State extends State<customwidget1> {
         text: text,
       ));
       _commentCount++;
-
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
 
   }
-  //댓글 부분
+
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // 키보드가 나타날 때 텍스트 필드가 상단으로 이동
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Center(
-                    child: Container(
-                      width: 100,
-                      height: 5,
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                      color: Color.fromRGBO(117, 117, 117, 100),
-                    ),
-                  ), // 맨위에 회색 줄
-                  //댓글 부분
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: comments.length,
-                    itemBuilder: (context, index) {
-                      Comment comment = comments[index];
-                      return Container(
-                        width: double.infinity,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: Image.asset(
-                                comment.imagePath,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                    child: Text(
-                                      comment.name,
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF7D5A50),
-                                        fontFamily: 'soojin',
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                    child: Text(
-                                      comment.text,
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontFamily: 'soojin',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  //댓글 달 수 있는 칸
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 70,
-                          //color: Colors.cyan,
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 350,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 280,
-                                      height: 30,
-                                      padding: EdgeInsets.fromLTRB(
-                                          10, 15, 0, 0),
-                                      child: TextField(
-                                        controller: _commentController,
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                          fontFamily: 'soojin',
-                                        ),
-                                        decoration: InputDecoration(
-                                          hintText: '내용을 입력해주세요', // 힌트 텍스트 추가
-                                          hintStyle: TextStyle(
-                                              color: Colors.grey),
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        String commentText = _commentController
-                                            .text;
-                                        if (commentText.isNotEmpty) {
-                                          // 댓글 추가 메서드 호출
-                                          addComment('삼냥이', 'images/emotion/1.gif',
-                                              commentText);
-                                          // 텍스트 필드 비우기
-                                          _commentController.clear();
-                                        }
-                                      },
-                                      child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        margin: EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                'images/send/real_send.png'),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: comment(), // 수정이 필요한 부분
           ),
         );
       },
@@ -383,8 +289,8 @@ class _customwidget1State extends State<customwidget1> {
 //-----------------------
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
+
+    return SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -534,18 +440,201 @@ class _customwidget1State extends State<customwidget1> {
                 )),
           ],
         ),
-      ),
-    );
+      );
   }
 
 }
 
-// 댓글 부분
-class Comment {
-  final String name;
-  final String imagePath;
-  final String text;
 
-  Comment({required this.name, required this.imagePath, required this.text});
+
+class customWidget2 extends StatefulWidget {
+  final String simagePath;
+  final String scomment;
+  final int sfavoritCount;
+  final bool sfavoritColor;
+
+  const customWidget2({super.key,
+    required this.simagePath,
+    required this.scomment,
+    required this.sfavoritColor,
+    required this.sfavoritCount,
+  });
+
+  @override
+  State<customWidget2> createState() => _customWidget2State();
 }
 
+class _customWidget2State extends State<customWidget2> {
+  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
+  List<bool> isLiked = [false, false, false, false, false, false, false];
+  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
+
+  TextEditingController _commentController = TextEditingController();
+  // 댓글 추가 기능
+
+  // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
+  int _commentCount = 1;
+
+  void addComment(String name, String imagePath, String text) {
+    setState(() {
+      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+        text: text,
+      ));
+      _commentCount++;
+    });
+    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
+
+  }
+  void plusDialog(BuildContext context) {
+    final sizeY = MediaQuery.of(context).size.height;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            height: sizeY * 0.8,
+            color: Color(0xFF737373),
+            child: comment(),
+
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            width: 380,
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 380,
+                  height: 65,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              width: 35,
+                              height: 35,
+                              margin: EdgeInsets.only(left: 35),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(selectedImagePath),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          )),
+
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => message_write()
+                            ),
+                          );
+                        },
+                        icon: Image.asset(
+                          'images/send/real_send.png',
+                          height: 50, // 이미지 높이 조절
+                          width: 30, // 이미지 너비 조절
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                //텍스트
+                Container(
+                    width: 380,
+                    padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                    color: Colors.white54,
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.scomment,
+                          style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+
+          //좋아요,댓글
+          Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (isLiked[0]) {
+                                favoriteCounts[0]--;
+                              } else {
+                                favoriteCounts[0]++;
+                              }
+                              isLiked[0] = !isLiked[0];
+                            });
+                          },
+                          onLongPress: () {},
+                          child: Icon(
+                            Icons.favorite,
+                            color: widget.sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${widget.sfavoritCount}',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //댓글
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            plusDialog(context);
+                          },
+                          child:
+                          Icon(Icons.chat_outlined, color: Colors.grey),
+                        ),
+                        //댓글 숫자
+                        Text(
+                          '6', //
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        ],
+      ),
+    );
+  }
+}
