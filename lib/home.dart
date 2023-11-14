@@ -75,7 +75,6 @@ class home extends StatelessWidget {
                                     },
                                     icon: Image.asset('images/emotion/2.gif')),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
                                   child: IconButton(
                                     iconSize: 40,
                                       onPressed: () {
