@@ -38,6 +38,8 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
+  //qustn = ""
+
   Future<void> GetWriteDiary(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
@@ -45,6 +47,7 @@ class _writediaryState extends State<writediary> {
       // 요청 응답 받기
       final value = response['key']; // 키를 통해 value를 받아오기
       print('Data: $value');
+      //qistn = value
 
       //title = response['title'];
     } catch (e) {

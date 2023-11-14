@@ -16,8 +16,8 @@ final _answerEditController = TextEditingController(); //질문에 대한 답변
 
 class _mypageState extends State<mypage> {
   var item1;
-  final List<String> question = ["이민호"];
-  final List<String> answer = ["사랑함"];
+  final List<String> question = [];
+  final List<String> answer = [];
 
   //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
@@ -108,8 +108,8 @@ class _mypageState extends State<mypage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        _showDialog(context, 1);
-                        question.add("최애 영화");
+                      _showDialog(context, "최애 영화");
+                      question.add("최애 영화");
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -123,8 +123,8 @@ class _mypageState extends State<mypage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        _showDialog(context, 2);
-                        question.add("최애 노래");
+                      _showDialog(context, "최애 노래");
+                      question.add("최애 노래");
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -138,8 +138,8 @@ class _mypageState extends State<mypage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        _showDialog(context, 3);
-                        question.add("MBTI");
+                      _showDialog(context, "MBTI");
+                      question.add("MBTI");
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -153,8 +153,8 @@ class _mypageState extends State<mypage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        _showDialog(context, 4);
-                        question.add("최애 드라마");
+                      _showDialog(context, "최애 드라마");
+                      question.add("최애 드라마");
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -168,8 +168,8 @@ class _mypageState extends State<mypage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        _showDialog(context, 5);
-                        question.add("최애 색깔");
+                      _showDialog(context, "최애 색깔");
+                      question.add("최애 색깔");
 
                     },
                     style: ElevatedButton.styleFrom(
@@ -192,69 +192,69 @@ class _mypageState extends State<mypage> {
     );
   }
 
-  Future<void> _showDialog(BuildContext context, int item) {
+  Future<void> _showDialog(BuildContext context, String item) {
+    print("item : $item");
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-        title: Text(question[item],
-          style: TextStyle(fontFamily: 'soojin', color: Color(0xFF7D5A50),),
-        ),
-        content: TextField(
-          maxLength: 20,
-          decoration: InputDecoration(
-            hintText: '20자 이내로 작성해주세요.',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black54,),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black54,),
-            ),
+          title: Text(item,
+            style: TextStyle(fontFamily: 'soojin', color: Color(0xFF7D5A50),),
           ),
-          controller: _answerEditController,
-        ),
-        actions: <Widget>[
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  elevation: 0.0,
-                  backgroundColor: Color(0x4D968C83),
-                  minimumSize: Size(150, 30)),
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('취소',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: 'soojin'))),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  elevation: 0.0,
-                  backgroundColor: Color(0xFF7D5A50),
-                  minimumSize: Size(150, 30)),
-              onPressed: () {
-                setState(() {
-                  String answerText = _answerEditController.text;
-                  answer.add(answerText);
-                  item1 = item;
-                });
-                Navigator.of(context).pop();
-              }, //showContainer로 데이터 넘기기 // 디비에 저장하기
-              child: Text('확인',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: 'soojin'))),
-        ],
-      );
-        },
+          content: TextField(
+            maxLength: 20,
+            decoration: InputDecoration(
+              hintText: '20자 이내로 작성해주세요.',
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black54,),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black54,),
+              ),
+            ),
+            controller: _answerEditController,
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0x4D968C83),
+                    minimumSize: Size(150, 30)),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('취소',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0xFF7D5A50),
+                    minimumSize: Size(150, 30)),
+                onPressed: () {
+                  setState(() {
+                    String answerText = _answerEditController.text;
+                    answer.add(answerText);
+                  });
+                  Navigator.of(context).pop();
+                }, //showContainer로 데이터 넘기기 // 디비에 저장하기
+                child: Text('확인',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+          ],
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    print("item1 ${item1}");
-    print(question);
-    print(answer);
+    //print("item1 ${item1}");
+    //print(question);
+    //print(answer);
     final SizeX = MediaQuery.of(context).size.width;
     final SizeY = MediaQuery.of(context).size.height;
 
@@ -359,41 +359,10 @@ class _mypageState extends State<mypage> {
                       padding: const EdgeInsets.all(10),
                       itemCount: answer.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                            child: () {
-                              switch(index){
-                                case 0:
-                                  return CustomQuestionContainer(
-                                      vquestion: question[0],
-                                      vanswer: answer[0],
-                                  );
-                                case 1:
-                                  return CustomQuestionContainer(
-                                    vquestion: question[1],
-                                    vanswer: answer[1],
-                                  );
-                                case 2:
-                                  return CustomQuestionContainer(
-                                    vquestion: question[2],
-                                    vanswer: answer[2],
-                                  );
-                                case 3:
-                                  return CustomQuestionContainer(
-                                    vquestion: question[3],
-                                    vanswer: answer[3],
-                                  );
-                                case 4:
-                                  return CustomQuestionContainer(
-                                    vquestion: question[4],
-                                    vanswer: answer[4],
-                                  );
-                                case 5:
-                                  return CustomQuestionContainer(
-                                    vquestion: question[5],
-                                    vanswer: answer[5],
-                                  );
-                              }
-                            }());
+                        return CustomQuestionContainer(
+                            vquestion: question[index],
+                            vanswer: answer[index]
+                        );
                       },
                     ),
                   ),
