@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
 import 'message_write.dart';
 import 'package:intl/intl.dart';
+import 'network/api_manager.dart';
 
 class message extends StatefulWidget {
   final List<Map<String, dynamic>> messages; // massages 변수 생성
@@ -14,6 +15,96 @@ class message extends StatefulWidget {
 }
 
 class _MessageState extends State<message> {
+
+  //-------------------------------------------------------------------------------
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  late String message_content = " ";
+  late int sender_Id ;
+  late int receiver_Id;
+  late DateTime sentAt;
+
+// 화면을 갱신하는 메서드
+  void _updateScreen() {
+    // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
+    setState(() {
+      //myData = '갱신된 값';
+    });
+  }
+
+  Future<void> GetMessage(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['content']; // 키를 통해 value를 받아오기
+      print('content: $value');
+      message_content = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+    // 보낸 쪽지
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['senderId']; // 키를 통해 value를 받아오기
+      print('senderId: $value');
+      sender_Id = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+    //받은 쪽지
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['receiverId']; // 키를 통해 value를 받아오기
+      print('receiverId: $value');
+      receiver_Id = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    // 보낸 시간
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['sentAt']; // 키를 통해 value를 받아오기
+      print('sentAt: $value');
+      sentAt = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  /*Future<void> PostMyPage(String endpoint) async {
+    ApiManager apiManager = ApiManager().getApiManager();
+
+    try {
+      final postData = {
+
+      };
+
+      print(postData);
+
+      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+    } catch (e) {
+      print('Error: $e');
+    }
+  }*/
+  //-------------------------------------------------------------------------------
+
+
 
 
   @override
@@ -70,6 +161,7 @@ class _MessageState extends State<message> {
               itemBuilder: (context, index) {   // itmeBuilder는 아이템을 어떻게 생성을 할 지 정의하는 함수임
                 var message = widget.messages[index]; // 그리고 여기서는  widget.messages에서 해당 인덱스에 해당하는 메시지를 가져와 CustomContainer 위젯으로 반환함
                 return CustomContainer(
+
                   content: message['content'],  // 메세지 내용
                   sendtime: message['sendtime'], // 보낸 사람
                   receiverId: message['receiverId'], // 받은 쪽지
@@ -99,7 +191,6 @@ class CustomContainer extends StatefulWidget {
     required this.receiverId,
     required this.senderId,
     required this.sendtime
-
   }) : super(key: key);
 
   @override
@@ -138,9 +229,9 @@ class _CustomContainerState extends State<CustomContainer> {
                                   // senderId와 receiverId를 비교하여 쪽지 유형 결정
                                       () {
                                     if (widget.senderId == widget.receiverId) {
-                                      return "받은 쪽지";
+                                      return "보낸 쪽지 ";
                                     } else {
-                                      return "보낸 쪽지";
+                                      return "받은 쪽지";
                                     }
                                   }(),
                                   textAlign: TextAlign.left,
