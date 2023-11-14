@@ -41,6 +41,141 @@ class diaryshare extends StatefulWidget {
   State<diaryshare> createState() => _diaryshareState();
 }
 
+class _diaryshareState extends State<diaryshare> {
+  //----------------------------------------------------------
+  // ApiManager apiManager = ApiManager().getApiManager();
+  //
+  // Future<void> GetDiaryShare(String endpoint) async {
+  //   try {
+  //     final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+  //
+  //     // 요청 응답 받기
+  //     final value = response['key']; // 키를 통해 value를 받아오기
+  //     print('Data: $value');
+  //
+  //     //title = response['title'];
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
+  //
+  // Future<void> PostDiaryShare(String endpoint) async {
+  //   ApiManager apiManager = ApiManager().getApiManager();
+  //
+  //   try {
+  //     final postData = {
+  //       //보낼 변수 넣기
+  //     };
+  //
+  //     print(postData);
+  //
+  //     //await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
+
+  //-----------------------------------------------------------
+
+  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
+  List<bool> isLiked = [false, false, false, false, false, false, false];
+  String selectedValue = '최신순';
+
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
+    return Container(
+      color: Color(0xFFF8F5EB),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 드롭박스
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DropdownButton<String>(
+                  value: selectedValue,
+                  // 현재 선택된 값
+                  items: <String>['최신순', '추천순'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedValue = value!; // 선택된 값 업데이트
+                    });
+                  },
+                  underline: Container(
+                    height: 2,
+                    color: Colors.brown,
+                  ),
+                  dropdownColor: Color(0xFFF8F5EB),
+                  icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
+                  style: TextStyle(color: Colors.black),
+                ),
+                SizedBox(width: 25),
+              ],
+            ),
+          ),
+
+          //날짜
+          Container(
+            //   margin: EdgeInsets.fromLTRB(0, 20, 120, 20),
+            child: Text(
+              formattedDate,
+              style: TextStyle(
+                color: Color(0xFF7D5A50),
+                fontSize: 17,
+                fontWeight: FontWeight.w900,
+                fontFamily: 'soojin',
+              ),
+            ), //날짜
+          ),
+
+          //감정 아이콘
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: ClampingScrollPhysics(),
+            child: Row(
+              children: imagePaths.map((path) {
+                return Padding(
+                  padding: EdgeInsets.all(3),
+                  child: IconButton(
+                    icon: Image.asset(
+                      path,
+                      width: 50,
+                      height: 50,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        selectedImagePath = path; // 선택한 아이콘의 경로로 변경
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          ListView(
+            shrinkWrap: true,
+            children: [
+              customwidget1(),
+              customwidget1(),
+              customwidget1(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 // 일기 버전 1 - 그냥 텍스트만있는..
 
@@ -50,6 +185,7 @@ class customwidget1 extends StatefulWidget {
   @override
   State<customwidget1> createState() => _customwidget1State();
 }
+
 class _customwidget1State extends State<customwidget1> {
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
@@ -157,7 +293,6 @@ class _customwidget1State extends State<customwidget1> {
                       );
                     },
                   ),
-
                   //댓글 달 수 있는 칸
                   SingleChildScrollView(
                     child: Column(
@@ -414,137 +549,3 @@ class Comment {
   Comment({required this.name, required this.imagePath, required this.text});
 }
 
-class _diaryshareState extends State<diaryshare> {
-  //----------------------------------------------------------
-  ApiManager apiManager = ApiManager().getApiManager();
-
-  Future<void> GetDiaryShare(String endpoint) async {
-    try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-
-      // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-
-      //title = response['title'];
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  Future<void> PostDiaryShare(String endpoint) async {
-    ApiManager apiManager = ApiManager().getApiManager();
-
-    try {
-      final postData = {
-        //보낼 변수 넣기
-      };
-
-      print(postData);
-
-      //await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  //-----------------------------------------------------------
-
-  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
-  List<bool> isLiked = [false, false, false, false, false, false, false];
-  String selectedValue = '최신순';
-
-  @override
-  Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
-
-    return Container(
-      color: Color(0xFFF8F5EB),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // 드롭박스
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                DropdownButton<String>(
-                  value: selectedValue,
-                  // 현재 선택된 값
-                  items: <String>['최신순', '추천순'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedValue = value!; // 선택된 값 업데이트
-                    });
-                  },
-                  underline: Container(
-                    height: 2,
-                    color: Colors.brown,
-                  ),
-                  dropdownColor: Color(0xFFF8F5EB),
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
-                  style: TextStyle(color: Colors.black),
-                ),
-                SizedBox(width: 25),
-              ],
-            ),
-          ),
-
-          //날짜
-          Container(
-            //   margin: EdgeInsets.fromLTRB(0, 20, 120, 20),
-            child: Text(
-              formattedDate,
-              style: TextStyle(
-                color: Color(0xFF7D5A50),
-                fontSize: 17,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'soojin',
-              ),
-            ), //날짜
-          ),
-
-          //감정 아이콘
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: ClampingScrollPhysics(),
-            child: Row(
-              children: imagePaths.map((path) {
-                return Padding(
-                  padding: EdgeInsets.all(3),
-                  child: IconButton(
-                    icon: Image.asset(
-                      path,
-                      width: 50,
-                      height: 50,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedImagePath = path; // 선택한 아이콘의 경로로 변경
-                      });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          ListView(
-            shrinkWrap: true,
-            children: [
-              customwidget1(),
-              customwidget1(),
-              customwidget1(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
