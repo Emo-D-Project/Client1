@@ -369,6 +369,7 @@ class MessageData {
 }
 
 class CustomContainer extends StatefulWidget {
+
   final String name;
   final String content;
   final String imagePath;
@@ -380,6 +381,7 @@ class CustomContainer extends StatefulWidget {
     required this.imagePath,
     required this.isRead,
   });
+
 
   @override
   _CustomContainerState createState() => _CustomContainerState();
@@ -443,7 +445,6 @@ class _CustomContainerState extends State<CustomContainer> {
                   ],
                 ),
               ),
-
 
               // 빨간색 아이콘 (읽으면 없어지고 안읽으면 있음)
               Visibility(

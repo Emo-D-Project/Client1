@@ -26,8 +26,6 @@ class _message_writeState extends State<message_write> {
     //   content: _contentEditController.text, // 텍스트 입력 필드에서 얻은 메시지 내용
     //   dateTime: DateTime.now(), // 현재 날짜와 시간
     // );
-
-
     if (message.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
 
@@ -36,7 +34,6 @@ class _message_writeState extends State<message_write> {
         });
       });
       print('보낸 사람: ${messages.last['senderId']}, 전송된 메세지: $message, 전송 시간: $sentTime');
-
       // Clear the text field after sending the message
    //   _contentEditController.clear();
     }
@@ -62,7 +59,7 @@ class _message_writeState extends State<message_write> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyApp()),
+              MaterialPageRoute(builder: (context) =>  message(messages: messages)),
             );
           },
           icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83)),

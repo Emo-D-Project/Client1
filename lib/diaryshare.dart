@@ -1,19 +1,417 @@
+import 'package:capston1/alrampage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dropbox.dart';
 import 'package:capston1/network/api_manager.dart';
+import 'message_write.dart';
+import 'package:image_picker/image_picker.dart';
 
+//----------------------------------------
 
+final List<String> imagePaths = [
+  'images/emotion/1.gif',
+  'images/emotion/2.gif',
+  'images/emotion/angry.png',
+  'images/emotion/4.gif',
+  'images/emotion/5.gif',
+  'images/emotion/6.gif',
+  'images/emotion/7.gif',
+];
+
+String selectedImagePath = 'images/emotion/7.gif'; // 기본은 무표정
+
+final List<String> d_imagePaths = [
+  'images/send/sj3.jpg',
+  'images/send/sj1.jpg',
+  //'images/send/sj2.jpg',
+];
+
+String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
 
 final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
+
+//----------------------------------------
+
 
 class diaryshare extends StatefulWidget {
   diaryshare({Key? key}) : super(key: key);
 
   @override
   State<diaryshare> createState() => _diaryshareState();
+}
 
+
+// 일기 버전 1 - 그냥 텍스트만있는..
+
+class customwidget1 extends StatefulWidget {
+  const customwidget1({super.key});
+
+  @override
+  State<customwidget1> createState() => _customwidget1State();
+}
+class _customwidget1State extends State<customwidget1> {
+  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
+  List<bool> isLiked = [false, false, false, false, false, false, false];
+  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
+
+  TextEditingController _commentController = TextEditingController();
+  // 댓글 추가 기능
+
+  // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
+  int _commentCount = 1;
+
+  void addComment(String name, String imagePath, String text) {
+    setState(() {
+      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+        text: text,
+      ));
+      _commentCount++;
+
+    });
+    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
+
+  }
+  //댓글 부분
+  void plusDialog(BuildContext context) {
+    final sizeY = MediaQuery.of(context).size.height;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // 키보드가 나타날 때 텍스트 필드가 상단으로 이동
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            height: sizeY * 0.8,
+            color: Color(0xFF737373),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Center(
+                    child: Container(
+                      width: 100,
+                      height: 5,
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                      color: Color.fromRGBO(117, 117, 117, 100),
+                    ),
+                  ), // 맨위에 회색 줄
+                  //댓글 부분
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: comments.length,
+                    itemBuilder: (context, index) {
+                      Comment comment = comments[index];
+                      return Container(
+                        width: double.infinity,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Image.asset(
+                                comment.imagePath,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                    child: Text(
+                                      comment.name,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF7D5A50),
+                                        fontFamily: 'soojin',
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                    child: Text(
+                                      comment.text,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'soojin',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+
+                  //댓글 달 수 있는 칸
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 70,
+                          //color: Colors.cyan,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 280,
+                                      height: 30,
+                                      padding: EdgeInsets.fromLTRB(
+                                          10, 15, 0, 0),
+                                      child: TextField(
+                                        controller: _commentController,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                          fontFamily: 'soojin',
+                                        ),
+                                        decoration: InputDecoration(
+                                          hintText: '내용을 입력해주세요', // 힌트 텍스트 추가
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        String commentText = _commentController
+                                            .text;
+                                        if (commentText.isNotEmpty) {
+                                          // 댓글 추가 메서드 호출
+                                          addComment('삼냥이', 'images/emotion/1.gif',
+                                              commentText);
+                                          // 텍스트 필드 비우기
+                                          _commentController.clear();
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        width: 30,
+                                        margin: EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/send/real_send.png'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+//-----------------------
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: 380,
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 380,
+                    height: 65,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                margin: EdgeInsets.only(left: 35),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(selectedImagePath),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            )),
+
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => message_write()
+                              ),
+                            );
+                          },
+                          icon: Image.asset(
+                            'images/send/real_send.png',
+                            height: 50, // 이미지 높이 조절
+                            width: 30, // 이미지 너비 조절
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //이미지
+                  SingleChildScrollView(
+                    child: Container(
+                        width: 200,
+                        height: 150, // 이미지 높이 조절
+                        child: Container(
+                          child: PageView.builder( //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                            scrollDirection: Axis.horizontal,
+                            itemCount: d_imagePaths.length > 3 ? 3 : d_imagePaths
+                                .length, // 최대 3장까지만 허용
+                            itemBuilder: (context, index) {
+                              return Container(
+                                child: Center(
+                                  child: Image.asset(d_imagePaths[index]),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                    ),
+                  ),
+                  //텍스트
+                  Container(
+                      width: 380,
+                      padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                      color: Colors.white54,
+                      child: Column(
+                        children: [
+                          Text(
+                            dynamicText,
+                            style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+            ),
+
+            //좋아요,댓글
+            Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (isLiked[0]) {
+                                  favoriteCounts[0]--;
+                                } else {
+                                  favoriteCounts[0]++;
+                                }
+                                isLiked[0] = !isLiked[0];
+                              });
+                            },
+                            onLongPress: () {},
+                            child: Icon(
+                              Icons.favorite,
+                              color: isLiked[0] ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            '${favoriteCounts[0]}',
+                            style: TextStyle(fontSize: 11),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    //댓글
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              plusDialog(context);
+                            },
+                            child:
+                            Icon(Icons.chat_outlined, color: Colors.grey),
+                          ),
+                          //댓글 숫자
+                          Text(
+                            '6', //
+                            style: TextStyle(fontSize: 11),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+}
+
+// 댓글 부분
+class Comment {
+  final String name;
+  final String imagePath;
+  final String text;
+
+  Comment({required this.name, required this.imagePath, required this.text});
 }
 
 class _diaryshareState extends State<diaryshare> {
@@ -49,36 +447,23 @@ class _diaryshareState extends State<diaryshare> {
       print('Error: $e');
     }
   }
+
   //-----------------------------------------------------------
+
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
   String selectedValue = '최신순';
-  String selectedImagePath = 'images/emotion/7.gif';
-
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
-
-    final List<String> imagePaths = [
-      'images/emotion/1.gif',
-      'images/emotion/2.gif',
-      'images/emotion/angry.png',
-      'images/emotion/4.gif',
-      'images/emotion/5.gif',
-      'images/emotion/6.gif',
-      'images/emotion/7.gif',
-    ];
-
-
     return Container(
       color: Color(0xFFF8F5EB),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
           // 드롭박스
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -150,850 +535,16 @@ class _diaryshareState extends State<diaryshare> {
               }).toList(),
             ),
           ),
-
-//----------------------------------------------------------------------
-
-          Expanded(
-            child: SingleChildScrollView(
-              //scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  // 일기 화면1
-                  Container(
-                    width: 380,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 380,
-                          height: 65,
-                          color: Colors.white54,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        //  selectedImagePath = path;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: 35,
-                                      height: 35,
-                                      //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
-                                      margin: EdgeInsets.only(left: 35),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(selectedImagePath),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // 쪽지 보내기 아이콘
-                              Container(
-                                child: Container(
-                                  width: 33,
-                                  height: 33,
-                                  margin: EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('images/send/real_send.png'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SingleChildScrollView(
-                          child: Container(
-                            width: 200,
-                            height: 150, // 이미지 높이 조절
-                            child: PageView(
-                              scrollDirection: Axis.horizontal, // 수평으로 스크롤
-                              children: <Widget>[
-                                Container(
-                                  child: Center(
-                                      child:
-                                      Image.asset('images/send/sj3.jpg')),
-                                ),
-                                Container(
-                                  child: Center(
-                                      child:
-                                      Image.asset('images/send/sj1.jpg')),
-                                ),
-                                Container(
-                                  child: Center(
-                                      child:
-                                      Image.asset('images/send/sj2.jpg')),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // 텍스트 컨테이너
-                        Container(
-                            width: 380,
-                            padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                            color: Colors.white54,
-                            child: Column(
-                              children: [
-                                Text(
-                                  '오늘 하루 아주 만족스러운 날이다. '
-                                      '친구들이랑 맛있게 밥도 먹고'
-                                      ' 하늘도 너무 이뻤다!',
-                                  // overflow:TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            )),
-                      ],
-                    ),
-                  ),
-
-                  //좋아요,댓글
-                  Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (isLiked[0]) {
-                                        favoriteCounts[0]--;
-                                      } else {
-                                        favoriteCounts[0]++;
-                                      }
-                                      isLiked[0] = !isLiked[0];
-                                    });
-                                  },
-                                  onLongPress: () {},
-                                  child: Icon(
-                                    Icons.favorite,
-                                    color: isLiked[0] ? Colors.red : Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  '${favoriteCounts[0]}',
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          //댓글
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    plusDialog(context);
-                                  },
-                                  child:
-                                  Icon(Icons.chat_outlined, color: Colors.grey),
-                                ),
-                                //댓글 숫자
-                                Text(
-                                  '6', //
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )),
-
-                  //일기2
-                  Container(
-                    width: 380,
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 380,
-                          height: 65,
-                          color: Colors.white54,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      width: 35,
-                                      height: 35,
-                                      //margin으로 감정 아이콘 중간으로 오게 함. 35는 보내기 너비만큼 줌
-                                      margin: EdgeInsets.only(left: 35),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(selectedImagePath),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              // 쪽지 보내기
-                              Container(
-                                child: Container(
-                                  width: 35,
-                                  height: 35,
-                                  margin: EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('images/send/send.png'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        //녹음
-                        Container(
-                          width: 250, // 너비를 최대로 설정
-                          height: 25,
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(15))),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.play_arrow,
-                                color: Colors.black,
-                              ),
-                              Icon(
-                                Icons.pause,
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // 텍스트 컨테이너
-                        Container(
-                          width: 380,
-                          padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                          color: Colors.white54,
-                          child: Column(
-                            children: [
-                              Text(
-                                '오늘은 기분이 좋은 하루네요~~ 굳굳 ',
-                                style: TextStyle(fontSize: 16, fontFamily: 'soojin'),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //좋아요,댓글
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isLiked[1] = !isLiked[1];
-                                    if (isLiked[1]) {
-                                      favoriteCounts[1]++;
-                                    } else {
-                                      favoriteCounts[1]--;
-                                    }
-                                  });
-                                },
-                                onLongPress: () {},
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: isLiked[1] ? Colors.red : Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                '${favoriteCounts[1]}',
-                                style: TextStyle(fontSize: 11),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //댓글
-                        Container(
-                          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  plusDialog(context);
-                                },
-                                child: Icon(
-                                  Icons.chat_outlined,
-                                  color: Colors.grey,
-                                ),
-                              ),
-
-                              //댓글 숫자
-                              Text(
-                                '6', //
-                                style: TextStyle(fontSize: 11),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
+          ListView(
+            shrinkWrap: true,
+            children: [
+              customwidget1(),
+              customwidget1(),
+              customwidget1(),
+            ],
+          ),
         ],
       ),
     );
   }
-}
-
-
-class custom extends StatelessWidget {
-  const custom({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-
-
-  }
-}
-
-
-
-
-
-// 댓글 기능 누르면 뜨는 창
-void plusDialog(BuildContext context) {
-  final sizeY = MediaQuery.of(context).size.height;
-
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true, // 키보드가 나타날 때 텍스트 필드가 상단으로 이동
-    builder: (BuildContext context) {
-      return SingleChildScrollView(
-        child: Container(
-          //키보드가 나타날 때 텍스트 필드가 상단으로 이동
-          padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          height: sizeY * 0.8,
-          color: Color(0xFF737373),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-            ),
-            child: Column(
-              children: [
-                Center(
-                  child: Container(
-                    width: 100,
-                    height: 5,
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                    color: Color.fromRGBO(117, 117, 117, 100),
-                  ),
-                ), // 맨위에 회색 줄
-
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          child: Column(
-                            children: [
-                              //댓글 1
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/5.gif',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 1',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '난 오늘 너무 힘든 하루였어..',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-
-                              //댓글 2
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/6.gif',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 2',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '우와 나 라멘 진짜 좋아하는데!! 저기 맛있겠다 저기는 어디야?'
-                                                  '   하.. 갑자기 또 라멘 먹고싶네'
-                                                  ' 일본 갔다올게'
-                                                  'ㅇㅇㅇㅇㅇㅇ'
-                                                  'ㅇㅇㅇㅇ'
-                                                  'ㅇㅇㅇㅇㅇ',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-
-                              //댓글 3
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/7.gif',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 3',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '난 오늘 일한다고 하늘을 한번도 못봤어ㅜ',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-
-                              //댓글 4
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/2.gif',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 4',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '하늘 정말 이쁘다 그리고 너 사진 잘 찍는당'
-                                                  '. 휴대폰 기종이 뭐야? '
-                                                  '쪽지 보낼게!!',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-
-                              //댓글 5
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/2.gif',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 5',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '아 배고파 ..',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-
-                              //댓글 6
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/4.gif',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 6',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '나도 한식 잘 먹는데',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-
-                              //댓글 7
-                              Container(
-                                width: double.infinity,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: Image.asset(
-                                        'images/emotion/angry.png',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '삼냥이 7',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF7D5A50),
-                                                  fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                            child: Text(
-                                              '나랑 같은 곳이였나보네 ',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                //댓글 달 수 있는 칸
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 70,
-                        width: double.infinity,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 350,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    width: 280,
-                                    height: 30,
-                                    padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
-                                    child: TextField(
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                          fontFamily: 'soojin'
-                                      ),
-                                      decoration: InputDecoration(
-                                        hintText: '내용을 입력해주세요', // 힌트 텍스트 추가
-                                        hintStyle:
-                                        TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    margin: EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image:
-                                        AssetImage('images/send/send.png'),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
 }

@@ -105,8 +105,6 @@ class _MessageState extends State<message> {
   //-------------------------------------------------------------------------------
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,9 +174,7 @@ class _MessageState extends State<message> {
     );
   }
 }
-
 //------------------------------------------------------------------------------------
-
 class CustomContainer extends StatefulWidget {
   final int senderId;   //보낸 아이디
   final int receiverId; //받은 아이디

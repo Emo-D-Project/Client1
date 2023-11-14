@@ -259,7 +259,6 @@ class _mypageState extends State<mypage> {
     final SizeY = MediaQuery.of(context).size.height;
 
     //MyInfo myInfo = MyInfo().getMyInfo();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF8F5EB),
