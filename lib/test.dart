@@ -18,19 +18,25 @@ class _YourChatScreenState extends State<YourChatScreen> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   // 데이터 불러오는 함수
-  void fetchData() async {
+  Future<void> fetchData() async {
     try {
       // /api/messages 엔드포인트로부터 메시지 데이터 가져오기
-      Map<String, dynamic> response = await apiManager.Get('/api/messages');
+      List<dynamic> response = await ApiManager.apiManager.GetMessage('/api/messages');
 
-      // response에서 실제 메시지 데이터 추출
-      List<Map<String, dynamic>> messages = response['messages'];
-      print("message: " + messages.toString());
+      // 가져온 데이터를 List로 변환
+      List<Map<String, dynamic>> parsedMessages = response
+          .map((message) => {
+        'content': message['content'],
+        'senderId': message['senderId'],
+        'receiverId': message['receiverId'],
+        'sentAt': DateTime.parse(message['sentAt']),
+      })
+          .toList();
 
 
       // 가져온 데이터를 상태에 반영
       setState(() {
-        messages = messages;
+        messages = parsedMessages;
       });
     } catch (e) {
       // 예외 발생 시 처리
@@ -39,6 +45,7 @@ class _YourChatScreenState extends State<YourChatScreen> {
       // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
     }
   }
+
 
   @override
   void initState() {
@@ -100,11 +107,11 @@ class _YourChatScreenState extends State<YourChatScreen> {
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 var message = messages[index];
-                return CustomContainer(
-                  content: message['content'],
-                  sendtime: message['sendtime'],
-                  receiverId: message['receiverId'],
-                  senderId: message['senderId'],
+                return ListTile(
+                  title: Text(message['content']),
+                  subtitle: Text(
+                    '${message['sentAt'].year}-${message['sentAt'].month}-${message['sentAt'].day} ${message['sentAt'].hour}:${message['sentAt'].minute}',
+                  ),
                 );
               },
             ),

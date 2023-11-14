@@ -11,15 +11,33 @@ class ApiManager {
     return apiManager;
   }
 
-
   String baseUrl = "http://34.64.78.183:8080";
+
   // 정보 받아올 때
+  Future<List<dynamic>> GetMessage(String endpoint) async {
+
+    baseUrl = "http://34.64.78.183:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    final response = await http.get(Uri.parse('$baseUrl$endpoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
+      },
+    );
+
+
+    if (response.statusCode == 200) { // 통신 성공 시
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data from the API');
+    }
+  }
   Future<Map<String, dynamic>> Get(String endpoint) async {
 
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
-    final response = await http.get(Uri.parse('$baseUrl/$endpoint'),
+    final response = await http.get(Uri.parse('$baseUrl$endpoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
