@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'bar graph/bar_graph_month.dart';
 import 'statistics.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -7,12 +8,292 @@ import 'package:capston1/pieGraph/pie_chart.dart';
 
 enum Emotion {smile, flutter, angry, annoying, tired, sad, calmness}
 
-final List<int> title = [10,9];
-final List<int> emotioncount = [10, 5, 2, 8, 1, 0, 2];
-final List<String> mostemo = ['smile','sad'];
-final List<String> worstemo = ['flutter','tired'];
-final List<String> mymonth = ['10월 끗','9월 끗'];
-final List<double> total = [0.3,0.5];
+List<DateTime> title = [DateTime(2023,10),DateTime(2023,9),DateTime(2023,8)];
+List<double> emotioncount = [10, 5, 2, 8, 1, 0, 2];
+List<String> mostemo = ['smile','sad','flutter'];
+List<String> worstemo = ['flutter','tired','smile'];
+List<String> mymonth = ['10월 끗','9월 끗','8월 끗'];
+List<double> total = [1,2,3];
+
+Widget sadM = Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(
+        width: 300,
+        padding:
+        EdgeInsets.fromLTRB(0, 8, 0, 0),
+        child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(children: [
+              TextSpan(
+                  text: '"EMO:D의 한마디"\n\n',
+                  style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 30,
+                      color: Colors.brown)),
+              TextSpan(
+                  text:
+                  '한 달 동안 어려운 순간들이 많았겠죠.'
+                      '\n\n'
+                      '그럴 때마다 어떤 상황에서도 당신의\n'
+                      '강인함과 인내심을 발견할 수 있었을 거에요.\n'
+                      '또한, 어떤 어려움이든 극복할 능력을\n'
+                      '갖고 있다는 것을 기억해주세요.\n'
+                      '\n'
+                      '더 나은 날들이 올 거라 믿어요.\n',
+                  style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 16,
+                      color: Colors.brown)),
+            ]))),
+    Container(
+      color: Colors.black26,
+      width: 250,
+      height: 1,
+    ),
+    Container(
+      width: 300,
+      padding:
+      EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            TextSpan(
+                text:
+                '혼자서 감정을 다스리기 어려울 수 있어요.\n'
+                    '상담사와 이야기를 나눠보는 건 어떨까요?\n'
+                    '\n'
+                    '당신의 이야기를 듣고 함께 해결책을\n'
+                    '찾아갈 수 있도록 최선을 다해 도와줄게요.\n',
+                style: TextStyle(
+                    fontFamily: 'soojin',
+                    fontSize: 16,
+                    color: Colors.brown)),
+          ],
+        ),
+      ),
+    ),
+
+    Container(
+      padding:
+      EdgeInsets.fromLTRB(10, 0, 10, 8),
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        color: Color(0xFF745A52),
+        strokeWidth: 2,
+        radius: Radius.circular(20),
+        dashPattern: [13, 13],
+        child: SizedBox(
+          width: 380,
+          height: 150,
+          child: Row(
+            mainAxisAlignment:
+            MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                  'images/main/free-icon-communication-3820107.png',
+                  width: 40,
+                  height: 40, color: Colors.brown),
+              Column(
+                children: [
+                  Padding(
+                      padding:
+                      EdgeInsets.fromLTRB(
+                          0, 5, 0, 0)),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 200,
+                    height: 70,
+                    child: (Text(
+                      '정신건강 위기 상담전화\n(1577-0199)',
+                      style: TextStyle(fontSize: 16,
+                          fontFamily: 'soojin',
+                          color: Colors.brown),)),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 200,
+                    height: 70,
+                    child: (Text('자살 상담전화(1393)',
+                      style: TextStyle(fontSize: 16,
+                          fontFamily: 'soojin',
+                          color: Colors.brown),)),
+
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  ],
+);
+
+Widget happyM = Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(
+        width: 300,
+        padding:
+        EdgeInsets.fromLTRB(0, 8, 0, 0),
+        child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(children: [
+              TextSpan(
+                  text: '"EMO:D의 한마디"\n\n',
+                  style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 30,
+                      color: Colors.brown)),
+              TextSpan(
+                  text:
+                  '이번 달은 행복한 날들이 많았던 것 같아 EMO:D도 기쁩니다!'
+                      '\n\n'
+                      '좋은 일들이 있었다면 그 속에는\n'
+                      '당신의 긍정적인 마음이\n'
+                      '큰 역할을 했을 거라 생각해요.\n'
+                      '그동안 겪은 모든 경험들이 당신에게 좋은\n'
+                      '영향을 미쳤을 것이라고 확신합니다!\n'
+                      '\n',
+                      style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 16,
+                      color: Colors.brown)),
+            ]))),
+    Container(
+      color: Colors.black26,
+      width: 250,
+      height: 1,
+    ),
+    Container(
+      width: 300,
+      padding:
+      EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            TextSpan(
+                text:
+                    '\n'
+                '이런 특별한 순간을 소중하고 감사하게 여기며\n'
+                    '더 많은 행복들을 만들어내길 기대하고\n'
+                    '그런 순간들이 계속해서 이어지길 바라요:D\n'
+                    '\n'
+                    '당당하게 나아가며 더 많은 즐거운 순간을\n'
+                    '만들어 나가길 기대하고 있고,\n'
+                    '당신의 긍정적인 에너지가 주변에도 전해져\n'
+                    '더 많은 행복을 만들어 나가길 희망할게요!\n',
+                style: TextStyle(
+                    fontFamily: 'soojin',
+                    fontSize: 16,
+                    color: Colors.brown)),
+          ],
+        ),
+      ),
+    ),
+  ],
+);
+
+Widget calmM = Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(
+        width: 300,
+        padding:
+        EdgeInsets.fromLTRB(0, 8, 0, 0),
+        child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(children: [
+              TextSpan(
+                  text: '"EMO:D의 한마디"\n\n',
+                  style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 30,
+                      color: Colors.brown)),
+              TextSpan(
+                  text:
+                  '이번 달은 평온한 날들이 많았나보군요.'
+                      '\n\n'
+                      '이러한 날들 속에도 소중한 순간들이\n'
+                      '많았을 것입니다.\n'
+                      '때로는 조용하고 차분한 시간이 필요하고,\n'
+                      '그 안에서 새로운 에너지를 찾을 수도 있어요.\n\n'
+                      '일상의 소소한 기쁨이나 안락함을 느끼며\n'
+                      '하루를 보내는 것 역시 중요한 일이에요.\n'
+                      '\n',
+                  style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 16,
+                      color: Colors.brown)),
+            ]))),
+    Container(
+      color: Colors.black26,
+      width: 250,
+      height: 1,
+    ),
+    Container(
+      width: 300,
+      padding:
+      EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            TextSpan(
+                text:
+                    '\n'
+                '평범한 날들이라 해서 특별하지 않다고\n'
+                    '생각하지 않아도 돼요.\n'
+                    '지금의 평온한 순간을 느끼며 휴식을 취하고,\n'
+                    '내 안의 소소한 기쁨들을 발견해보는 것도\n'
+                    '좋은 방법입니다:D\n'
+                    '\n',
+                style: TextStyle(
+                    fontFamily: 'soojin',
+                    fontSize: 16,
+                    color: Colors.brown)),
+          ],
+        ),
+      ),
+    ),
+    Container(
+      color: Colors.black26,
+      width: 250,
+      height: 1,
+    ),
+    Container(
+      width: 300,
+      padding:
+      EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            TextSpan(
+                text:
+                    '\n'
+                '모든 순간은 의미가 있고,\n'
+                    '그 속에서 찾는 웃음이나 안정감은\n'
+                    '큰 행복으로 이어질 수 있습니다.\n'
+                    '조용한 날들도 그 자체로 가치있고,\n'
+                    '평온함을 느끼며 내 안의 평화를\n'
+                    '찾아가는 여정에 기대어 보는건 어때요?\n'
+                        '\n',
+                style: TextStyle(
+                    fontFamily: 'soojin',
+                    fontSize: 16,
+                    color: Colors.brown)),
+          ],
+        ),
+      ),
+    ),
+
+  ],
+);
+
 
 
 class monthlyStatistics extends StatefulWidget {
@@ -24,11 +305,20 @@ class monthlyStatistics extends StatefulWidget {
 
 class _monthlyStatisticsState extends State<monthlyStatistics> {
 
-  //final List<MyCustomContent> widgetList = [MyCustomContent(), MyCustomContent(), MyCustomContent()];
+ String selectedValue = '최신순';
 
-  String selectedValue = '최신순';
+ void _reverseList() {
+   setState(() {
+     title = List.from(title.reversed);
+     //emotioncount = List.from(emotioncount.reversed);
+     mostemo = List.from(mostemo.reversed);
+     worstemo = List.from(worstemo.reversed);
+     mymonth = List.from(mymonth.reversed);
+     total = List.from(total.reversed);
+   });
+ }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
@@ -74,13 +364,13 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                     onChanged: (String? value) {
                       setState(() {
                         selectedValue = value!;
-                        // 선택된 값 업데이트
-                        // if (selectedValue == '최신순') {
-                        //   datas.sort((a, b) => b.title.compareTo(a.title));
-                        // } else {
-                        //   datas.sort((a, b) => a.title.compareTo(b.title));
-                        // }
-                        // 리스트 뷰 값 반대로
+
+                        if (selectedValue == '오래된순') {
+                          _reverseList(); // Reverse the list
+                        }
+                        else{
+                          _reverseList();
+                        }
                       });
                     },
                     underline: Container(
@@ -131,8 +421,8 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
 
 class MonthlyData {
-    final int title;
-    final List<int> emotions;
+    final DateTime title;
+    final List<double> emotions;
     final int mostEmo;
     final int worstEmo;
     final String myMonth;
@@ -150,8 +440,8 @@ class MonthlyData {
 
 //커스텀 컨테이너
 class MyCustomContent extends StatelessWidget {
-  final int ctitle;
-  final List<int> cemotions;
+  final DateTime ctitle;
+  final List<double> cemotions;
   final String cmostEmo;
   final String cworstEmo;
   final String cmyMonth;
@@ -170,7 +460,8 @@ class MyCustomContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ExpansionTile(
-          title: Text('$ctitle',
+          title: Text('${ctitle.year}년 ${ctitle.month}월 감정통지서',
+            //'10월감정통지서' ,
             style: TextStyle(
               fontFamily: "soojin",
               fontSize: 25,
@@ -395,122 +686,17 @@ class MyCustomContent extends StatelessWidget {
                             ),
                             child: LayoutBuilder(
                               builder: (BuildContext context, BoxConstraints constraints) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        width: 300,
-                                        padding:
-                                        EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                        child: RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: '"EMO:D의 한마디"\n\n',
-                                                  style: TextStyle(
-                                                      fontFamily: 'soojin',
-                                                      fontSize: 30,
-                                                      color: Colors.brown)),
-                                              TextSpan(
-                                                  text:
-                                                  '한 달 동안 어려운 순간들이 많았겠죠.'
-                                                      '\n\n'
-                                                      '그럴 때마다 어떤 상황에서도 당신의\n'
-                                                      '강인함과 인내심을 발견할 수 있었을 거에요.\n'
-                                                      '또한, 어떤 어려움이든 극복할 능력을\n'
-                                                      '갖고 있다는 것을 기억해주세요.\n'
-                                                      '\n'
-                                                      '더 나은 날들이 올 거라 믿어요.\n',
-                                                  style: TextStyle(
-                                                      fontFamily: 'soojin',
-                                                      fontSize: 16,
-                                                      color: Colors.brown)),
-                                            ]))),
-                                    Container(
-                                      color: Colors.black26,
-                                      width: 250,
-                                      height: 1,
-                                    ),
-                                    Container(
-                                      width: 300,
-                                      padding:
-                                      EdgeInsets.fromLTRB(0, 15, 0, 0),
-                                      child: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                '혼자서 감정을 다스리기 어려울 수 있어요.\n'
-                                                    '상담사와 이야기를 나눠보는 건 어떨까요?\n'
-                                                    '\n'
-                                                    '당신의 이야기를 듣고 함께 해결책을\n'
-                                                    '찾아갈 수 있도록 최선을 다해 도와줄게요.\n',
-                                                style: TextStyle(
-                                                    fontFamily: 'soojin',
-                                                    fontSize: 16,
-                                                    color: Colors.brown)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    Container(
-                                      padding:
-                                      EdgeInsets.fromLTRB(10, 0, 10, 8),
-                                      child: DottedBorder(
-                                        borderType: BorderType.RRect,
-                                        color: Color(0xFF745A52),
-                                        strokeWidth: 2,
-                                        radius: Radius.circular(20),
-                                        dashPattern: [13, 13],
-                                        child: SizedBox(
-                                          width: 380,
-                                          height: 150,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                  'images/main/free-icon-communication-3820107.png',
-                                                  width: 40,
-                                                  height: 40, color: Colors.brown),
-                                              Column(
-                                                children: [
-                                                  Padding(
-                                                      padding:
-                                                      EdgeInsets.fromLTRB(
-                                                          0, 5, 0, 0)),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 200,
-                                                    height: 70,
-                                                    child: (Text(
-                                                      '정신건강 위기 상담전화\n(1577-0199)',
-                                                      style: TextStyle(fontSize: 16,
-                                                          fontFamily: 'soojin',
-                                                          color: Colors.brown),)),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 200,
-                                                    height: 70,
-                                                    child: (Text('자살 상담전화(1393)',
-                                                      style: TextStyle(fontSize: 16,
-                                                          fontFamily: 'soojin',
-                                                          color: Colors.brown),)),
-
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-
-                                );
+                                if(ctotalEmo == 1.0)
+                                  {print(ctotalEmo);
+                                  return happyM;}
+                                else if(ctotalEmo == 2.0)
+                                  return sadM;
+                                else if(ctotalEmo == 3.0)
+                                  return calmM;
+                                else{
+                                  print(ctotalEmo);
+                                  return Container();
+                                }
                               },
                             )),
 
@@ -539,7 +725,7 @@ class MyCustomContent extends StatelessWidget {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(children: [
                                               TextSpan(
-                                                  text: '나의 $ctitle월은', //n월로 변경해야함
+                                                  text: '나의 ${ctitle.month}월은', //n월로 변경해야함
                                                   style: TextStyle(
                                                       fontSize: 30,
                                                       fontFamily: 'soojin',
