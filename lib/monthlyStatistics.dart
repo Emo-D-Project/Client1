@@ -181,16 +181,39 @@ Widget happyM = Column(
                 '이런 특별한 순간을 소중하고 감사하게 여기며\n'
                     '더 많은 행복들을 만들어내길 기대하고\n'
                     '그런 순간들이 계속해서 이어지길 바라요:D\n'
-                    '\n'
-                    '당당하게 나아가며 더 많은 즐거운 순간을\n'
-                    '만들어 나가길 기대하고 있고,\n'
-                    '당신의 긍정적인 에너지가 주변에도 전해져\n'
-                    '더 많은 행복을 만들어 나가길 희망할게요!\n',
+                    '\n',
                 style: TextStyle(
                     fontFamily: 'soojin',
                     fontSize: 16,
                     color: Colors.brown)),
           ],
+        ),
+      ),
+    ),
+    Container(
+      color: Colors.black26,
+      width: 250,
+      height: 1,
+    ),
+    Container(
+      width: 300,
+      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '\n'
+                  '당당하게 나아가며 더 많은 즐거운 순간을\n'
+                  '만들어 나가길 기대하고 있고,\n'
+                  '당신의 긍정적인 에너지가 주변에도 전해져\n'
+                  '더 많은 행복을 만들어 나가길 희망할게요!\n',
+                style: TextStyle(
+                    fontFamily: 'soojin',
+                    fontSize: 16,
+                    color: Colors.brown)
+            )
+          ]
         ),
       ),
     ),
