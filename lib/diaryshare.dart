@@ -6,16 +6,24 @@ import 'comment.dart';
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-
-
 //enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
 
-final List<String> imagepath = ['images/emotion/1.gif', 'images/emotion/2.gif', 'images/emotion/2.gif','images/emotion/3.gif'];
-final List<String> diaryimage = ['images/send/sj3.jpg', 'noimage', 'noimage','images/send/sj1.jpg'];
-final List<String> voice = ["no", "no", "yes","yes"];
-final List<String> diarycomment = ['일기1', '일기2','일기3','일기 4'];
-final List<int> favoritcount = [4, 5,6,7];
-final List<bool> favoritcolor = [true, false, true,true];
+final List<String> imagepath = [
+  'images/emotion/1.gif',
+  'images/emotion/2.gif',
+  'images/emotion/2.gif',
+  'images/emotion/3.gif'
+];
+final List<String> diaryimage = [
+  'images/send/sj3.jpg',
+  'noimage',
+  'noimage',
+  'images/send/sj1.jpg'
+];
+final List<String> voice = ["no", "no", "yes", "yes"];
+final List<String> diarycomment = ['일기1', '일기2', '일기3', '일기 4'];
+final List<int> favoritcount = [4, 5, 6, 7];
+final List<bool> favoritcolor = [true, false, true, true];
 
 //----------------------------------------
 
@@ -180,24 +188,24 @@ class _diaryshareState extends State<diaryshare> {
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   child: (() {
-                    if (diaryimage[index] != "noimage" && voice[index] == "no") {
+                    if (diaryimage[index] != "noimage" &&
+                        voice[index] == "no") {
                       return customWidget1(
                           simagePath: imagepath[index],
                           sdiaryImage: diaryimage[index],
                           scomment: diarycomment[index],
                           sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index]
-                      );
-                    }
-                    else if (diaryimage[index] == "noimage" && voice[index] == "no") {
+                          sfavoritCount: favoritcount[index]);
+                    } else if (diaryimage[index] == "noimage" &&
+                        voice[index] == "no") {
                       return customWidget2(
                         scomment: diarycomment[index],
                         sfavoritColor: favoritcolor[index],
                         sfavoritCount: favoritcount[index],
                         simagePath: imagepath[index],
                       );
-                    }
-                    else if(diaryimage[index] == "noimage" && voice[index] == "yes"){
+                    } else if (diaryimage[index] == "noimage" &&
+                        voice[index] == "yes") {
                       return customwidget3(
                         scomment: diarycomment[index],
                         sfavoritColor: favoritcolor[index],
@@ -205,8 +213,8 @@ class _diaryshareState extends State<diaryshare> {
                         simagePath: imagepath[index],
                         svoice: voice[index],
                       );
-                    }
-                    else if(diaryimage[index] != "noimage" && voice[index] == "yes"){
+                    } else if (diaryimage[index] != "noimage" &&
+                        voice[index] == "yes") {
                       return customwidget4(
                         sdiaryImage: diaryimage[index],
                         scomment: diarycomment[index],
@@ -228,7 +236,7 @@ class _diaryshareState extends State<diaryshare> {
 }
 
 //음성 데이터 추가해야함
-class shareData{
+class shareData {
   final String imagePath;
   final String diaryImage;
   final String diarycomment;
@@ -254,7 +262,8 @@ class customWidget1 extends StatefulWidget {
   final int sfavoritCount;
   final bool sfavoritColor;
 
-  const customWidget1({super.key,
+  const customWidget1({
+    super.key,
     required this.simagePath,
     required this.sdiaryImage,
     required this.scomment,
@@ -267,12 +276,12 @@ class customWidget1 extends StatefulWidget {
 }
 
 class _customWidget1State extends State<customWidget1> {
-
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
-  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
+  final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
+
   // 댓글 추가 기능
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
@@ -280,13 +289,14 @@ class _customWidget1State extends State<customWidget1> {
 
   void addComment(String name, String imagePath, String text) {
     setState(() {
-      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+      comments.add(Comment(
+        name: '$name $_commentCount',
+        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-
   }
 
   void plusDialog(BuildContext context) {
@@ -297,7 +307,8 @@ class _customWidget1State extends State<customWidget1> {
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             child: comment(), // 수정이 필요한 부분
@@ -310,7 +321,6 @@ class _customWidget1State extends State<customWidget1> {
 //-----------------------
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -332,27 +342,25 @@ class _customWidget1State extends State<customWidget1> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 35),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(selectedImagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(selectedImagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
-
+                          ),
+                        ),
+                      )),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => message_write()
-                            ),
+                                builder: (context) => message_write()),
                           );
                         },
                         icon: Image.asset(
@@ -367,13 +375,16 @@ class _customWidget1State extends State<customWidget1> {
                 //이미지
                 SingleChildScrollView(
                   child: Container(
+                   
                       width: 200,
                       height: 150, // 이미지 높이 조절
                       child: Container(
-                        child: PageView.builder( //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                        child: PageView.builder(
+                          //listview로 하면 한장씩 안넘어가서 페이지뷰함
                           scrollDirection: Axis.horizontal,
-                          itemCount: d_imagePaths.length > 3 ? 3 : d_imagePaths
-                              .length, // 최대 3장까지만 허용
+                          itemCount: d_imagePaths.length > 3
+                              ? 3
+                              : d_imagePaths.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
@@ -382,13 +393,12 @@ class _customWidget1State extends State<customWidget1> {
                             );
                           },
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 //텍스트
                 Container(
                     width: 380,
-                    padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
                     color: Colors.white54,
                     child: Column(
                       children: [
@@ -406,64 +416,62 @@ class _customWidget1State extends State<customWidget1> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (isLiked[0]) {
-                                favoriteCounts[0]--;
-                              } else {
-                                favoriteCounts[0]++;
-                              }
-                              isLiked[0] = !isLiked[0];
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: isLiked[0] ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${widget.sfavoritCount}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isLiked[0]) {
+                            favoriteCounts[0]--;
+                          } else {
+                            favoriteCounts[0]++;
+                          }
+                          isLiked[0] = !isLiked[0];
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: isLiked[0] ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '${widget.sfavoritCount}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child:
-                          Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
-                  ),
-                ],
-              )),
+                    //댓글 숫자
+                    Text(
+                      '6', //
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
   }
-
 }
 
 //글만 있는 거
@@ -473,7 +481,8 @@ class customWidget2 extends StatefulWidget {
   final int sfavoritCount;
   final bool sfavoritColor;
 
-  const customWidget2({super.key,
+  const customWidget2({
+    super.key,
     required this.simagePath,
     required this.scomment,
     required this.sfavoritColor,
@@ -487,9 +496,10 @@ class customWidget2 extends StatefulWidget {
 class _customWidget2State extends State<customWidget2> {
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
-  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
+  final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
+
   // 댓글 추가 기능
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
@@ -497,14 +507,16 @@ class _customWidget2State extends State<customWidget2> {
 
   void addComment(String name, String imagePath, String text) {
     setState(() {
-      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+      comments.add(Comment(
+        name: '$name $_commentCount',
+        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-
   }
+
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
@@ -513,11 +525,11 @@ class _customWidget2State extends State<customWidget2> {
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             child: comment(),
-
           ),
         );
       },
@@ -547,27 +559,26 @@ class _customWidget2State extends State<customWidget2> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 35),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(selectedImagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          )),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
 
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(selectedImagePath),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      )),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => message_write()
-                            ),
+                                builder: (context) => message_write()),
                           );
                         },
                         icon: Image.asset(
@@ -600,85 +611,80 @@ class _customWidget2State extends State<customWidget2> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (isLiked[0]) {
-                                favoriteCounts[0]--;
-                              } else {
-                                favoriteCounts[0]++;
-                              }
-                              isLiked[0] = !isLiked[0];
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: isLiked[0] ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${widget.sfavoritCount}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isLiked[0]) {
+                            favoriteCounts[0]--;
+                          } else {
+                            favoriteCounts[0]++;
+                          }
+                          isLiked[0] = !isLiked[0];
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: isLiked[0] ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '${widget.sfavoritCount}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child:
-                          Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
-                  ),
-                ],
-              )),
+                    //댓글 숫자
+                    Text(
+                      '6', //
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
   }
 }
 
-
-
 // 일기 버전 3 - 텍스트 + 음성
 class customwidget3 extends StatefulWidget {
-
   final String simagePath;
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
   final String svoice;
 
-
-  const customwidget3({super.key,
+  const customwidget3({
+    super.key,
     required this.simagePath,
     required this.scomment,
     required this.sfavoritColor,
     required this.sfavoritCount,
     required this.svoice,
   });
-
 
   @override
   State<customwidget3> createState() => _customwidget3State();
@@ -687,9 +693,10 @@ class customwidget3 extends StatefulWidget {
 class _customwidget3State extends State<customwidget3> {
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
-  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
+  final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
+
   // 댓글 추가 기능
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
@@ -697,14 +704,16 @@ class _customwidget3State extends State<customwidget3> {
 
   void addComment(String name, String imagePath, String text) {
     setState(() {
-      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+      comments.add(Comment(
+        name: '$name $_commentCount',
+        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-
   }
+
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
@@ -713,7 +722,8 @@ class _customwidget3State extends State<customwidget3> {
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             child: comment(),
@@ -777,7 +787,6 @@ class _customwidget3State extends State<customwidget3> {
 //-----------------------
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -799,24 +808,21 @@ class _customwidget3State extends State<customwidget3> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 35),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(selectedImagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(selectedImagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
-
+                          ),
+                        ),
+                      )),
                       IconButton(
-                        onPressed: () {
-
-                        },
+                        onPressed: () {},
                         icon: Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
@@ -826,70 +832,75 @@ class _customwidget3State extends State<customwidget3> {
                     ],
                   ),
                 ),
+                //녹음
                 Container(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.transparent,
-                          child: IconButton(
-                            icon: Icon(
-                              isPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                            ),
-                            iconSize: 20,
-                            onPressed: () async {
-                              if (isPlaying) {
-                                await audioPlayer.pause();
-                              } else {
-                                await audioPlayer.resume();
-                              }
-                            },
-                          ),
-                        ),
-                        Column(
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                  child: Column(
+                    children: [
+                      Slider(
+                        min: 0,
+                        max: duration.inSeconds.toDouble(),
+                        value: position.inSeconds.toDouble(),
+                        onChanged: (value) async {
+                          final position = Duration(seconds: value.toInt());
+                          await audioPlayer.seek(position);
+                          await audioPlayer.resume();
+                        },
+                        activeColor: Color(0xFFF8F5EB),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Slider(
-                              min: 0,
-                              max: duration.inSeconds.toDouble(),
-                              value: position.inSeconds.toDouble(),
-                              onChanged: (value) async {
-                                final position =
-                                Duration(seconds: value.toInt());
-                                await audioPlayer.seek(position);
-                                await audioPlayer.resume();
-                              },
-                              activeColor: Colors.black,
+                            Text(
+                              formatTime(position), // 진행중인 시간
+                              style: TextStyle(
+                                  color:
+                                      Colors.brown), // Set text color to black
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    formatTime(position),
-                                    style: TextStyle(color: Colors.black), // Set text color to black
-                                  ),
-                                  SizedBox(width: 20),
-                                  Text(
-                                    formatTime(duration - position),
-                                    style: TextStyle(color: Colors.black), // Set text color to black
-                                  ),
-                                ],
+                            SizedBox(
+                              width: 20,
+                            ),
+                            CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.transparent,
+                              child: IconButton(
+                                padding: EdgeInsets.only(bottom: 50),
+                                icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.brown,
+                                ),
+                                iconSize: 25,
+                                onPressed: () async {
+                                  if (isPlaying) {
+                                    await audioPlayer.pause();
+                                  } else {
+                                    await audioPlayer.resume();
+                                  }
+                                },
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              formatTime(duration), //총 시간
+                              style: TextStyle(
+                                color: Colors.brown,
+                              ), // Set text color to black
+                            ),
                           ],
-                        )
-                      ],
+                        ),
+                      )
+                    ],
                   ),
-                ),//음성
+                ),
+
                 //텍스트
                 Container(
                     width: 380,
-                    padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
                     color: Colors.white54,
                     child: Column(
                       children: [
@@ -907,59 +918,58 @@ class _customwidget3State extends State<customwidget3> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (isLiked[0]) {
-                                favoriteCounts[0]--;
-                              } else {
-                                favoriteCounts[0]++;
-                              }
-                              isLiked[0] = !isLiked[0];
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: isLiked[0] ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${widget.sfavoritCount}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isLiked[0]) {
+                            favoriteCounts[0]--;
+                          } else {
+                            favoriteCounts[0]++;
+                          }
+                          isLiked[0] = !isLiked[0];
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: isLiked[0] ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '${widget.sfavoritCount}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child:
-                          Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
-                  ),
-                ],
-              )),
+                    //댓글 숫자
+                    Text(
+                      '6', //
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
@@ -973,10 +983,10 @@ class customwidget4 extends StatefulWidget {
   final String scomment; // 일기 내용
   final int sfavoritCount; // 좋아요 수
   final bool sfavoritColor; // 좋아요 색 변하는 거
-  final String svoice;  // 녹음 기능
+  final String svoice; // 녹음 기능
 
-
-  const customwidget4({super.key,
+  const customwidget4({
+    super.key,
     required this.sdiaryImage,
     required this.simagePath,
     required this.scomment,
@@ -985,7 +995,6 @@ class customwidget4 extends StatefulWidget {
     required this.svoice,
   });
 
-
   @override
   State<customwidget4> createState() => _customwidget4State();
 }
@@ -993,9 +1002,10 @@ class customwidget4 extends StatefulWidget {
 class _customwidget4State extends State<customwidget4> {
   List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
   List<bool> isLiked = [false, false, false, false, false, false, false];
-  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
+  final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
+
   // 댓글 추가 기능
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
@@ -1003,14 +1013,16 @@ class _customwidget4State extends State<customwidget4> {
 
   void addComment(String name, String imagePath, String text) {
     setState(() {
-      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+      comments.add(Comment(
+        name: '$name $_commentCount',
+        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-
   }
+
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
@@ -1019,7 +1031,8 @@ class _customwidget4State extends State<customwidget4> {
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             child: comment(),
@@ -1083,7 +1096,6 @@ class _customwidget4State extends State<customwidget4> {
 //-----------------------
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -1105,24 +1117,21 @@ class _customwidget4State extends State<customwidget4> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 35),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(selectedImagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(selectedImagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
-
+                          ),
+                        ),
+                      )),
                       IconButton(
-                        onPressed: () {
-
-                        },
+                        onPressed: () {},
                         icon: Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
@@ -1137,10 +1146,12 @@ class _customwidget4State extends State<customwidget4> {
                       width: 200,
                       height: 150, // 이미지 높이 조절
                       child: Container(
-                        child: PageView.builder( //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                        child: PageView.builder(
+                          //listview로 하면 한장씩 안넘어가서 페이지뷰함
                           scrollDirection: Axis.horizontal,
-                          itemCount: d_imagePaths.length > 3 ? 3 : d_imagePaths
-                              .length, // 최대 3장까지만 허용
+                          itemCount: d_imagePaths.length > 3
+                              ? 3
+                              : d_imagePaths.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
@@ -1149,70 +1160,75 @@ class _customwidget4State extends State<customwidget4> {
                             );
                           },
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.transparent,
-                          child: IconButton(
-                            icon: Icon(
-                              isPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                            ),
-                            iconSize: 20,
-                            onPressed: () async {
-                              if (isPlaying) {
-                                await audioPlayer.pause();
-                              } else {
-                                await audioPlayer.resume();
-                              }
-                            },
-                          ),
-                        ),
-                        Column(
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                  child: Column(
+                    children: [
+                      Slider(
+                        min: 0,
+                        max: duration.inSeconds.toDouble(),
+                        value: position.inSeconds.toDouble(),
+                        onChanged: (value) async {
+                          final position = Duration(seconds: value.toInt());
+                          await audioPlayer.seek(position);
+                          await audioPlayer.resume();
+                        },
+                        activeColor: Color(0xFFF8F5EB),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Slider(
-                              min: 0,
-                              max: duration.inSeconds.toDouble(),
-                              value: position.inSeconds.toDouble(),
-                              onChanged: (value) async {
-                                final position =
-                                Duration(seconds: value.toInt());
-                                await audioPlayer.seek(position);
-
-                                await audioPlayer.resume();
-                              },
+                            Text(
+                              formatTime(position), // 진행중인 시간
+                              style: TextStyle(
+                                  color:
+                                      Colors.brown), // Set text color to black
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(formatTime(position)),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(formatTime(
-                                      duration - position)),
-                                ],
+                            SizedBox(
+                              width: 20,
+                            ),
+                            CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.transparent,
+                              child: IconButton(
+                                padding: EdgeInsets.only(bottom: 50),
+                                icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.brown,
+                                ),
+                                iconSize: 25,
+                                onPressed: () async {
+                                  if (isPlaying) {
+                                    await audioPlayer.pause();
+                                  } else {
+                                    await audioPlayer.resume();
+                                  }
+                                },
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              formatTime(duration), //총 시간
+                              style: TextStyle(
+                                color: Colors.brown,
+                              ), // Set text color to black
+                            ),
                           ],
-                        )
-                      ]),
-                ), //음성
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 //텍스트
                 Container(
                     width: 380,
-                    padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
                     color: Colors.white54,
                     child: Column(
                       children: [
@@ -1230,64 +1246,59 @@ class _customwidget4State extends State<customwidget4> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (isLiked[0]) {
-                                favoriteCounts[0]--;
-                              } else {
-                                favoriteCounts[0]++;
-                              }
-                              isLiked[0] = !isLiked[0];
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: isLiked[0] ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${widget.sfavoritCount}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isLiked[0]) {
+                            favoriteCounts[0]--;
+                          } else {
+                            favoriteCounts[0]++;
+                          }
+                          isLiked[0] = !isLiked[0];
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: isLiked[0] ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child:
-                          Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                    Text(
+                      '${widget.sfavoritCount}',
+                      style: TextStyle(fontSize: 11),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
+                    ),
+                    //댓글 숫자
+                    Text(
+                      '6', //
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
   }
-
 }
-
-
-
