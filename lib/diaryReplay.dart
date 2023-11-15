@@ -1,3 +1,4 @@
+import 'package:capston1/diaryshare.dart';
 import 'package:capston1/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
+
+final diarydate = '20230725';
+final List<String> diaryimage = ['images/send/sj3.jpg','images/send/sj1.jpg','images/send/sj2.jpg'];
+final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
 
 class diaryReplay extends StatefulWidget {
   const diaryReplay({super.key, required this.date});
@@ -166,15 +171,17 @@ class _writediaryState extends State<diaryReplay> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        SizedBox(width: 30,),
                         Text(
-                          '     ${widget.date}',
+                          diarydate,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
+                        SizedBox(width: 200,),
                         IconButton(
                             onPressed: () {
                               Navigator.push(context,
@@ -199,78 +206,84 @@ class _writediaryState extends State<diaryReplay> {
                                   SizedBox(
                                     child: Center(
                                         child:
-                                            Image.asset('images/send/sj3.jpg')),
+                                            Image.asset(diaryimage[0])),
                                   ),
                                   SizedBox(
                                     child: Center(
                                         child:
-                                            Image.asset('images/send/sj1.jpg')),
+                                            Image.asset(diaryimage[1])),
                                   ),
                                   SizedBox(
                                     child: Center(
                                         child:
-                                            Image.asset('images/send/sj2.jpg')),
+                                            Image.asset(diaryimage[2])),
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           Container(
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.transparent,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        isPlaying
-                                            ? Icons.pause
-                                            : Icons.play_arrow,
-                                      ),
-                                      iconSize: 20,
-                                      onPressed: () async {
-                                        if (isPlaying) {
-                                          await audioPlayer.pause();
-                                        } else {
-                                          await audioPlayer.resume();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Column(
+                            padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                            child: Column(
+                              children: [
+                                Slider(
+                                  min: 0,
+                                  max: duration.inSeconds.toDouble(),
+                                  value: position.inSeconds.toDouble(),
+                                  onChanged: (value) async {
+                                    final position = Duration(seconds: value.toInt());
+                                    await audioPlayer.seek(position);
+                                    await audioPlayer.resume();
+                                  },
+                                  activeColor: Color(0xFFF8F5EB),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Slider(
-                                        min: 0,
-                                        max: duration.inSeconds.toDouble(),
-                                        value: position.inSeconds.toDouble(),
-                                        onChanged: (value) async {
-                                          final position =
-                                              Duration(seconds: value.toInt());
-                                          await audioPlayer.seek(position);
-
-                                          await audioPlayer.resume();
-                                        },
+                                      Text(
+                                        formatTime(position), // 진행중인 시간
+                                        style: TextStyle(
+                                            color:
+                                            Colors.brown), // Set text color to black
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(formatTime(position)),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(formatTime(
-                                                duration - position)),
-                                          ],
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.transparent,
+                                        child: IconButton(
+                                          padding: EdgeInsets.only(bottom: 50),
+                                          icon: Icon(
+                                            isPlaying ? Icons.pause : Icons.play_arrow,
+                                            color: Colors.brown,
+                                          ),
+                                          iconSize: 25,
+                                          onPressed: () async {
+                                            if (isPlaying) {
+                                              await audioPlayer.pause();
+                                            } else {
+                                              await audioPlayer.resume();
+                                            }
+                                          },
                                         ),
-                                      )
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text(
+                                        formatTime(duration), //총 시간
+                                        style: TextStyle(
+                                          color: Colors.brown,
+                                        ), // Set text color to black
+                                      ),
                                     ],
-                                  )
-                                ]),
+                                  ),
+                                )
+                              ],
+                            ),
                           ), //음성
                           Container(
                               width: 380,
@@ -279,10 +292,7 @@ class _writediaryState extends State<diaryReplay> {
                               color: Colors.white54,
                               child: Column(
                                 children: [
-                                  Text(
-                                    '오늘 하루 아주 만족스러운 날이다. '
-                                    '친구들이랑 맛있게 밥도 먹고'
-                                    ' 하늘도 너무 이뻤다!',
+                                  Text(comment,
                                     style: TextStyle(fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),
@@ -300,3 +310,4 @@ class _writediaryState extends State<diaryReplay> {
     );
   }
 }
+
