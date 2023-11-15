@@ -203,10 +203,11 @@ class _mypageState extends State<mypage> {
             style: TextStyle(fontFamily: 'soojin', color: Color(0xFF7D5A50),),
           ),
           content: TextField(
-
+            style: TextStyle(fontFamily: 'soojin'),
             maxLength: 20,
             decoration: InputDecoration(
               hintText: '20자 이내로 작성해주세요.',
+              hintStyle: TextStyle(fontFamily: 'soojin'),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black54,),
               ),

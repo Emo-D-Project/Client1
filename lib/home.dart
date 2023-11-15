@@ -10,7 +10,7 @@ class home extends StatelessWidget {
       backgroundColor: Color(0xFFF8F5EB),
       body: Center(
           child: SizedBox(
-            child: Image.asset('images/main/[ttm]+삼색고양이_기본형_최종-(1).gif',
+            child: Image.asset('images/main/catmovereal.gif',
               width: 1200,
               height : 1000,
               fit: BoxFit.contain,

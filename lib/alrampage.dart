@@ -2,6 +2,9 @@ import 'package:capston1/main.dart';
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
 
+import 'message.dart';
+import 'message_write.dart';
+
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
   children: [
@@ -395,6 +398,9 @@ class _CustomContainerState extends State<CustomContainer> {
     // 메세지를 누르면 읽음으로 표시가 됨
     return GestureDetector(
       onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const message(messages: [],)));
+        //MaterialPageRoute(builder: (context) => YourChatScreen(),
         setState(() {
           widget.isRead.isRead = true;
         });

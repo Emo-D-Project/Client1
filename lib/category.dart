@@ -8,7 +8,6 @@ import 'mypage.dart';
 import 'alramsetting.dart';
 import 'diaryReplay.dart';
 import 'notification.dart';
-import 'package:capston1/pieGraph/pie_chart.dart';
 import 'message_write.dart';
 import 'message.dart';
 
@@ -157,11 +156,8 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: (){
                         Navigator.push(context,
-                            // MaterialPageRoute(builder: (context) => const message(messages: [],)));  메시지 보내기
-                            MaterialPageRoute(
-                            builder: (context) => YourChatScreen(), // messages에 실제 데이터를 전달해야 합니다.
-                            ),
-                        );
+                            MaterialPageRoute(builder: (context) => const message_write()));
+                             // messages에 실제 데이터를 전달해야 합니다.
                       }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [
