@@ -3,13 +3,14 @@ import 'package:capston1/main.dart';
 import 'package:capston1/notification.dart';
 import 'package:capston1/test.dart';
 import 'package:flutter/material.dart';
+import 'help.dart';
 import 'home.dart';
 import 'mypage.dart';
 import 'alramsetting.dart';
 import 'diaryReplay.dart';
 import 'notification.dart';
 import 'message_write.dart';
-import 'message.dart';
+import 'opinion.dart';
 
 class category extends StatefulWidget {
   const category({super.key});
@@ -156,8 +157,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: (){
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const message_write()));
-                             // messages에 실제 데이터를 전달해야 합니다.
+                            MaterialPageRoute(builder: (context) => const opinion()));
                       }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [
@@ -176,7 +176,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const message_write()));
+                            MaterialPageRoute(builder: (context) => const help()));
 
                       },
                       child: Row(
@@ -284,7 +284,7 @@ Future<dynamic> _showLogoutDialog(BuildContext context) {
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
-                backgroundColor: Colors.amber,
+                backgroundColor: Color(0x4D968C83),
                 minimumSize: Size(150, 30)
             ),
             onPressed: () => Navigator.of(context).pop(),
@@ -292,7 +292,7 @@ Future<dynamic> _showLogoutDialog(BuildContext context) {
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
-                backgroundColor: Colors.blue,
+                backgroundColor: Color(0xFF7D5A50),
                 minimumSize: Size(150, 30)
             ),
             onPressed: () => Navigator.of(context).pop(),
@@ -314,14 +314,16 @@ Future<dynamic> _showDialog(BuildContext context) {
         height: sizeY*0.07,
         child: Center(
           child: Text("회원 탈퇴 시, 작성된 일기들은 "
-              "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),),
+              "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?",
+            style: TextStyle(fontFamily: 'soojin'),
+          ),
         ),
       ),
       actions: [
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
-                backgroundColor: Colors.amber,
+                backgroundColor: Color(0x4D968C83),
                 minimumSize: Size(150, 30)
             ),
             onPressed: () => Navigator.of(context).pop(),
@@ -329,7 +331,7 @@ Future<dynamic> _showDialog(BuildContext context) {
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 elevation: 0.0,
-                backgroundColor: Colors.blue,
+                backgroundColor: Color(0xFF7D5A50),
                 minimumSize: Size(150, 30)
             ),
             onPressed: () => Navigator.of(context).pop(),
