@@ -5,9 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:capston1/widget/EmotionWidget.dart';
 
 class calendar extends StatefulWidget {
-  final List<Map<String, dynamic>> data;
-
-  calendar({Key? key, required this.data}) : super(key: key);
+  calendar({Key? key}) : super(key: key);
 
   @override
   State<calendar> createState() => _calendarState();
@@ -22,7 +20,6 @@ class _calendarState extends State<calendar> {
   void initState() {
     super.initState();
     // Use widget.data instead of this.data
-    data = widget.data;
   }
 
   ApiManager apiManager = ApiManager().getApiManager();
