@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -105,4 +107,32 @@ class ApiManager {
   }
 
 
+  Future<List<Map<String, dynamic>>> getCalendarData(DateTime date) async {
+    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(date);
+
+    String baseUrl = "http://localhost:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio dio = Dio();
+
+    try {
+      // 비동기식으로 Dio 요청 보내기
+      Response<dynamic> response = await dio.get(
+        '$baseUrl/api/calendars/date/$formattedDate',
+        options: Options(
+          headers: {'Authorization': 'Bearer $accessToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.data) as List<Map<String, dynamic>>;
+      } else {
+        throw Exception('Failed to load data from the API');
+      }
+    } catch (error) {
+      // 에러 처리
+      print("에러 발생: $error");
+      return []; // 에러가 발생하면 빈 List 반환 또는 다른 처리를 할 수 있습니다.
+    }
+  }
 }
