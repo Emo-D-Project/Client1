@@ -1,7 +1,6 @@
 import 'package:capston1/main.dart';
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
-
 import 'message.dart';
 import 'message_write.dart';
 
@@ -30,42 +29,72 @@ Widget A_good = Row(
   ],
 );
 
+//---------------------------------------------------------------------------------------
+
+final DateTime smonth = DateTime(DateTime.now().month, 3);  // ~월의 감정 통지서
+
+class shareData {
+  final DateTime smonth;
+
+  shareData({
+    required this.smonth,
+  });
+}
+
 //알람 - 이모디 새소식
-Widget A_Emod = Row(
-  children: [
-    Column(
+class A_Emod extends StatefulWidget {
+  final DateTime stitle;
+
+  const A_Emod({super.key,
+    required this.stitle,
+  });
+
+  @override
+  State<A_Emod> createState() => _A_EmodState();
+}
+
+class _A_EmodState extends State<A_Emod> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
       children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 11),
-          child: Image.asset(
-            'images/send/cat_real_image.png',
-            width: 16,
-          ),
+        Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 11),
+              child: Image.asset(
+                'images/send/cat_real_image.png',
+                width: 16,
+              ),
+            ),
+          ],
         ),
+        SizedBox(width: 5),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "EMO:D 가 새 소식을 보냈습니다.",
+              style: TextStyle(
+                fontFamily: 'soojin',
+                fontSize: 13,
+              ),
+            ),
+            Text(
+             '${smonth.month}월의 감정 통지서가 도착했습니다!' ,
+              style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 45,
+        )
       ],
-    ),
-    SizedBox(width: 5),
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "EMO:D 가 새 소식을 보냈습니다.",
-          style: TextStyle(
-            fontFamily: 'soojin',
-            fontSize: 13,
-          ),
-        ),
-        Text(
-          "9월의 감정 통지서가 도착했어요 !",
-          style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-        ),
-      ],
-    ),
-    SizedBox(
-      height: 45,
-    )
-  ],
-);
+    );
+    ;
+  }
+}
+//---------------------------------------------------------------------------------------
 
 //알람 - 댓글 알람
 Widget A_Chat = Row(
@@ -128,6 +157,8 @@ Widget A_Question = Row(
   ],
 );
 
+//---------------------------------------------------------------------------------------
+
 //알람- 쪽지 알람
 Widget A_Message = Row(
   children: [
@@ -153,6 +184,7 @@ Widget A_Message = Row(
 );
 
 
+//---------------------------------------------------------------------------------------
 
 class alrampage extends StatelessWidget {
   const alrampage({super.key});
@@ -166,8 +198,11 @@ class alrampage extends StatelessWidget {
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: Colors.transparent,
-            title: Text("EMO:D", style: TextStyle(
-                color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),),
+            title: Text(
+              "EMO:D",
+              style: TextStyle(
+                  color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
+            ),
             bottom: TabBar(
               labelColor: Colors.black,
               indicatorColor: Colors.brown,
@@ -200,6 +235,7 @@ class alrampage extends StatelessWidget {
   }
 }
 
+//---------------------------------------------------------------------------------------
 
 // 언제 뭔 알람 온지
 class Item {
@@ -208,6 +244,7 @@ class Item {
 
   Item({required this.title, required this.contentList});
 }
+
 //알람
 class FirstScreen extends StatelessWidget {
   @override
@@ -215,10 +252,9 @@ class FirstScreen extends StatelessWidget {
     final sizeX = MediaQuery.of(context).size.width;
 
     List<Item> itemList = [
-      Item(title: '오늘', contentList: [A_good, A_good, A_Emod, A_Question]),
+      Item(title: '오늘', contentList: [A_good, A_good, A_Emod(stitle: smonth), A_Question]),
       Item(title: '어제', contentList: [A_Chat, A_Message]),
       Item(title: '5일전', contentList: [A_Question, A_good, A_good]),
-
     ];
 
     return Center(
@@ -311,52 +347,50 @@ class FirstScreen extends StatelessWidget {
 }
 
 
+//---------------------------------------------------------------------------------------
 
 // 메세지 파트
-
 class SecondScreen extends StatelessWidget {
 
- static String smile = 'images/emotion/1.gif';
- static String flutter = 'images/emotion/2.gif';
- static String angry = 'images/emotion/angry.png';
- static String annoying = 'images/emotion/4.gif';
- static String tired = 'images/emotion/5.gif';
- static String sad = 'images/emotion/6.gif';
- static String calmness = 'images/emotion/7.gif';
-
+  static String smile = 'images/emotion/1.gif';
+  static String flutter = 'images/emotion/2.gif';
+  static String angry = 'images/emotion/angry.png';
+  static String annoying = 'images/emotion/4.gif';
+  static String tired = 'images/emotion/5.gif';
+  static String sad = 'images/emotion/6.gif';
+  static String calmness = 'images/emotion/7.gif';
 
   final List<MessageData> messages = [
-    MessageData(content: '안녕', imagePath: angry,),
+    MessageData( content: '안녕', imagePath: angry),
     MessageData(content: '너한테 쪽지 보내요', imagePath: flutter)
   ];
 
-
- @override
- Widget build(BuildContext context) {
-   return Column(
-     children: [
-       Expanded(
-         child: ListView.separated(
-           padding: const EdgeInsets.all(10),
-           itemCount: messages.length,
-           itemBuilder: (BuildContext context, int index) {
-             return CustomContainer(
-               name: '삼냥이',
-               content: messages[index].content,
-               imagePath: messages[index].imagePath,
-               isRead: messages[index],
-             );
-           },
-           separatorBuilder: (BuildContext context, int index) => Divider(
-             height: 10,
-             thickness: 1.0,
-             color: Color(0xff7D5A50),
-           ),
-         ),
-       ),
-     ],
-   );
- }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(10),
+            itemCount: messages.length,
+            itemBuilder: (BuildContext context, int index) {
+              return CustomContainer(
+                name: '삼냥이',
+                content: messages[index].content,
+                imagePath: messages[index].imagePath,
+                isRead: messages[index],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) => Divider(
+              height: 10,
+              thickness: 1.0,
+              color: Color(0xff7D5A50),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class MessageData {
@@ -372,7 +406,6 @@ class MessageData {
 }
 
 class CustomContainer extends StatefulWidget {
-
   final String name;
   final String content;
   final String imagePath;
@@ -384,7 +417,6 @@ class CustomContainer extends StatefulWidget {
     required this.imagePath,
     required this.isRead,
   });
-
 
   @override
   _CustomContainerState createState() => _CustomContainerState();
@@ -398,8 +430,12 @@ class _CustomContainerState extends State<CustomContainer> {
     // 메세지를 누르면 읽음으로 표시가 됨
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const message(messages: [],)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const message(
+                      messages: [],
+                    )));
         //MaterialPageRoute(builder: (context) => YourChatScreen(),
         setState(() {
           widget.isRead.isRead = true;

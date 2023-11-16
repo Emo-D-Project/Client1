@@ -11,14 +11,17 @@ import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
 
 final diarydate = '20230725';
-final List<String> diaryimage = ['images/send/sj3.jpg','images/send/sj1.jpg','images/send/sj2.jpg'];
+final List<String> diaryimage = [
+  'images/send/sj3.jpg',
+  'images/send/sj1.jpg',
+  'images/send/sj2.jpg'
+];
 final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
 
 class diaryReplay extends StatefulWidget {
   const diaryReplay({super.key, required this.date});
 
   final String date;
-
   final String emotion = "smile";
 
   @override
@@ -173,7 +176,9 @@ class _writediaryState extends State<diaryReplay> {
                   Row(
                       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(width: 30,),
+                        SizedBox(
+                          width: 30,
+                        ),
                         Text(
                           diarydate,
                           style: TextStyle(
@@ -181,11 +186,16 @@ class _writediaryState extends State<diaryReplay> {
                             fontSize: 20,
                           ),
                         ),
-                        SizedBox(width: 200,),
+                        SizedBox(
+                          width: 200,
+                        ),
                         IconButton(
                             onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => diaryUpdate(date: '20230725')));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          diaryUpdate(date: '20230725')));
                             },
                             icon: Icon(
                               Icons.edit,
@@ -205,18 +215,15 @@ class _writediaryState extends State<diaryReplay> {
                                 children: <Widget>[
                                   SizedBox(
                                     child: Center(
-                                        child:
-                                            Image.asset(diaryimage[0])),
+                                        child: Image.asset(diaryimage[0])),
                                   ),
                                   SizedBox(
                                     child: Center(
-                                        child:
-                                            Image.asset(diaryimage[1])),
+                                        child: Image.asset(diaryimage[1])),
                                   ),
                                   SizedBox(
                                     child: Center(
-                                        child:
-                                            Image.asset(diaryimage[2])),
+                                        child: Image.asset(diaryimage[2])),
                                   ),
                                 ],
                               ),
@@ -231,22 +238,25 @@ class _writediaryState extends State<diaryReplay> {
                                   max: duration.inSeconds.toDouble(),
                                   value: position.inSeconds.toDouble(),
                                   onChanged: (value) async {
-                                    final position = Duration(seconds: value.toInt());
+                                    final position =
+                                        Duration(seconds: value.toInt());
                                     await audioPlayer.seek(position);
                                     await audioPlayer.resume();
                                   },
                                   activeColor: Color(0xFFF8F5EB),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         formatTime(position), // 진행중인 시간
                                         style: TextStyle(
-                                            color:
-                                            Colors.brown), // Set text color to black
+                                            color: Colors
+                                                .brown), // Set text color to black
                                       ),
                                       SizedBox(
                                         width: 20,
@@ -257,7 +267,9 @@ class _writediaryState extends State<diaryReplay> {
                                         child: IconButton(
                                           padding: EdgeInsets.only(bottom: 50),
                                           icon: Icon(
-                                            isPlaying ? Icons.pause : Icons.play_arrow,
+                                            isPlaying
+                                                ? Icons.pause
+                                                : Icons.play_arrow,
                                             color: Colors.brown,
                                           ),
                                           iconSize: 25,
@@ -292,7 +304,8 @@ class _writediaryState extends State<diaryReplay> {
                               color: Colors.white54,
                               child: Column(
                                 children: [
-                                  Text(comment,
+                                  Text(
+                                    comment,
                                     style: TextStyle(fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),
@@ -310,4 +323,3 @@ class _writediaryState extends State<diaryReplay> {
     );
   }
 }
-
