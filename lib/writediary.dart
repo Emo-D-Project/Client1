@@ -309,6 +309,8 @@ class _writediaryState extends State<writediary> {
         actions: [
           IconButton(
             onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyApp()));
               print("PostExample 실행");
               PostWriteDiary("/api/diaries/create");
             },
@@ -386,61 +388,69 @@ class _writediaryState extends State<writediary> {
                                             )),
                                       );
                                     })),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            Container(
+                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                              child: Column(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.transparent,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        isPlaying
-                                            ? Icons.pause
-                                            : Icons.play_arrow,
-                                      ),
-                                      iconSize: 20,
-                                      color: Color(0xFF968C83),
-                                      onPressed: () async {
-                                        if (isPlaying) {
-                                          await audioPlayer.pause();
-                                        } else {
-                                          await audioPlayer.resume();
-                                        }
-                                      },
-                                    ),
+                                  Slider(
+                                    min: 0,
+                                    max: duration.inSeconds.toDouble(),
+                                    value: position.inSeconds.toDouble(),
+                                    onChanged: (value) async {
+                                      final position = Duration(seconds: value.toInt());
+                                      await audioPlayer.seek(position);
+                                      await audioPlayer.resume();
+                                    },
+                                    activeColor: Color(0xFFF8F5EB),
                                   ),
-                                  Column(
-                                    children: [
-                                      Slider(
-                                        min: 0,
-                                        max: duration.inSeconds.toDouble(),
-                                        value: position.inSeconds.toDouble(),
-                                        onChanged: (value) async {
-                                          final position =
-                                              Duration(seconds: value.toInt());
-                                          await audioPlayer.seek(position);
-                                          await audioPlayer.resume();
-                                        },
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(formatTime(position)),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(formatTime(
-                                                duration - position)),
-                                          ],
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          formatTime(position), // 진행중인 시간
+                                          style: TextStyle(
+                                              color:
+                                              Colors.brown), // Set text color to black
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: Colors.transparent,
+                                          child: IconButton(
+                                            padding: EdgeInsets.only(bottom: 50),
+                                            icon: Icon(
+                                              isPlaying ? Icons.pause : Icons.play_arrow,
+                                              color: Colors.brown,
+                                            ),
+                                            iconSize: 25,
+                                            onPressed: () async {
+                                              if (isPlaying) {
+                                                await audioPlayer.pause();
+                                              } else {
+                                                await audioPlayer.resume();
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          formatTime(duration), //총 시간
+                                          style: TextStyle(
+                                            color: Colors.brown,
+                                          ), // Set text color to black
+                                        ),
+                                      ],
+                                    ),
                                   )
-                                ]), //음성
+                                ],
+                              ),
+                            ), //음성
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextField(
