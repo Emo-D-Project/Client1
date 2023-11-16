@@ -1,16 +1,8 @@
+import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-enum Emotion {
-  smile,
-  flutter,
-  angry,
-  annoying,
-  tired,
-  sad,
-  calmness,
-}
+import 'package:capston1/widget/EmotionWidget.dart';
 
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
@@ -22,16 +14,21 @@ class calendar extends StatefulWidget {
 class _calendarState extends State<calendar> {
   DateTime? selectedDay;
   DateTime _focusedDay = DateTime.now();
+  late List<Map<String, dynamic>> data;
 
-  Map<DateTime, dynamic> eventSource = {
-    DateTime(2023, 11, 3): Emotion.angry,
-    DateTime(2023, 11, 5): Emotion.angry,
-  };
+  @override
+  void initState() {
+    super.initState();
+    // Use widget.data instead of this.data
+  }
+
+  ApiManager apiManager = ApiManager().getApiManager();
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
+
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -60,54 +57,69 @@ class _calendarState extends State<calendar> {
             daysOfWeekHeight: 40,
             weekendDays: [DateTime.sunday],
             calendarBuilders: CalendarBuilders(
+
+              // 데이터로 가져온 날과 일치하는 값을 찾아 이모션을 변환함
               defaultBuilder: (context, day, _calendarState) {
-                // 특정 날짜 캐릭터 아이콘 넣어주기
-                if (day.year == 2023 && day.month == 10 && day.day == 3 || day.year == 2023 && day.month == 10 && day.day == 5 || day.year == 2023 && day.month == 10 && day.day == 6 || day.year == 2023 && day.month == 10 && day.day == 10 || day.year == 2023 && day.month == 10 && day.day == 11 || day.year == 2023 && day.month == 10 && day.day == 12 || day.year == 2023 && day.month == 10 && day.day == 13 || day.year == 2023 && day.month == 10 && day.day == 14 || day.year == 2023 && day.month == 10 && day.day == 20 || day.year == 2023 && day.month == 10 && day.day == 21 || day.year == 2023 && day.month == 10 && day.day == 22) {
-                  // 데이트 타임 대신 Diary.DateTime
-                  print("dateTimeCorrect");
-                  String image;
-                  switch (Emotion) {
-                    case Emotion.angry:
-                      image = 'images/emotion/angry.png';
-                      break;
-                    case Emotion.flutter:
-                      image = 'images/emotion/2.gif';
-                      break;
-                    case Emotion.smile:
-                      image = 'images/emotion/1.gif';
-                      break;
-                    case Emotion.annoying:
-                      image = 'images/emotion/4.gif';
-                      break;
-                    case Emotion.sad:
-                      image = 'images/emotion/6.gif';
-                      break;
-                    case Emotion.calmness:
-                      image = 'images/emotion/7.gif';
-                      break;
-                    case Emotion.tired:
-                      image = 'images/emotion/5.gif';
-                      break;
-                    default:
+                try {
+                  print(day);
+
+                  for (Map<String, dynamic> entry in data) {
+                    if(entry["day"] == day.day){
+
+                      String image = "";
+
+                      switch (entry["emotion"]) {
+                        case "angry":
+                          image = 'images/emotion/angry.png';
+                          break;
+                        case "flutter":
+                          image = 'images/emotion/2.gif';
+                          break;
+                        case "smile":
+                          image = 'images/emotion/1.gif';
+                          break;
+                        case "annoying":
+                          image = 'images/emotion/4.gif';
+                          break;
+                        case "sad":
+                          image = 'images/emotion/6.gif';
+                          break;
+                        case "calmness":
+                          image = 'images/emotion/7.gif';
+                          break;
+                        case "tired":
+                          image = 'images/emotion/5.gif';
+                          break;
+                        default:
+                          image = 'images/emotion/2.gif';
+                          break;
+                      }
+                      return IconButton(
+                          iconSize: 40,
+                          onPressed: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context)=>writediary(emotion: 'smile',)
+                            //     )
+                            // );
+                          },
+                          icon: Image.asset(
+                            image,
+                            width: 50,
+                            height: 50,
+                          )
+                      );
+                    }
                   }
-                  return IconButton(
-                      iconSize: 40,
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context)=>writediary(emotion: 'smile',)
-                        //     )
-                        // );
-                      },
-                      icon: Image.asset(
-                        'images/emotion/1.gif',
-                        width: 50,
-                        height: 50,
-                      )
-                  );
+                } catch (error) {
+                  // 에러 처리
+                  print("에러 발생: $error");
                 }
+
               },
+
+
               dowBuilder: (context, day) {
                 switch (day.weekday) {
                   case 1:
@@ -218,4 +230,6 @@ class _calendarState extends State<calendar> {
       ),
     );
   }
+
+
 }

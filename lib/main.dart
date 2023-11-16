@@ -1,3 +1,5 @@
+import 'package:capston1/network/api_manager.dart';
+
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -22,6 +24,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var tab = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+  // Future<List<Map<String, dynamic>>> data_get = apiManager.getCalendarData(DateTime.now());
+
+  late List<Map<String, dynamic>> data;
 
   @override
   Widget build(BuildContext context) {
