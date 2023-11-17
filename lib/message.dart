@@ -1,7 +1,9 @@
+import 'package:capston1/screens/ChatRoomScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
 import 'message_write.dart';
 import 'package:intl/intl.dart';
+import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
 
 class message extends StatefulWidget {
@@ -24,13 +26,44 @@ class _MessageState extends State<message> {
   late int receiver_Id;
   late DateTime sentAt;
 
-// 화면을 갱신하는 메서드
+  List<ChatRoom> chatRooms = [
+    //ChatRoom(id: "2", name: "Room 2"),
+    // ... 다른 채팅방들
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    print("message.dart입장 ");
+    // 서버로부터 채팅방 목록 불러오기
+    fetchDataFromServer();
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try{
+      final data = await apiManager.getChatList();
+      setState(() {
+        chatRooms = data! as List<ChatRoom>;
+      });
+    }
+    catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting chat list: $error');
+    }
+
+  }
+
+  // 화면을 갱신하는 메서드
   void _updateScreen() {
     // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
     setState(() {
       //myData = '갱신된 값';
     });
   }
+
+  // 서버에서 가져온 가상의 채팅방 목록
+
+
 
   Future<void> GetMessage(String endpoint) async {
     try {
@@ -151,7 +184,38 @@ class _MessageState extends State<message> {
           icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83)),
         ),
       ),
-      body: Column(
+
+      body: ListView.builder(
+        itemCount: chatRooms.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(chatRooms[index].name),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(chatRooms[index].lastMessage),
+                Text(
+                  DateFormat('yyyy-MM-dd HH:mm').format(chatRooms[index].lastMessageSentAt),
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+            onTap: () {
+              // 선택한 채팅방으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatRoomScreen(chatRoom: chatRooms[index]),
+                ),
+              );
+            },
+          );
+        },
+      ),
+
+
+
+      /*body: Column(
         children: [
           Expanded(
             child: ListView.builder(
@@ -172,7 +236,7 @@ class _MessageState extends State<message> {
             ),
           ),
         ],
-      ),
+      ),*/
     );
   }
 }

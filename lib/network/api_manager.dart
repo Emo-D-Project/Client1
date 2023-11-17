@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import '../calendar.dart';
+import '../models/ChatRoom.dart';
 
 
 class ApiManager {
@@ -126,8 +127,6 @@ class ApiManager {
       },
     );
 
-    print("response 받아옴");
-
     if (response.statusCode == 200) { // 통신 성공 시
       print("getCalendarData에서 서버로부터 받아온 데이터의 body : " + response.body);
 
@@ -143,5 +142,35 @@ class ApiManager {
       DateTime(2023, 11, 2): "flutter",
       // Additional entries for other dates
     };
+  }
+
+  Future<List<ChatRoom>> getChatList() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/messages/chatList";
+
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("chatList data: " + response.body);
+
+      List<ChatRoom> chatRooms = rawData.map((data) {
+        return ChatRoom(
+          id: data['otherUserId'].toString(),
+          name: data['name'],
+          lastMessage: data['lastMessage'],
+          lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+        );
+      }).toList();
+
+      return chatRooms;
+    } else {
+      throw Exception("Fail to load chatList from the API");
+    }
+
   }
 }
