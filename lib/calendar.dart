@@ -5,33 +5,82 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:capston1/widget/EmotionWidget.dart';
 
 class calendar extends StatefulWidget {
-  final List<Map<String, dynamic>> data;
 
-  calendar({Key? key, required this.data}) : super(key: key);
+  calendar({Key? key}) : super(key: key);
 
   @override
   State<calendar> createState() => _calendarState();
 }
 
+class DiaryEntry {
+  final DateTime date;
+  // Add other fields as needed
+
+  DiaryEntry({required this.date /* Add other parameters */});
+}
+
+
 class _calendarState extends State<calendar> {
   DateTime? selectedDay;
   DateTime _focusedDay = DateTime.now();
-  late List<Map<String, dynamic>> data;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  Map<DateTime, String> _events = {
+  };
+
+  List<String> eventLoader(DateTime day) {
+    // events 맵에서 해당 날짜에 대한 이벤트를 찾아 List로 반환합니다.
+    return [_events[day] ?? '']; // 해당 날짜에 이벤트가 없으면 빈 문자열을 포함하는 리스트를 반환합니다.
+  }
 
   @override
   void initState() {
     super.initState();
-    // Use widget.data instead of this.data
-    data = widget.data;
+    fetchDataFromServer();
   }
 
-  ApiManager apiManager = ApiManager().getApiManager();
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getCalendarData();
+      setState(() {
+        _events = data!;
+      });
+    } catch (error) {
+      // Handle error
+      print('Error fetching data: $error');
+    }
+  }
+
+  Widget _buildEventIcon(List events) {
+    return GestureDetector(
+      onTap: () {
+        // Add your logic for what happens when the event icon is tapped
+        print('Event icon t-apped!');
+        // You can navigate to a new screen, show a dialog, etc.
+      },
+      child: Container(
+        margin: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Icon(
+            Icons.event,
+            color: Colors.white,
+            size: 12.0,
+          ),
+        ),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
-
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -58,70 +107,86 @@ class _calendarState extends State<calendar> {
             lastDay: DateTime.utc(2025),
             focusedDay: _focusedDay,
             daysOfWeekHeight: 40,
+            eventLoader: eventLoader,
             weekendDays: [DateTime.sunday],
             calendarBuilders: CalendarBuilders(
+              // 사용자가 특별한 날 지정할 때 쓰는 뷸더
+              prioritizedBuilder: (context, day, focusedDay) {
+                // Check if the current day has events
+                if (_events.containsKey(DateTime(day.year, day.month, day.day))) {
+                  String image = "";
 
-              // 데이터로 가져온 날과 일치하는 값을 찾아 이모션을 변환함
-              defaultBuilder: (context, day, _calendarState) {
-                try {
-                  print(day);
-
-                  for (Map<String, dynamic> entry in data) {
-                    if(entry["day"] == day.day){
-
-                      String image = "";
-
-                      switch (entry["emotion"]) {
-                        case "angry":
-                          image = 'images/emotion/angry.png';
-                          break;
-                        case "flutter":
-                          image = 'images/emotion/2.gif';
-                          break;
-                        case "smile":
-                          image = 'images/emotion/1.gif';
-                          break;
-                        case "annoying":
-                          image = 'images/emotion/4.gif';
-                          break;
-                        case "sad":
-                          image = 'images/emotion/6.gif';
-                          break;
-                        case "calmness":
-                          image = 'images/emotion/7.gif';
-                          break;
-                        case "tired":
-                          image = 'images/emotion/5.gif';
-                          break;
-                        default:
-                          image = 'images/emotion/2.gif';
-                          break;
-                      }
-                      return IconButton(
-                          iconSize: 40,
-                          onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context)=>writediary(emotion: 'smile',)
-                            //     )
-                            // );
-                          },
-                          icon: Image.asset(
-                            image,
-                            width: 50,
-                            height: 50,
-                          )
-                      );
-                    }
+                  switch (_events[day]) {
+                    case "angry":
+                      image = 'images/emotion/angry.png';
+                      break;
+                    case "flutter":
+                      image = 'images/emotion/2.gif';
+                      break;
+                    case "smile":
+                      image = 'images/emotion/1.gif';
+                      break;
+                    case "annoying":
+                      image = 'images/emotion/4.gif';
+                      break;
+                    case "sad":
+                      image = 'images/emotion/6.gif';
+                      break;
+                    case "calmness":
+                      image = 'images/emotion/7.gif';
+                      break;
+                    case "tired":
+                      image = 'images/emotion/5.gif';
+                      break;
+                    default:
+                      image = 'images/emotion/2.gif';
+                      break;
                   }
-                } catch (error) {
-                  // 에러 처리
-                  print("에러 발생: $error");
+                  // If there are events, highlight the cell with an image
+                  return GestureDetector(
+                    onTap: () {
+                      // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
+                      // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
+                      String event = _events[day] ?? '';
+                      print('Event for $day: $event');
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(4.0),
+                      // decoration: BoxDecoration(
+                      //   color: Colors.yellow,
+                      //   shape: BoxShape.circle,
+                      // ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center, // 이미지를 수직으로 가운데 정렬
+                          children: [
+                            // Image.asset 사용 예시 (이미지가 앱의 assets 폴더에 있을 경우)
+                            Image.asset(
+                              image,
+                              width: 30, // 이미지의 너비 조절
+                              height: 30, // 이미지의 높이 조절
+                            ),
+
+                            SizedBox(height: 4), // 이미지와 텍스트 간의 간격 조절
+
+                            Text(
+                              day.day.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else{
+                  return null;
                 }
 
               },
-
 
               dowBuilder: (context, day) {
                 switch (day.weekday) {
