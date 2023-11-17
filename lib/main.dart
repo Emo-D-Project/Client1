@@ -26,7 +26,6 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
-  //Future<List<Map<String, dynamic>>> data_get = apiManager.getCalendarData(DateTime.now());
   late List<Map<String, dynamic>> data;
 
   @override

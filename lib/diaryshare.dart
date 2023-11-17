@@ -8,6 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 //enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
 
+ //일기내용 오늘의 감정
 final List<String> imagepath = [
   'images/emotion/1.gif',
   'images/emotion/7.gif',
@@ -27,6 +28,8 @@ final List<bool> favoritcolor = [true, false, true, true];
 
 //----------------------------------------
 
+
+//맨 위 상단 감정 7개
 final List<String> imagePaths = [
   'images/emotion/1.gif',
   'images/emotion/2.gif',
@@ -203,24 +206,21 @@ class _diaryshareState extends State<diaryshare> {
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   child: (() {
-                    if (diaryimage[index] != "noimage" &&
-                        voice[index] == "no") {
+                    if (diaryimage[index] != "noimage" && voice[index] == "no") {
                       return customWidget1(
                           simagePath: imagepath[index],
                           sdiaryImage: diaryimage[index],
                           scomment: diarycomment[index],
                           sfavoritColor: favoritcolor[index],
                           sfavoritCount: favoritcount[index]);
-                    } else if (diaryimage[index] == "noimage" &&
-                        voice[index] == "no") {
+                    } else if (diaryimage[index] == "noimage" && voice[index] == "no") {
                       return customWidget2(
                         scomment: diarycomment[index],
                         sfavoritColor: favoritcolor[index],
                         sfavoritCount: favoritcount[index],
                         simagePath: imagepath[index],
                       );
-                    } else if (diaryimage[index] == "noimage" &&
-                        voice[index] == "yes") {
+                    } else if (diaryimage[index] == "noimage" && voice[index] == "yes") {
                       return customwidget3(
                         scomment: diarycomment[index],
                         sfavoritColor: favoritcolor[index],
@@ -228,8 +228,7 @@ class _diaryshareState extends State<diaryshare> {
                         simagePath: imagepath[index],
                         svoice: voice[index],
                       );
-                    } else if (diaryimage[index] != "noimage" &&
-                        voice[index] == "yes") {
+                    } else if (diaryimage[index] != "noimage" && voice[index] == "yes") {
                       return customwidget4(
                         sdiaryImage: diaryimage[index],
                         scomment: diarycomment[index],
@@ -685,6 +684,7 @@ class _customWidget2State extends State<customWidget2> {
 
 // 일기 버전 3 - 텍스트 + 음성
 class customwidget3 extends StatefulWidget {
+
   final String simagePath;
   final String scomment;
   final int sfavoritCount;
@@ -699,6 +699,8 @@ class customwidget3 extends StatefulWidget {
     required this.sfavoritCount,
     required this.svoice,
   });
+
+
 
   @override
   State<customwidget3> createState() => _customwidget3State();

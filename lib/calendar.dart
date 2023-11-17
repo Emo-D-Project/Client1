@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class calendar extends StatefulWidget {
-
   calendar({Key? key}) : super(key: key);
 
   @override
@@ -36,6 +35,7 @@ class _calendarState extends State<calendar> {
   @override
   void initState() {
     super.initState();
+
     fetchDataFromServer();
   }
 
