@@ -3,14 +3,21 @@ import 'package:flutter/material.dart';
 import 'statistics.dart';
 import 'package:intl/intl.dart';
 
+List<DateTime> title = [DateTime(2023, 10)];
 
+List<String> content = ["1011","1025","1031","1025","1025","1025","1025","1025","1025"];
 
-class ListData{
-  final DateTime date;
-
-  ListData(this.date);
-}
-
+List<String> emo = [
+  'images/emotion/1.gif',
+  'images/emotion/2.gif',
+  'images/emotion/1.gif',
+  'images/emotion/2.gif',
+  'images/emotion/2.gif',
+  'images/emotion/2.gif',
+  'images/emotion/2.gif',
+  'images/emotion/2.gif',
+  'images/emotion/2.gif',
+];
 
 class gatherEmotion extends StatefulWidget {
   const gatherEmotion({super.key});
@@ -22,20 +29,13 @@ class gatherEmotion extends StatefulWidget {
 final LayerLink _layerLink = LayerLink();
 
 class _gatherEmotionState extends State<gatherEmotion> {
-  List<String> items = ['기본','기쁨','슬픔','화남','짜증','피곤','설렘'];
+  List<String> items = ['기본', '기쁨', '슬픔', '화남', '짜증', '피곤', '설렘'];
   String? selectedItem = '기본';
-
-  final List<ListData> datas = [
-    ListData(DateTime(2023,10)),
-    ListData(DateTime(2023,09)),
-    ListData(DateTime(2023,08)),
-
- ];
 
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
+    final SizeX = MediaQuery.of(context).size.width;
+    final SizeY = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -55,170 +55,84 @@ class _gatherEmotionState extends State<gatherEmotion> {
           icon: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      body: SizedBox(
         child: Column(
           children: [
-            Container(//드롭박스
-
+            Container(
+              height: 50,
+              //드롭박스
+              color: Colors.blueGrey,
             ),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(10),
-                itemCount: datas.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: sizeX * 0.9,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.fromLTRB(10, 3, 0, 3),
-                            child: Text(
-                              "2023.10",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            )),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal, // 수평으로 스크롤
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      iconSize: 40,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context)=>diaryReplay(date: '20231025')
-                                            )
-                                        );
-                                      }, icon: Image.asset('images/emotion/2.gif')),
-                                  Text("10.25")
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => Divider(
-                  height: 10,
-                  thickness: 1.0,
-                  color: Colors.black,
+            Text("2023.10"),
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  //padding: const EdgeInsets.all(10),
+                  itemCount: title.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return MyCustomContent(gtitle: title[index],gcontent: content, gemo: emo);
+                  },
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MonthlyData {
+  final DateTime title;
+  final List<String> content;
+  final List<String> emo;
+
+  MonthlyData({
+    required this.title,
+    required this.content,
+    required this.emo,
+  });
+}
+
+//커스텀 컨테이너
+class MyCustomContent extends StatelessWidget {
+  final DateTime gtitle;
+  final List<String> gcontent;
+  final List<String> gemo;
+
+  MyCustomContent({
+    super.key,
+    required this.gtitle,
+    required this.gcontent,
+    required this.gemo,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 500,
+      height: 100,
+      child: Row(
+        children: [
+          Expanded(
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  //shrinkWrap: true,
+                  itemCount: gemo.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        IconButton(
+                            iconSize: 40, onPressed: () {}, icon: Image.asset("${gemo[index]}")),
+                        Text(gcontent[index])
+                      ],
+                    );
+                  },
+              )
+          ),
+        ],
       ),
     );
   }

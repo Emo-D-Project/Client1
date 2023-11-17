@@ -10,9 +10,9 @@ import 'package:audioplayers/audioplayers.dart';
 
 final List<String> imagepath = [
   'images/emotion/1.gif',
+  'images/emotion/7.gif',
   'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/3.gif'
+  'images/emotion/4.gif'
 ];
 final List<String> diaryimage = [
   'images/send/sj3.jpg',
@@ -37,7 +37,22 @@ final List<String> imagePaths = [
   'images/emotion/7.gif',
 ];
 
-String selectedImagePath = 'images/emotion/7.gif'; // 기본은 무표정
+//String selectedImagePath = 'images/emotion/7.gif'; // 기본은 무표정
+/*
+List<String> getFilteredDiaryImagePaths() {
+  // 사용자가 선택한 감정 이미지와 일치하는 일기 이미지만 필터링
+  return List.generate(
+    imagepath.length,
+        (index) {
+      if (imagepath[index] == selectedImagePath) {
+        return diaryimage[index];
+      }
+ //     return null;
+    },
+  )..removeWhere((element) => element == null);
+}
+*/
+
 
 final List<String> d_imagePaths = [
   'images/send/sj3.jpg',
@@ -172,7 +187,7 @@ class _diaryshareState extends State<diaryshare> {
                     ),
                     onPressed: () {
                       setState(() {
-                        selectedImagePath = path; // 선택한 아이콘의 경로로 변경
+                      //  selectedImagePath = path; // 선택한 아이콘의 경로로 변경
                       });
                     },
                   ),
@@ -349,7 +364,7 @@ class _customWidget1State extends State<customWidget1> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(selectedImagePath),
+                              image: AssetImage(widget.simagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -375,7 +390,7 @@ class _customWidget1State extends State<customWidget1> {
                 //이미지
                 SingleChildScrollView(
                   child: Container(
-                   
+
                       width: 200,
                       height: 150, // 이미지 높이 조절
                       child: Container(
@@ -563,11 +578,10 @@ class _customWidget2State extends State<customWidget2> {
                         child: Container(
                           width: 35,
                           height: 35,
-
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(selectedImagePath),
+                              image: AssetImage(widget.simagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -815,7 +829,7 @@ class _customwidget3State extends State<customwidget3> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(selectedImagePath),
+                              image: AssetImage(widget.simagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -1124,7 +1138,7 @@ class _customwidget4State extends State<customwidget4> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(selectedImagePath),
+                              image: AssetImage(widget.simagePath),
                               fit: BoxFit.contain,
                             ),
                           ),

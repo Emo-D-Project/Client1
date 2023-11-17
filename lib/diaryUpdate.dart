@@ -9,18 +9,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
 
-TextEditingController _diaryController =
-    TextEditingController(text: '오늘 하루 아주 만족스러운 날이다. '
-        '친구들이랑 맛있게 밥도 먹고'
-        ' 하늘도 너무 이뻤다!'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에'
-        ' 스크롤 보고싶은ㄷ에에ㅔ에에에에에에에에에에엥에에에에에에에에에에');
+final diarydate = '20230725';
+final List<String> diaryimage = ['images/send/sj3.jpg','images/send/sj1.jpg','images/send/sj2.jpg'];
+final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
+
+
+TextEditingController _diaryController = TextEditingController(text: comment);
 
 class diaryUpdate extends StatefulWidget {
   const diaryUpdate({super.key, required this.date});
@@ -33,8 +27,6 @@ class diaryUpdate extends StatefulWidget {
 }
 
 class _diaryUpdateState extends State<diaryUpdate> {
-  bool _isChecked = false;
-  bool _isCheckedShare = false;
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
@@ -154,7 +146,14 @@ class _diaryUpdateState extends State<diaryUpdate> {
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.upload))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyApp()));
+              },
+              icon: Icon(Icons.upload))
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -174,14 +173,19 @@ class _diaryUpdateState extends State<diaryUpdate> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.fromLTRB(0,11,250,10),
-                    child: Text(
-                      '     ${widget.date}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+                    margin: EdgeInsets.fromLTRB(0, 11, 250, 10),
+                    child: Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 30,),
+                          Text(
+                            diarydate,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ]),
                   ), //날짜
                   Expanded(
                     child: SingleChildScrollView(
@@ -197,93 +201,102 @@ class _diaryUpdateState extends State<diaryUpdate> {
                                   SizedBox(
                                     child: Center(
                                         child:
-                                            Image.asset('images/send/sj3.jpg')),
+                                        Image.asset(diaryimage[0])),
                                   ),
                                   SizedBox(
                                     child: Center(
                                         child:
-                                            Image.asset('images/send/sj1.jpg')),
+                                        Image.asset(diaryimage[1])),
                                   ),
                                   SizedBox(
                                     child: Center(
                                         child:
-                                            Image.asset('images/send/sj2.jpg')),
+                                        Image.asset(diaryimage[2])),
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           Container(
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.transparent,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        isPlaying
-                                            ? Icons.pause
-                                            : Icons.play_arrow,
-                                      ),
-                                      iconSize: 20,
-                                      onPressed: () async {
-                                        if (isPlaying) {
-                                          await audioPlayer.pause();
-                                        } else {
-                                          await audioPlayer.resume();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Column(
+                            padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                            child: Column(
+                              children: [
+                                Slider(
+                                  min: 0,
+                                  max: duration.inSeconds.toDouble(),
+                                  value: position.inSeconds.toDouble(),
+                                  onChanged: (value) async {
+                                    final position =
+                                        Duration(seconds: value.toInt());
+                                    await audioPlayer.seek(position);
+                                    await audioPlayer.resume();
+                                  },
+                                  activeColor: Color(0xFFF8F5EB),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Slider(
-                                        min: 0,
-                                        max: duration.inSeconds.toDouble(),
-                                        value: position.inSeconds.toDouble(),
-                                        onChanged: (value) async {
-                                          final position =
-                                              Duration(seconds: value.toInt());
-                                          await audioPlayer.seek(position);
-
-                                          await audioPlayer.resume();
-                                        },
+                                      Text(
+                                        formatTime(position), // 진행중인 시간
+                                        style: TextStyle(
+                                            color: Colors
+                                                .brown), // Set text color to black
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(formatTime(position)),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(formatTime(
-                                                duration - position)),
-                                          ],
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.transparent,
+                                        child: IconButton(
+                                          padding: EdgeInsets.only(bottom: 50),
+                                          icon: Icon(
+                                            isPlaying
+                                                ? Icons.pause
+                                                : Icons.play_arrow,
+                                            color: Colors.brown,
+                                          ),
+                                          iconSize: 25,
+                                          onPressed: () async {
+                                            if (isPlaying) {
+                                              await audioPlayer.pause();
+                                            } else {
+                                              await audioPlayer.resume();
+                                            }
+                                          },
                                         ),
-                                      )
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text(
+                                        formatTime(duration), //총 시간
+                                        style: TextStyle(
+                                          color: Colors.brown,
+                                        ), // Set text color to black
+                                      ),
                                     ],
-                                  )
-                                ]),
+                                  ),
+                                )
+                              ],
+                            ),
                           ), //음성
                           Container(
-                            margin: EdgeInsets.fromLTRB(11, 10,11,10),
-                              color: Colors.white54,
-                              child: TextFormField(
-                                controller: _diaryController,
-                                maxLines: 30,
-                                decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                        )
-                                    )
-                                ),
-                              ),
+                            margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
+                            color: Colors.white54,
+                            child: TextFormField(
+                              controller: _diaryController,
+                              maxLines: 30,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ))),
+                            ),
                           ),
                         ],
                       ),
