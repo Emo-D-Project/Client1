@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import '../calendar.dart';
+import '../models/ChatRoom.dart';
+
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -106,33 +109,68 @@ class ApiManager {
     }
   }
 
+  Map<DateTime, String> convertToDateTimeMap(Map<String, dynamic> input) {
+    return Map<DateTime, String>.fromIterable(
+      input.keys,
+      key: (key) => DateTime.parse(key), // 키를 DateTime으로 변환
+      value: (key) => input[key]!, // 값을 그대로 사용
+    );
+  }
 
-  Future<List<Map<String, dynamic>>> getCalendarData(DateTime date) async {
-    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(date);
-
-    String baseUrl = "http://localhost:8080";
+  Future<Map<DateTime, String>?> getCalendarData() async {
     String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/calendars/date";
 
-    Dio dio = Dio();
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
+      },
+    );
 
-    try {
-      // 비동기식으로 Dio 요청 보내기
-      Response<dynamic> response = await dio.get(
-        '$baseUrl/api/calendars/date/$formattedDate',
-        options: Options(
-          headers: {'Authorization': 'Bearer $accessToken'},
-        ),
-      );
+    if (response.statusCode == 200) { // 통신 성공 시
+      print("getCalendarData에서 서버로부터 받아온 데이터의 body : " + response.body);
 
-      if (response.statusCode == 200) {
-        return json.decode(response.data) as List<Map<String, dynamic>>;
-      } else {
-        throw Exception('Failed to load data from the API');
-      }
-    } catch (error) {
-      // 에러 처리
-      print("에러 발생: $error");
-      return []; // 에러가 발생하면 빈 List 반환 또는 다른 처리를 할 수 있습니다.
+      Map<DateTime, String> output = convertToDateTimeMap(json.decode(response.body));
+      return output;
+    } else {
+      throw Exception('Failed to load data from the API');
     }
+    // Make an API request to fetch diary data
+    // Parse the response and return a map of DateTime to List<DiaryEntry>
+    return {
+      DateTime(2023, 11, 1): "angry",
+      DateTime(2023, 11, 2): "flutter",
+      // Additional entries for other dates
+    };
+  }
+
+  Future<List<ChatRoom>> getChatList() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/messages/chatList";
+
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("chatList data: " + response.body);
+
+      List<ChatRoom> chatRooms = rawData.map((data) {
+        return ChatRoom(
+          id: data['otherUserId'].toString(),
+          name: data['name'],
+          lastMessage: data['lastMessage'],
+          lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+        );
+      }).toList();
+
+      return chatRooms;
+    } else {
+      throw Exception("Fail to load chatList from the API");
+    }
+
   }
 }
