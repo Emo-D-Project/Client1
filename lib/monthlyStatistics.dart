@@ -620,6 +620,7 @@ class MyCustomContent extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 5,),
                                       Container(
                                         width: 28,
                                         height: 28,
@@ -632,6 +633,7 @@ class MyCustomContent extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 5,),
                                       Container(
                                         width: 28,
                                         height: 28,
@@ -644,6 +646,7 @@ class MyCustomContent extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 5,),
                                       Container(
                                         width: 28,
                                         height: 28,
@@ -656,6 +659,7 @@ class MyCustomContent extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 5,),
                                       Container(
                                         width: 28,
                                         height: 28,
@@ -668,6 +672,7 @@ class MyCustomContent extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 5,),
                                       Container(
                                         width: 28,
                                         height: 28,
@@ -680,6 +685,7 @@ class MyCustomContent extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 5,),
                                       Container(
                                         width: 28,
                                         height: 28,
