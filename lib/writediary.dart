@@ -25,11 +25,13 @@ class writediary extends StatefulWidget {
 
 var audioFile;
 
-final picker = ImagePicker();
-List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
-List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
+
 
 class _writediaryState extends State<writediary> {
+  final picker = ImagePicker();
+  List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
+  List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   DateTime dateTime = DateTime.now();
@@ -387,21 +389,28 @@ class _writediaryState extends State<writediary> {
                                               ),
                                             )),
                                       );
-                                    })),
+                                    }
+                                    )
+                            ),
                             Container(
                               padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: Column(
                                 children: [
-                                  Slider(
-                                    min: 0,
-                                    max: duration.inSeconds.toDouble(),
-                                    value: position.inSeconds.toDouble(),
-                                    onChanged: (value) async {
-                                      final position = Duration(seconds: value.toInt());
-                                      await audioPlayer.seek(position);
-                                      await audioPlayer.resume();
-                                    },
-                                    activeColor: Color(0xFFF8F5EB),
+                                  SliderTheme(
+                                    data: SliderThemeData(
+                                      inactiveTrackColor: Color(0xFFF8F5EB),
+                                    ),
+                                    child: Slider(
+                                      min: 0,
+                                      max: duration.inSeconds.toDouble(),
+                                      value: position.inSeconds.toDouble(),
+                                      onChanged: (value) async {
+                                        final position = Duration(seconds: value.toInt());
+                                        await audioPlayer.seek(position);
+                                        await audioPlayer.resume();
+                                      },
+                                      activeColor: Color(0xFF968C83),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 16),
