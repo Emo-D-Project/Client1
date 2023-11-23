@@ -1,8 +1,12 @@
 import 'package:capston1/main.dart';
+import 'package:capston1/screens/ChatRoomScreen.dart';
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'message.dart';
 import 'message_write.dart';
+import 'models/ChatRoom.dart';
+import 'network/api_manager.dart';
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -391,6 +395,8 @@ class SecondScreen extends StatelessWidget {
       ],
     );
   }
+
+
 }
 
 class MessageData {
