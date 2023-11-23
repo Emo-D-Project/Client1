@@ -8,9 +8,10 @@ import 'package:audioplayers/audioplayers.dart';
 
 //enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
 
- //일기내용 오늘의 감정
+//일기내용 오늘의 감정
 final List<String> imagepath = [
   'images/emotion/1.gif',
+  'images/emotion/7.gif',
   'images/emotion/7.gif',
   'images/emotion/2.gif',
   'images/emotion/4.gif'
@@ -19,25 +20,25 @@ final List<String> diaryimage = [
   'images/send/sj3.jpg',
   'noimage',
   'noimage',
+  'noimage',
   'images/send/sj1.jpg'
 ];
-final List<String> voice = ["no", "no", "yes", "yes"];
-final List<String> diarycomment = ['일기1', '일기2', '일기3', '일기 4'];
-final List<int> favoritcount = [4, 5, 6, 7];
-final List<bool> favoritcolor = [true, false, true, true];
+final List<String> voice = ["no", "no", "no", "yes", "yes"];
+final List<String> diarycomment = ['일기1', '일기2', '일기2-1', '일기3', '일기 4'];
+final List<int> favoritcount = [4, 5, 20, 6, 7];
+final List<bool> favoritcolor = [false, false, false, false, false];
 
 //----------------------------------------
 
-
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
+  'images/emotion/7.gif',
   'images/emotion/1.gif',
   'images/emotion/2.gif',
   'images/emotion/angry.png',
   'images/emotion/4.gif',
   'images/emotion/5.gif',
   'images/emotion/6.gif',
-  'images/emotion/7.gif',
 ];
 
 //String selectedImagePath = 'images/emotion/7.gif'; // 기본은 무표정
@@ -56,12 +57,13 @@ List<String> getFilteredDiaryImagePaths() {
 }
 */
 
-
 final List<String> d_imagePaths = [
   'images/send/sj3.jpg',
   'images/send/sj1.jpg',
   //'images/send/sj2.jpg',
 ];
+String selectedImagePath =
+    'images/emotion/7.gif'; // 기본으로 'images/emotion/7.gif'를 선택
 
 String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
 
@@ -113,8 +115,6 @@ class _diaryshareState extends State<diaryshare> {
 
   //-----------------------------------------------------------
 
-  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
-  List<bool> isLiked = [false, false, false, false, false, false, false];
   String selectedValue = '최신순';
 
   @override
@@ -153,7 +153,7 @@ class _diaryshareState extends State<diaryshare> {
                   ),
                   dropdownColor: Color(0xFFF8F5EB),
                   icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black,fontFamily: 'soojin'),
                 ),
                 SizedBox(width: 25),
               ],
@@ -179,18 +179,24 @@ class _diaryshareState extends State<diaryshare> {
             scrollDirection: Axis.horizontal,
             physics: ClampingScrollPhysics(),
             child: Row(
-              children: imagePaths.map((path) {
+              children: imagePaths.asMap().entries.map((entry) {
+                int imagePathIndex = entry.key;
+                String imagePath = entry.value;
+
+                // 해당 이미지에 대한 일기 내용을 찾기
+                int diaryIndex = imagepath.indexWhere(
+                    (diaryImagePath) => diaryImagePath == imagePath);
                 return Padding(
                   padding: EdgeInsets.all(3),
                   child: IconButton(
                     icon: Image.asset(
-                      path,
+                      imagePath,
                       width: 50,
                       height: 50,
                     ),
                     onPressed: () {
                       setState(() {
-                      //  selectedImagePath = path; // 선택한 아이콘의 경로로 변경
+                        selectedImagePath = imagePath; // 선택된 이미지의 경로 업데이트
                       });
                     },
                   ),
@@ -198,48 +204,59 @@ class _diaryshareState extends State<diaryshare> {
               }).toList(),
             ),
           ),
+
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
               padding: const EdgeInsets.all(10),
               itemCount: imagepath.length,
               itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  child: (() {
-                    if (diaryimage[index] != "noimage" && voice[index] == "no") {
-                      return customWidget1(
+                // 'images/emotion/7.gif'를 기본으로 선택한 경우 해당 일기 표시
+                if (selectedImagePath == imagepath[index]) {
+                  return SizedBox(
+                    child: (() {
+                      if (diaryimage[index] != "noimage" &&
+                          voice[index] == "no") {
+                        return customWidget1(
+                            simagePath: imagepath[index],
+                            sdiaryImage: diaryimage[index],
+                            scomment: diarycomment[index],
+                            sfavoritColor: favoritcolor[index],
+                            sfavoritCount: favoritcount[index]);
+                      } else if (diaryimage[index] == "noimage" &&
+                          voice[index] == "no") {
+                        return customWidget2(
+                          scomment: diarycomment[index],
+                          sfavoritColor: favoritcolor[index],
+                          sfavoritCount: favoritcount[index],
                           simagePath: imagepath[index],
+                        );
+                      } else if (diaryimage[index] == "noimage" &&
+                          voice[index] == "yes") {
+                        return customwidget3(
+                          scomment: diarycomment[index],
+                          sfavoritColor: favoritcolor[index],
+                          sfavoritCount: favoritcount[index],
+                          simagePath: imagepath[index],
+                          svoice: voice[index],
+                        );
+                      } else if (diaryimage[index] != "noimage" &&
+                          voice[index] == "yes") {
+                        return customwidget4(
                           sdiaryImage: diaryimage[index],
                           scomment: diarycomment[index],
                           sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index]);
-                    } else if (diaryimage[index] == "noimage" && voice[index] == "no") {
-                      return customWidget2(
-                        scomment: diarycomment[index],
-                        sfavoritColor: favoritcolor[index],
-                        sfavoritCount: favoritcount[index],
-                        simagePath: imagepath[index],
-                      );
-                    } else if (diaryimage[index] == "noimage" && voice[index] == "yes") {
-                      return customwidget3(
-                        scomment: diarycomment[index],
-                        sfavoritColor: favoritcolor[index],
-                        sfavoritCount: favoritcount[index],
-                        simagePath: imagepath[index],
-                        svoice: voice[index],
-                      );
-                    } else if (diaryimage[index] != "noimage" && voice[index] == "yes") {
-                      return customwidget4(
-                        sdiaryImage: diaryimage[index],
-                        scomment: diarycomment[index],
-                        sfavoritColor: favoritcolor[index],
-                        sfavoritCount: favoritcount[index],
-                        simagePath: imagepath[index],
-                        svoice: voice[index],
-                      );
-                    }
-                  })(),
-                );
+                          sfavoritCount: favoritcount[index],
+                          simagePath: imagepath[index],
+                          svoice: voice[index],
+                        );
+                      }
+                    })(),
+                  );
+                } else {
+                  // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
+                  return Container();
+                }
               },
             ),
           ),
@@ -290,13 +307,20 @@ class customWidget1 extends StatefulWidget {
 }
 
 class _customWidget1State extends State<customWidget1> {
-  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
-  List<bool> isLiked = [false, false, false, false, false, false, false];
+  late int sfavoritCount; // 추가된 부분
+  late bool sfavoritColor; // 추가된 부분
+
+  void initState() {
+    super.initState();
+    sfavoritCount = widget.sfavoritCount;
+    sfavoritColor = widget.sfavoritColor;
+  }
+
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
-  TextEditingController _commentController = TextEditingController();
+  // TextEditingController _commentController = TextEditingController();
 
-  // 댓글 추가 기능
+
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
@@ -312,6 +336,7 @@ class _customWidget1State extends State<customWidget1> {
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
   }
+
 
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
@@ -389,7 +414,6 @@ class _customWidget1State extends State<customWidget1> {
                 //이미지
                 SingleChildScrollView(
                   child: Container(
-
                       width: 200,
                       height: 150, // 이미지 높이 조절
                       child: Container(
@@ -430,38 +454,40 @@ class _customWidget1State extends State<customWidget1> {
           //좋아요,댓글
           Container(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (isLiked[0]) {
-                            favoriteCounts[0]--;
-                          } else {
-                            favoriteCounts[0]++;
-                          }
-                          isLiked[0] = !isLiked[0];
-                        });
-                      },
-                      onLongPress: () {},
-                      child: Icon(
-                        Icons.favorite,
-                        color: isLiked[0] ? Colors.red : Colors.grey,
-                      ),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // 좋아요 누를 때 색 변경 및 count 증가
+                              if (sfavoritColor) {
+                                sfavoritCount--;
+                              } else {
+                                sfavoritCount++;
+                              }
+                              sfavoritColor = !sfavoritColor;
+                            });
+                          },
+                          onLongPress: () {},
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '$sfavoritCount',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${widget.sfavoritCount}',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
 
-              //댓글
+
+                  //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Column(
@@ -508,8 +534,8 @@ class customWidget2 extends StatefulWidget {
 }
 
 class _customWidget2State extends State<customWidget2> {
-  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
-  List<bool> isLiked = [false, false, false, false, false, false, false];
+  late int sfavoritCount; // 추가된 부분
+  late bool sfavoritColor; // 추가된 부분
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
@@ -548,6 +574,11 @@ class _customWidget2State extends State<customWidget2> {
         );
       },
     );
+  }
+  void initState() {
+    super.initState();
+    sfavoritCount = widget.sfavoritCount; // 초기화
+    sfavoritColor = widget.sfavoritColor; // 초기화
   }
 
   @override
@@ -624,38 +655,39 @@ class _customWidget2State extends State<customWidget2> {
           //좋아요,댓글
           Container(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (isLiked[0]) {
-                            favoriteCounts[0]--;
-                          } else {
-                            favoriteCounts[0]++;
-                          }
-                          isLiked[0] = !isLiked[0];
-                        });
-                      },
-                      onLongPress: () {},
-                      child: Icon(
-                        Icons.favorite,
-                        color: isLiked[0] ? Colors.red : Colors.grey,
-                      ),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // 좋아요 누를 때 색 변경 및 count 증가
+                              if (sfavoritColor) {
+                                sfavoritCount--;
+                              } else {
+                                sfavoritCount++;
+                              }
+                              sfavoritColor = !sfavoritColor;
+                            });
+                          },
+                          onLongPress: () {},
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '$sfavoritCount',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${widget.sfavoritCount}',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
 
-              //댓글
+                  //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Column(
@@ -684,7 +716,6 @@ class _customWidget2State extends State<customWidget2> {
 
 // 일기 버전 3 - 텍스트 + 음성
 class customwidget3 extends StatefulWidget {
-
   final String simagePath;
   final String scomment;
   final int sfavoritCount;
@@ -700,20 +731,18 @@ class customwidget3 extends StatefulWidget {
     required this.svoice,
   });
 
-
-
   @override
   State<customwidget3> createState() => _customwidget3State();
 }
 
 class _customwidget3State extends State<customwidget3> {
-  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
-  List<bool> isLiked = [false, false, false, false, false, false, false];
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
 
-  // 댓글 추가 기능
+  late int sfavoritCount; // 추가된 부분
+  late bool sfavoritColor; // 추가된 부분
+
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
@@ -758,6 +787,8 @@ class _customwidget3State extends State<customwidget3> {
   @override
   void initState() {
     super.initState();
+    sfavoritCount = widget.sfavoritCount; // 초기화
+    sfavoritColor = widget.sfavoritColor; // 초기화
 
     setAudio();
 
@@ -934,38 +965,41 @@ class _customwidget3State extends State<customwidget3> {
           //좋아요,댓글
           Container(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (isLiked[0]) {
-                            favoriteCounts[0]--;
-                          } else {
-                            favoriteCounts[0]++;
-                          }
-                          isLiked[0] = !isLiked[0];
-                        });
-                      },
-                      onLongPress: () {},
-                      child: Icon(
-                        Icons.favorite,
-                        color: isLiked[0] ? Colors.red : Colors.grey,
-                      ),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // 좋아요 누를 때 색 변경 및 count 증가
+                              if (sfavoritColor) {
+                                sfavoritCount--;
+                              } else {
+                                sfavoritCount++;
+                              }
+                              sfavoritColor = !sfavoritColor;
+                            });
+                          },
+                          onLongPress: () {},
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '$sfavoritCount',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${widget.sfavoritCount}',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
 
-              //댓글
+
+
+                  //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Column(
@@ -1016,8 +1050,9 @@ class customwidget4 extends StatefulWidget {
 }
 
 class _customwidget4State extends State<customwidget4> {
-  List<int> favoriteCounts = [0, 0, 0, 0, 0, 0, 0];
-  List<bool> isLiked = [false, false, false, false, false, false, false];
+  late int sfavoritCount;
+  late bool sfavoritColor; // 추가된 부분
+
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
@@ -1067,6 +1102,8 @@ class _customwidget4State extends State<customwidget4> {
   @override
   void initState() {
     super.initState();
+    sfavoritCount = widget.sfavoritCount; // 초기화
+    sfavoritColor = widget.sfavoritColor; // 초기화
 
     setAudio();
 
@@ -1260,38 +1297,40 @@ class _customwidget4State extends State<customwidget4> {
           ),
 
           //좋아요,댓글
+          //좋아요,댓글
           Container(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (isLiked[0]) {
-                            favoriteCounts[0]--;
-                          } else {
-                            favoriteCounts[0]++;
-                          }
-                          isLiked[0] = !isLiked[0];
-                        });
-                      },
-                      onLongPress: () {},
-                      child: Icon(
-                        Icons.favorite,
-                        color: isLiked[0] ? Colors.red : Colors.grey,
-                      ),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // 좋아요 누를 때 색 변경 및 count 증가
+                              if (sfavoritColor) {
+                                sfavoritCount--;
+                              } else {
+                                sfavoritCount++;
+                              }
+                              sfavoritColor = !sfavoritColor;
+                            });
+                          },
+                          onLongPress: () {},
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '$sfavoritCount',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${widget.sfavoritCount}',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
               //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),

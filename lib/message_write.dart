@@ -48,9 +48,9 @@ class _message_writeState extends State<message_write> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text(
-          "쪽지를 보내보세여 ",
+          "쪽지를 보내보세요 ",
           style: TextStyle(
-            fontSize: 30,
+            fontSize: 23,
             fontFamily: 'kim',
             color: Color(0xFF968C83),
           ),
@@ -75,14 +75,15 @@ class _message_writeState extends State<message_write> {
             },
             child: Text("전송"),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF968C83),
-              onPrimary: Colors.white,
+              elevation: 0,
+              padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+              primary:  Color(0xFFF8F5EB),
+              onPrimary:Color(0xFF968C83),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
-              minimumSize: Size(54, 54),
-              padding: EdgeInsets.all(5),
-              textStyle: TextStyle(fontSize: 13),
+              minimumSize: Size(50, 30),
+              textStyle: TextStyle(fontSize: 16,fontFamily: 'kim',fontWeight: FontWeight.bold),
             ),
           ),
         ],
