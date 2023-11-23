@@ -34,6 +34,7 @@ class _calendarState extends State<calendar> {
     return [_events[day] ?? '']; // 해당 날짜에 이벤트가 없으면 빈 문자열을 포함하는 리스트를 반환합니다.
   }
 
+  // 일기 데이터를 불러와서 여기 저장한다. 이 데이터로 사용자의 일기를 보여줌
   List<Diary> _diaryEntries = [
   ];
 
