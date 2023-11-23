@@ -13,10 +13,10 @@ class message extends StatefulWidget {
 
 
   @override
-  State<message> createState() => _MessageState();
+  State<message> createState() => MessageState();
 }
 
-class _MessageState extends State<message> {
+class MessageState extends State<message> {
 
   //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
