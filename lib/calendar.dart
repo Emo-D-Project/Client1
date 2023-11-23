@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'models/Diary.dart';
+
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);
 
@@ -32,6 +34,9 @@ class _calendarState extends State<calendar> {
     return [_events[day] ?? '']; // 해당 날짜에 이벤트가 없으면 빈 문자열을 포함하는 리스트를 반환합니다.
   }
 
+  List<Diary> _diaryEntries = [
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -42,8 +47,11 @@ class _calendarState extends State<calendar> {
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getCalendarData();
+      final diary_data = await apiManager.getDiaryData();
+
       setState(() {
         _events = data!;
+        _diaryEntries = diary_data!;
       });
     } catch (error) {
       // Handle error
@@ -143,7 +151,47 @@ class _calendarState extends State<calendar> {
                   }
                   // If there are events, highlight the cell with an image
                   return GestureDetector(
+                    // 이벤트가 있는 날짜를 클릭 시 해당 일기 보여주는 부분
                     onTap: () {
+                      // 선택한 날짜에 대한 일기 항목 가져오기
+                      Diary diary = getDiaryForDate(DateTime(day.year, day.month, day.day));
+
+                      // 선택한 날짜에 대한 일기 항목이 있는지 확인
+                      if (diary != null) {
+                        // 사용자에게 일기 내용 표시
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('${day.year}-${day.month}-${day.day} 날짜의 일기'),
+                              content: Column(
+                                children: [
+                                  // 이미지 추가
+                                  Image.asset(
+                                    image,
+                                    width: 50, // 이미지의 너비 조절
+                                    height: 50, // 이미지의 높이 조절
+                                  ),
+
+                                  SizedBox(height: 8), // 이미지와 텍스트 간의 간격 조절
+
+                                  // 텍스트 추가
+                                  Text(diary.content),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('닫기'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+
                       // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
                       // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
                       String event = _events[day] ?? '';
@@ -299,4 +347,19 @@ class _calendarState extends State<calendar> {
   }
 
 
+  Diary getDiaryForDate(DateTime date) {
+    // 주어진 날짜의 연, 월, 일을 추출합니다
+    int year = date.year;
+    int month = date.month;
+    int day = date.day;
+
+    // 일치하는 날짜 구성 요소를 가진 일기 항목 찾기
+    return _diaryEntries.firstWhere(
+          (entry) =>
+      entry.date.year == year &&
+          entry.date.month == month &&
+          entry.date.day == day,
+      orElse: () => Diary( date: DateTime(year, month, day), content: '', emotion: ''), // 기본 값으로 빈 일기 생성
+    );
+  }
 }
