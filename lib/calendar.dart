@@ -60,7 +60,7 @@ class _calendarState extends State<calendar> {
     }
   }
 
-  Widget _buildEventIcon(List events) {
+  /*Widget _buildEventIcon(List events) {
     return GestureDetector(
       onTap: () {
         // Add your logic for what happens when the event icon is tapped
@@ -82,7 +82,7 @@ class _calendarState extends State<calendar> {
         ),
       ),
     );
-  }
+  }*/
 
 
   @override
@@ -115,9 +115,10 @@ class _calendarState extends State<calendar> {
             lastDay: DateTime.utc(2025),
             focusedDay: _focusedDay,
             daysOfWeekHeight: 40,
-            eventLoader: eventLoader,
+            //eventLoader: eventLoader,
             weekendDays: [DateTime.sunday],
             calendarBuilders: CalendarBuilders(
+
               // 사용자가 특별한 날 지정할 때 쓰는 뷸더
               prioritizedBuilder: (context, day, focusedDay) {
                 // Check if the current day has events
@@ -156,77 +157,21 @@ class _calendarState extends State<calendar> {
                     onTap: () {
                       // 선택한 날짜에 대한 일기 항목 가져오기
                       Diary diary = getDiaryForDate(DateTime(day.year, day.month, day.day));
-
                       // 선택한 날짜에 대한 일기 항목이 있는지 확인
                       if (diary != null) {
                         // 사용자에게 일기 내용 표시
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('${day.year}-${day.month}-${day.day} 날짜의 일기'),
-                              content: Column(
-                                children: [
-                                  // 이미지 추가
-                                  Image.asset(
-                                    image,
-                                    width: 50, // 이미지의 너비 조절
-                                    height: 50, // 이미지의 높이 조절
-                                  ),
 
-                                  SizedBox(height: 8), // 이미지와 텍스트 간의 간격 조절
-
-                                  // 텍스트 추가
-                                  Text(diary.content),
-                                ],
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('닫기'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
                       }
-
                       // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
                       // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
                       String event = _events[day] ?? '';
                       print('Event for $day: $event');
                     },
-                    child: Container(
-                      margin: EdgeInsets.all(4.0),
-                      // decoration: BoxDecoration(
-                      //   color: Colors.yellow,
-                      //   shape: BoxShape.circle,
-                      // ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center, // 이미지를 수직으로 가운데 정렬
-                          children: [
-                            // Image.asset 사용 예시 (이미지가 앱의 assets 폴더에 있을 경우)
-                            Image.asset(
-                              image,
-                              width: 30, // 이미지의 너비 조절
-                              height: 30, // 이미지의 높이 조절
-                            ),
-
-                            SizedBox(height: 4), // 이미지와 텍스트 간의 간격 조절
-
-                            Text(
-                              day.day.toString(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
+                    child: Center(
+                      child: Image.asset(
+                        image,
+                        width: 40, // 이미지의 너비 조절
+                        height: 40, // 이미지의 높이 조절
                       ),
                     ),
                   );
@@ -327,6 +272,7 @@ class _calendarState extends State<calendar> {
             calendarStyle: CalendarStyle(
               cellAlignment: Alignment.center,
               isTodayHighlighted: true,
+              todayDecoration: BoxDecoration(color: Color(0xFFA67C7C), shape: BoxShape.circle),
               outsideDaysVisible: false,
               weekendTextStyle: const TextStyle(
                 color: Colors.red,
