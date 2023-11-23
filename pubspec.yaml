@@ -50,6 +50,7 @@ dependencies:
   http: ^0.13.4
   timer_builder: ^2.0.0
   flutter_sound: ^9.2.13
+  record: ^4.4.4
   permission_handler: ^11.0.1
   audioplayers: ^5.2.0
   dotted_border: ^2.1.0

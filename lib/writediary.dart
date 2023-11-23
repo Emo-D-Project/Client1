@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:record/record.dart';
 
 final String now = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -24,8 +25,6 @@ class writediary extends StatefulWidget {
 }
 
 var audioFile;
-
-
 
 class _writediaryState extends State<writediary> {
   final picker = ImagePicker();
@@ -84,40 +83,47 @@ class _writediaryState extends State<writediary> {
   final _contentEditController = TextEditingController();
 
   //녹음에 필요한 것들
-  final recorder = sound.FlutterSoundRecorder();
-  bool isRecorderReady = false;
+  // final recorder = sound.FlutterSoundRecorder();
+  // bool isRecorderReady = false;
+  late Record audioRecord;
+  late AudioPlayer audioPlayer;
+  bool isRecording = false;
+  String audioPath = '';
 
   //재생에 필요한 것들
-  final audioPlayer = AudioPlayer();
-  bool isPlaying = false;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
+  // final audioPlayer = AudioPlayer();
+  // bool isPlaying = false;
+   Duration duration = Duration.zero;
+   Duration position = Duration.zero;
 
   @override
   void initState() {
+    audioPlayer = AudioPlayer();
+    audioRecord = Record();
+
     super.initState();
 
-    setAudio();
-
-    initRecorder();
-
-    audioPlayer.onPlayerStateChanged.listen((state) {
-      setState(() {
-        isPlaying = state == (PlayerState.playing);
-      });
-    });
-
-    audioPlayer.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
-      });
-    });
-
-    audioPlayer.onPositionChanged.listen((newPosition) {
-      setState(() {
-        position = newPosition;
-      });
-    });
+    // setAudio();
+    //
+    // initRecorder();
+    //
+    // audioPlayer.onPlayerStateChanged.listen((state) {
+    //   setState(() {
+    //     isPlaying = state == (PlayerState.playing);
+    //   });
+    // });
+    //
+    // audioPlayer.onDurationChanged.listen((newDuration) {
+    //   setState(() {
+    //     duration = newDuration;
+    //   });
+    // });
+    //
+    // audioPlayer.onPositionChanged.listen((newPosition) {
+    //   setState(() {
+    //     position = newPosition;
+    //   });
+    // });
   }
 
   Future setAudio() async {
@@ -125,118 +131,158 @@ class _writediaryState extends State<writediary> {
 
     //String url = ' ';
     //audioPlayer.setSourceUrl(url);
-    
+
     //final result = await FilePicker.platform.pickFiles();
-    
+
     //if(result !=null){
-      //final file = File(result.files.single.path!);
-      audioPlayer.setSourceUrl('/data/user/0/com.example.capston1/cache/audio', );
+    //final file = File(result.files.single.path!);
+    audioPlayer.setSourceUrl(
+      '/data/user/0/com.example.capston1/cache/audio',
+    );
     //}
   }
 
   @override
   void dispose() {
-    recorder.closeRecorder();
+    // recorder.closeRecorder();
+    // audioPlayer.dispose();
+
+    audioRecord.dispose();
     audioPlayer.dispose();
 
     super.dispose();
   }
 
-  Future initRecorder() async {
-    final status = await Permission.microphone.request();
-
-    if (status != PermissionStatus.granted) {
-      throw 'Microphone permission not granted';
-    }
-
-    await recorder.openRecorder();
-    isRecorderReady = true;
-
-    recorder.setSubscriptionDuration(
-      const Duration(milliseconds: 500),
-    );
-  }
-
-  Future record() async {
-    if (!isRecorderReady) return;
-    await recorder.startRecorder(toFile: 'audio');
-  }
-
-  Future stop() async {
-    if (!isRecorderReady) return;
-
-    final path = await recorder.stopRecorder();
-    final audioFile = File(path!);
-
-    run(audioFile as String);
-   //파일 서버에 보내기
-
-    print('Recorded audio: $audioFile');
-  }
-
-  Future<String> run(String audioUrl) async {
-    String openApiURL = " ";
-    String accessKey = " "; // 발급받은 API Key
-    String languageCode = "korean"; // 언어 코드
-    String audioFilePath = audioUrl; // 녹음된 음성 파일 경로
-    String audioContents;
-    var gson = JsonCodec();
-
-    Map<String, dynamic> request = {
-      'argument': {'language_code': languageCode},
-    };
-
+  Future<void> startRecording() async {
     try {
-      var file = File(audioFilePath);
-      var audioBytes = await file.readAsBytes();
-      audioContents = base64.encode(audioBytes);
+      if (await audioRecord.hasPermission()) {
+        await audioRecord.start();
+        setState(() {
+          isRecording = true;
+        });
+      }
     } catch (e) {
-      print(e.toString());
+      print('Error Start Recording : $e');
     }
+  }
 
-   // request['argument']['audio'] = audioContents;
-
-    var url = Uri.parse(openApiURL);
-    var responseCode;
-    var responseBody;
-
+  Future<void> stopRecording() async {
     try {
-      var request = await HttpClient().postUrl(url);
-      request.headers.set('Content-Type', 'application/json; charset=UTF-8');
-      request.headers.set('Authorization', accessKey);
-
-      request.write(json.encode(request));
-      var response = await request.close();
-
-      responseCode = response.statusCode;
-      var contents = await utf8.decodeStream(response);
-      responseBody = contents;
-
-      print('[responseCode] $responseCode');
-      print('[responseBody]');
-      print(responseBody);
-
-      return 'responseBody: $responseBody';
+      String? path = await audioRecord.stop();
+      setState(() {
+        isRecording = false;
+        audioPath = path!;
+      });
     } catch (e) {
-      print(e.toString());
+      print('Error Stopping record : $e');
     }
-
-    return '';
   }
 
-
-  String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inMinutes.remainder(60));
-
-    return [
-      if (duration.inHours > 0) hours,
-      minutes,
-      seconds,
-    ].join(':');
+  Future<void> playRecording() async {
+    try {
+      Source urlSource = UrlSource(audioPath);
+      await audioPlayer.play(urlSource);
+    } catch (e) {
+      print("Error playing Recording : $e");
+    }
   }
+
+  //
+  // Future initRecorder() async {
+  //   final status = await Permission.microphone.request();
+  //
+  //   if (status != PermissionStatus.granted) {
+  //     throw 'Microphone permission not granted';
+  //   }
+  //
+  //   await recorder.openRecorder();
+  //   isRecorderReady = true;
+  //
+  //   recorder.setSubscriptionDuration(
+  //     const Duration(milliseconds: 500),
+  //   );
+  // }
+  //
+  // Future record() async {
+  //   if (!isRecorderReady) return;
+  //   await recorder.startRecorder(toFile: 'audio');
+  // }
+  //
+  // Future stop() async {
+  //   if (!isRecorderReady) return;
+  //
+  //   final path = await recorder.stopRecorder();
+  //   final audioFile = File(path!);
+  //
+  //   run(audioFile as String);
+  //  //파일 서버에 보내기
+  //
+  //   print('Recorded audio: $audioFile');
+  // }
+  //
+  // Future<String> run(String audioUrl) async {
+  //   String openApiURL = " ";
+  //   String accessKey = " "; // 발급받은 API Key
+  //   String languageCode = "korean"; // 언어 코드
+  //   String audioFilePath = audioUrl; // 녹음된 음성 파일 경로
+  //   String audioContents;
+  //   var gson = JsonCodec();
+  //
+  //   Map<String, dynamic> request = {
+  //     'argument': {'language_code': languageCode},
+  //   };
+  //
+  //   try {
+  //     var file = File(audioFilePath);
+  //     var audioBytes = await file.readAsBytes();
+  //     audioContents = base64.encode(audioBytes);
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  //
+  //  // request['argument']['audio'] = audioContents;
+  //
+  //   var url = Uri.parse(openApiURL);
+  //   var responseCode;
+  //   var responseBody;
+  //
+  //   try {
+  //     var request = await HttpClient().postUrl(url);
+  //     request.headers.set('Content-Type', 'application/json; charset=UTF-8');
+  //     request.headers.set('Authorization', accessKey);
+  //
+  //     request.write(json.encode(request));
+  //     var response = await request.close();
+  //
+  //     responseCode = response.statusCode;
+  //     var contents = await utf8.decodeStream(response);
+  //     responseBody = contents;
+  //
+  //     print('[responseCode] $responseCode');
+  //     print('[responseBody]');
+  //     print(responseBody);
+  //
+  //     return 'responseBody: $responseBody';
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  //
+  //   return '';
+  // }
+  //
+  //
+  // String formatTime(Duration duration) {
+  //   String twoDigits(int n) => n.toString().padLeft(2, '0');
+  //   final hours = twoDigits(duration.inHours);
+  //   final minutes = twoDigits(duration.inMinutes.remainder(60));
+  //   final seconds = twoDigits(duration.inMinutes.remainder(60));
+  //
+  //   return [
+  //     if (duration.inHours > 0) hours,
+  //     minutes,
+  //     seconds,
+  //   ].join(':');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -389,77 +435,86 @@ class _writediaryState extends State<writediary> {
                                               ),
                                             )),
                                       );
-                                    }
-                                    )
+                                    })),
+                            // Container(
+                            //   padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                            //   child: Column(
+                            //     children: [
+                            //       SliderTheme(
+                            //         data: SliderThemeData(
+                            //           inactiveTrackColor: Color(0xFFF8F5EB),
+                            //         ),
+                            //         child: Slider(
+                            //           min: 0,
+                            //           max: duration.inSeconds.toDouble(),
+                            //           value: position.inSeconds.toDouble(),
+                            //           onChanged: (value) async {
+                            //             final position =
+                            //                 Duration(seconds: value.toInt());
+                            //             await audioPlayer.seek(position);
+                            //             await audioPlayer.resume();
+                            //           },
+                            //           activeColor: Color(0xFF968C83),
+                            //         ),
+                            //       ),
+                            //       Padding(
+                            //         padding: const EdgeInsets.symmetric(
+                            //             horizontal: 16),
+                            //         child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceBetween,
+                            //           children: [
+                            //             Text(
+                            //               formatTime(position), // 진행중인 시간
+                            //               style: TextStyle(
+                            //                   color: Colors
+                            //                       .brown), // Set text color to black
+                            //             ),
+                            //             SizedBox(
+                            //               width: 20,
+                            //             ),
+                            //             CircleAvatar(
+                            //               radius: 15,
+                            //               backgroundColor: Colors.transparent,
+                            //               child: IconButton(
+                            //                 padding:
+                            //                     EdgeInsets.only(bottom: 50),
+                            //                 icon: Icon(
+                            //                   isPlaying
+                            //                       ? Icons.pause
+                            //                       : Icons.play_arrow,
+                            //                   color: Colors.brown,
+                            //                 ),
+                            //                 iconSize: 25,
+                            //                 onPressed: () async {
+                            //                   if (isPlaying) {
+                            //                     await audioPlayer.pause();
+                            //                   } else {
+                            //                     await audioPlayer.resume();
+                            //                   }
+                            //                 },
+                            //               ),
+                            //             ),
+                            //             SizedBox(
+                            //               width: 20,
+                            //             ),
+                            //             Text(
+                            //               formatTime(duration), //총 시간
+                            //               style: TextStyle(
+                            //                 color: Colors.brown,
+                            //               ), // Set text color to black
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ), //음성
+                            if(!isRecording && audioPath !=null)
+                            ElevatedButton(
+                              onPressed: playRecording,
+                              child: const Text(("play")),
                             ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                              child: Column(
-                                children: [
-                                  SliderTheme(
-                                    data: SliderThemeData(
-                                      inactiveTrackColor: Color(0xFFF8F5EB),
-                                    ),
-                                    child: Slider(
-                                      min: 0,
-                                      max: duration.inSeconds.toDouble(),
-                                      value: position.inSeconds.toDouble(),
-                                      onChanged: (value) async {
-                                        final position = Duration(seconds: value.toInt());
-                                        await audioPlayer.seek(position);
-                                        await audioPlayer.resume();
-                                      },
-                                      activeColor: Color(0xFF968C83),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          formatTime(position), // 진행중인 시간
-                                          style: TextStyle(
-                                              color:
-                                              Colors.brown), // Set text color to black
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        CircleAvatar(
-                                          radius: 15,
-                                          backgroundColor: Colors.transparent,
-                                          child: IconButton(
-                                            padding: EdgeInsets.only(bottom: 50),
-                                            icon: Icon(
-                                              isPlaying ? Icons.pause : Icons.play_arrow,
-                                              color: Colors.brown,
-                                            ),
-                                            iconSize: 25,
-                                            onPressed: () async {
-                                              if (isPlaying) {
-                                                await audioPlayer.pause();
-                                              } else {
-                                                await audioPlayer.resume();
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Text(
-                                          formatTime(duration), //총 시간
-                                          style: TextStyle(
-                                            color: Colors.brown,
-                                          ), // Set text color to black
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ), //음성
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextField(
@@ -537,7 +592,7 @@ class _writediaryState extends State<writediary> {
                                 },
                               ),
                             ),*/
-                              SizedBox(
+                              /*SizedBox(
                                 child: IconButton(
                                   onPressed: () async {
                                     if (recorder.isRecording) {
@@ -552,6 +607,19 @@ class _writediaryState extends State<writediary> {
                                     recorder.isRecording
                                         ? Icons.stop
                                         : Icons.mic,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),*/
+                              if (isRecording) Text("Recording in Progress"),
+                              SizedBox(
+                                child: IconButton(
+                                  onPressed: isRecording
+                                      ? stopRecording
+                                      : startRecording,
+                                  icon: Icon(
+                                    isRecording ? Icons.stop : Icons.mic,
                                     size: 30,
                                     color: Colors.black,
                                   ),
