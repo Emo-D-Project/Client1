@@ -165,8 +165,6 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
-          isRead: data['isRead'] ?? false,
-
         );
       }).toList();
 
@@ -205,37 +203,4 @@ class ApiManager {
     }
 
   }
-
-<<<<<<< HEAD
-  Future<List<Diary>> getMSatisData() async {
-    String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/diaries/mine/{userid}";
-
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-
-    if(response.statusCode == 200) {
-      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("my diary data: " + response.body);
-
-      List<Diary> diaries = rawData.map((data) {
-        return Diary(
-            date: DateTime.parse(data['createdAt']),
-            content: data['content'],
-            emotion: data['emotion']
-        );
-      }).toList();
-
-      return diaries;
-    } else {
-      throw Exception("Fail to load diary data from the API");
-    }
-
-  }
-
-=======
->>>>>>> parent of e2f1124 ([Front] 쪽지 통신 완)
 }
