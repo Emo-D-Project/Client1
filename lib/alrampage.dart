@@ -1,12 +1,21 @@
 import 'package:capston1/main.dart';
+import 'package:capston1/MessageRoom.dart';
+import 'package:capston1/MessageRoom.dart';
+import 'package:capston1/models/Message.dart';
+import 'package:capston1/models/MessageData.dart';
 import 'package:capston1/screens/ChatRoomScreen.dart';
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'message.dart';
+import 'MessageRoom.dart';
+import 'MessageRoom.dart';
 import 'message_write.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
+
+
+
+
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -85,7 +94,7 @@ class _A_EmodState extends State<A_Emod> {
               ),
             ),
             Text(
-             '${smonth.month}월의 감정 통지서가 도착했습니다!' ,
+              '${smonth.month}월의 감정 통지서가 도착했습니다!' ,
               style: TextStyle(fontFamily: 'soojin', fontSize: 13),
             ),
           ],
@@ -356,14 +365,6 @@ class FirstScreen extends StatelessWidget {
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
 
-  static String smile = 'images/emotion/1.gif';
-  static String flutter = 'images/emotion/2.gif';
-  static String angry = 'images/emotion/angry.png';
-  static String annoying = 'images/emotion/4.gif';
-  static String tired = 'images/emotion/5.gif';
-  static String sad = 'images/emotion/6.gif';
-  static String calmness = 'images/emotion/7.gif';
-
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
@@ -413,7 +414,6 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   // 서버에서 가져온 가상의 채팅방 목록
-
 
 
   Future<void> GetMessage(String endpoint) async {
@@ -473,150 +473,99 @@ class _SecondScreenState extends State<SecondScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFFF8F5EB),
-
-      body: ListView.builder(
-        itemCount: chatRooms.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(chatRooms[index].name),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(chatRooms[index].lastMessage),
-                Text(
-                  DateFormat('yyyy-MM-dd HH:mm').format(chatRooms[index].lastMessageSentAt),
-                  style: TextStyle(fontSize: 12),
-                ),
-              ],
-            ),
-            onTap: () {
-              // 선택한 채팅방으로 이동
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatRoomScreen(chatRoom: chatRooms[index]),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class MessageData {
-  final String content;
-  final String imagePath;
-  bool isRead; // 읽음 여부를 보여줌
-
-  MessageData({
-    required this.content,
-    required this.imagePath,
-    this.isRead = false, // 기본값은 안읽음
-  });
-}
-
-class CustomContainer extends StatefulWidget {
-  final String name;
-  final String content;
-  final String imagePath;
-  final MessageData isRead;
-
-  CustomContainer({
-    required this.name,
-    required this.content,
-    required this.imagePath,
-    required this.isRead,
-  });
-
-  @override
-  _CustomContainerState createState() => _CustomContainerState();
-}
-
-class _CustomContainerState extends State<CustomContainer> {
-  @override
-  Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
 
-    // 메세지를 누르면 읽음으로 표시가 됨
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const message(
-                      messages: [],
-                    )));
-        //MaterialPageRoute(builder: (context) => YourChatScreen(),
-        setState(() {
-          widget.isRead.isRead = true;
-        });
-      },
-      child: Container(
-        width: sizeX * 0.9,
-        child: Container(
-          width: double.infinity,
-          child: Row(
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: Image.asset(
-                  widget.imagePath,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 100,
-                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                      child: Text(
-                        widget.name,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.brown,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                      child: Text(
-                        widget.content,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 13),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // 빨간색 아이콘 (읽으면 없어지고 안읽으면 있음)
-              Visibility(
-                visible: !widget.isRead.isRead,
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(10),
+            itemCount: chatRooms.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MessageRoom(otherUserId: int.parse(chatRooms[index].id),)),
+                  ).then((value) async {
+                    // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
+                    // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
+                    await Future.delayed(Duration(milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
+                    fetchDataFromServer();
+                  });
+                },
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  width: 20,
-                  height: 20,
-                  child: Icon(Icons.circle, color: Colors.redAccent, size: 10),
+                  width: sizeX * 0.9,
+                  child: Container(
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                          child: Image.asset(
+                            "images/send/cat_real_image.png",
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 100,
+                                padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                child: Text(
+                                  "삼냥이",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 100,
+                                padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                child: Text(
+                                  chatRooms[index].lastMessage,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 13),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                          visible: !chatRooms[index].isRead,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            width: 20,
+                            height: 20,
+                            child: Icon(Icons.circle, color: Colors.redAccent, size: 10),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
+
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                Divider(
+                  height: 10,
+                  thickness: 1.0,
+                  color: Color(0xff7D5A50),
+                ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

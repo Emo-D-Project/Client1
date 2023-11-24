@@ -1,7 +1,6 @@
 import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
 import 'package:capston1/notification.dart';
-import 'package:capston1/test.dart';
 import 'package:flutter/material.dart';
 import 'help.dart';
 import 'home.dart';

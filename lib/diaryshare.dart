@@ -394,7 +394,7 @@ class _customWidget1State extends State<customWidget1> {
                           ),
                         ),
                       )),
-                      IconButton(
+                      /*IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -407,7 +407,7 @@ class _customWidget1State extends State<customWidget1> {
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -617,7 +617,7 @@ class _customWidget2State extends State<customWidget2> {
                           ),
                         ),
                       )),
-                      IconButton(
+                    /*  IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -630,7 +630,7 @@ class _customWidget2State extends State<customWidget2> {
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
