@@ -166,7 +166,7 @@ class _commentState extends State<comment> {
                               .text;
                           if (commentText.isNotEmpty) {
                             // 댓글 추가 메서드 호출
-                            addComment('삼냥이', 'images/emotion/catimage.png',
+                            addComment('삼냥이', 'images/emotion/1.gif',
                                 commentText);
                             // 텍스트 필드 비우기
                             _commentController.clear();

@@ -41,8 +41,6 @@ final List<String> imagePaths = [
   'images/emotion/6.gif',
 ];
 
-
-
 //String selectedImagePath = 'images/emotion/7.gif'; // 기본은 무표정
 /*
 List<String> getFilteredDiaryImagePaths() {
@@ -323,6 +321,7 @@ class _customWidget1State extends State<customWidget1> {
   // TextEditingController _commentController = TextEditingController();
 
 
+
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
@@ -351,7 +350,7 @@ class _customWidget1State extends State<customWidget1> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(),
+            child: comment(), // 수정이 필요한 부분
           ),
         );
       },
@@ -395,12 +394,12 @@ class _customWidget1State extends State<customWidget1> {
                           ),
                         ),
                       )),
-                    /*  IconButton(
+                      IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                               builder: (context) => message_write(otherUserId: )), // 수정해야되는 부분
+                                builder: (context) => message_write()),
                           );
                         },
                         icon: Image.asset(
@@ -408,7 +407,7 @@ class _customWidget1State extends State<customWidget1> {
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
                         ),
-                      ),*/
+                      ),
                     ],
                   ),
                 ),
@@ -618,13 +617,12 @@ class _customWidget2State extends State<customWidget2> {
                           ),
                         ),
                       )),
-
-                    /*  IconButton(
+                      IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => message_write()),
+                                builder: (context) => message_write()),
                           );
                         },
                         icon: Image.asset(
@@ -632,7 +630,7 @@ class _customWidget2State extends State<customWidget2> {
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
                         ),
-                      ),*/
+                      ),
                     ],
                   ),
                 ),

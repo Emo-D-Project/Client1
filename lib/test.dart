@@ -3,7 +3,7 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
 
-import 'MessageRoom.dart';
+import 'message.dart';
 
 class YourChatScreen extends StatefulWidget {
   // 다른 코드...
@@ -77,10 +77,10 @@ class _YourChatScreenState extends State<YourChatScreen> {
             SizedBox(width: 110), // 간격 조절
             IconButton(
               onPressed: () {
-                /*Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => message_write()),
-                );*/ // 수정해야되는 부분
+                );
               },
               icon: Image.asset(
                 'images/send/real_send.png',
