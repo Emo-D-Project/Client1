@@ -11,5 +11,5 @@ class ChatRoom {
     required this.lastMessage,
     required this.lastMessageSentAt,
     required this.isRead,
-  }); 
+  });
 }
