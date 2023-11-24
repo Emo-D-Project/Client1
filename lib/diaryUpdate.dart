@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
 
-final diarydate = '20230725';
+final diarydate = DateTime(2023,11,24);
 final List<String> diaryimage = ['images/send/sj3.jpg','images/send/sj1.jpg','images/send/sj2.jpg'];
 final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
 
@@ -19,7 +19,7 @@ TextEditingController _diaryController = TextEditingController(text: comment);
 class diaryUpdate extends StatefulWidget {
   const diaryUpdate({super.key, required this.date});
 
-  final String date;
+  final DateTime date;
   final String emotion = "smile";
 
   @override
@@ -91,7 +91,6 @@ class _diaryUpdateState extends State<diaryUpdate> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Container(
-          //decoration: BoxDecoration(color: Colors.amber),
           child: (() {
             switch (widget.emotion) {
               case 'smile':
@@ -175,11 +174,10 @@ class _diaryUpdateState extends State<diaryUpdate> {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 11, 250, 10),
                     child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(width: 30,),
                           Text(
-                            diarydate,
+                            '${diarydate.year}년 ${diarydate.month}월 ${diarydate.day}일',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -243,6 +241,7 @@ class _diaryUpdateState extends State<diaryUpdate> {
                                       Text(
                                         formatTime(position), // 진행중인 시간
                                         style: TextStyle(
+                                          fontFamily: 'soojin',
                                             color: Colors
                                                 .brown), // Set text color to black
                                       ),
@@ -276,6 +275,7 @@ class _diaryUpdateState extends State<diaryUpdate> {
                                       Text(
                                         formatTime(duration), //총 시간
                                         style: TextStyle(
+                                          fontFamily: 'soojin',
                                           color: Colors.brown,
                                         ), // Set text color to black
                                       ),
@@ -289,6 +289,7 @@ class _diaryUpdateState extends State<diaryUpdate> {
                             margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
                             color: Colors.white54,
                             child: TextFormField(
+                              style: TextStyle(fontFamily: 'soojin'),
                               controller: _diaryController,
                               maxLines: 30,
                               decoration: InputDecoration(
