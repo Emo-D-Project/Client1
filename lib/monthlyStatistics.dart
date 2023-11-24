@@ -421,6 +421,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
       final value = response['point']; // 키를 통해 value를 받아오기
       print('point: $value');
       point = value;
+
     } catch (e) {
       print('Error: $e');
     }

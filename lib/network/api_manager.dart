@@ -167,6 +167,8 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+          //isRead: data['isRead'] ?? false,
+
         );
       }).toList();
 
@@ -207,6 +209,7 @@ class ApiManager {
   }
 
   Future<List<MonthData>> getMSatisData() async {
+
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/read";
 
@@ -236,6 +239,4 @@ class ApiManager {
       throw Exception("Fail to load diary data from the API");
     }
 
-  }
-
-}
+  }}
