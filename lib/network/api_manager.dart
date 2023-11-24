@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:capston1/monthlyStatistics.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../calendar.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
+import '../models/MonthData.dart';
 
 
 class ApiManager {
@@ -165,7 +167,7 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
-          isRead: data['isRead'] ?? false,
+          //isRead: data['isRead'] ?? false,
 
         );
       }).toList();
@@ -206,10 +208,10 @@ class ApiManager {
 
   }
 
-<<<<<<< HEAD
-  Future<List<Diary>> getMSatisData() async {
+  Future<List<MonthData>> getMSatisData() async {
+
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/diaries/mine/{userid}";
+    String endPoint = "/api/report/read";
 
     final response = await http.get(Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
@@ -219,23 +221,22 @@ class ApiManager {
 
     if(response.statusCode == 200) {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("my diary data: " + response.body);
+      print("monthly statistics data: " + response.body);
 
-      List<Diary> diaries = rawData.map((data) {
-        return Diary(
-            date: DateTime.parse(data['createdAt']),
-            content: data['content'],
-            emotion: data['emotion']
+      List<MonthData> MSatisdata = rawData.map((data) {
+        return MonthData(
+            date: DateTime.parse(data['date']),
+          emotions: List<double>.from(data['emotions']),
+            mostEmotion: data['mostEmotion'],
+          leastEmotion: data['leastEmotion'],
+          comment: data['comment'],
+          point: data['point'],
         );
       }).toList();
 
-      return diaries;
+      return MSatisdata;
     } else {
       throw Exception("Fail to load diary data from the API");
     }
 
-  }
-
-=======
->>>>>>> parent of e2f1124 ([Front] 쪽지 통신 완)
-}
+  }}
