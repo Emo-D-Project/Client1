@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:capston1/monthlyStatistics.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../calendar.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
+import '../models/MonthData.dart';
 
 
 class ApiManager {
@@ -165,6 +167,7 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+          isRead: data['isRead'] ?? false
         );
       }).toList();
 
@@ -204,4 +207,35 @@ class ApiManager {
 
   }
 
-}
+  Future<List<MonthData>> getMSatisData() async {
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/report/read";
+
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("monthly statistics data: " + response.body);
+
+      List<MonthData> MSatisdata = rawData.map((data) {
+        return MonthData(
+            date: DateTime.parse(data['date']),
+          emotions: List<double>.from(data['emotions']),
+            mostEmotion: data['mostEmotion'],
+          leastEmotion: data['leastEmotion'],
+          comment: data['comment'],
+          point: data['point'],
+        );
+      }).toList();
+
+      return MSatisdata;
+    } else {
+      throw Exception("Fail to load diary data from the API");
+    }
+
+  }}
