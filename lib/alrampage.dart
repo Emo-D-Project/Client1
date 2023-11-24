@@ -354,7 +354,7 @@ class FirstScreen extends StatelessWidget {
 //---------------------------------------------------------------------------------------
 
 // 메세지 파트
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
 
   static String smile = 'images/emotion/1.gif';
   static String flutter = 'images/emotion/2.gif';
@@ -364,39 +364,148 @@ class SecondScreen extends StatelessWidget {
   static String sad = 'images/emotion/6.gif';
   static String calmness = 'images/emotion/7.gif';
 
-  final List<MessageData> messages = [
-    MessageData( content: '안녕', imagePath: angry),
-    MessageData(content: '너한테 쪽지 보내요', imagePath: flutter)
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  //-------------------------------------------------------------------------------
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  late String message_content = " ";
+  late int sender_Id ;
+  late int receiver_Id;
+  late DateTime sentAt;
+
+  List<ChatRoom> chatRooms = [
+    //ChatRoom(id: "2", name: "Room 2"),
+    // ... 다른 채팅방들
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(10),
-            itemCount: messages.length,
-            itemBuilder: (BuildContext context, int index) {
-              return CustomContainer(
-                name: '삼냥이',
-                content: messages[index].content,
-                imagePath: messages[index].imagePath,
-                isRead: messages[index],
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                Divider(
-                  height: 10,
-                  thickness: 1.0,
-                  color: Color(0xff7D5A50),
-                ),
-          ),
-        ),
-      ],
-    );
+  void initState() {
+    super.initState();
+    print("message.dart입장 ");
+    // 서버로부터 채팅방 목록 불러오기
+    fetchDataFromServer();
   }
 
+  Future<void> fetchDataFromServer() async {
+    try{
+      final data = await apiManager.getChatList();
+      setState(() {
+        chatRooms = data! as List<ChatRoom>;
+      });
+    }
+    catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting chat list: $error');
+    }
+
+  }
+
+  // 화면을 갱신하는 메서드
+  void _updateScreen() {
+    // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
+    setState(() {
+      //myData = '갱신된 값';
+    });
+  }
+
+  // 서버에서 가져온 가상의 채팅방 목록
+
+
+
+  Future<void> GetMessage(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['content']; // 키를 통해 value를 받아오기
+      print('content: $value');
+      message_content = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+    // 보낸 쪽지
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['senderId']; // 키를 통해 value를 받아오기
+      print('senderId: $value');
+      sender_Id = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+    //받은 쪽지
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['receiverId']; // 키를 통해 value를 받아오기
+      print('receiverId: $value');
+      receiver_Id = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    // 보낸 시간
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+      // 요청 응답 받기
+      final value = response['sentAt']; // 키를 통해 value를 받아오기
+      print('sentAt: $value');
+      sentAt = value;
+
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xFFF8F5EB),
+
+      body: ListView.builder(
+        itemCount: chatRooms.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(chatRooms[index].name),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(chatRooms[index].lastMessage),
+                Text(
+                  DateFormat('yyyy-MM-dd HH:mm').format(chatRooms[index].lastMessageSentAt),
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+            onTap: () {
+              // 선택한 채팅방으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatRoomScreen(chatRoom: chatRooms[index]),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 }
 
 class MessageData {
