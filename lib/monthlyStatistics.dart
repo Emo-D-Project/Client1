@@ -337,16 +337,16 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
   String selectedValue = '최신순';
 
 
-  Future<void> GetMonthlyStatistics(String endpoint) async {
-    try {
-      final data = apiManager.GetList('api/report/read'); // 실제 API 엔드포인트로 대체
-      //final value = response['key'];
-
-
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
+  // Future<void> GetMonthlyStatistics(String endpoint) async {
+  //   try {
+  //     final data = apiManager.GetList('api/report/read'); // 실제 API 엔드포인트로 대체
+  //     //final value = response['key'];
+  //
+  //
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
   // onpress():
   //      PostExample("/api/message");
