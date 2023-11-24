@@ -10,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
 
-final diarydate = '20230725';
+final diarydate = DateTime(2023,11,24);
 final List<String> diaryimage = [
   'images/send/sj3.jpg',
   'images/send/sj1.jpg',
@@ -21,7 +21,7 @@ final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑
 class diaryReplay extends StatefulWidget {
   const diaryReplay({super.key, required this.date});
 
-  final String date;
+  final DateTime date;
   final String emotion = "smile";
 
   @override
@@ -100,7 +100,6 @@ class _writediaryState extends State<diaryReplay> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Container(
-          //decoration: BoxDecoration(color: Colors.amber),
           child: (() {
             switch (widget.emotion) {
               case 'smile':
@@ -174,20 +173,19 @@ class _writediaryState extends State<diaryReplay> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           width: 30,
                         ),
                         Text(
-                          diarydate,
+                          '${diarydate.year}년 ${diarydate.month}월 ${diarydate.day}일',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'soojin',
                             fontSize: 20,
                           ),
                         ),
                         SizedBox(
-                          width: 200,
+                          width: 135,
                         ),
                         IconButton(
                             onPressed: () {
@@ -195,7 +193,7 @@ class _writediaryState extends State<diaryReplay> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          diaryUpdate(date: '20230725')));
+                                          diaryUpdate(date: DateTime(2023,11,24))));
                             },
                             icon: Icon(
                               Icons.edit,
@@ -255,6 +253,7 @@ class _writediaryState extends State<diaryReplay> {
                                       Text(
                                         formatTime(position), // 진행중인 시간
                                         style: TextStyle(
+                                          fontFamily: 'soojin',
                                             color: Colors
                                                 .brown), // Set text color to black
                                       ),
@@ -288,6 +287,7 @@ class _writediaryState extends State<diaryReplay> {
                                       Text(
                                         formatTime(duration), //총 시간
                                         style: TextStyle(
+                                          fontFamily: 'soojin',
                                           color: Colors.brown,
                                         ), // Set text color to black
                                       ),
@@ -306,7 +306,9 @@ class _writediaryState extends State<diaryReplay> {
                                 children: [
                                   Text(
                                     comment,
-                                    style: TextStyle(fontSize: 15),
+                                    style: TextStyle(
+                                      fontFamily: 'soojin', fontSize: 15
+                                    ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
