@@ -185,6 +185,7 @@ class MessageState extends State<message> {
         ),
       ),
 
+      //채팅 목록
       body: ListView.builder(
         itemCount: chatRooms.length,
         itemBuilder: (context, index) {
@@ -205,6 +206,7 @@ class MessageState extends State<message> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  //채팅방
                   builder: (context) => ChatRoomScreen(chatRoom: chatRooms[index]),
                 ),
               );
@@ -212,7 +214,6 @@ class MessageState extends State<message> {
           );
         },
       ),
-
 
 
       /*body: Column(
