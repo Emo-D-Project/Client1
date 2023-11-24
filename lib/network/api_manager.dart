@@ -165,6 +165,7 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+          isRead: data['isRead'] ?? false,
         );
       }).toList();
 

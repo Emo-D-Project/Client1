@@ -339,7 +339,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
   Future<void> GetMonthlyStatistics(String endpoint) async {
     try {
-      final data = apiManager.GetList('api/report/read'); // 실제 API 엔드포인트로 대체
+      //final data = apiManager.GetList('api/report/read'); // 실제 API 엔드포인트로 대체
       //final value = response['key'];
 
 
