@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../calendar.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
+import '../models/Message.dart';
 
 
 class ApiManager {
@@ -165,6 +166,7 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+          isRead: data['isRead'] ?? false, // Null이면 false로 설정
         );
       }).toList();
 
@@ -203,5 +205,73 @@ class ApiManager {
     }
 
   }
+
+  Future<List<Message>> getMessageList(int otherUserId) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/messages/chat/$otherUserId";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("message List data: " + response.body);
+
+      List<Message> messages = rawData.map((data) {
+        return Message(
+          content: data['content'],
+          sendtime: DateTime.parse(data['sentAt']),
+          isMyMessage: data['myMessage'] == 1 , // 내가 보낸 메시지인지 여부 확인
+        );
+      }).toList();
+
+      return messages;
+    } else {
+      throw Exception("Fail to load chat data from the API");
+    }
+  }
+
+  void sendMessage(String message, int otherUserId, DateTime dateTime) async {
+    String endpoint = "/api/messages";
+    baseUrl = "http://34.64.78.183:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "content": message,
+          "sentAt": DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateTime.toUtc()),
+          "receiverId": otherUserId,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception('Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+      // 에러를 처리하거나 사용자에게 알릴 수 있음
+      // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
+      throw e;
+    }
+
+  }
+
 
 }

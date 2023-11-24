@@ -1,41 +1,42 @@
+import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
-import 'message.dart';
+import 'MessageRoom.dart';
 import 'package:intl/intl.dart';
 import 'models/Message.dart';
 
 class message_write extends StatefulWidget {
-  const message_write({Key? key}) : super(key: key);
+  final int otherUserId;
+
+  const message_write({Key? key, required this.otherUserId}) : super(key: key);
 
   @override
-  State<message_write> createState() => _message_writeState();
+  State<message_write> createState() => _message_writeState(otherUserId);
 }
 
 class _message_writeState extends State<message_write> {
-
-  final _contentEditController = TextEditingController();
+  final int otherUserId; // 대화할 상대 id(식별자)
+  TextEditingController _contentEditController = TextEditingController();
   List<Map<String, dynamic>> messages = [];
 
-  // 메세지 전송 함수임 - 전송 버튼을 눌렀을 때  근데.. 이제 이게 보낸 쪽지가 되는..?
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _message_writeState(this.otherUserId);
+
+  // 메세지 전송 함수
   void _sendMessage() {
     String message = _contentEditController.text;
-    // // Message 클래스를 사용하여 메시지 객체 생성
-    // Message newMessage = Message(
-    //   senderId: 1, // 현재 사용자의 ID
-    //   receiverId: 2, // 선택된 대화 상대방의 ID
-    //   content: _contentEditController.text, // 텍스트 입력 필드에서 얻은 메시지 내용
-    //   dateTime: DateTime.now(), // 현재 날짜와 시간
-    // );
     if (message.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
 
-      setState(() {
-        messages.add({'content': message, 'receiverId': 2, 'senderId': 1, 'sendtime': DateTime.now(),
-        });
-      });
-      print('보낸 사람: ${messages.last['senderId']}, 전송된 메세지: $message, 전송 시간: $sentTime');
-      // Clear the text field after sending the message
-   //   _contentEditController.clear();
+      apiManager.sendMessage(message, otherUserId, DateTime.now());
+
+      _contentEditController.clear();
+
+      // 이전 화면으로 돌아가기
+      Navigator.pop(context);
+
+
     }
   }
 
@@ -59,7 +60,7 @@ class _message_writeState extends State<message_write> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  message(messages: messages)),
+              MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)),
             );
           },
           icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83)),
@@ -67,23 +68,23 @@ class _message_writeState extends State<message_write> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              _sendMessage();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => message(messages: messages)),
-              );// 메세지를 전송하는 함수 호출
-            },
+              _sendMessage(); // 이 부분에 추가해줘
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)),);
+              //
+              },
             child: Text("전송"),
             style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-              primary:  Color(0xFFF8F5EB),
-              onPrimary:Color(0xFF968C83),
+              primary: Color(0xFFF8F5EB),
+              onPrimary: Color(0xFF968C83),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
               minimumSize: Size(50, 30),
-              textStyle: TextStyle(fontSize: 16,fontFamily: 'kim',fontWeight: FontWeight.bold),
+              textStyle: TextStyle(fontSize: 16, fontFamily: 'kim', fontWeight: FontWeight.bold),
             ),
           ),
         ],

@@ -1,3 +1,4 @@
+
 class Diary {
   DateTime date;
   String content;
