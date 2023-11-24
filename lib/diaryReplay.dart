@@ -9,8 +9,19 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
+import 'models/Diary.dart';
+import 'network/api_manager.dart';
 
-final diarydate = DateTime(2023,11,24);
+class DiaryEntry {
+  final DateTime date;
+
+  // Add other fields as needed
+
+  DiaryEntry({required this.date /* Add other parameters */
+      });
+}
+
+final diarydate = DateTime(2023, 11, 24);
 final List<String> diaryimage = [
   'images/send/sj3.jpg',
   'images/send/sj1.jpg',
@@ -34,8 +45,25 @@ List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택�
 List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
 */
 class _writediaryState extends State<diaryReplay> {
-  bool _isChecked = false;
-  bool _isCheckedShare = false;
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  late bool _isChecked = false;
+  late bool _isCheckedShare = false;
+  late DateTime day;
+
+  List<Diary> _diaryEntries = [];
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final diary_data = await apiManager.getDiaryData();
+
+      setState(() {
+        _diaryEntries = diary_data!;
+      });
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
@@ -46,6 +74,8 @@ class _writediaryState extends State<diaryReplay> {
   @override
   void initState() {
     super.initState();
+
+    fetchDataFromServer();
 
     setAudio();
 
@@ -90,6 +120,7 @@ class _writediaryState extends State<diaryReplay> {
 
   @override
   Widget build(BuildContext context) {
+    //Diary diary = getDiaryForDate(DateTime(day.year, da));
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -172,34 +203,33 @@ class _writediaryState extends State<diaryReplay> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                      children: [
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Text(
-                          '${diarydate.year}년 ${diarydate.month}월 ${diarydate.day}일',
-                          style: TextStyle(
-                            fontFamily: 'soojin',
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 135,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          diaryUpdate(date: DateTime(2023,11,24))));
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              size: 30,
-                            )),
-                      ]), //날짜
+                  Row(children: [
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      '${day.year}년 ${day.month}월 ${day.day}일',
+                      style: TextStyle(
+                        fontFamily: 'soojin',
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 135,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => diaryUpdate(
+                                      date: DateTime(2023, 11, 24))));
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          size: 30,
+                        )),
+                  ]), //날짜
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -253,7 +283,7 @@ class _writediaryState extends State<diaryReplay> {
                                       Text(
                                         formatTime(position), // 진행중인 시간
                                         style: TextStyle(
-                                          fontFamily: 'soojin',
+                                            fontFamily: 'soojin',
                                             color: Colors
                                                 .brown), // Set text color to black
                                       ),
@@ -307,8 +337,7 @@ class _writediaryState extends State<diaryReplay> {
                                   Text(
                                     comment,
                                     style: TextStyle(
-                                      fontFamily: 'soojin', fontSize: 15
-                                    ),
+                                        fontFamily: 'soojin', fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -322,6 +351,24 @@ class _writediaryState extends State<diaryReplay> {
               )),
         ),
       ),
+    );
+  }
+
+  Diary getDiaryForDate(DateTime date) {
+    // 주어진 날짜의 연, 월, 일을 추출합니다
+    int year = date.year;
+    int month = date.month;
+    int day = date.day;
+    // 일치하는 날짜 구성 요소를 가진 일기 항목 찾기
+    return _diaryEntries.firstWhere(
+      (entry) =>
+          entry.date.year == year &&
+          entry.date.month == month &&
+          entry.date.day == day,
+      orElse: () => Diary(
+          date: DateTime(year, month, day),
+          content: '',
+          emotion: ''), // 기본 값으로 빈 일기 생성
     );
   }
 }

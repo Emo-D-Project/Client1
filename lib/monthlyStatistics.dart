@@ -5,7 +5,6 @@ import 'statistics.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:capston1/pieGraph/pie_chart.dart';
 
-
 enum Emotion {smile, flutter, angry, annoying, tired, sad, calmness}
 
 List<DateTime> title = [DateTime(2023,10),DateTime(2023,9),DateTime(2023,8)];
@@ -331,7 +330,8 @@ class monthlyStatistics extends StatefulWidget {
 
 class _monthlyStatisticsState extends State<monthlyStatistics> {
 
- String selectedValue = '최신순';
+  ApiManager apiManager = ApiManager().getApiManager();
+  String selectedValue = '최신순';
 
  void _reverseList() {
    setState(() {
