@@ -385,17 +385,17 @@ class SecondScreen extends StatelessWidget {
                 isRead: messages[index],
               );
             },
-            separatorBuilder: (BuildContext context, int index) => Divider(
-              height: 10,
-              thickness: 1.0,
-              color: Color(0xff7D5A50),
-            ),
+            separatorBuilder: (BuildContext context, int index) =>
+                Divider(
+                  height: 10,
+                  thickness: 1.0,
+                  color: Color(0xff7D5A50),
+                ),
           ),
         ),
       ],
     );
   }
-
 
 }
 
