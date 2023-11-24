@@ -165,6 +165,8 @@ class ApiManager {
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
+          isRead: data['isRead'] ?? false,
+
         );
       }).toList();
 
@@ -204,6 +206,7 @@ class ApiManager {
 
   }
 
+<<<<<<< HEAD
   Future<List<Diary>> getMSatisData() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/diaries/mine/{userid}";
@@ -233,4 +236,6 @@ class ApiManager {
 
   }
 
+=======
+>>>>>>> parent of e2f1124 ([Front] 쪽지 통신 완)
 }
