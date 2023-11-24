@@ -9,5 +9,7 @@ class ChatRoom {
     required this.name,
     required this.lastMessage,
     required this.lastMessageSentAt,
-  });
+
+    required this.isRead,
+  }); 
 }
