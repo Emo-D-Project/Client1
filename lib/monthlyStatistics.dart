@@ -4,7 +4,7 @@ import 'bar graph/bar_graph_month.dart';
 import 'statistics.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:capston1/pieGraph/pie_chart.dart';
-
+import 'network/api_manager.dart';
 
 enum Emotion {smile, flutter, angry, annoying, tired, sad, calmness}
 
@@ -323,6 +323,7 @@ Widget calmM = Column(
 
 
 class monthlyStatistics extends StatefulWidget {
+
   const monthlyStatistics({super.key});
 
   @override
@@ -331,7 +332,45 @@ class monthlyStatistics extends StatefulWidget {
 
 class _monthlyStatisticsState extends State<monthlyStatistics> {
 
- String selectedValue = '최신순';
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  String selectedValue = '최신순';
+
+
+  Future<void> GetMonthlyStatistics(String endpoint) async {
+    try {
+      final data = apiManager.GetList('api/report/read'); // 실제 API 엔드포인트로 대체
+      //final value = response['key'];
+
+
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  // onpress():
+  //      PostExample("/api/message");
+  //
+  // 다른버튼 onperss():
+  //       PostExample("api/title");
+
+  // Future<void> PostWriteDiary(String endpoint) async {
+  //   ApiManager apiManager = ApiManager().getApiManager();
+  //
+  //   try {
+  //     final postData = {
+  //       'content': content,
+  //       'emotion': sendEmotion,
+  //       'is_share': _isCheckedShare,
+  //       'is_comm': _isChecked,
+  //       //오디오 전송
+  //     };
+  //     //print(postData);
+  //     await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
  void _reverseList() {
    setState(() {
