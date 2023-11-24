@@ -213,7 +213,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => diaryReplay(date: '20230725')));
+                            MaterialPageRoute(builder: (context) => diaryReplay(date: DateTime(2023,11,24))));
                       },
                       child: Row(
                         children: [
