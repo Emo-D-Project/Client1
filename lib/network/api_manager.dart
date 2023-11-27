@@ -3,12 +3,12 @@ import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import '../calendar.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
 import '../models/Message.dart';
 import '../models/MonthData.dart';
+import '../models/TotalData.dart';
 
 
 class ApiManager {
@@ -302,6 +302,41 @@ class ApiManager {
       }).toList();
 
       return MSatisdata;
+    } else {
+      throw Exception("Fail to load diary data from the API");
+    }
+
+  }
+  Future<List<TotalData>> getTSatisData() async {
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/report/analysis";
+
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("total statistics data: " + response.body);
+
+      List<TotalData> TSatisdata = rawData.map((data) {
+        return TotalData(
+          nums: data['nums'],
+          emotions: List<double>.from(data['emotions']),
+          mostWritten: data['mostWritten'],
+          firstDate: DateTime.parse(data['firstDate']),
+          mostYearMonth: DateTime.parse(data['mostYearMonth']),
+          mostNums: data['mostNums'],
+          mostViewed: data['mostViewed'],
+          mostViewedEmpathy: data['mostViewedEmpathy'],
+          mostViewedComments: data['mostViewedComments'],
+        );
+      }).toList();
+
+      return TSatisdata;
     } else {
       throw Exception("Fail to load diary data from the API");
     }

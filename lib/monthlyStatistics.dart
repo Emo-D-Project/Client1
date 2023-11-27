@@ -7,19 +7,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:capston1/pieGraph/pie_chart.dart';
 import 'network/api_manager.dart';
 
-enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
-
-List<DateTime> title = [
-  DateTime(2023, 10),
-  DateTime(2023, 9),
-  DateTime(2023, 8)
-];
-List<double> emotioncount = [10, 5, 2, 8, 1, 0, 2];
-List<String> mostemo = ['smile', 'sad', 'flutter'];
-List<String> worstemo = ['flutter', 'tired', 'smile'];
-List<String> mymonth = ['10월 끗', '9월 끗', '8월 끗'];
-List<double> total = [1, 2, 3];
-
 Widget sadM = Column(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
@@ -341,8 +328,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
   @override
   void initState() {
     super.initState();
-    //print("message.dart입장 ");
-    // 서버로부터 채팅방 목록 불러오기
     fetchDataFromServer();
   }
 
@@ -364,7 +349,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
     }
     catch (error) {
       // 에러 제어하는 부분
-      print('Error getting chat list: $error');
+      print('Error getting MS list: $error');
     }
 
   }
@@ -429,19 +414,20 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
   String selectedValue = '최신순';
 
-  void _reverseList() {
+/*  void _reverseList() {
     setState(() {
-      title = List.from(title.reversed);
-      //emotioncount = List.from(emotioncount.reversed);
-      mostemo = List.from(mostemo.reversed);
-      worstemo = List.from(worstemo.reversed);
-      mymonth = List.from(mymonth.reversed);
-      total = List.from(total.reversed);
+      date = List.from(date.reversed);
+      emotions = List.from(emotions.reversed);
+      mostEmotion = List.from(mostEmotion.reversed);
+      leastEmotion = List.from(leastEmotion.reversed);
+      comment = List.from(comment.reversed);
+      point = List.from(point.reversed);
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+
     final sizeX = MediaQuery
         .of(context)
         .size
@@ -493,12 +479,12 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                       setState(() {
                         selectedValue = value!;
 
-                        if (selectedValue == '오래된순') {
+                       /* if (selectedValue == '오래된순') {
                           _reverseList(); // Reverse the list
                         }
                         else {
                           _reverseList();
-                        }
+                        }*/
                       });
                     },
                     underline: Container(
@@ -528,7 +514,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                     ),
                     child: ExpansionTile(
                       title: Text('${monthDatas[index].date.year}년 ${monthDatas[index].date.month}월 감정통지서',
-                        //'10월감정통지서' ,
                         style: TextStyle(
                           fontFamily: "soojin",
                           fontSize: 25,
@@ -566,7 +551,9 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                       10, 0, 0, 0)),
                                               SizedBox(
                                                 width: 180,
-                                                child: MyPieChart(),
+                                                child: MyPieChart(
+                                                  emotioncount2: monthDatas[index].emotions,
+                                                ),
                                               ),
                                               Column(
                                                 children: [
@@ -586,11 +573,59 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                               fontFamily: 'soojin',
                                                               fontSize: 16),
                                                         ),
-                                                        Image.asset(
+                                                        Container(
+                                                          child: (() {
+                                                            switch (monthDatas[index].mostEmotion){
+                                                              case 1:
+                                                                return Image.asset(
+                                                                  'images/emotion/1.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 2:
+                                                                return Image.asset(
+                                                                  'images/emotion/2.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 3:
+                                                                return Image.asset(
+                                                                  'images/emotion/angry.png',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 4:
+                                                                return Image.asset(
+                                                                  'images/emotion/4.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 5:
+                                                                return Image.asset(
+                                                                  'images/emotion/5.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 6:
+                                                                return Image.asset(
+                                                                  'images/emotion/6.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 7:
+                                                                return Image.asset(
+                                                                  'images/emotion/7.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                            }
+                                                          })(),
+                                                        ),
+                                                        /*Image.asset(
                                                           'images/emotion/2.gif',
                                                           width: 90,
                                                           height: 90,
-                                                        ),
+                                                        ),*/
                                                       ],
                                                     ),
                                                   ),
@@ -606,10 +641,53 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                               fontFamily: 'soojin',
                                                               fontSize: 16),
                                                         ),
-                                                        Image.asset(
-                                                          'images/emotion/5.gif',
-                                                          width: 90,
-                                                          height: 90,
+                                                        Container(
+                                                          child: (() {
+                                                            switch (monthDatas[index].leastEmotion){
+                                                              case 1:
+                                                                return Image.asset(
+                                                                  'images/emotion/1.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 2:
+                                                                return Image.asset(
+                                                                  'images/emotion/2.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 3:
+                                                                return Image.asset(
+                                                                  'images/emotion/angry.png',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 4:
+                                                                return Image.asset(
+                                                                  'images/emotion/4.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 5:
+                                                                return Image.asset(
+                                                                  'images/emotion/5.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 6:
+                                                                return Image.asset(
+                                                                  'images/emotion/6.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                              case 7:
+                                                                return Image.asset(
+                                                                  'images/emotion/7.gif',
+                                                                  width: 90,
+                                                                  height: 90,
+                                                                );
+                                                            }
+                                                          })(),
                                                         ),
                                                       ],
                                                     ),
@@ -880,345 +958,3 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
     );
   }
 }
-
-//커스텀 컨테이너
-/*class MyCustomContent extends StatelessWidget {
-
-  final DateTime ctitle;
-  final List<double> cemotions;
-  final String cmostEmo;
-  final String cworstEmo;
-  final String cmyMonth;
-  final double ctotalEmo; //하드코딩쭈고
-  MyCustomContent({super.key,
-    required this.ctitle,
-    required this.cemotions,
-    required this.cmostEmo,
-    required this.cworstEmo,
-    required this.cmyMonth,
-    required this.ctotalEmo,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ExpansionTile(
-        title: Text('${monthDatas} 감정통지서',
-          //'10월감정통지서' ,
-          style: TextStyle(
-            fontFamily: "soojin",
-            fontSize: 25,
-            color: Color(0xFF968C83),
-          ),
-        ),
-        initiallyExpanded: false,
-        children: <Widget>[
-          Padding(
-              padding: EdgeInsets.all(5),
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      //원형그래프 + 감정
-                      Container(
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: DottedBorder(
-                          borderType: BorderType.RRect,
-                          color: Color(0xFF745A52),
-                          strokeWidth: 2,
-                          radius: Radius.circular(20),
-                          dashPattern: [13, 13],
-                          child: SizedBox(
-                            width: 400,
-                            height: 250,
-                            child: Row(
-                              children: [
-                                Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                                SizedBox(
-                                  width: 180,
-                                  child: MyPieChart(),
-                                ),
-                                Column(
-                                  children: [
-                                    Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            130, 7, 0, 0)),
-                                    Container(
-                                      height: 120,
-                                      width: 130,
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            '가장 많았던 감정',
-                                            style: TextStyle(
-                                                fontFamily: 'soojin',
-                                                fontSize: 16),
-                                          ),
-                                          Image.asset(
-                                            'images/emotion/2.gif',
-                                            width: 90,
-                                            height: 90,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 120,
-                                      width: 130,
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            '가장 많았던 감정',
-                                            style: TextStyle(
-                                                fontFamily: 'soojin',
-                                                fontSize: 16),
-                                          ),
-                                          Image.asset(
-                                            'images/emotion/5.gif',
-                                            width: 90,
-                                            height: 90,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      // 막대그래프
-                      Center(
-                        child: Container(
-                          width: 380,
-                          height: 210,
-                          padding: const EdgeInsets.all(8.0),
-                          margin: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFE1DED6),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 150,
-                                child: MyBarGraph_M(
-                                  emotioncount: cemotions,
-                                ),
-                              ),
-                              //감정 이모션 사진
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                            'images/emotion/1.gif',
-                                          ),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/2.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/angry.png'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/4.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/5.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/6.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/7.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      // emod의 한마디
-                      Container(
-                          width: 380,
-                          //height: 600,
-                          padding: const EdgeInsets.all(8.0),
-                          margin: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFDAD4CC),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints constraints) {
-                              if (ctotalEmo == 1) {
-                                print(ctotalEmo);
-                                return happyM;
-                              }
-                              else if (ctotalEmo == 2)
-                                return sadM;
-                              else if (ctotalEmo == 3)
-                                return calmM;
-                              else {
-                                print(ctotalEmo);
-                                return Container();
-                              }
-                            },
-                          )),
-
-                      // 나의 n월은
-                      Container(
-                          width: 380,
-                          //height: 200,
-                          padding: const EdgeInsets.all(8.0),
-                          margin: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFDACFC4),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints constraints) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                // 위아래 중앙 정렬
-                                children: [
-                                  Container(
-                                      width: 300,
-                                      height: 40,
-                                      padding:
-                                      EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                      child: RichText(
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(children: [
-                                            TextSpan(
-                                                text: '나의 ${ctitle.month}월은',
-                                                //n월로 변경해야함
-                                                style: TextStyle(
-                                                    fontSize: 30,
-                                                    fontFamily: 'soojin',
-                                                    color: Colors.brown)),
-                                          ]))),
-                                  Container(
-                                    color: Colors.black26,
-                                    width: 250,
-                                    height: 1,
-                                  ),
-                                  Padding(padding: EdgeInsets.fromLTRB(
-                                      15, 10, 0, 0)),
-                                  Container(
-                                      width: 250,
-                                      child: RichText(
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(children: [
-                                            TextSpan(
-                                                text: cmyMonth, //n월로 변경해야함
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontFamily: 'soojin',
-                                                    color: Colors.brown)),
-                                          ]
-                                          )
-                                      )
-                                  ),
-                                ],
-
-                              );
-                            },
-                          )),
-                    ],
-                  ),
-                ),
-              )),
-        ],
-      ),
-
-    );
-  }
-}*/

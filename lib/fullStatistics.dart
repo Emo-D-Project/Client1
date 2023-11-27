@@ -5,6 +5,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 import 'diaryshare.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'network/api_manager.dart';
+import 'models/TotalData.dart';
 
 final DateTime title = DateTime(2023, 3, 22); // 가장 많은 일기의 날짜
 final DateTime start = DateTime(2023, 8, 25); //처음 시작한 날
@@ -19,6 +21,7 @@ final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑
 //String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 
 class fullStatistics extends StatefulWidget {
+
   const fullStatistics({super.key});
 
   @override
@@ -52,6 +55,130 @@ class _fullStatisticsState extends State<fullStatistics> {
 
   // 몇월 - 몇개로 가장 많은 일기 수
   int w_diary = 25;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  late int nums;
+  late List<double> emotions;
+  late String mostWritten;
+  late DateTime firstDate;
+  late DateTime mostYearMonth;
+  late int mostNums;
+  late int mostViewed;  // 일기의 아이디값
+  late int mostViewedEmpathy;
+  late int mostViewedComments;
+
+  List<TotalData> totalDatas = [];
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getTSatisData();
+      if(data != null) {
+        setState(() {
+          totalDatas = data! as List<TotalData>;
+        });
+      }
+    } catch (error) {
+      // 오류 처리
+      print('Error getting TS list: $error');
+    }
+
+  }
+
+  Future<void> GetTStatis(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['nums']; // 키를 통해 value를 받아오기
+      print('nums: $value');
+      nums = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['emotions']; // 키를 통해 value를 받아오기
+      print('emotions: $value');
+      emotions = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['mostWritten']; // 키를 통해 value를 받아오기
+      print('mostWritten: $value');
+      mostWritten = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['firstDate']; // 키를 통해 value를 받아오기
+      print('firstDate: $value');
+      firstDate = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['mostYearMonth']; // 키를 통해 value를 받아오기
+      print('mostYearMonth: $value');
+      mostYearMonth = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['mostNums']; // 키를 통해 value를 받아오기
+      print('mostNums: $value');
+      mostNums = value;
+
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['mostViewed']; // 키를 통해 value를 받아오기
+      print('mostViewed: $value');
+      mostViewed = value;
+
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['mostViewedEmpathy']; // 키를 통해 value를 받아오기
+      print('mostViewedEmpathy: $value');
+      mostViewedEmpathy = value;
+
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['mostViewedComments']; // 키를 통해 value를 받아오기
+      print('mostViewedComments: $value');
+      mostViewedComments = value;
+
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,355 +228,411 @@ class _fullStatisticsState extends State<fullStatistics> {
           ),
           // 감정 통계
           Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: DottedBorder(
-                        borderType: BorderType.RRect,
-                        color: Color(0xFF745A52),
-                        strokeWidth: 2,
-                        radius: Radius.circular(20),
-                        dashPattern: [13, 13],
-                        child: SizedBox(
-                          width: 400,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 250,
-                                child: MyBarGraph(
-                                  emotioncount: emotioncount,
-                                ),
-                              ),
-                              //감정 이모션 사진
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView.builder(
+              itemCount: 1,
+              itemBuilder: (BuildContext context,index) {
+                if(totalDatas.isNotEmpty) {
+                  return SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: DottedBorder(
+                              borderType: BorderType.RRect,
+                              color: Color(0xFF745A52),
+                              strokeWidth: 2,
+                              radius: Radius.circular(20),
+                              dashPattern: [13, 13],
+                              child: SizedBox(
+                                width: 400,
+                                child: Column(
                                   children: [
+                                    SizedBox(
+                                      height: 250,
+                                      child: MyBarGraph(
+                                        emotioncount: totalDatas[index]
+                                            .emotions,
+                                      ),
+                                    ),
+                                    //감정 이모션 사진
                                     Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.3),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                            'images/emotion/1.gif',
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center,
+                                        children: [
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.3),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  'images/emotion/1.gif',
+                                                ),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
                                           ),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/2.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/angry.png'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/4.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/5.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/6.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Container(
-                                      width: 33,
-                                      height: 33,
-                                      margin: const EdgeInsets.all(6.5),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/emotion/7.gif'),
-                                          fit: BoxFit.contain,
-                                        ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.5),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/emotion/2.gif'),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.5),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/emotion/angry.png'),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.5),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/emotion/4.gif'),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.5),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/emotion/5.gif'),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.5),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/emotion/6.gif'),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Container(
+                                            width: 33,
+                                            height: 33,
+                                            margin: const EdgeInsets.all(6.5),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/emotion/7.gif'),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    // 작성된 일기 수
-                    Container(
-                        width: 380,
-                        height: 100,
-                        padding: const EdgeInsets.all(8.0),
-                        margin: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE1DED6),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                width: 300,
-                                height: 40,
-                                padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        style: TextStyle(
-                                          fontFamily: 'soojin',
-                                          fontSize: 18,
-                                          color: Colors.brown,
 
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                                '${start.year}년 ${start.month}월 ${start.day}일',
-                                          ), //년도
-                                          TextSpan(text: '부터 작성 된 일기 수 '),
-                                        ]))),
-                            Container(
-                                width: 300,
-                                height: 40,
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        style: TextStyle(
-                                          fontFamily: 'soojin',
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.brown,
-                                        ),
-                                        children: [
-                                          TextSpan(text: '$count'),
-                                          TextSpan(text: '개'),
-                                        ]))),
-                          ],
-                        )),
-                    // 어느 시간대에 일기 가장 많이 쓴 지
-                    Container(
-                        width: 380,
-                        height: 100,
-                        padding: const EdgeInsets.all(8.0),
-                        margin: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFDAD4CC),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                width: 300,
-                                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: name,
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 18,
-                                              color: Colors.brown)), //닉네임
-                                      TextSpan(
-                                          text: ' 님은 ',
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                             // fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                              color: Colors.brown)), //
-                                      TextSpan(
-                                          text: Pm,
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.brown)), //시간
-                                      TextSpan(
-                                          text: '에',
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                             // fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                              color: Colors.brown)),
-                                    ]))),
-                            Container(
-                                width: 300,
-                                height: 40,
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        style: TextStyle(
-                                          fontFamily: 'soojin',
-                                          fontSize: 18,
-                                          color: Colors.brown,
-                                        ),
-                                        children: [
-                                          TextSpan(text: '일기를 가장 많이 작성하였어요 :D'),
-                                        ]))),
-                          ],
-                        )),
-
-                    // 몇월에 일기 가장 많이 작성한지
-                    Container(
-                        width: 380,
-                        height: 100,
-                        padding: const EdgeInsets.all(8.0),
-                        margin: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFDACFC4),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          // 위아래 중앙 정렬
-                          children: [
-                            Container(
-                                width: 300,
-                                height: 40,
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: '${many.year}년 ${many.month}월',
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.brown)),
-                                      TextSpan(
-                                          text: '에 ',
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontSize: 18,
-                                              color: Colors.brown)),
-                                      TextSpan(
-                                          text: '$w_diary',
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.brown)),
-                                      TextSpan(
-                                          text: '개로',
-                                          style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontSize: 18,
-                                              color: Colors.brown)),
-                                    ]))),
-                            Container(
-                                width: 300,
-                                height: 40,
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        style: TextStyle(
-                                          fontFamily: 'soojin',
-                                          fontSize: 18,
-                                          color: Colors.brown,
-                                        ),
-                                        children: [
-                                          TextSpan(text: '가장 많이 일기를 작성하였어요 :D'),
-                                        ]))),
-                          ],
-                        )),
-
-                    // 가장 많이 공감 받은 일기
-                    Container(
-                      width: 380,
-                      padding: const EdgeInsets.all(8.0),
-                      margin: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFD7D4CC),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Column(
-                        children: [
-                          // ~ 님의 공유된 일기 중 가장 많은 공감을 얻은 일기에요~
+                          SizedBox(
+                            height: 8,
+                          ),
+                          // 작성된 일기 수
                           Container(
-                            width: double.infinity,
+                              width: 380,
+                              height: 100,
+                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFE1DED6),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 300,
+                                      height: 40,
+                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                fontFamily: 'soojin',
+                                                fontSize: 18,
+                                                color: Colors.brown,
+
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                  '${totalDatas[index].firstDate
+                                                      .year}년 ${totalDatas[index]
+                                                      .firstDate
+                                                      .month}월 ${totalDatas[index]
+                                                      .firstDate.day}일',
+                                                ), //년도
+                                                TextSpan(text: '부터 작성 된 일기 수 '),
+                                              ]))),
+                                  Container(
+                                      width: 300,
+                                      height: 40,
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                fontFamily: 'soojin',
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.brown,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                    text: '${totalDatas[index]
+                                                        .nums}'),
+                                                TextSpan(text: '개'),
+                                              ]))),
+                                ],
+                              )),
+                          // 어느 시간대에 일기 가장 많이 쓴 지
+                          Container(
+                              width: 380,
+                              height: 100,
+                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFDAD4CC),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 300,
+                                      padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                                text: name,
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18,
+                                                    color: Colors.brown)), //닉네임
+                                            TextSpan(
+                                                text: ' 님은 ',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    // fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                    color: Colors.brown)), //
+                                            TextSpan(
+                                                text: '${totalDatas[index]
+                                                    .mostWritten}',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.brown)), //시간
+                                            TextSpan(
+                                                text: '에',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    // fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                    color: Colors.brown)),
+                                          ]))),
+                                  Container(
+                                      width: 300,
+                                      height: 40,
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                fontFamily: 'soojin',
+                                                fontSize: 18,
+                                                color: Colors.brown,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                    text: '일기를 가장 많이 작성하였어요 :D'),
+                                              ]))),
+                                ],
+                              )),
+
+                          // 몇월에 일기 가장 많이 작성한지
+                          Container(
+                              width: 380,
+                              height: 100,
+                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFDACFC4),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                // 위아래 중앙 정렬
+                                children: [
+                                  Container(
+                                      width: 300,
+                                      height: 40,
+                                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                                text: '${totalDatas[index]
+                                                    .mostYearMonth
+                                                    .year}년 ${totalDatas[index]
+                                                    .mostYearMonth.month}월',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.brown)),
+                                            TextSpan(
+                                                text: '에 ',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 18,
+                                                    color: Colors.brown)),
+                                            TextSpan(
+                                                text: '${totalDatas[index]
+                                                    .mostNums}',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.brown)),
+                                            TextSpan(
+                                                text: '개로',
+                                                style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 18,
+                                                    color: Colors.brown)),
+                                          ]))),
+                                  Container(
+                                      width: 300,
+                                      height: 40,
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                fontFamily: 'soojin',
+                                                fontSize: 18,
+                                                color: Colors.brown,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                    text: '가장 많이 일기를 작성하였어요 :D'),
+                                              ]))),
+                                ],
+                              )),
+                          // 가장 많이 공감 받은 일기
+                          Container(
+                            width: 380,
+                            padding: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFD7D4CC),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             child: Column(
                               children: [
+                                // ~ 님의 공유된 일기 중 가장 많은 공감을 얻은 일기에요~
+                                Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          width: 300,
+                                          height: 40,
+                                          padding: EdgeInsets.fromLTRB(
+                                              0, 12, 0, 0),
+                                          child: RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(text: name),
+                                                    //닉네임
+                                                    TextSpan(
+                                                        text: '님의 공유된 일기 중'),
+                                                    //일
+                                                  ]))),
+                                      Container(
+                                          width: 300,
+                                          padding: EdgeInsets.fromLTRB(
+                                              0, 0, 0, 5),
+                                          child: RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                        text: '가장 많은 공감을 얻은 일기에요 :D'),
+                                                  ])))
+                                    ],
+                                  ),
+                                ),
+
+                                // 가장 공감 많이 받은 일기 보여줌
+                                Container(
+                                  child: customWidget3(
+                                    stitle: title,
+                                    sdiaryImage: diaryimage[0],
+                                    simagePath: imagepath,
+                                    scomment: comment,
+                                    svoice: voice,
+                                  ),
+                                ),
+
+
+                                // ~개의 공감과 ~개의 댓글을 받았어요
                                 Container(
                                     width: 300,
-                                    height: 40,
-                                    padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                    child: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(
-                                            style: TextStyle(
-                                              fontFamily: 'soojin',
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                            ),
-                                            children: [
-                                              TextSpan(text: name), //닉네임
-                                              TextSpan(text: '님의 공유된 일기 중'), //일
-                                            ]))),
-                                Container(
-                                    width: 300,
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
                                     child: RichText(
                                         textAlign: TextAlign.center,
                                         text: TextSpan(
@@ -460,77 +643,41 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             ),
                                             children: [
                                               TextSpan(
-                                                  text: '가장 많은 공감을 얻은 일기에요 :D'),
-                                            ])))
+                                                  text: '${totalDatas[index]
+                                                      .mostViewedEmpathy}'),
+                                              //댓글
+                                              TextSpan(text: '개의 공감과 '),
+                                              //일
+                                              TextSpan(
+                                                  text: '${totalDatas[index]
+                                                      .mostViewedComments}'),
+                                              //댓글
+                                              TextSpan(text: '개의 댓글을 받았어요'),
+                                              //일
+                                            ]))),
                               ],
                             ),
                           ),
-
-                          // 가장 공감 많이 받은 일기 보여줌
-                          Container(
-                            child: customWidget3(
-                              stitle: title,
-                              sdiaryImage: diaryimage[0],
-                              simagePath: imagepath,
-                              scomment: comment,
-                              svoice: voice,
-                            ),
+                          SizedBox(
+                            height: 15,
                           ),
-
-
-                          // ~개의 공감과 ~개의 댓글을 받았어요
-                          Container(
-                              width: 300,
-                              padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                              child: RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                      style: TextStyle(
-                                        fontFamily: 'soojin',
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                      ),
-                                      children: [
-                                        TextSpan(text: '$num_comment'), //댓글
-                                        TextSpan(text: '개의 공감과 '), //일
-                                        TextSpan(text: '$num_like'), //댓글
-                                        TextSpan(text: '개의 댓글을 받았어요'), //일
-                                      ]))),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                  ],
-                ),
+                  );
+                }
+                else {
+                  return Container(
+                    child: Text('No data available'),
+                  );
+                }
+                }
               ),
             ),
-          )
         ],
       ),
     );
   }
-}
-
-class shareData {
-  final DateTime many;
-  final DateTime start;
-  final DateTime title;
-  final String imagepath;
-  final String diaryimage;
-  final String comment;
-  final String voice;
-
-  shareData({
-    required this.many,
-    required this.start,
-    required this.title,
-    required this.imagepath,
-    required this.diaryimage,
-    required this.comment,
-    required this.voice,
-  });
 }
 
 // 일기 버전 1 - 텍스트 + 사진
