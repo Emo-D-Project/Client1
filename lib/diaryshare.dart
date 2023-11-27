@@ -6,6 +6,8 @@ import 'comment.dart';
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+import 'models/Comment.dart';
+
 //enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
 
 
@@ -323,7 +325,7 @@ class _customWidget1State extends State<customWidget1> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
@@ -542,7 +544,7 @@ class _customWidget2State extends State<customWidget2> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
@@ -743,7 +745,7 @@ class _customwidget3State extends State<customwidget3> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
@@ -1057,7 +1059,7 @@ class _customwidget4State extends State<customwidget4> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',

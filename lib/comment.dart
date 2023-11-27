@@ -24,7 +24,7 @@ class _commentState extends State<comment> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name,  String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
@@ -168,7 +168,7 @@ class _commentState extends State<comment> {
                           if (commentText.isNotEmpty) {
                             // 댓글 추가 메서드 호출
                             addComment(
-                                '삼냥이', 'images/emotion/1.gif', commentText);
+                                '삼냥이',  commentText);
                             // 텍스트 필드 비우기
                             _commentController.clear();
                           }
