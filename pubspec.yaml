@@ -57,6 +57,8 @@ dependencies:
   fl_chart: ^0.60.0
   flutter_local_notifications: ^16.1.0
 
+  path_provider: ^2.0.5  # 최신 버전을 확인하여 적용해 주세요
+
 
 dev_dependencies:
   flutter_test:

@@ -5,12 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart' ;
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:record/record.dart';
+import 'package:path/path.dart' as p;
 
 final String now = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -82,7 +83,7 @@ class _writediaryState extends State<writediary> {
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
-  bool isRecorderReady = false;
+  bool isRecording = false;
   // late Record audioRecord;
   // late AudioPlayer audioPlayer;
   // bool isRecording = false;
@@ -164,31 +165,6 @@ class _writediaryState extends State<writediary> {
     super.dispose();
   }
 
-  // Future<void> startRecording() async {
-  //   try {
-  //     if (await audioRecord.hasPermission()) {
-  //       await audioRecord.start();
-  //       setState(() {
-  //         isRecording = true;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print('Error Start Recording : $e');
-  //   }
-  // }
-  //
-  // Future<void> stopRecording() async {
-  //   try {
-  //     String? path = await audioRecord.stop();
-  //     setState(() {
-  //       isRecording = false;
-  //       audioPath = path!;
-  //     });
-  //   } catch (e) {
-  //     print('Error Stopping record : $e');
-  //   }
-  // }
-  //
   Future<void> playRecording() async {
     try {
       Source urlSource = UrlSource(audioPath);
@@ -209,7 +185,7 @@ class _writediaryState extends State<writediary> {
 
     await recorder.openRecorder();
 
-    isRecorderReady = true;
+    isRecording = true;
     recorder.setSubscriptionDuration(
       const Duration(milliseconds: 500),
     );
@@ -217,28 +193,68 @@ class _writediaryState extends State<writediary> {
 
   //녹음 시작
   Future record() async {
-    if (!isRecorderReady) return;
+    if (!isRecording) return;
     await recorder.startRecorder(toFile: 'audio');
   }
 
-  //녹음 중지 & 녹음된 파일의 경로를 가져옴
-  Future stop() async {
-    if (!isRecorderReady) return;
 
-    final path = await recorder.stopRecorder(); //녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
-    //path에 녹음된 오디오 파일의 로컬 경로가 포함됨, 녹음된 오디오 파일의 위치
-    audioPath = path!;
-    final audioFile = File(path); //경로에 있는 파일을 'File' 객체로 변환
+  Future<String> saveRecordingLocally() async {
+    if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
 
-    // if (audioFile.existsSync()) {
-    //   return audioFile.path;
-    // } else {return '';
-    // }
-    //파일 서버에 보내기
-    //run(audioFile as String);
+    final audioFile = File(audioPath);
+    if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
 
-    print('Recorded audio: $audioFile');
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final newPath = p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+      final newFile = File(p.join(newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
+
+      if (!(await newFile.parent.exists())) {
+        await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
+      }
+
+      await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
+
+      print('Complete Saving recording: ${newFile.path}');
+
+      return newFile.path; // 새로운 파일의 경로 반환
+    } catch (e) {
+      print('Error saving recording: $e');
+      return ''; // 오류 발생 시 빈 문자열 반환
+    }
   }
+
+// 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
+  Future<String> stop() async {
+    if (!isRecording) return '';
+
+    final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
+    audioPath = path!;
+
+    setState(() {
+      isRecording = false;
+    });
+
+    final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
+
+    if (savedFilePath.isNotEmpty) {
+      final savedFile = File(savedFilePath);
+      if (savedFile.existsSync()) {
+        final fileContent = await savedFile.readAsString(); // 파일 내용 읽기
+        print('Content of saved file: $fileContent'); // 파일 내용 출력
+      } else {
+        print('Error: File does not exist');
+      }
+      return savedFilePath; // 저장된 파일의 경로 반환
+    } else {
+      return ''; // 저장 실패 시 빈 문자열 반환
+    }
+
+  }
+
+
+  //파일 서버에 보내기
+    //run(audioFile as String);
 
   // Future<String> run(String audioUrl) async {
   //   String openApiURL = " ";
