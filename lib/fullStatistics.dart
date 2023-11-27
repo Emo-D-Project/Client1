@@ -414,6 +414,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         ]))),
                           ],
                         )),
+
                     // 가장 많이 공감 받은 일기
                     Container(
                       width: 380,
