@@ -7,17 +7,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:capston1/pieGraph/pie_chart.dart';
 import 'network/api_manager.dart';
 
-List<DateTime> title = [
-  DateTime(2023, 10),
-  DateTime(2023, 9),
-  DateTime(2023, 8)
-];
-List<double> emotioncount = [10, 5, 2, 8, 1, 0, 2];
-List<String> mostemo = ['smile', 'sad', 'flutter'];
-List<String> worstemo = ['flutter', 'tired', 'smile'];
-List<String> mymonth = ['10월 끗', '9월 끗', '8월 끗'];
-List<double> total = [1, 2, 3];
-
 Widget sadM = Column(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
@@ -328,8 +317,6 @@ class monthlyStatistics extends StatefulWidget {
 
   const monthlyStatistics({super.key});
 
-  final String emoemo = "smile";
-
   @override
   State<monthlyStatistics> createState() => _monthlyStatisticsState();
 }
@@ -362,7 +349,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
     }
     catch (error) {
       // 에러 제어하는 부분
-      print('Error getting chat list: $error');
+      print('Error getting MS list: $error');
     }
 
   }
@@ -440,7 +427,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
   @override
   Widget build(BuildContext context) {
-    final String emoemo;
 
     final sizeX = MediaQuery
         .of(context)
