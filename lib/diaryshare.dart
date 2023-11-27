@@ -8,6 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 //enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
 
+
 //일기내용 오늘의 감정
 final List<String> imagepath = [
   'images/emotion/1.gif',
@@ -319,8 +320,6 @@ class _customWidget1State extends State<customWidget1> {
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   // TextEditingController _commentController = TextEditingController();
-
-
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;

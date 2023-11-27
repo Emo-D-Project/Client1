@@ -275,6 +275,7 @@ class ApiManager {
   }
 
 
+
   Future<List<MonthData>> getMSatisData() async {
 
     String accessToken = tokenManager.getAccessToken();
@@ -307,6 +308,10 @@ class ApiManager {
     }
 
   }
+
+
+
+
   Future<List<TotalData>> getTSatisData() async {
 
     String accessToken = tokenManager.getAccessToken();
@@ -343,3 +348,4 @@ class ApiManager {
 
   }
 }
+
