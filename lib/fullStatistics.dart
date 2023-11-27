@@ -361,6 +361,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                               ),
                             ),
                           ),
+
                           SizedBox(
                             height: 8,
                           ),

@@ -1,4 +1,3 @@
-import 'package:capston1/models/MessageData.dart';
 
 class Message {
 

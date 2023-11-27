@@ -271,7 +271,6 @@ class ApiManager {
       // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
       throw e;
     }
-
   }
 
 
@@ -308,6 +307,7 @@ class ApiManager {
     }
 
   }
+
   Future<TotalData> getTSatisData() async {
 
     String accessToken = tokenManager.getAccessToken();
@@ -342,3 +342,5 @@ class ApiManager {
 
   }
 }
+
+
