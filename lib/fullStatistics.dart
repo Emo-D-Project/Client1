@@ -74,14 +74,14 @@ class _fullStatisticsState extends State<fullStatistics> {
   late int mostViewedEmpathy;
   late int mostViewedComments;
 
-  List<TotalData> totalDatas = [];
+  TotalData? totalDatas;
 
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getTSatisData();
       if(data != null) {
         setState(() {
-          totalDatas = data! as List<TotalData>;
+          totalDatas = data;
         });
       }
     } catch (error) {
@@ -231,7 +231,6 @@ class _fullStatisticsState extends State<fullStatistics> {
             child: ListView.builder(
               itemCount: 1,
               itemBuilder: (BuildContext context,index) {
-                if(totalDatas.isNotEmpty) {
                   return SingleChildScrollView(
                     child: Container(
                       padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -254,8 +253,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     SizedBox(
                                       height: 250,
                                       child: MyBarGraph(
-                                        emotioncount: totalDatas[index]
-                                            .emotions,
+                                        emotioncount: totalDatas!.emotions,
                                       ),
                                     ),
                                     //감정 이모션 사진
@@ -396,10 +394,10 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               children: [
                                                 TextSpan(
                                                   text:
-                                                  '${totalDatas[index].firstDate
-                                                      .year}년 ${totalDatas[index]
+                                                  '${totalDatas!.firstDate
+                                                      .year}년 ${totalDatas!
                                                       .firstDate
-                                                      .month}월 ${totalDatas[index]
+                                                      .month}월 ${totalDatas!
                                                       .firstDate.day}일',
                                                 ), //년도
                                                 TextSpan(text: '부터 작성 된 일기 수 '),
@@ -419,7 +417,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               ),
                                               children: [
                                                 TextSpan(
-                                                    text: '${totalDatas[index]
+                                                    text: '${totalDatas!
                                                         .nums}'),
                                                 TextSpan(text: '개'),
                                               ]))),
@@ -459,7 +457,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                                     fontSize: 18,
                                                     color: Colors.brown)), //
                                             TextSpan(
-                                                text: '${totalDatas[index]
+                                                text: '${totalDatas!
                                                     .mostWritten}',
                                                 style: TextStyle(
                                                     fontFamily: 'soojin',
@@ -514,9 +512,9 @@ class _fullStatisticsState extends State<fullStatistics> {
                                           textAlign: TextAlign.center,
                                           text: TextSpan(children: [
                                             TextSpan(
-                                                text: '${totalDatas[index]
+                                                text: '${totalDatas!
                                                     .mostYearMonth
-                                                    .year}년 ${totalDatas[index]
+                                                    .year}년 ${totalDatas!
                                                     .mostYearMonth.month}월',
                                                 style: TextStyle(
                                                     fontFamily: 'soojin',
@@ -530,7 +528,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                                     fontSize: 18,
                                                     color: Colors.brown)),
                                             TextSpan(
-                                                text: '${totalDatas[index]
+                                                text: '${totalDatas!
                                                     .mostNums}',
                                                 style: TextStyle(
                                                     fontFamily: 'soojin',
@@ -643,13 +641,13 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             ),
                                             children: [
                                               TextSpan(
-                                                  text: '${totalDatas[index]
+                                                  text: '${totalDatas!
                                                       .mostViewedEmpathy}'),
                                               //댓글
                                               TextSpan(text: '개의 공감과 '),
                                               //일
                                               TextSpan(
-                                                  text: '${totalDatas[index]
+                                                  text: '${totalDatas!
                                                       .mostViewedComments}'),
                                               //댓글
                                               TextSpan(text: '개의 댓글을 받았어요'),
@@ -665,12 +663,6 @@ class _fullStatisticsState extends State<fullStatistics> {
                       ),
                     ),
                   );
-                }
-                else {
-                  return Container(
-                    child: Text('No data available'),
-                  );
-                }
                 }
               ),
             ),

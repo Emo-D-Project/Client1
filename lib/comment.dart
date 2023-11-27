@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
+import 'network/api_manager.dart';
+import 'package:capston1/models/Comment.dart';
 
-// 댓글 부분
-class Comment {
-  final String name;
-  final String imagePath;
-  final String text;
-  
-  Comment({required this.name, required this.imagePath, required this.text});
-}
+final cat_image = 'images/send/cat_real_image.png';
 
 
 class comment extends StatefulWidget {
@@ -17,32 +12,40 @@ class comment extends StatefulWidget {
   State<comment> createState() => _commentState();
 }
 
+late String content;
+late int post_id;
+List<Comment> comments = []; // 댓글을 관리하는 리스트
+
 class _commentState extends State<comment> {
 
-  final List<Comment> comments = [ ]; // 댓글을 관리하는 리스트
-
   TextEditingController _commentController = TextEditingController();
-  // 댓글 추가 기능
+
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name,  String text) {
     setState(() {
-      comments.add(Comment(name: '$name $_commentCount', imagePath: imagePath,
+      comments.add(Comment(
+        name: '$name $_commentCount',
         text: text,
       ));
       _commentCount++;
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-
   }
+
+  //==================================================
+  ApiManager apiManager = ApiManager().getApiManager();
+
+
+  //========================================
 
   @override
   Widget build(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
     return Container(
-      height: sizeY*0.7,
+      height: sizeY * 0.7,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -75,9 +78,9 @@ class _commentState extends State<comment> {
                       Container(
                         width: 60,
                         height: 60,
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                         child: Image.asset(
-                          comment.imagePath,
+                          cat_image,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -142,8 +145,7 @@ class _commentState extends State<comment> {
                       Container(
                         width: 280,
                         height: 30,
-                        padding: EdgeInsets.fromLTRB(
-                            10, 15, 0, 0),
+                        padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                         child: TextField(
                           controller: _commentController,
                           textAlign: TextAlign.left,
@@ -162,12 +164,11 @@ class _commentState extends State<comment> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          String commentText = _commentController
-                              .text;
+                          String commentText = _commentController.text;
                           if (commentText.isNotEmpty) {
                             // 댓글 추가 메서드 호출
-                            addComment('삼냥이', 'images/emotion/1.gif',
-                                commentText);
+                            addComment(
+                                '삼냥이',  commentText);
                             // 텍스트 필드 비우기
                             _commentController.clear();
                           }
@@ -178,8 +179,7 @@ class _commentState extends State<comment> {
                           margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(
-                                  'images/send/real_send.png'),
+                              image: AssetImage('images/send/real_send.png'),
                             ),
                           ),
                         ),
@@ -195,4 +195,3 @@ class _commentState extends State<comment> {
     );
   }
 }
-

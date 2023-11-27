@@ -28,8 +28,8 @@ class MyPieChart extends StatelessWidget{
         sections:[
           PieChartSectionData(
             color: Color(0xFF7D5A50),
-            value: 3,
-            radius: emotioncount2[0].toDouble(),
+            value: emotioncount2[0].toDouble(),
+            radius: 40,
             title:'기쁨',
             titleStyle: TextStyle(fontFamily: 'soojin', fontSize: 15, color: Colors.black54),
           ),

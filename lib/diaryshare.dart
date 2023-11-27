@@ -6,7 +6,10 @@ import 'comment.dart';
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+import 'models/Comment.dart';
+
 //enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
+
 
 //일기내용 오늘의 감정
 final List<String> imagepath = [
@@ -81,38 +84,37 @@ class diaryshare extends StatefulWidget {
 
 class _diaryshareState extends State<diaryshare> {
   //----------------------------------------------------------
-  // ApiManager apiManager = ApiManager().getApiManager();
-  //
-  // Future<void> GetDiaryShare(String endpoint) async {
-  //   try {
-  //     final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-  //
-  //     // 요청 응답 받기
-  //     final value = response['key']; // 키를 통해 value를 받아오기
-  //     print('Data: $value');
-  //
-  //     //title = response['title'];
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
-  //
-  // Future<void> PostDiaryShare(String endpoint) async {
-  //   ApiManager apiManager = ApiManager().getApiManager();
-  //
-  //   try {
-  //     final postData = {
-  //       //보낼 변수 넣기
-  //     };
-  //
-  //     print(postData);
-  //
-  //     //await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
+  /* ApiManager apiManager = ApiManager().getApiManager();
 
+   Future<void> GetDiaryShare(String endpoint) async {
+     try {
+     final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+
+     // 요청 응답 받기
+       final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+       title = response['title'];
+     } catch (e) {
+      print('Error: $e');
+    }
+   }
+
+  Future<void> PostDiaryShare(String endpoint) async {
+     ApiManager apiManager = ApiManager().getApiManager();
+  //
+    try {
+       final postData = {
+    //보낼 변수 넣기
+      };
+
+      print(postData);
+  //
+       //await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+     } catch (e) {
+      print('Error: $e');
+     }
+   }
+*/
   //-----------------------------------------------------------
 
   String selectedValue = '최신순';
@@ -320,16 +322,13 @@ class _customWidget1State extends State<customWidget1> {
 
   // TextEditingController _commentController = TextEditingController();
 
-
-
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
-        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
@@ -399,7 +398,7 @@ class _customWidget1State extends State<customWidget1> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => message_write()),
+                              builder: (context) => message_write(otherUserId: ),
                           );
                         },
                         icon: Image.asset(
@@ -545,11 +544,10 @@ class _customWidget2State extends State<customWidget2> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
-        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
@@ -747,11 +745,10 @@ class _customwidget3State extends State<customwidget3> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
-        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;
@@ -1062,11 +1059,10 @@ class _customwidget4State extends State<customwidget4> {
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name, String imagePath, String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
-        imagePath: imagePath,
         text: text,
       ));
       _commentCount++;

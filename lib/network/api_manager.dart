@@ -271,8 +271,8 @@ class ApiManager {
       // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
       throw e;
     }
-
   }
+
 
 
   Future<List<MonthData>> getMSatisData() async {
@@ -307,7 +307,8 @@ class ApiManager {
     }
 
   }
-  Future<List<TotalData>> getTSatisData() async {
+
+  Future<TotalData> getTSatisData() async {
 
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/analysis";
@@ -319,22 +320,20 @@ class ApiManager {
     );
 
     if(response.statusCode == 200) {
-      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
       print("total statistics data: " + response.body);
 
-      List<TotalData> TSatisdata = rawData.map((data) {
-        return TotalData(
-          nums: data['nums'],
-          emotions: List<double>.from(data['emotions']),
-          mostWritten: data['mostWritten'],
-          firstDate: DateTime.parse(data['firstDate']),
-          mostYearMonth: DateTime.parse(data['mostYearMonth']),
-          mostNums: data['mostNums'],
-          mostViewed: data['mostViewed'],
-          mostViewedEmpathy: data['mostViewedEmpathy'],
-          mostViewedComments: data['mostViewedComments'],
+      TotalData TSatisdata = TotalData(
+          nums: rawData['nums'],
+          emotions: List<double>.from(rawData['emotions']),
+          mostWritten: rawData['mostWritten'],
+          firstDate: DateTime.parse(rawData['firstDate']),
+          mostYearMonth: DateTime.parse(rawData['mostYearMonth']),
+          mostNums: rawData['mostNums'],
+          mostViewed: rawData['mostViewed'],
+          mostViewedEmpathy: rawData['mostViewedEmpathy'],
+          mostViewedComments: rawData['mostViewedComments'],
         );
-      }).toList();
 
       return TSatisdata;
     } else {
@@ -343,3 +342,5 @@ class ApiManager {
 
   }
 }
+
+
