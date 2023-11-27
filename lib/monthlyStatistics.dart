@@ -853,7 +853,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                           builder: (BuildContext context,
                                               BoxConstraints constraints) {
                                             if (monthDatas[index].point == 1) {
-                                              //print(ctotalEmo);
                                               return happyM;
                                             }
                                             else if (monthDatas[index].point == 2)
@@ -861,7 +860,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                             else if (monthDatas[index].point == 3)
                                               return calmM;
                                             else {
-                                              //print(ctotalEmo);
                                               return Container();
                                             }
                                           },
@@ -870,7 +868,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                     // 나의 n월은
                                     Container(
                                         width: 380,
-                                        //height: 200,
                                         padding: const EdgeInsets.all(8.0),
                                         margin: const EdgeInsets.all(8.0),
                                         decoration: BoxDecoration(
