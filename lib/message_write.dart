@@ -1,3 +1,4 @@
+import 'package:capston1/diaryshare.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:capston1/main.dart';
@@ -34,7 +35,6 @@ class _message_writeState extends State<message_write> {
 
       // 이전 화면으로 돌아가기
       Navigator.pop(context);
-
     }
   }
 
@@ -56,13 +56,11 @@ class _message_writeState extends State<message_write> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)),
-            );
+            Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83)),
         ),
+
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -82,7 +80,8 @@ class _message_writeState extends State<message_write> {
                 borderRadius: BorderRadius.circular(50),
               ),
               minimumSize: Size(50, 30),
-              textStyle: TextStyle(fontSize: 16, fontFamily: 'kim', fontWeight: FontWeight.bold),
+              textStyle: TextStyle(
+                  fontSize: 16, fontFamily: 'kim', fontWeight: FontWeight.bold),
             ),
           ),
         ],
