@@ -10,6 +10,7 @@ import '../models/Diary.dart';
 import '../models/Message.dart';
 import '../models/MonthData.dart';
 import '../models/TotalData.dart';
+import '../models/Mypage.dart';
 
 
 class ApiManager {
@@ -304,7 +305,7 @@ class ApiManager {
 
       return MSatisdata;
     } else {
-      throw Exception("Fail to load diary data from the API");
+      throw Exception("Fail to load Month data from the API");
     }
 
   }
@@ -338,7 +339,7 @@ class ApiManager {
 
       return TSatisdata;
     } else {
-      throw Exception("Fail to load diary data from the API");
+      throw Exception("Fail to load total data from the API");
     }
 
   }
@@ -376,6 +377,33 @@ class ApiManager {
     } else {
       throw Exception("Fail to load diary data from the API");
     }
+  }
+
+  Future<Mypage> getMypageData() async {
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/userInfo";
+
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200) {
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("mypage data: " + response.body);
+
+      Mypage myPagedata = Mypage(
+          title: rawData['title'],
+          content: rawData['content'],
+        );
+
+      return myPagedata;
+    } else {
+      throw Exception("Fail to load Mypage data from the API");
+    }
+
   }
 }
 
