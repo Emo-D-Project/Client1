@@ -275,7 +275,6 @@ class ApiManager {
   }
 
 
-
   Future<List<MonthData>> getMSatisData() async {
 
     String accessToken = tokenManager.getAccessToken();
@@ -377,6 +376,33 @@ class ApiManager {
       throw Exception("Fail to load diary data from the API");
     }
   }
-}
 
+  //=================================================================
+
+  Future<Recommend> putFavoriteCount(int id) async {
+    String accessToken = tokenManager.getAccessToken();
+
+    String endPoint = "/api/diaries/recommend{id}";
+
+    final response = await http.put(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("FavoriteCount data: " + response.body);
+
+    //  return diaries;
+    } else {
+      throw Exception("Fail to load diary data from the API");
+    }
+  }
+
+
+
+
+}
 

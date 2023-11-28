@@ -227,10 +227,10 @@ class _writediaryState extends State<diaryReplay> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SingleChildScrollView(
+                          /*SingleChildScrollView(
                             child: Container(
                                 width: 200,
-                                height: 150, // 이미지 높이 조절
+                                height: 150, // 이미지 높이 조절/
                                 child: Container(
                                   child: PageView.builder(
                                     //listview로 하면 한장씩 안넘어가서 페이지뷰함
@@ -247,7 +247,7 @@ class _writediaryState extends State<diaryReplay> {
                                     },
                                   ),
                                 )),
-                          ),
+                          ),*/
                           Container(
                             padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                             child: Column(
@@ -673,15 +673,14 @@ class _customWidget1State extends State<customWidget1> {
                                 height: 150, // 이미지 높이 조절
                                 child: Container(
                                   child: PageView.builder(
-                                    //listview로 하면 한장씩 안넘어가서 페이지뷰함
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: d_imagePaths.length > 3
+                                    itemCount: widget.sdiaryImage.length > 3
                                         ? 3
-                                        : d_imagePaths.length, // 최대 3장까지만 허용
+                                        : widget.sdiaryImage.length, // 최대 3장까지만 허용
                                     itemBuilder: (context, index) {
                                       return Container(
                                         child: Center(
-                                          child: Image.asset(d_imagePaths[index]),
+                                          child: Image.asset(widget.sdiaryImage[index]),
                                         ),
                                       );
                                     },
@@ -1166,15 +1165,14 @@ class _customwidget4State extends State<customwidget4> {
                                 height: 150, // 이미지 높이 조절
                                 child: Container(
                                   child: PageView.builder(
-                                    //listview로 하면 한장씩 안넘어가서 페이지뷰함
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: d_imagePaths.length > 3
+                                    itemCount: widget.sdiaryImage.length > 3
                                         ? 3
-                                        : d_imagePaths.length, // 최대 3장까지만 허용
+                                        : widget.sdiaryImage.length, // 최대 3장까지만 허용
                                     itemBuilder: (context, index) {
                                       return Container(
                                         child: Center(
-                                          child: Image.asset(d_imagePaths[index]),
+                                          child: Image.asset(widget.sdiaryImage[index]),
                                         ),
                                       );
                                     },
