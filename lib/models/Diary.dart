@@ -3,8 +3,8 @@ class Diary {
   String content;
   String emotion;
   List<String> imagePath;
-  String? diaryImage;
-  String? voice;
+  String diaryImage;
+  String voice;
   int favoriteCount;
   bool favoriteColor;
   int userId;

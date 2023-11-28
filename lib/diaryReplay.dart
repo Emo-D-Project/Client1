@@ -12,23 +12,6 @@ import 'diaryUpdate.dart';
 import 'models/Diary.dart';
 import 'network/api_manager.dart';
 
-
-
-
-
-
-
-String diaryimage = 'images/send/sj3.jpg';
-String voice = "no";
-String diarycomment = '하 힘들다';
-DateTime date = DateTime(2023,10,25);
-
-final List<String> d_imagePaths = [
-  'images/send/sj3.jpg',
-  'images/send/sj1.jpg',
-  //'images/send/sj2.jpg',
-];
-
 class DiaryEntry {
   final DateTime date;
 
@@ -37,14 +20,6 @@ class DiaryEntry {
   DiaryEntry({required this.date /* Add other parameters */
       });
 }
-
-// final diarydate = DateTime(2023, 11, 24);
-// final List<String> diaryimage = [
-//   'images/send/sj3.jpg',
-//   'images/send/sj1.jpg',
-//   'images/send/sj2.jpg'
-// ];
-// final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
 
 class diaryReplay extends StatefulWidget {
   const diaryReplay({super.key, required this.date});
@@ -225,7 +200,7 @@ class _writediaryState extends State<diaryReplay> {
                             width: 30,
                           ),
                           Text(
-                            '${date.year}년 ${date.month}월 ${date.day}일',
+                            '일',
                             style: TextStyle(
                               fontFamily: 'soojin',
                               fontSize: 20,
