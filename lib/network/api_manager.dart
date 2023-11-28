@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
+import 'package:drift/drift.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../calendar.dart';
@@ -340,6 +341,41 @@ class ApiManager {
       throw Exception("Fail to load diary data from the API");
     }
 
+  }
+
+  Future<List<Diary>> getDiaryShareData() async {
+    String accessToken = tokenManager.getAccessToken();
+
+    String endPoint = "/api/diaries/read";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("diary share List data: " + response.body);
+
+      List<Diary> diaries = rawData.map((data) {
+        return Diary(
+          content: data['content'],
+          date: DateTime.parse(data['createdAt']),
+          emotion: data['emotion'],
+          userId: data['user_id'] as int ?? 0,
+          favoriteCount: data['empathy'] as int ?? 0,
+          voice: data["voice"] ?? "",
+          imagePath: List<String>.from(data['imagePath'] ?? const []),
+          favoriteColor: data['favoriteColor'] ?? false,
+        );
+      }).toList();
+
+      return diaries;
+    } else {
+      throw Exception("Fail to load diary data from the API");
+    }
   }
 }
 

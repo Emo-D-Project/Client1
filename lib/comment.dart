@@ -4,7 +4,6 @@ import 'package:capston1/models/Comment.dart';
 
 final cat_image = 'images/send/cat_real_image.png';
 
-
 class comment extends StatefulWidget {
   const comment({super.key});
 
@@ -14,17 +13,16 @@ class comment extends StatefulWidget {
 
 late String content;
 late int post_id;
+
 List<Comment> comments = []; // 댓글을 관리하는 리스트
 
 class _commentState extends State<comment> {
-
   TextEditingController _commentController = TextEditingController();
-
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
 
-  void addComment(String name,  String text) {
+  void addComment(String name, String text) {
     setState(() {
       comments.add(Comment(
         name: '$name $_commentCount',
@@ -38,6 +36,16 @@ class _commentState extends State<comment> {
   //==================================================
   ApiManager apiManager = ApiManager().getApiManager();
 
+  // 메세지 전송 함수
+  void _sendMessage() {
+    String comment = _commentController.text;
+    int post_id; // 대화할 상대 id(식별자)
+
+    if (comment.isNotEmpty) {
+      //  apiManager.sendMessage(comment, post_id);
+      _commentController.clear();
+    }
+  }
 
   //========================================
 
@@ -167,8 +175,7 @@ class _commentState extends State<comment> {
                           String commentText = _commentController.text;
                           if (commentText.isNotEmpty) {
                             // 댓글 추가 메서드 호출
-                            addComment(
-                                '삼냥이',  commentText);
+                            addComment('삼냥이', commentText);
                             // 텍스트 필드 비우기
                             _commentController.clear();
                           }

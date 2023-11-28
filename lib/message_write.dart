@@ -15,6 +15,7 @@ class message_write extends StatefulWidget {
 }
 
 class _message_writeState extends State<message_write> {
+
   final int otherUserId; // 대화할 상대 id(식별자)
   TextEditingController _contentEditController = TextEditingController();
   List<Map<String, dynamic>> messages = [];
@@ -31,6 +32,7 @@ class _message_writeState extends State<message_write> {
 
       apiManager.sendMessage(message, otherUserId, DateTime.now());
       _contentEditController.clear();
+
 
       // 이전 화면으로 돌아가기
       Navigator.pop(context);
