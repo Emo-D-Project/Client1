@@ -66,11 +66,10 @@ class _writediaryState extends State<writediary> {
 
     try {
       final postData = {
-        'content': content,
-        'emotion': sendEmotion,
-        'is_share': _isCheckedShare,
-        'is_comm': _isChecked,
-        //오디오 전송
+          'content': content,
+          'emotion': sendEmotion,
+          'is_share': _isCheckedShare,
+          'is_comm': _isChecked,
       };
       //print(postData);
       await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
