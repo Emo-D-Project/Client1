@@ -94,7 +94,7 @@ class _A_EmodState extends State<A_Emod> {
               ),
             ),
             Text(
-             '${smonth.month}월의 감정 통지서가 도착했습니다!' ,
+              '${smonth.month}월의 감정 통지서가 도착했습니다!' ,
               style: TextStyle(fontFamily: 'soojin', fontSize: 13),
             ),
           ],
@@ -487,7 +487,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MessageRoom(otherUserId: int.parse(chatRooms[index].id),)),
+                        builder: (context) => MessageRoom(otherUserId: int.parse(chatRooms[index].id),)),
                   ).then((value) async {
                     // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
                     // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
@@ -556,7 +556,7 @@ class _SecondScreenState extends State<SecondScreen> {
                 ),
 
               );
-              },
+            },
             separatorBuilder: (BuildContext context, int index) =>
                 Divider(
                   height: 10,
@@ -569,4 +569,3 @@ class _SecondScreenState extends State<SecondScreen> {
     );
   }
 }
-

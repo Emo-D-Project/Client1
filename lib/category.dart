@@ -1,7 +1,6 @@
 import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
 import 'package:capston1/notification.dart';
-import 'package:capston1/test.dart';
 import 'package:flutter/material.dart';
 import 'help.dart';
 import 'home.dart';
@@ -213,7 +212,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => diaryReplay(date: '20230725')));
+                            MaterialPageRoute(builder: (context) => diaryReplay(date: DateTime(2023,11,24))));
                       },
                       child: Row(
                         children: [

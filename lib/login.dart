@@ -1,7 +1,9 @@
 import 'package:capston1/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'firebase_options.dart';
 import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -17,6 +19,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: '002001aad48dcca2375e4c52bb8c1281');
   await initializeDateFormatting();
+
+  /*WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );*/
+
+
   runApp(MaterialApp(theme: style.theme, home: MyLogin()));
 }
 

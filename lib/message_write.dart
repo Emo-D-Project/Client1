@@ -15,6 +15,7 @@ class message_write extends StatefulWidget {
 }
 
 class _message_writeState extends State<message_write> {
+
   final int otherUserId; // 대화할 상대 id(식별자)
   TextEditingController _contentEditController = TextEditingController();
   List<Map<String, dynamic>> messages = [];
@@ -30,12 +31,11 @@ class _message_writeState extends State<message_write> {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
 
       apiManager.sendMessage(message, otherUserId, DateTime.now());
-
       _contentEditController.clear();
+
 
       // 이전 화면으로 돌아가기
       Navigator.pop(context);
-
 
     }
   }
@@ -73,7 +73,7 @@ class _message_writeState extends State<message_write> {
               //   context,
               //   MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)),);
               //
-              },
+            },
             child: Text("전송"),
             style: ElevatedButton.styleFrom(
               elevation: 0,

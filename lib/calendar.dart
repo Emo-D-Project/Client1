@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'diaryReplay.dart';
 import 'models/Diary.dart';
 
 class calendar extends StatefulWidget {
@@ -125,7 +126,7 @@ class _calendarState extends State<calendar> {
                 if (_events.containsKey(DateTime(day.year, day.month, day.day))) {
                   String image = "";
 
-                  switch (_events[day]) {
+                  switch (_events[DateTime(day.year, day.month, day.day)]) {
                     case "angry":
                       image = 'images/emotion/angry.png';
                       break;
@@ -160,7 +161,8 @@ class _calendarState extends State<calendar> {
                       // 선택한 날짜에 대한 일기 항목이 있는지 확인
                       if (diary != null) {
                         // 사용자에게 일기 내용 표시
-
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => diaryReplay(date: DateTime(2023,11,24))));
                       }
                       // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
                       // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
