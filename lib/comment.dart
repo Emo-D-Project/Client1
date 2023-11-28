@@ -13,40 +13,53 @@ class comment extends StatefulWidget {
 
 late String content;
 late int post_id;
-
 List<Comment> comments = []; // 댓글을 관리하는 리스트
 
 class _commentState extends State<comment> {
   TextEditingController _commentController = TextEditingController();
 
-  // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
+
+  ApiManager apiManager = ApiManager().getApiManager();
   int _commentCount = 1;
 
   void addComment(String name, String text) {
-    setState(() {
-      comments.add(Comment(
-        name: '$name $_commentCount',
-        text: text,
-      ));
-      _commentCount++;
-    });
-    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-  }
+    try {
 
-  //==================================================
-  ApiManager apiManager = ApiManager().getApiManager();
+      // ApiManager apiManager = ApiManager().getApiManager();
 
-  // 메세지 전송 함수
-  void _sendMessage() {
-    String comment = _commentController.text;
-    int post_id; // 대화할 상대 id(식별자)
+      // int postId = 1; //  postId를 1로 설정
 
-    if (comment.isNotEmpty) {
-      //  apiManager.sendMessage(comment, post_id);
-      _commentController.clear();
+      // if (postId != null) {
+      setState(() {
+        comments.add(Comment(
+          name: '$name $_commentCount',
+          text: text,
+        ));
+        _commentCount++;
+      });
+      // }
+
+      print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
+    } catch (error) {
+      print('에러 발생: $error');
+
     }
   }
 
+
+
+  // 댓글 전송 기능
+  void _sendMessage() {
+    String name = "삼냥이";
+    String text = _commentController.text.trim();
+
+    if (text.isNotEmpty) {
+      addComment(name, text);
+
+      // 댓글 전송 후 컨트롤러 비우기
+      _commentController.clear();
+    }
+  }
   //========================================
 
   @override
@@ -131,6 +144,7 @@ class _commentState extends State<comment> {
           ),
 
           //댓글 달 수 있는 칸
+//댓글 달 수 있는 칸
           Container(
             height: 70,
             width: double.infinity,
@@ -171,15 +185,7 @@ class _commentState extends State<comment> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          String commentText = _commentController.text;
-                          if (commentText.isNotEmpty) {
-                            // 댓글 추가 메서드 호출
-                            addComment('삼냥이', commentText);
-                            // 텍스트 필드 비우기
-                            _commentController.clear();
-                          }
-                        },
+                        onTap: _sendMessage, // _sendMessage 메서드를 호출
                         child: Container(
                           height: 30,
                           width: 30,
@@ -197,6 +203,10 @@ class _commentState extends State<comment> {
               ],
             ),
           ),
+
+
+
+
         ],
       ),
     );

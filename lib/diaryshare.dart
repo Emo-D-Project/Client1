@@ -591,7 +591,7 @@ class customWidget2 extends StatefulWidget {
 }
 
 class _customWidget2State extends State<customWidget2> {
-   late bool sfavoritColor;
+   late bool sfavoritColor;//false = 회색
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
   int otherUserId = 36;
   String imagePath = "";
@@ -775,26 +775,21 @@ class _customWidget2State extends State<customWidget2> {
                     GestureDetector(
                       onTap: () async {
                         try {
-                          // 좋아요 누를 때 색 변경 및 count 증가/감소
-                          if (sfavoritColor) {
-                            favoriteCounts--;
-                          } else {
-                            favoriteCounts++;
-                          }
-                          sfavoritColor = !sfavoritColor;
-
-                          final updatedFavoriteCount = await apiManager.putFavoriteCount(DiaryId);
-
                           setState(() {
-                            favoriteCounts = updatedFavoriteCount;
+                            if (sfavoritColor) {
+                              favoriteCounts--;
+                            } else {
+                              favoriteCounts++;
+                            }
+                            sfavoritColor = !sfavoritColor;
                           });
+
+                          await HowFavoirteCount();
                         } catch (error) {
                           print('Error updating favorite count: $error');
                         }
                       },
-                      onLongPress: () {
-                        // 길게 눌렀을 때의 동작 추가
-                      },
+                      onLongPress: () {},
                       child: Icon(
                         Icons.favorite,
                         color: sfavoritColor ? Colors.red : Colors.grey,
@@ -1138,7 +1133,6 @@ class _customwidget3State extends State<customwidget3> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          // 좋아요 누를 때 색 변경 및 count 증가
                           if (sfavoritColor) {
                             sfavoritCount--;
                           } else {
