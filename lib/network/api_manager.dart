@@ -40,9 +40,8 @@ class ApiManager {
       throw Exception('Failed to load data from the API');
     }
   }
-  Future<Map<String, dynamic>> Get(String endpoint) async {
 
-    baseUrl = "http://34.64.78.183:8080";
+  Future<List<dynamic>> GetList(String endpoint) async {
     String accessToken = tokenManager.getAccessToken();
 
     final response = await http.get(Uri.parse('$baseUrl$endpoint'),
@@ -51,6 +50,21 @@ class ApiManager {
       },
     );
 
+    if (response.statusCode == 200) { // 통신 성공 시
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data from the API');
+    }
+  }
+
+  Future<List<dynamic>> GetListWithHeadData(String endpoint, String data) async {
+    String accessToken = tokenManager.getAccessToken();
+
+    final response = await http.get(Uri.parse('$baseUrl$endpoint/$data'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
+      },
+    );
 
     if (response.statusCode == 200) { // 통신 성공 시
       return json.decode(response.body);
@@ -60,7 +74,7 @@ class ApiManager {
   }
 
   //정보 보낼 때
-  Future<Map<String, dynamic>> post(String endpoint, Map<String, dynamic> data) async {
+  Future<dynamic> post(String endpoint, dynamic data) async {
 
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
@@ -94,6 +108,27 @@ class ApiManager {
     }
   }
 
+
+
+
+  Future<Map<String, dynamic>> Get(String endpoint) async {
+
+    baseUrl = "http://34.64.78.183:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    final response = await http.get(Uri.parse('$baseUrl$endpoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
+      },
+    );
+
+
+    if (response.statusCode == 200) { // 통신 성공 시
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data from the API');
+    }
+  }
 
   // 카카오 토큰을 이용해서 서버 토큰을 받기 위한 함수
   Future<Map<String, dynamic>> getServerToken (String kakaoAccessToken) async {

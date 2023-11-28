@@ -94,7 +94,7 @@ class _writediaryState extends State<writediary> {
   bool isPlaying = false; //현재 재생중인지
   Duration duration = Duration.zero; //총 시간
   Duration position = Duration.zero; //진행중인 시간
-
+s
   @override
   void initState() {
     // audioPlayer = AudioPlayer();
