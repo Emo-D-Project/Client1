@@ -46,9 +46,9 @@ class _mypageState extends State<mypage> {
 
   Future<void> fetchDataFromServer() async {
     try{
-      final data = await apiManager.getMypageData();
+     // final data = await apiManager.getMypageData();
       setState(() {
-        myPageDatas = data!;
+       // myPageDatas = data!;
       });
     }
     catch (error) {
