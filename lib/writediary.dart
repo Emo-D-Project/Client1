@@ -551,20 +551,20 @@ class _writediaryState extends State<writediary> {
                             //   onPressed: playRecording,
                             //   child: const Text(("play")),
                             // ),
-                            // Container(
-                            //   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            //   child: TextField(
-                            //     style: TextStyle(fontFamily: 'soojin'),
-                            //     controller: _contentEditController,
-                            //     maxLines: 10,
-                            //     decoration: InputDecoration(
-                            //         enabledBorder: OutlineInputBorder(
-                            //             borderSide: BorderSide(
-                            //       color: Colors.transparent,
-                            //       width: 1.0,
-                            //     ))),
-                            //   ),
-                            // )
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: TextField(
+                                style: TextStyle(fontFamily: 'soojin'),
+                                controller: _contentEditController,
+                                maxLines: 10,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ))),
+                              ),
+                            )
                           ],
                         ),
                       ),

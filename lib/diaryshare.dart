@@ -182,42 +182,42 @@ class _diaryshareState extends State<diaryshare> {
                 if (selectedImagePath == imagepath[index]) {
                   return SizedBox(
                     child: (() {
-                      if (diaryimage[index] != "noimage" &&
-                          voice[index] == "no") {
-                        return customWidget1(
-                            simagePath: imagepath[index],
-                            sdiaryImage: diaryimage[index],
-                            scomment: diarycomment[index],
-                            sfavoritColor: favoritcolor[index],
-                            sfavoritCount: favoritcount[index]);
-                      } else if (diaryimage[index] == "noimage" &&
-                          voice[index] == "no") {
-                        return customWidget2(
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                        );
-                      } else if (diaryimage[index] == "noimage" &&
-                          voice[index] == "yes") {
-                        return customwidget3(
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                          svoice: voice[index],
-                        );
-                      } else if (diaryimage[index] != "noimage" &&
-                          voice[index] == "yes") {
-                        return customwidget4(
-                          sdiaryImage: diaryimage[index],
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                          svoice: voice[index],
-                        );
-                      }
+                      // if (diaryimage[index] != "noimage" &&
+                      //     voice[index] == "no") {
+                      //   return customWidget1(
+                      //       simagePath: imagepath[index],
+                      //       sdiaryImage: diaryimage[index],
+                      //       scomment: diarycomment[index],
+                      //       sfavoritColor: favoritcolor[index],
+                      //       sfavoritCount: favoritcount[index]);
+                      // } else if (diaryimage[index] == "noimage" &&
+                      //     voice[index] == "no") {
+                      //   return customWidget2(
+                      //     scomment: diarycomment[index],
+                      //     sfavoritColor: favoritcolor[index],
+                      //     sfavoritCount: favoritcount[index],
+                      //     simagePath: imagepath[index],
+                      //   );
+                      // } else if (diaryimage[index] == "noimage" &&
+                      //     voice[index] == "yes") {
+                      //   return customwidget3(
+                      //     scomment: diarycomment[index],
+                      //     sfavoritColor: favoritcolor[index],
+                      //     sfavoritCount: favoritcount[index],
+                      //     simagePath: imagepath[index],
+                      //     svoice: voice[index],
+                      //   );
+                      // } else if (diaryimage[index] != "noimage" &&
+                      //     voice[index] == "yes") {
+                      //   return customwidget4(
+                      //     sdiaryImage: diaryimage[index],
+                      //     scomment: diarycomment[index],
+                      //     sfavoritColor: favoritcolor[index],
+                      //     sfavoritCount: favoritcount[index],
+                      //     simagePath: imagepath[index],
+                      //     svoice: voice[index],
+                      //   );
+                      // }
                     })(),
                   );
                 } else {
