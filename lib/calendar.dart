@@ -153,6 +153,12 @@ class _calendarState extends State<calendar> {
                       break;
                   }
                   // If there are events, highlight the cell with an image
+                  Diary diary;
+                  _diaryEntries.forEach((element) {
+                    if(element.date.day == day.day && element.date.month == day.month && element.date.year == day.year){
+                      diary = element;
+                    }
+                  });
                   return GestureDetector(
                     // 이벤트가 있는 날짜를 클릭 시 해당 일기 보여주는 부분
                     onTap: () {
@@ -162,7 +168,7 @@ class _calendarState extends State<calendar> {
                       if (diary != null) {
                         // 사용자에게 일기 내용 표시
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => diaryReplay(date: DateTime(2023,11,24))));
+                            MaterialPageRoute(builder: (context) => diaryReplay(diary: diary,)));
                       }
                       // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
                       // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
