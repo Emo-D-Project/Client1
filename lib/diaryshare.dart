@@ -169,7 +169,7 @@ class _diaryshareState extends State<diaryshare> {
               formattedDate,
               style: TextStyle(
                 color: Color(0xFF7D5A50),
-                fontSize: 17, 
+                fontSize: 17,
                 fontWeight: FontWeight.w900,
                 fontFamily: 'soojin',
               ),
