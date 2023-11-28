@@ -1,4 +1,5 @@
 import 'package:capston1/network/api_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'statistics.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +11,47 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:capston1/config/fcm_setting.dart';
+
 void main() async {
+
+  print("debug1");
+  WidgetsFlutterBinding.ensureInitialized();
+
+  print("debug2");
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  print("debug3");
+
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+
+  print("fcmToken: ${fcmToken.toString()}");
+
+  String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
+  print("debug4");
+
   await initializeDateFormatting();
-  runApp(MaterialApp(theme: style.theme, home: MyApp()));
+  print("debug5");
+
+
+  runApp(MaterialApp(theme: style.theme, home: MyApp(firebaseToken: firebaseToken,)));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key, firebaseToken}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+
   var tab = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
