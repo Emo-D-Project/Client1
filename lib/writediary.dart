@@ -77,6 +77,7 @@ class _writediaryState extends State<writediary> {
   //   }
   // }
 
+
   final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
@@ -89,7 +90,7 @@ class _writediaryState extends State<writediary> {
   bool isPlaying = false; //현재 재생중인지
   Duration duration = Duration.zero; //총 시간
   Duration position = Duration.zero; //진행중인 시간
-
+s
   @override
   void initState() {
     super.initState();

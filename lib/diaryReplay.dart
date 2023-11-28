@@ -287,7 +287,6 @@ class _customWidget1State extends State<customWidget1> {
                                 height: 150, // 이미지 높이 조절
                                 child: Container(
                                   child: PageView.builder(
-                                    //listview로 하면 한장씩 안넘어가서 페이지뷰함
                                     scrollDirection: Axis.horizontal,
                                     itemCount: widget.sdiaryImage.length > 3
                                         ? 3
@@ -780,7 +779,6 @@ class _customwidget4State extends State<customwidget4> {
                                 height: 150, // 이미지 높이 조절
                                 child: Container(
                                   child: PageView.builder(
-                                    //listview로 하면 한장씩 안넘어가서 페이지뷰함
                                     scrollDirection: Axis.horizontal,
                                     itemCount: widget.sdiaryImage.length > 3
                                         ? 3
