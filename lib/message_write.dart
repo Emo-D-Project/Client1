@@ -70,7 +70,7 @@ class _message_writeState extends State<message_write> {
               //   MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)),);
               //
             },
-            child: Text("전송입니다"),
+            child: Text("전송"),
             style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: EdgeInsets.fromLTRB(0, 0, 20, 0),

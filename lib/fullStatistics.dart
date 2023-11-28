@@ -51,7 +51,6 @@ class _fullStatisticsState extends State<fullStatistics> {
   late int mostViewed;  // 일기의 아이디값
   late int mostViewedEmpathy;
   late int mostViewedComments;
-
   TotalData? totalDatas;
 
   Future<void> fetchDataFromServer() async {

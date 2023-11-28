@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'comment.dart';
+
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
@@ -21,7 +22,7 @@ final List<String> imagePaths = [
   'images/emotion/6.gif',
 ];
 
-String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
+//String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
 
 final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -41,12 +42,14 @@ List<Diary> diaries = [];
 
 class _diaryshareState extends State<diaryshare> {
   ApiManager apiManager = ApiManager().getApiManager();
+
   List<Diary> selectedEmotionDiaries = [];
 
   @override
   void initState() {
     super.initState();
     fetchDataFromServer();
+    HowFavoriteCount();
   }
 
   // 서버로부터 데이터를 가져오는 함수
@@ -61,6 +64,21 @@ class _diaryshareState extends State<diaryshare> {
     } catch (error) {
       // 에러 제어하는 부분
       print('Error getting share diaries list: $error');
+    }
+  }
+
+  int favoriteCounts = 0;
+
+  Future<void> HowFavoriteCount() async {
+    try {
+      // Fetch data from the API
+      final int data = await apiManager.putFavoriteCount(0);
+
+      setState(() {
+        favoriteCounts = data;
+      });
+    } catch (error) {
+      print('Error getting favorite count: $error');
     }
   }
 
@@ -294,6 +312,12 @@ class _customWidget1State extends State<customWidget1> {
   late bool sfavoritColor; // 추가된 부분
   String imagePath = "";
   int otherUserId = 36;
+  int DiaryId = 1;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+
+
 
   _customWidget1State(int otherUserId) {
     this.otherUserId = otherUserId;
@@ -370,7 +394,6 @@ class _customWidget1State extends State<customWidget1> {
   }
 
 //-----------------------
-
 
   @override
   Widget build(BuildContext context) {
@@ -550,11 +573,12 @@ class customWidget2 extends StatefulWidget {
 }
 
 class _customWidget2State extends State<customWidget2> {
-  late int sfavoritCount; // 추가된 부분
-  late bool sfavoritColor; // 추가된 부분
+  late int sfavoritCount;
+  late bool sfavoritColor;
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
   int otherUserId = 36;
   String imagePath = "";
+  int DiaryId = 1;
 
   TextEditingController _commentController = TextEditingController();
 
@@ -1042,7 +1066,7 @@ class _customwidget3State extends State<customwidget3> {
                     child: Column(
                       children: [
                         Text(
-                          dynamicText,
+                          widget.scomment,
                           style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
                           textAlign: TextAlign.center,
                         ),
@@ -1414,7 +1438,7 @@ class _customwidget4State extends State<customwidget4> {
                     child: Column(
                       children: [
                         Text(
-                          dynamicText,
+                          widget.scomment,
                           style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
                           textAlign: TextAlign.center,
                         ),
