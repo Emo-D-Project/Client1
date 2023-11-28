@@ -407,50 +407,29 @@ class ApiManager {
     }
   }
 
-  Future<Mypage> getMypageData() async {
+  Future<int> putFavoriteCount(int id) async {
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/userInfo";
+    String endPoint = "/api/diaries/recommend/$id";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.put(
+      Uri.parse('$baseUrl$endPoint'),
+
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
     );
-
     if (response.statusCode == 200) {
-      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("mypage data: " + response.body);
 
-      Mypage myPagedata = Mypage(
-        title: rawData['title'],
-        content: rawData['content'],
+      int favoriteCount = json.decode(utf8.decode(response.bodyBytes));
+      print("// FavoriteCount data: $favoriteCount");
+      return favoriteCount;
 
-      );
-
-      return myPagedata;
     } else {
-      throw Exception("Fail to load total data from the API");
+      throw Exception("Fail to update favorite count through the API");
     }
   }
 
-  // Future<Recommend> putFavoriteCount(int id) async {
-  //   String accessToken = tokenManager.getAccessToken();
-  //
-  //   String endPoint = "/api/diaries/recommend{id}";
-  //
-  //   final response = await http.put(
-  //     Uri.parse('$baseUrl$endPoint'),
-  //     headers: <String, String>{
-  //       'Authorization': 'Bearer $accessToken',
-  //     },
-  //   );
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-  //     print("FavoriteCount data: " + response.body);
-  //
-  //     //  return diaries;
-  //   } else {
-  //     throw Exception("Fail to load diary data from the API");
-  //   }
-  // }
+
 }
+
+
