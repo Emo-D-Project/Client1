@@ -103,7 +103,7 @@ class _diaryshareState extends State<diaryshare> {
                 DropdownButton<String>(
                   value: selectedValue,
                   // 현재 선택된 값
-                  items: <String>['최신순', '추천순'].map((String value) {
+                  items: <String>['공감순', '최신순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
