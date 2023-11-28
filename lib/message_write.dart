@@ -29,7 +29,6 @@ class _message_writeState extends State<message_write> {
     String message = _contentEditController.text;
     if (message.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
-
       apiManager.sendMessage(message, otherUserId, DateTime.now());
       _contentEditController.clear();
 
