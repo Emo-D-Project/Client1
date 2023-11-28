@@ -16,7 +16,7 @@ class ApiManager {
   static ApiManager apiManager = new ApiManager();
   TokenManager tokenManager = TokenManager().getTokenManager();
 
-  ApiManager getApiManager(){
+  ApiManager getApiManager() {
     return apiManager;
   }
 
@@ -24,7 +24,6 @@ class ApiManager {
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
-
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
@@ -41,6 +40,7 @@ class ApiManager {
       throw Exception('Failed to load data from the API');
     }
   }
+
 
   Future<List<dynamic>> GetList(String endpoint) async {
     String accessToken = tokenManager.getAccessToken();
@@ -75,8 +75,8 @@ class ApiManager {
   }
 
   //정보 보낼 때
-  Future<dynamic> post(String endpoint, dynamic data) async {
 
+  Future<dynamic> post(String endpoint, dynamic data) async {
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
@@ -99,7 +99,8 @@ class ApiManager {
         return response.data;
       } else {
         print("응답 코드: ${response.statusCode}");
-        throw Exception('Failed to make a POST request. Status code: ${response.statusCode}');
+        throw Exception('Failed to make a POST request. Status code: ${response
+            .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -132,7 +133,7 @@ class ApiManager {
   }
 
   // 카카오 토큰을 이용해서 서버 토큰을 받기 위한 함수
-  Future<Map<String, dynamic>> getServerToken (String kakaoAccessToken) async {
+  Future<Map<String, dynamic>> getServerToken(String kakaoAccessToken) async {
     String endpoint = "/user/auth/kakao";
 
     final response = await http.get(Uri.parse('$baseUrl/$endpoint'),
@@ -169,7 +170,8 @@ class ApiManager {
     if (response.statusCode == 200) { // 통신 성공 시
       print("getCalendarData에서 서버로부터 받아온 데이터의 body : " + response.body);
 
-      Map<DateTime, String> output = convertToDateTimeMap(json.decode(response.body));
+      Map<DateTime, String> output = convertToDateTimeMap(
+          json.decode(response.body));
       return output;
     } else {
       throw Exception('Failed to load data from the API');
@@ -193,7 +195,7 @@ class ApiManager {
       },
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
       print("chatList data: " + response.body);
 
@@ -211,7 +213,6 @@ class ApiManager {
     } else {
       throw Exception("Fail to load chatList from the API");
     }
-
   }
 
   Future<List<Diary>> getDiaryData() async {
@@ -224,7 +225,7 @@ class ApiManager {
       },
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
       print("my diary data: " + response.body);
 
@@ -240,7 +241,6 @@ class ApiManager {
     } else {
       throw Exception("Fail to load diary data from the API");
     }
-
   }
 
   Future<List<Message>> getMessageList(int otherUserId) async {
@@ -262,7 +262,7 @@ class ApiManager {
         return Message(
           content: data['content'],
           sendtime: DateTime.parse(data['sentAt']),
-          isMyMessage: data['myMessage'] == 1 , // 내가 보낸 메시지인지 여부 확인
+          isMyMessage: data['myMessage'] == 1, // 내가 보낸 메시지인지 여부 확인
         );
       }).toList();
 
@@ -299,7 +299,8 @@ class ApiManager {
         print("post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
-        throw Exception('Failed to make a POST request. Status code: ${response.statusCode}');
+        throw Exception('Failed to make a POST request. Status code: ${response
+            .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -311,7 +312,6 @@ class ApiManager {
 
 
   Future<List<MonthData>> getMSatisData() async {
-
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/read";
 
@@ -321,15 +321,15 @@ class ApiManager {
       },
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
       print("monthly statistics data: " + response.body);
 
       List<MonthData> MSatisdata = rawData.map((data) {
         return MonthData(
-            date: DateTime.parse(data['date']),
+          date: DateTime.parse(data['date']),
           emotions: List<double>.from(data['emotions']),
-            mostEmotion: data['mostEmotion'],
+          mostEmotion: data['mostEmotion'],
           leastEmotion: data['leastEmotion'],
           comment: data['comment'],
           point: data['point'],
@@ -340,11 +340,9 @@ class ApiManager {
     } else {
       throw Exception("Fail to load diary data from the API");
     }
-
   }
 
   Future<TotalData> getTSatisData() async {
-
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/analysis";
 
@@ -354,27 +352,26 @@ class ApiManager {
       },
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
       print("total statistics data: " + response.body);
 
       TotalData TSatisdata = TotalData(
-          nums: rawData['nums'],
-          emotions: List<double>.from(rawData['emotions']),
-          mostWritten: rawData['mostWritten'],
-          firstDate: DateTime.parse(rawData['firstDate']),
-          mostYearMonth: DateTime.parse(rawData['mostYearMonth']),
-          mostNums: rawData['mostNums'],
-          mostViewed: rawData['mostViewed'],
-          mostViewedEmpathy: rawData['mostViewedEmpathy'],
-          mostViewedComments: rawData['mostViewedComments'],
-        );
+        nums: rawData['nums'],
+        emotions: List<double>.from(rawData['emotions']),
+        mostWritten: rawData['mostWritten'],
+        firstDate: DateTime.parse(rawData['firstDate']),
+        mostYearMonth: DateTime.parse(rawData['mostYearMonth']),
+        mostNums: rawData['mostNums'],
+        mostViewed: rawData['mostViewed'],
+        mostViewedEmpathy: rawData['mostViewedEmpathy'],
+        mostViewedComments: rawData['mostViewedComments'],
+      );
 
       return TSatisdata;
     } else {
       throw Exception("Fail to load diary data from the API");
     }
-
   }
 
   Future<List<Diary>> getDiaryShareData() async {

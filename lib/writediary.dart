@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart' ;
+import 'package:path_provider/path_provider.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_sound/flutter_sound.dart' as sound;
@@ -28,9 +28,8 @@ class writediary extends StatefulWidget {
 var audioFile;
 
 class _writediaryState extends State<writediary> {
-  final picker = ImagePicker();
-  List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
-  List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
+  final ImagePicker _picker = ImagePicker();
+  List<XFile?> diaryImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -40,20 +39,19 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
-
-  Future<void> GetWriteDiary(String endpoint) async {
-    try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-
-      // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-
-      //title = response['title'];
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
+  // Future<void> GetWriteDiary(String endpoint) async {
+  //   try {
+  //     final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+  //
+  //     // 요청 응답 받기
+  //     final value = response['key']; // 키를 통해 value를 받아오기
+  //     print('Data: $value');
+  //
+  //     //title = response['title'];
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
   // onpress():
   //      PostExample("/api/message");
@@ -61,31 +59,30 @@ class _writediaryState extends State<writediary> {
   // 다른버튼 onperss():
   //       PostExample("api/title");
 
-  Future<void> PostWriteDiary(String endpoint) async {
-    ApiManager apiManager = ApiManager().getApiManager();
+  // Future<void> PostWriteDiary(String endpoint) async {
+  //   ApiManager apiManager = ApiManager().getApiManager();
+  //
+  //   try {
+  //     final postData = {
+  //       'content': content,
+  //       'emotion': sendEmotion,
+  //       'is_share': _isCheckedShare,
+  //       'is_comm': _isChecked,
+  //       //오디오 전송
+  //     };
+  //     //print(postData);
+  //     await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
-    try {
-      final postData = {
-          'content': content,
-          'emotion': sendEmotion,
-          'is_share': _isCheckedShare,
-          'is_comm': _isChecked,
-      };
-      //print(postData);
-      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
 
-  final _contentEditController = TextEditingController();
+  final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
   bool isRecording = false;
-  // late Record audioRecord;
-  // late AudioPlayer audioPlayer;
-  // bool isRecording = false;
   String audioPath = '';
 
   //재생에 필요한 것들
@@ -96,13 +93,8 @@ class _writediaryState extends State<writediary> {
 s
   @override
   void initState() {
-    // audioPlayer = AudioPlayer();
-    // audioRecord = Record();
-
     super.initState();
 
-    //오디오 설정, 재생모드를 설정하고 소스 URL을 지정
-    //setAudio();
     playRecording();
 
     //마이크 권한 요청, 녹음 초기화
@@ -130,6 +122,121 @@ s
     });
   }
 
+  @override
+  void dispose() {
+    recorder.closeRecorder();
+    audioPlayer.dispose();
+
+    // audioRecord.dispose();
+    // audioPlayer.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> playRecording() async {
+    try {
+      Source urlSource = UrlSource(audioPath);
+      print("audioUrl: $urlSource");
+      await audioPlayer.play(urlSource);
+    } catch (e) {
+      print("Error playing Recording : $e");
+    }
+  }
+
+  Future initRecorder() async {
+    final status = await Permission.microphone.request();
+
+    if (status != PermissionStatus.granted) {
+      throw 'Microphone permission not granted';
+    }
+
+    await recorder.openRecorder();
+
+    isRecording = true;
+    recorder.setSubscriptionDuration(
+      const Duration(milliseconds: 500),
+    );
+  }
+
+  //녹음 시작
+  Future record() async {
+    if (!isRecording) return;
+    await recorder.startRecorder(toFile: 'audio');
+  }
+//저장함수
+  Future<String> saveRecordingLocally() async {
+    if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
+
+    final audioFile = File(audioPath);
+    if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
+
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final newPath =
+          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+      final newFile = File(p.join(
+          newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
+
+      if (!(await newFile.parent.exists())) {
+        await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
+      }
+
+      await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
+
+      print('Complete Saving recording: ${newFile.path}');
+
+      return newFile.path; // 새로운 파일의 경로 반환
+    } catch (e) {
+      print('Error saving recording: $e');
+      return ''; // 오류 발생 시 빈 문자열 반환
+    }
+  }
+
+// 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
+  Future<void> stop() async {
+
+    final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
+    audioPath = path!;
+
+    setState(() {
+      isRecording = false;
+    });
+
+    final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
+
+    if (savedFilePath.isNotEmpty) {
+      final savedFile = File(savedFilePath);
+      if (savedFile.existsSync()) {
+        final fileContent = await savedFile.readAsString(); // 파일 내용 읽기
+        print('Content of saved file: $fileContent'); // 파일 내용 출력
+
+        // 새로운 AudioPlayer 인스턴스 생성
+        final audioPlayerForFile = AudioPlayer();
+
+        // 녹음된 파일을 AudioPlayer에 설정
+        await audioPlayerForFile.setSourceUrl(savedFilePath);
+
+        // 파일의 duration을 가져오기 위해 await 사용
+        final durationResult = await audioPlayerForFile.getDuration();
+
+        if (durationResult == null) {
+          // 파일의 duration을 가져올 수 없을 때 처리
+          print('Error: Cannot get duration of the file');
+        } else {
+          // 파일의 duration을 가져온 경우 UI에 반영
+          setState(() {
+            duration = durationResult;
+          });
+        }
+
+      } else {
+        print('Error: File does not exist');
+      }
+    } else {
+    }
+  }
+  ///data/data/com.example.capston1/app_flutter/recordings/audio.mp3
+
   // Future setAudio() async {
   //   //audioPlayer.setReleaseMode(ReleaseMode.loop);
   //
@@ -153,107 +260,8 @@ s
   //   print('Playing audio: $url');
   // }
 
-  @override
-  void dispose() {
-    recorder.closeRecorder();
-    audioPlayer.dispose();
-
-    // audioRecord.dispose();
-    // audioPlayer.dispose();
-
-    super.dispose();
-  }
-
-  Future<void> playRecording() async {
-    try {
-      Source urlSource = UrlSource(audioPath);
-      print("audioUrl: $urlSource");
-      await audioPlayer.play(urlSource);
-    } catch (e) {
-      print("Error playing Recording : $e");
-    }
-  }
-
-
-  Future initRecorder() async {
-    final status = await Permission.microphone.request();
-
-    if (status != PermissionStatus.granted) {
-      throw 'Microphone permission not granted';
-    }
-
-    await recorder.openRecorder();
-
-    isRecording = true;
-    recorder.setSubscriptionDuration(
-      const Duration(milliseconds: 500),
-    );
-  }
-
-  //녹음 시작
-  Future record() async {
-    if (!isRecording) return;
-    await recorder.startRecorder(toFile: 'audio');
-  }
-
-
-  Future<String> saveRecordingLocally() async {
-    if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
-
-    final audioFile = File(audioPath);
-    if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
-
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final newPath = p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
-      final newFile = File(p.join(newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
-
-      if (!(await newFile.parent.exists())) {
-        await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
-      }
-
-      await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
-
-      print('Complete Saving recording: ${newFile.path}');
-
-      return newFile.path; // 새로운 파일의 경로 반환
-    } catch (e) {
-      print('Error saving recording: $e');
-      return ''; // 오류 발생 시 빈 문자열 반환
-    }
-  }
-
-// 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
-  Future<String> stop() async {
-    if (!isRecording) return '';
-
-    final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
-    audioPath = path!;
-
-    setState(() {
-      isRecording = false;
-    });
-
-    final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
-
-    if (savedFilePath.isNotEmpty) {
-      final savedFile = File(savedFilePath);
-      if (savedFile.existsSync()) {
-        final fileContent = await savedFile.readAsString(); // 파일 내용 읽기
-        print('Content of saved file: $fileContent'); // 파일 내용 출력
-      } else {
-        print('Error: File does not exist');
-      }
-      return savedFilePath; // 저장된 파일의 경로 반환
-    } else {
-      return ''; // 저장 실패 시 빈 문자열 반환
-    }
-
-  }
-
-
   //파일 서버에 보내기
-    //run(audioFile as String);
+  //run(audioFile as String);
 
   // Future<String> run(String audioUrl) async {
   //   String openApiURL = " ";
@@ -304,7 +312,6 @@ s
   //
   //   return '';
   // }
-
 
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -395,7 +402,7 @@ s
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               print("PostExample 실행");
-              PostWriteDiary("/api/diaries/create");
+              //PostWriteDiary("/api/diaries/create");
             },
             icon: Image.asset(
               "images/send/upload.png",
@@ -439,38 +446,68 @@ s
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Container(
-                                margin: EdgeInsets.all(10),
-                                //color: Colors.amber,
-                                width: 200,
-                                height: 150,
-                                child: GridView.builder(
-                                    padding: EdgeInsets.all(0),
-                                    shrinkWrap: true,
-                                    itemCount: images.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      childAspectRatio: 1 / 1,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
+                            SingleChildScrollView(
+                              child: Container(
+                                  width: 200,
+                                  height: 150, // 이미지 높이 조절
+                                  child: Container(
+                                    child: PageView.builder(
+                                      //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: diaryImage.length > 3
+                                          ? 3
+                                          : diaryImage.length, // 최대 3장까지만 허용
+                                      itemBuilder: (context, index) {
+                                        return Center(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: FileImage(
+                                                    File(diaryImage[index]!
+                                                        .path),
+                                                  ),
+                                                )),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      print(
-                                          "Image size: ${File(images[index]!.path).lengthSync()} bytes");
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: FileImage(
-                                                File(images[index]!.path),
-                                              ),
-                                            )),
-                                      );
-                                    })),
+                                  )),
+                            ),
+                            // Container(
+                            //     margin: EdgeInsets.all(10),
+                            //     //color: Colors.amber,
+                            //     width: 200,
+                            //     height: 150,
+                            //     child: GridView.builder(
+                            //         padding: EdgeInsets.all(0),
+                            //         shrinkWrap: true,
+                            //         itemCount: images.length,
+                            //         gridDelegate:
+                            //             SliverGridDelegateWithFixedCrossAxisCount(
+                            //           crossAxisCount: 3,
+                            //           childAspectRatio: 1 / 1,
+                            //           mainAxisSpacing: 10,
+                            //           crossAxisSpacing: 10,
+                            //         ),
+                            //         itemBuilder:
+                            //             (BuildContext context, int index) {
+                            //           print(
+                            //               "Image size: ${File(images[index]!.path).lengthSync()} bytes");
+                            //           return Container(
+                            //             decoration: BoxDecoration(
+                            //                 borderRadius:
+                            //                     BorderRadius.circular(5),
+                            //                 image: DecorationImage(
+                            //                   fit: BoxFit.cover,
+                            //                   image: FileImage(
+                            //                     File(images[index]!.path),
+                            //                   ),
+                            //                 )),
+                            //           );
+                            //         })),
                             Container(
                               padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: Column(
@@ -544,12 +581,8 @@ s
                                   )
                                 ],
                               ),
-                            ), //음성
-                            // if(!isRecording && audioPath !=null)
-                            // ElevatedButton(
-                            //   onPressed: playRecording,
-                            //   child: const Text(("play")),
-                            // ),
+                            ),
+                            //음성
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextField(
@@ -576,10 +609,13 @@ s
                           SizedBox(
                             child: IconButton(
                               onPressed: () async {
-                                multiImage = await picker.pickMultiImage();
-                                setState(() {
-                                  images.addAll(multiImage);
-                                });
+                                final List<XFile> image =
+                                    await _picker.pickMultiImage();
+                                if (image != null) {
+                                  setState(() {
+                                    diaryImage.addAll(image);
+                                  });
+                                }
                               },
                               icon: Image.asset(
                                 "images/main/gallery.png",
@@ -646,19 +682,6 @@ s
                                   ),
                                 ),
                               ),
-                              // if (isRecording) Text("Recording in Progress"),
-                              // SizedBox(
-                              //   child: IconButton(
-                              //     onPressed: isRecording
-                              //         ? stopRecording
-                              //         : startRecording,
-                              //     icon: Icon(
-                              //       isRecording ? Icons.stop : Icons.mic,
-                              //       size: 30,
-                              //       color: Colors.black,
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ],
