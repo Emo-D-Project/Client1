@@ -211,8 +211,8 @@ class _categoryState extends State<category> {
                         backgroundColor: Colors.white,
                       ),
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => diaryReplay(date: DateTime(2023,11,24))));
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) => diaryReplay(date: DateTime(2023,11,24))));
                       },
                       child: Row(
                         children: [
