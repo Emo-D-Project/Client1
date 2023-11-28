@@ -218,6 +218,7 @@ class _diaryshareState extends State<diaryshare> {
                           svoice: diaries[index].voice,
                         );
                       }
+
                     })(),
                   );
                 } else {
