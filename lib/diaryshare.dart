@@ -176,46 +176,46 @@ class _diaryshareState extends State<diaryshare> {
             child: ListView.builder(
               shrinkWrap: true,
               padding: const EdgeInsets.all(10),
-              itemCount: imagepath.length,
+              itemCount: diaries.length,
               itemBuilder: (BuildContext context, int index) {
                 // 'images/emotion/7.gif'를 기본으로 선택한 경우 해당 일기 표시
                 if (selectedImagePath == imagepath[index]) {
                   return SizedBox(
                     child: (() {
-                      if (diaryimage[index] != "noimage" &&
-                          voice[index] == "no") {
+                      if (diaries[index].imagePath.isNotEmpty  &&
+                          diaries[index].voice == "") {
                         return customWidget1(
-                            simagePath: imagepath[index],
-                            sdiaryImage: diaryimage[index],
-                            scomment: diarycomment[index],
-                            sfavoritColor: favoritcolor[index],
-                            sfavoritCount: favoritcount[index]);
-                      } else if (diaryimage[index] == "noimage" &&
-                          voice[index] == "no") {
+                            simagePath: diaries[index].emotion,
+                            sdiaryImage: diaries[index].imagePath,
+                            scomment: diaries[index].content,
+                            sfavoritColor: diaries[index].favoriteColor,
+                            sfavoritCount: diaries[index].favoriteCount);
+                      } else if (diaries[index].imagePath.isEmpty &&
+                          diaries[index].voice == "") {
                         return customWidget2(
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          simagePath: diaries[index].emotion,
                         );
-                      } else if (diaryimage[index] == "noimage" &&
-                          voice[index] == "yes") {
+                      } else if (diaries[index].imagePath.isEmpty &&
+                          diaries[index].voice != "") {
                         return customwidget3(
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                          svoice: voice[index],
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          simagePath: diaries[index].emotion,
+                          svoice: diaries[index].voice,
                         );
-                      } else if (diaryimage[index] != "noimage" &&
-                          voice[index] == "yes") {
+                      } else if (diaries[index].imagePath.isNotEmpty &&
+                          diaries[index].voice != "") {
                         return customwidget4(
-                          sdiaryImage: diaryimage[index],
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                          svoice: voice[index],
+                          sdiaryImage: diaries[index].imagePath,
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          simagePath: diaries[index].emotion,
+                          svoice: diaries[index].voice,
                         );
                       }
                     })(),
@@ -254,7 +254,7 @@ class shareData {
 // 일기 버전 1 - 텍스트 + 사진
 class customWidget1 extends StatefulWidget {
   final String simagePath;
-  final String sdiaryImage;
+  final List<String> sdiaryImage;
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
@@ -275,11 +275,39 @@ class customWidget1 extends StatefulWidget {
 class _customWidget1State extends State<customWidget1> {
   late int sfavoritCount; // 추가된 부분
   late bool sfavoritColor; // 추가된 부분
+  String imagePath = "";
+
 
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount;
     sfavoritColor = widget.sfavoritColor;
+    switch(widget.simagePath){
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
   }
 
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
@@ -351,7 +379,7 @@ class _customWidget1State extends State<customWidget1> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -501,6 +529,8 @@ class _customWidget2State extends State<customWidget2> {
   late bool sfavoritColor; // 추가된 부분
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
+  String imagePath = "";
+
   TextEditingController _commentController = TextEditingController();
 
   // 댓글 추가 기능
@@ -541,6 +571,33 @@ class _customWidget2State extends State<customWidget2> {
     super.initState();
     sfavoritCount = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
+
+    switch(widget.simagePath){
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
   }
 
   @override
@@ -573,7 +630,7 @@ class _customWidget2State extends State<customWidget2> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -744,12 +801,40 @@ class _customwidget3State extends State<customwidget3> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  String imagePath = "";
 
   @override
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
+
+    switch(widget.simagePath){
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
 
     setAudio();
 
@@ -823,7 +908,7 @@ class _customwidget3State extends State<customwidget3> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -987,7 +1072,7 @@ class _customwidget3State extends State<customwidget3> {
 
 // 일기 버전4 - 텍스트 + 음성 + 사진
 class customwidget4 extends StatefulWidget {
-  final String sdiaryImage; // 다이어리 안에 이미지
+  final List<String> sdiaryImage; // 다이어리 안에 이미지
   final String simagePath; // 감정 이모지 사진
   final String scomment; // 일기 내용
   final int sfavoritCount; // 좋아요 수
@@ -1056,12 +1141,40 @@ class _customwidget4State extends State<customwidget4> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  String imagePath = "";
 
   @override
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
+
+    switch(widget.simagePath){
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
 
     setAudio();
 
@@ -1135,7 +1248,7 @@ class _customwidget4State extends State<customwidget4> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
