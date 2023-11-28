@@ -120,13 +120,15 @@ class _gatherEmotionState extends State<gatherEmotion> {
       body: ListView.builder(
           itemCount: yearMonthList.length,
           itemBuilder: (BuildContext context, int index) {
+            DateTime currentMonth = yearMonthList[index];
+            List<DateTime> monthDates = dateList.where((date) => date.year == currentMonth.year && date.month == currentMonth.month).toList();
             return Container(
               margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateFormat('yyyy.MM').format(yearMonthList[index]),
+                    DateFormat('yyyy.MM').format(currentMonth),
                     style: TextStyle(
                       fontSize: 25,
                       fontFamily: 'soojin',
@@ -141,15 +143,18 @@ class _gatherEmotionState extends State<gatherEmotion> {
                     height: 60,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: dateList.length,
+                      itemCount: monthDates.length,
                       itemBuilder: (BuildContext context, int subIndex) {
+                        DateTime currentDate = monthDates[subIndex];
+                        int dateIndex = dateList.indexOf(currentDate);
                         return Container(
                           margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: Column(
                             children: [
                               Container(
                                 child: (() {
-                                  switch (valueList[subIndex]){
+                                  String emotion = valueList[dateIndex];
+                                  switch (emotion){
                                     case "smile":
                                       return Image.asset(
                                         'images/emotion/1.gif',
@@ -195,7 +200,7 @@ class _gatherEmotionState extends State<gatherEmotion> {
                                   }
                                 })(),
                               ),
-                              Text('${dateList[subIndex].month}${dateList[subIndex].day}',
+                              Text( '${currentDate.month}${currentDate.day}',
                                 style: TextStyle(fontFamily: 'soojin', fontSize: 15, color: Colors.brown),)
                             ],
                           ),
