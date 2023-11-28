@@ -1,4 +1,5 @@
 import 'package:capston1/alrampage.dart';
+import 'package:capston1/models/Diary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/network/api_manager.dart';
@@ -7,9 +8,7 @@ import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import 'models/Comment.dart';
-
-//enum Emotion { smile, flutter, angry, annoying, tired, sad, calmness }
-
+import 'models/Message.dart';
 
 //일기내용 오늘의 감정
 final List<String> imagepath = [
@@ -44,22 +43,6 @@ final List<String> imagePaths = [
   'images/emotion/6.gif',
 ];
 
-//String selectedImagePath = 'images/emotion/7.gif'; // 기본은 무표정
-/*
-List<String> getFilteredDiaryImagePaths() {
-  // 사용자가 선택한 감정 이미지와 일치하는 일기 이미지만 필터링
-  return List.generate(
-    imagepath.length,
-        (index) {
-      if (imagepath[index] == selectedImagePath) {
-        return diaryimage[index];
-      }
- //     return null;
-    },
-  )..removeWhere((element) => element == null);
-}
-*/
-
 final List<String> d_imagePaths = [
   'images/send/sj3.jpg',
   'images/send/sj1.jpg',
@@ -83,39 +66,9 @@ class diaryshare extends StatefulWidget {
 }
 
 class _diaryshareState extends State<diaryshare> {
-  //----------------------------------------------------------
-  /* ApiManager apiManager = ApiManager().getApiManager();
 
-   Future<void> GetDiaryShare(String endpoint) async {
-     try {
-     final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+  List<Diary> diaries = [];
 
-     // 요청 응답 받기
-       final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-       title = response['title'];
-     } catch (e) {
-      print('Error: $e');
-    }
-   }
-
-  Future<void> PostDiaryShare(String endpoint) async {
-     ApiManager apiManager = ApiManager().getApiManager();
-  //
-    try {
-       final postData = {
-    //보낼 변수 넣기
-      };
-
-      print(postData);
-  //
-       //await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-     } catch (e) {
-      print('Error: $e');
-     }
-   }
-*/
-  //-----------------------------------------------------------
 
   String selectedValue = '최신순';
 
@@ -211,10 +164,10 @@ class _diaryshareState extends State<diaryshare> {
             child: ListView.builder(
               shrinkWrap: true,
               padding: const EdgeInsets.all(10),
-              itemCount: imagepath.length,
+              itemCount: diaries.length,
               itemBuilder: (BuildContext context, int index) {
                 // 'images/emotion/7.gif'를 기본으로 선택한 경우 해당 일기 표시
-                if (selectedImagePath == imagepath[index]) {
+                if (selectedImagePath == diaries[index].emotion) {
                   return SizedBox(
                     child: (() {
                       if (diaryimage[index] != "noimage" &&
