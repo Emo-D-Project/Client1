@@ -308,7 +308,6 @@ class ApiManager {
     }
   }
 
-
   Future<List<MonthData>> getMSatisData() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/read";
@@ -367,6 +366,31 @@ class ApiManager {
       );
 
       return TSatisdata;
+    } else {
+      throw Exception("Fail to load total data from the API");
+    }
+  }
+
+  Future<Mypage> getMypageData() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/userInfo";
+
+    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("mypage data: " + response.body);
+
+      Mypage mypagedata = Mypage(
+        title: rawData['title'],
+        content: rawData['content'],
+      );
+
+      return mypagedata;
     } else {
       throw Exception("Fail to load total data from the API");
     }
