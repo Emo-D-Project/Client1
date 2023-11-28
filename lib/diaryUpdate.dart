@@ -8,25 +8,20 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'diaryUpdate.dart';
-
-final diarydate = DateTime(2023,11,24);
-final List<String> diaryimage = ['images/send/sj3.jpg','images/send/sj1.jpg','images/send/sj2.jpg'];
-final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
-
-
-TextEditingController _diaryController = TextEditingController(text: comment);
+import 'models/Diary.dart';
 
 class diaryUpdate extends StatefulWidget {
-  const diaryUpdate({super.key, required this.date});
-
-  final DateTime date;
-  final String emotion = "smile";
+  final Diary diary;
+  const diaryUpdate({super.key, required this.diary});
 
   @override
-  State<diaryUpdate> createState() => _diaryUpdateState();
+  State<diaryUpdate> createState() => _diaryUpdateState(diary);
 }
 
+TextEditingController? _diaryController;
+
 class _diaryUpdateState extends State<diaryUpdate> {
+  Diary? diary;
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
@@ -34,9 +29,17 @@ class _diaryUpdateState extends State<diaryUpdate> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
+  _diaryUpdateState(Diary diary){
+    this.diary = diary;
+  }
+
+
+
   @override
   void initState() {
     super.initState();
+
+    _diaryController = TextEditingController(text: diary!.content);
 
     setAudio();
 
@@ -92,7 +95,7 @@ class _diaryUpdateState extends State<diaryUpdate> {
         backgroundColor: Color(0xFFF8F5EB),
         title: Container(
           child: (() {
-            switch (widget.emotion) {
+            switch (diary?.emotion) {
               case 'smile':
                 return Image.asset(
                   'images/emotion/1.gif',
@@ -158,155 +161,692 @@ class _diaryUpdateState extends State<diaryUpdate> {
         decoration: BoxDecoration(
           color: Color(0xFFF8F5EB),
         ),
-        child: Center(
-          child: Container(
-              width: sizeX * 0.9,
-              height: sizeY * 0.8,
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 11, 250, 10),
-                    child: Row(
-                        children: [
-                          SizedBox(width: 30,),
-                          Text(
-                            '${diarydate.year}년 ${diarydate.month}월 ${diarydate.day}일',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ]),
-                  ), //날짜
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SingleChildScrollView(
-                            child: SizedBox(
+        padding : EdgeInsets.fromLTRB(10, 10, 10, 10),
+        child: Expanded(
+          child: () {
+            if (diary!.imagePath.isNotEmpty  &&
+                diary!.voice == "") {
+              return customWidget1(
+                  sdate: diary!.date,
+                  sdiaryImage: diary!.imagePath,
+              );
+            } else if (diary!.imagePath.isEmpty &&
+                diary!.voice == "") {
+              return customWidget2(
+                sdate: diary!.date,
+              );
+            } else if (diary!.imagePath.isEmpty &&
+                diary!.voice != "") {
+              return customwidget3(
+                sdate: diary!.date,
+                svoice: diary!.voice,
+              );
+            } else if (diary!.imagePath.isNotEmpty &&
+                diary!.voice != "") {
+              return customwidget4(
+                sdate: diary!.date,
+                sdiaryImage: diary!.imagePath,
+                svoice: diary!.voice,
+              );
+            }
+            else {
+              // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
+              return Container();
+            }
+          }(),
+        ),
+      )
+    );
+  }
+}
+
+class shareData {
+  final DateTime date;
+  final String diaryImage;
+  final String voice;
+
+  shareData({
+    required this.date,
+    required this.diaryImage,
+    required this.voice,
+  });
+}
+
+// 일기 버전 1 - 텍스트 + 사진
+class customWidget1 extends StatefulWidget {
+  final DateTime sdate;
+  final List<String> sdiaryImage;
+
+  const customWidget1({
+    super.key,
+    required this.sdate,
+    required this.sdiaryImage,
+  });
+
+  @override
+  State<customWidget1> createState() => _customWidget1State();
+}
+
+class _customWidget1State extends State<customWidget1> {
+
+//-----------------------
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Container(
+            width: sizeX * 0.9,
+            height: sizeY * 0.8,
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(children: [
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                      style: TextStyle(
+                        fontFamily: 'soojin',
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 135,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => diaryUpdate(diary: diary,)));
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          size: 30,
+                        )),
+                  ]),
+                ), //날짜
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          child: Container(
                               width: 200,
                               height: 150, // 이미지 높이 조절
-                              child: PageView(
-                                scrollDirection: Axis.horizontal, // 수평으로 스크롤
-                                children: <Widget>[
-                                  SizedBox(
-                                    child: Center(
-                                        child:
-                                        Image.asset(diaryimage[0])),
-                                  ),
-                                  SizedBox(
-                                    child: Center(
-                                        child:
-                                        Image.asset(diaryimage[1])),
-                                  ),
-                                  SizedBox(
-                                    child: Center(
-                                        child:
-                                        Image.asset(diaryimage[2])),
-                                  ),
-                                ],
-                              ),
-                            ),
+                              child: Container(
+                                child: PageView.builder(
+                                  //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.sdiaryImage.length > 3
+                                      ? 3
+                                      : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      child: Center(
+                                        child: Image.asset(widget.sdiaryImage[index]),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
+                          color: Colors.white54,
+                          child: TextFormField(
+                            style: TextStyle(fontFamily: 'soojin'),
+                            controller: _diaryController,
+                            maxLines: 30,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ))),
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                            child: Column(
-                              children: [
-                                Slider(
+                        ),
+                      ],
+                    ),
+                  ),
+                ), //글
+                //수정버튼
+              ],
+            )),
+      ),
+    );
+  }
+}
+
+//글만 있는 거
+class customWidget2 extends StatefulWidget {
+  final DateTime sdate;
+
+  const customWidget2({
+    super.key,
+    required this.sdate,
+  });
+
+  @override
+  State<customWidget2> createState() => _customWidget2State();
+}
+
+class _customWidget2State extends State<customWidget2> {
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Container(
+            width: sizeX * 0.9,
+            height: sizeY * 0.8,
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(children: [
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                      style: TextStyle(
+                        fontFamily: 'soojin',
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 135,
+                    ),
+                  ]),
+                ), //날짜
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
+                      color: Colors.white54,
+                      child: TextFormField(
+                        style: TextStyle(fontFamily: 'soojin'),
+                        controller: _diaryController,
+                        maxLines: 30,
+                        decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ))),
+                      ),
+                    ),
+
+                  ),
+                ), //글
+                //수정버튼
+              ],
+            )),
+      ),
+    );
+  }
+}
+
+// 일기 버전 3 - 텍스트 + 음성
+class customwidget3 extends StatefulWidget {
+  final String svoice;
+  final DateTime sdate;
+
+  const customwidget3({
+    super.key,
+    required this.svoice,
+    required this.sdate,
+  });
+
+  @override
+  State<customwidget3> createState() => _customwidget3State();
+}
+
+class _customwidget3State extends State<customwidget3> {
+
+  //재생에 필요한 것들
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setAudio();
+
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == (PlayerState.playing);
+      });
+    });
+
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
+  Future setAudio() async {
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+    String url = ' ';
+    audioPlayer.setSourceUrl(url);
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inMinutes.remainder(60));
+
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
+
+//-----------------------
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Container(
+            width: sizeX * 0.9,
+            height: sizeY * 0.8,
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(children: [
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                      style: TextStyle(
+                        fontFamily: 'soojin',
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 135,
+                    ),
+                  ]),
+                ), //날짜
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Column(
+                            children: [
+                              SliderTheme(
+                                data: SliderThemeData(
+                                  inactiveTrackColor: Color(0xFFF8F5EB),
+                                ),
+                                child: Slider(
                                   min: 0,
                                   max: duration.inSeconds.toDouble(),
                                   value: position.inSeconds.toDouble(),
                                   onChanged: (value) async {
                                     final position =
-                                        Duration(seconds: value.toInt());
+                                    Duration(seconds: value.toInt());
                                     await audioPlayer.seek(position);
                                     await audioPlayer.resume();
                                   },
-                                  activeColor: Color(0xFFF8F5EB),
+                                  activeColor: Color(0xFF968C83),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        formatTime(position), // 진행중인 시간
-                                        style: TextStyle(
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      formatTime(position), // 진행중인 시간
+                                      style: TextStyle(
                                           fontFamily: 'soojin',
-                                            color: Colors
-                                                .brown), // Set text color to black
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: Colors.transparent,
-                                        child: IconButton(
-                                          padding: EdgeInsets.only(bottom: 50),
-                                          icon: Icon(
-                                            isPlaying
-                                                ? Icons.pause
-                                                : Icons.play_arrow,
-                                            color: Colors.brown,
-                                          ),
-                                          iconSize: 25,
-                                          onPressed: () async {
-                                            if (isPlaying) {
-                                              await audioPlayer.pause();
-                                            } else {
-                                              await audioPlayer.resume();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Text(
-                                        formatTime(duration), //총 시간
-                                        style: TextStyle(
-                                          fontFamily: 'soojin',
+                                          color: Colors
+                                              .brown), // Set text color to black
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: Colors.transparent,
+                                      child: IconButton(
+                                        padding: EdgeInsets.only(bottom: 50),
+                                        icon: Icon(
+                                          isPlaying
+                                              ? Icons.pause
+                                              : Icons.play_arrow,
                                           color: Colors.brown,
-                                        ), // Set text color to black
+                                        ),
+                                        iconSize: 25,
+                                        onPressed: () async {
+                                          if (isPlaying) {
+                                            await audioPlayer.pause();
+                                          } else {
+                                            await audioPlayer.resume();
+                                          }
+                                        },
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ), //음성
-                          Container(
-                            margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
-                            color: Colors.white54,
-                            child: TextFormField(
-                              style: TextStyle(fontFamily: 'soojin'),
-                              controller: _diaryController,
-                              maxLines: 30,
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ))),
-                            ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      formatTime(duration), //총 시간
+                                      style: TextStyle(
+                                        fontFamily: 'soojin',
+                                        color: Colors.brown,
+                                      ), // Set text color to black
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                        ), //음성
+                        Container(
+                          margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
+                          color: Colors.white54,
+                          child: TextFormField(
+                            style: TextStyle(fontFamily: 'soojin'),
+                            controller: _diaryController,
+                            maxLines: 30,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ))),
+                          ),
+                        ),
+                      ],
                     ),
-                  ), //글
-                  //수정버튼
-                ],
-              )),
-        ),
+                  ),
+                ), //글
+                //수정버튼
+              ],
+            )),
+      ),
+    );
+  }
+}
+
+// 일기 버전4 - 텍스트 + 음성 + 사진
+class customwidget4 extends StatefulWidget {
+  final List<String> sdiaryImage; // 다이어리 안에 이미지
+  final String svoice; // 녹음 기능
+  final DateTime sdate;
+
+  const customwidget4({
+    super.key,
+    required this.sdiaryImage,
+    required this.svoice,
+    required this.sdate,
+  });
+
+  @override
+  State<customwidget4> createState() => _customwidget4State();
+}
+
+class _customwidget4State extends State<customwidget4> {
+  //재생에 필요한 것들
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setAudio();
+
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == (PlayerState.playing);
+      });
+    });
+
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
+  Future setAudio() async {
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+    String url = ' ';
+    audioPlayer.setSourceUrl(url);
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inMinutes.remainder(60));
+
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
+
+//-----------------------
+  @override
+  Widget build(BuildContext context) {
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Container(
+            width: sizeX * 0.9,
+            height: sizeY * 0.8,
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(
+                      children: [
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                          style: TextStyle(
+                            fontFamily: 'soojin',
+                            fontSize: 20,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 135,
+                        ),
+                      ]),
+                ), //날짜
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          child: Container(
+                              width: 200,
+                              height: 150, // 이미지 높이 조절
+                              child: Container(
+                                child: PageView.builder(
+                                  //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.sdiaryImage.length > 3
+                                      ? 3
+                                      : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      child: Center(
+                                        child: Image.asset(widget.sdiaryImage[index]),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Column(
+                            children: [
+                              SliderTheme(
+                                data: SliderThemeData(
+                                  inactiveTrackColor: Color(0xFFF8F5EB),
+                                ),
+                                child: Slider(
+                                  min: 0,
+                                  max: duration.inSeconds.toDouble(),
+                                  value: position.inSeconds.toDouble(),
+                                  onChanged: (value) async {
+                                    final position =
+                                    Duration(seconds: value.toInt());
+                                    await audioPlayer.seek(position);
+                                    await audioPlayer.resume();
+                                  },
+                                  activeColor: Color(0xFF968C83),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      formatTime(position), // 진행중인 시간
+                                      style: TextStyle(
+                                          fontFamily: 'soojin',
+                                          color: Colors
+                                              .brown), // Set text color to black
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: Colors.transparent,
+                                      child: IconButton(
+                                        padding: EdgeInsets.only(bottom: 50),
+                                        icon: Icon(
+                                          isPlaying
+                                              ? Icons.pause
+                                              : Icons.play_arrow,
+                                          color: Colors.brown,
+                                        ),
+                                        iconSize: 25,
+                                        onPressed: () async {
+                                          if (isPlaying) {
+                                            await audioPlayer.pause();
+                                          } else {
+                                            await audioPlayer.resume();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      formatTime(duration), //총 시간
+                                      style: TextStyle(
+                                        fontFamily: 'soojin',
+                                        color: Colors.brown,
+                                      ), // Set text color to black
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ), //음성
+                        Container(
+                          margin: EdgeInsets.fromLTRB(11, 10, 11, 10),
+                          color: Colors.white54,
+                          child: TextFormField(
+                            style: TextStyle(fontFamily: 'soojin'),
+                            controller: _diaryController,
+                            maxLines: 30,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ))),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), //글
+                //수정버튼
+              ],
+            )),
       ),
     );
   }

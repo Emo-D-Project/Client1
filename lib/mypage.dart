@@ -1,6 +1,7 @@
 //import 'package:capston1/MyInfo.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
+import 'models/Mypage.dart';
 import 'network/api_manager.dart';
 
 class mypage extends StatefulWidget {
@@ -32,35 +33,53 @@ class _mypageState extends State<mypage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  late String title;
+  late String content;
+
+  Mypage? myPageDatas;
+
+  Future<void> fetchDataFromServer() async {
+    try{
+      final data = await apiManager.getMypageData();
+      setState(() {
+        myPageDatas = data!;
+      });
+    }
+    catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting MP list: $error');
+    }
+
+  }
+
   Future<void> GetMyPage(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
 
       // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-
-      //title = response['title'];
+      final value = response['title']; // 키를 통해 value를 받아오기
+      print('title: $value');
+      title = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      // 실제 API 엔드포인트로 대체
+      final value = response['content']; // 키를 통해 value를 받아오기
+      print('content: $value');
+      content = value;
     } catch (e) {
       print('Error: $e');
     }
   }
 
-  /*Future<void> PostMyPage(String endpoint) async {
-    ApiManager apiManager = ApiManager().getApiManager();
-
-    try {
-      final postData = {
-
-      };
-
-      print(postData);
-
-      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-    } catch (e) {
-      print('Error: $e');
-    }
-  }*/
   //-------------------------------------------------------------------------------
 
   //질문 선택 창
@@ -109,7 +128,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 영화");
-                      question.add("최애 영화");
+                      myPageDatas!.title;
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,

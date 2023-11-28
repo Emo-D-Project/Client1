@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:capston1/alrampage.dart';
+
 import 'package:capston1/gatherEmotion.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'comment.dart';
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
+
 import 'models/Diary.dart';
 
 //맨 위 상단 감정 7개
@@ -23,6 +25,7 @@ final List<String> imagePaths = [
 ];
 
 //String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
+
 
 final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -41,6 +44,7 @@ class diaryshare extends StatefulWidget {
 List<Diary> diaries = [];
 
 class _diaryshareState extends State<diaryshare> {
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   List<Diary> selectedEmotionDiaries = [];
@@ -207,6 +211,7 @@ class _diaryshareState extends State<diaryshare> {
               padding: const EdgeInsets.all(10),
               itemCount: diaries.length,
               itemBuilder: (BuildContext context, int index) {
+
                 if (selectedImageEmotion == diaries[index].emotion) {
                   return SizedBox(
                     child: (() {
