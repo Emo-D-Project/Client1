@@ -50,9 +50,9 @@ class _diaryshareState extends State<diaryshare> {
     super.initState();
     fetchDataFromServer();
     HowFavoriteCount();
+
   }
 
-  // 서버로부터 데이터를 가져오는 함수
   Future<void> fetchDataFromServer() async {
     try {
       // 상대방과의 대화나눈 메시지 가져오기
@@ -308,16 +308,27 @@ class customWidget1 extends StatefulWidget {
 }
 
 class _customWidget1State extends State<customWidget1> {
-  late int sfavoritCount; // 추가된 부분
+  //late int sfavoritCount; // 추가된 부분
   late bool sfavoritColor; // 추가된 부분
   String imagePath = "";
   int otherUserId = 36;
   int DiaryId = 1;
 
+  int favoriteCounts = 0;
+
   ApiManager apiManager = ApiManager().getApiManager();
 
-
-
+  Future<void> HowFavoirteCount() async {
+    try{
+      final int data = await apiManager.putFavoriteCount(DiaryId);
+      setState(() {
+        favoriteCounts = data;
+      });
+    }
+    catch(error) {
+      print('Error getting favorite count: $error');
+    }
+  }
 
   _customWidget1State(int otherUserId) {
     this.otherUserId = otherUserId;
@@ -325,7 +336,9 @@ class _customWidget1State extends State<customWidget1> {
 
   void initState() {
     super.initState();
-    sfavoritCount = widget.sfavoritCount;
+    HowFavoirteCount();
+
+    favoriteCounts = widget.sfavoritCount;
     sfavoritColor = widget.sfavoritColor;
 
     switch (widget.simagePath) {
@@ -503,9 +516,9 @@ class _customWidget1State extends State<customWidget1> {
                         setState(() {
                           // 좋아요 누를 때 색 변경 및 count 증가
                           if (sfavoritColor) {
-                            sfavoritCount--;
+                            favoriteCounts--;
                           } else {
-                            sfavoritCount++;
+                            favoriteCounts++;
                           }
                           sfavoritColor = !sfavoritColor;
                         });
@@ -517,7 +530,7 @@ class _customWidget1State extends State<customWidget1> {
                       ),
                     ),
                     Text(
-                      '$sfavoritCount',
+                      '$favoriteCounts',
                       style: TextStyle(fontSize: 11),
                     ),
                   ],
@@ -573,17 +586,35 @@ class customWidget2 extends StatefulWidget {
 }
 
 class _customWidget2State extends State<customWidget2> {
-  late int sfavoritCount;
-  late bool sfavoritColor;
+   late bool sfavoritColor;
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
   int otherUserId = 36;
   String imagePath = "";
-  int DiaryId = 1;
+
 
   TextEditingController _commentController = TextEditingController();
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
+  int DiaryId = 1;
+  int favoriteCounts = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  Future<void> HowFavoirteCount() async {
+    try{
+      final data = await apiManager.putFavoriteCount(DiaryId);
+
+      setState(() {
+        favoriteCounts = data!;
+      });
+    }
+    catch(error) {
+
+      print('Error getting favorite count: $error');
+    }
+  }
+
 
   _customWidget2State(int otherUserId) {
     this.otherUserId = otherUserId;
@@ -621,7 +652,9 @@ class _customWidget2State extends State<customWidget2> {
 
   void initState() {
     super.initState();
-    sfavoritCount = widget.sfavoritCount; // 초기화
+    HowFavoirteCount();
+
+    favoriteCounts = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
 
     switch (widget.simagePath) {
@@ -735,25 +768,35 @@ class _customWidget2State extends State<customWidget2> {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          // 좋아요 누를 때 색 변경 및 count 증가
+                      onTap: () async {
+                        try {
+                          // 좋아요 누를 때 색 변경 및 count 증가/감소
                           if (sfavoritColor) {
-                            sfavoritCount--;
+                            favoriteCounts--;
                           } else {
-                            sfavoritCount++;
+                            favoriteCounts++;
                           }
                           sfavoritColor = !sfavoritColor;
-                        });
+
+                          final updatedFavoriteCount = await apiManager.putFavoriteCount(DiaryId);
+
+                          setState(() {
+                            favoriteCounts = updatedFavoriteCount;
+                          });
+                        } catch (error) {
+                          print('Error updating favorite count: $error');
+                        }
                       },
-                      onLongPress: () {},
+                      onLongPress: () {
+                        // 길게 눌렀을 때의 동작 추가
+                      },
                       child: Icon(
                         Icons.favorite,
                         color: sfavoritColor ? Colors.red : Colors.grey,
                       ),
                     ),
                     Text(
-                      '$sfavoritCount',
+                      '$favoriteCounts',
                       style: TextStyle(fontSize: 11),
                     ),
                   ],
@@ -779,6 +822,8 @@ class _customWidget2State extends State<customWidget2> {
                   ],
                 ),
               ),
+
+
             ],
           )),
         ],

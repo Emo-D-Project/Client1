@@ -378,9 +378,9 @@ class ApiManager {
   }
 
 
-  Future<int> putFavoriteCount(int id) async {
+  Future<int> putFavoriteCount(int id) async {   //일기의 아이디
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/diaries/recommend/$id";
+    String endPoint = "/api/diaries/recommend/${id}";
 
     final response = await http.put(
       Uri.parse('$baseUrl$endPoint'),
@@ -390,11 +390,11 @@ class ApiManager {
     );
     if (response.statusCode == 200) {
       int favoriteCount = json.decode(utf8.decode(response.bodyBytes));
-      print("// FavoriteCount data: $favoriteCount");
+      print("// FavoriteCount data: ${response.body}");
       return favoriteCount;
 
     } else {
-      throw Exception("Fail to update favorite count through the API");
+      throw Exception("Fail to update favorite count through the API  : ${response.statusCode}");
     }
   }
 
