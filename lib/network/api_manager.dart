@@ -371,7 +371,7 @@ class ApiManager {
     }
   }
 
-  Future<Mypage> getMypageData() async {
+  Future<List<Mypage>> getMypageData() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/userInfo";
 
@@ -382,17 +382,19 @@ class ApiManager {
     );
 
     if (response.statusCode == 200) {
-      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
       print("mypage data: " + response.body);
 
-      Mypage mypagedata = Mypage(
-        title: rawData['title'],
-        content: rawData['content'],
-      );
+      List<Mypage> mypagedata = rawData.map((data) {
+        return Mypage(
+          title: data['title'],
+          content: data['content'],
+        );
+      }).toList();
 
       return mypagedata;
     } else {
-      throw Exception("Fail to load total data from the API");
+      throw Exception("Fail to load mypage data from the API");
     }
   }
 
@@ -488,6 +490,43 @@ class ApiManager {
     } catch (e) {
       print('에러 발생: $e');
 
+      throw e;
+    }
+  }
+
+  void sendMypage(String title, String content) async {
+    String endpoint = "/api/userInfo";
+    baseUrl = "http://34.64.78.183:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "title": title,
+          "content": content,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception('Failed to make a POST request. Status code: ${response
+            .statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+      // 에러를 처리하거나 사용자에게 알릴 수 있음
+      // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
       throw e;
     }
   }

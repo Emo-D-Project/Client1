@@ -9,16 +9,12 @@ import 'network/api_manager.dart';
 import 'models/TotalData.dart';
 
 final DateTime title = DateTime(2023, 3, 22); // 가장 많은 일기의 날짜
-final DateTime start = DateTime(2023, 8, 25); //처음 시작한 날
-final DateTime many = DateTime(2023, 6); // 몇년 몇월에 일기를 많이 작성한지
 
 final String imagepath = 'images/emotion/1.gif';
 final List<String> diaryimage = ['images/send/sj1.jpg','images/send/sj3.jpg','images/send/sj2.jpg','images/send/sj1.jpg'];
 final String voice = "yes";
 final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
 
-//final String start = DateTime.now().toString();
-//String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 
 class fullStatistics extends StatefulWidget {
 

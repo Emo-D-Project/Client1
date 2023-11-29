@@ -16,10 +16,6 @@ final _answerEditController = TextEditingController(); //질문에 대한 답변
 
 
 class _mypageState extends State<mypage> {
-  var item1;
-  final List<String> question = [];
-  final List<String> answer = [];
-
   //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
   String login = "mine"; // 내 로그인 정보 담아두고
@@ -33,6 +29,8 @@ class _mypageState extends State<mypage> {
     });
   }
 
+  List<Map<String, dynamic>> mypages = [];
+
   @override
   void initState() {
     super.initState();
@@ -42,13 +40,15 @@ class _mypageState extends State<mypage> {
   late String title;
   late String content;
 
-  Mypage? myPageDatas;
+  late String tititle;
+
+  List<Mypage> myPageDatas = [];
 
   Future<void> fetchDataFromServer() async {
     try{
-     // final data = await apiManager.getMypageData();
+      final data = await apiManager.getMypageData();
       setState(() {
-       // myPageDatas = data!;
+      myPageDatas = data!;
       });
     }
     catch (error) {
@@ -78,6 +78,15 @@ class _mypageState extends State<mypage> {
     } catch (e) {
       print('Error: $e');
     }
+  }
+
+  void _sendMyPage() {
+    String title = tititle;
+    String content = _contentEditController.text;
+    apiManager.sendMypage(title, content);
+    _contentEditController.clear();
+
+    Navigator.of(context).pop();
   }
 
   //-------------------------------------------------------------------------------
@@ -128,7 +137,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 영화");
-                      myPageDatas!.title;
+                      tititle = "최애 영화";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -143,7 +152,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 노래");
-                      question.add("최애 노래");
+                      tititle = "최애 노래";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -158,7 +167,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "MBTI");
-                      question.add("MBTI");
+                      tititle = "MBTI";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -173,7 +182,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 드라마");
-                      question.add("최애 드라마");
+                      tititle = "최애 드라마";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -188,7 +197,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 색깔");
-                      question.add("최애 색깔");
+                      tititle = "최애 색깔";
 
                     },
                     style: ElevatedButton.styleFrom(
@@ -234,7 +243,7 @@ class _mypageState extends State<mypage> {
                 borderSide: BorderSide(color: Colors.black54,),
               ),
             ),
-            controller: _answerEditController,
+            controller: _contentEditController,
 
           ),
           actions: <Widget>[
@@ -255,12 +264,7 @@ class _mypageState extends State<mypage> {
                     backgroundColor: Color(0xFF7D5A50),
                     minimumSize: Size(150, 30)),
                 onPressed: () {
-                  setState(() {
-                    String answerText = _answerEditController.text;
-                    answer.add(answerText);
-                    _answerEditController.clear();
-                  });
-                  Navigator.of(context).pop();
+                  _sendMyPage();
                 }, //showContainer로 데이터 넘기기 // 디비에 저장하기
                 child: Text('확인',
                     style: TextStyle(
@@ -275,13 +279,9 @@ class _mypageState extends State<mypage> {
 
   @override
   Widget build(BuildContext context) {
-    //print("item1 ${item1}");
-    //print(question);
-    //print(answer);
     final SizeX = MediaQuery.of(context).size.width;
     final SizeY = MediaQuery.of(context).size.height;
 
-    //MyInfo myInfo = MyInfo().getMyInfo();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF8F5EB),
@@ -380,11 +380,11 @@ class _mypageState extends State<mypage> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(10),
-                      itemCount: answer.length,
+                      itemCount: myPageDatas.length,
                       itemBuilder: (BuildContext context, int index) {
                         return CustomQuestionContainer(
-                            vquestion: question[index],
-                            vanswer: answer[index]
+                            vquestion: myPageDatas[index].title,
+                          vanswer: myPageDatas[index].content,
                         );
                       },
                     ),
