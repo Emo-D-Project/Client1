@@ -26,6 +26,7 @@ class _MessageRoomState extends State<MessageRoom> {
 
   // 상대방과의 대화 나눈 메시지 리스트
   List<Message> messageList = [];
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   @override

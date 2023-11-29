@@ -3,7 +3,6 @@ class Diary {
   String content;
   String emotion;
   List<String> imagePath;
-  String diaryImage;
   String voice;
   int favoriteCount;
   bool favoriteColor;
@@ -14,7 +13,6 @@ class Diary {
     required this.content,
     required this.emotion,
     this.imagePath = const [],
-    this.diaryImage = "",
     this.voice = "",
     this.favoriteCount = 0,
     this.favoriteColor = false,
