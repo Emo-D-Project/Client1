@@ -4,11 +4,10 @@ class Comment {
   int id;
   int user_id;
 
-
   Comment({
     required this.post_id,
     required this.content,
     this.id = 0,
-    this.user_id=0,
+    this.user_id = 0,
   });
 }

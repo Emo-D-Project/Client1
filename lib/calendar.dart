@@ -2,7 +2,6 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import 'diaryReplay.dart';
 import 'models/Diary.dart';
 
@@ -15,11 +14,9 @@ class calendar extends StatefulWidget {
 
 class DiaryEntry {
   final DateTime date;
-  // Add other fields as needed
 
-  DiaryEntry({required this.date /* Add other parameters */});
+  DiaryEntry({required this.date});
 }
-
 
 class _calendarState extends State<calendar> {
   DateTime? selectedDay;
@@ -27,8 +24,7 @@ class _calendarState extends State<calendar> {
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  Map<DateTime, String> _events = {
-  };
+  Map<DateTime, String> _events = {};
 
   List<String> eventLoader(DateTime day) {
     // events 맵에서 해당 날짜에 대한 이벤트를 찾아 List로 반환합니다.
@@ -36,13 +32,11 @@ class _calendarState extends State<calendar> {
   }
 
   // 일기 데이터를 불러와서 여기 저장한다. 이 데이터로 사용자의 일기를 보여줌
-  List<Diary> _diaryEntries = [
-  ];
+  List<Diary> _diaryEntries = [];
 
   @override
   void initState() {
     super.initState();
-
     fetchDataFromServer();
   }
 
@@ -56,41 +50,12 @@ class _calendarState extends State<calendar> {
         _diaryEntries = diary_data!;
       });
     } catch (error) {
-      // Handle error
       print('Error fetching data: $error');
     }
   }
 
-  /*Widget _buildEventIcon(List events) {
-    return GestureDetector(
-      onTap: () {
-        // Add your logic for what happens when the event icon is tapped
-        print('Event icon t-apped!');
-        // You can navigate to a new screen, show a dialog, etc.
-      },
-      child: Container(
-        margin: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: Icon(
-            Icons.event,
-            color: Colors.white,
-            size: 12.0,
-          ),
-        ),
-      ),
-    );
-  }*/
-
-
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       body: Center(
@@ -107,8 +72,7 @@ class _calendarState extends State<calendar> {
               ),
             ],
             color: Color(0xFFD2C6BC),
-            borderRadius: BorderRadius.all(Radius.circular(10)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: TableCalendar(
             rowHeight: 65,
@@ -116,14 +80,13 @@ class _calendarState extends State<calendar> {
             lastDay: DateTime.utc(2025),
             focusedDay: _focusedDay,
             daysOfWeekHeight: 40,
-            //eventLoader: eventLoader,
             weekendDays: [DateTime.sunday],
             calendarBuilders: CalendarBuilders(
-
               // 사용자가 특별한 날 지정할 때 쓰는 뷸더
               prioritizedBuilder: (context, day, focusedDay) {
                 // Check if the current day has events
-                if (_events.containsKey(DateTime(day.year, day.month, day.day))) {
+                if (_events
+                    .containsKey(DateTime(day.year, day.month, day.day))) {
                   String image = "";
 
                   switch (_events[DateTime(day.year, day.month, day.day)]) {
@@ -155,7 +118,9 @@ class _calendarState extends State<calendar> {
                   // If there are events, highlight the cell with an image
                   Diary diary;
                   _diaryEntries.forEach((element) {
-                    if(element.date.day == day.day && element.date.month == day.month && element.date.year == day.year){
+                    if (element.date.day == day.day &&
+                        element.date.month == day.month &&
+                        element.date.year == day.year) {
                       diary = element;
                     }
                   });
@@ -163,12 +128,17 @@ class _calendarState extends State<calendar> {
                     // 이벤트가 있는 날짜를 클릭 시 해당 일기 보여주는 부분
                     onTap: () {
                       // 선택한 날짜에 대한 일기 항목 가져오기
-                      Diary diary = getDiaryForDate(DateTime(day.year, day.month, day.day));
+                      Diary diary = getDiaryForDate(
+                          DateTime(day.year, day.month, day.day));
                       // 선택한 날짜에 대한 일기 항목이 있는지 확인
                       if (diary != null) {
                         // 사용자에게 일기 내용 표시
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => diaryReplay(diary: diary,)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => diaryReplay(
+                                      diary: diary,
+                                    )));
                       }
                       // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
                       // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
@@ -183,12 +153,10 @@ class _calendarState extends State<calendar> {
                       ),
                     ),
                   );
-                } else{
+                } else {
                   return null;
                 }
-
               },
-
               dowBuilder: (context, day) {
                 switch (day.weekday) {
                   case 1:
@@ -280,7 +248,8 @@ class _calendarState extends State<calendar> {
             calendarStyle: CalendarStyle(
               cellAlignment: Alignment.center,
               isTodayHighlighted: true,
-              todayDecoration: BoxDecoration(color: Color(0xFFA67C7C), shape: BoxShape.circle),
+              todayDecoration: BoxDecoration(
+                  color: Color(0xFFA67C7C), shape: BoxShape.circle),
               outsideDaysVisible: false,
               weekendTextStyle: const TextStyle(
                 color: Colors.red,
@@ -301,7 +270,6 @@ class _calendarState extends State<calendar> {
     );
   }
 
-
   Diary getDiaryForDate(DateTime date) {
     // 주어진 날짜의 연, 월, 일을 추출합니다
     int year = date.year;
@@ -310,11 +278,14 @@ class _calendarState extends State<calendar> {
 
     // 일치하는 날짜 구성 요소를 가진 일기 항목 찾기
     return _diaryEntries.firstWhere(
-          (entry) =>
-      entry.date.year == year &&
+      (entry) =>
+          entry.date.year == year &&
           entry.date.month == month &&
           entry.date.day == day,
-      orElse: () => Diary( date: DateTime(year, month, day), content: '', emotion: ''), // 기본 값으로 빈 일기 생성
+      orElse: () => Diary(
+          date: DateTime(year, month, day),
+          content: '',
+          emotion: ''), // 기본 값으로 빈 일기 생성
     );
   }
 }

@@ -3,10 +3,8 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
-import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:permission_handler/permission_handler.dart';
@@ -37,44 +35,6 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
-  // Future<void> GetWriteDiary(String endpoint) async {
-  //   try {
-  //     final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-  //
-  //     // 요청 응답 받기
-  //     final value = response['key']; // 키를 통해 value를 받아오기
-  //     print('Data: $value');
-  //
-  //     //title = response['title'];
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
-
-  // onpress():
-  //      PostExample("/api/message");
-  //
-  // 다른버튼 onperss():
-  //       PostExample("api/title");
-
-  // Future<void> PostWriteDiary(String endpoint) async {
-  //   ApiManager apiManager = ApiManager().getApiManager();
-  //
-  //   try {
-  //     final postData = {
-  //       'content': content,
-  //       'emotion': sendEmotion,
-  //       'is_share': _isCheckedShare,
-  //       'is_comm': _isChecked,
-  //       //오디오 전송
-  //     };
-  //     //print(postData);
-  //     await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
-
   final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
@@ -93,9 +53,7 @@ class _writediaryState extends State<writediary> {
   @override
   void initState() {
     super.initState();
-
     playAudio();
-
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
 
@@ -126,7 +84,6 @@ class _writediaryState extends State<writediary> {
     soundPlayer.stopPlayer(); // 재생 중인 오디오를 정지시킴
     recorder.closeRecorder();
     audioPlayer.dispose();
-
     super.dispose();
   }
 
@@ -165,7 +122,6 @@ class _writediaryState extends State<writediary> {
     }
   }
 
-
   Future initRecorder() async {
     final status = await Permission.microphone.request();
 
@@ -186,20 +142,19 @@ class _writediaryState extends State<writediary> {
     if (!isRecording) return;
     await recorder.startRecorder(toFile: 'audio');
   }
+
   //저장함수
   Future<String> saveRecordingLocally() async {
     if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
 
     final audioFile = File(audioPath);
     if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
-
     try {
       final directory = await getApplicationDocumentsDirectory();
       final newPath =
-          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+      p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
       final newFile = File(p.join(
           newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
-
       if (!(await newFile.parent.exists())) {
         await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
       }
@@ -218,7 +173,6 @@ class _writediaryState extends State<writediary> {
 
   // 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
   Future<void> stop() async {
-
     final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
     audioPath = path!;
 
@@ -297,8 +251,14 @@ class _writediaryState extends State<writediary> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
+    final sizeX = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final sizeY = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -307,7 +267,6 @@ class _writediaryState extends State<writediary> {
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Container(
-          //decoration: BoxDecoration(color: Colors.amber),
           child: (() {
             switch (widget.emotion) {
               case 'smile':
@@ -371,7 +330,6 @@ class _writediaryState extends State<writediary> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               print("PostExample 실행");
-              //PostWriteDiary("/api/diaries/create");
             },
             icon: Image.asset(
               "images/send/upload.png",
@@ -420,7 +378,6 @@ class _writediaryState extends State<writediary> {
                                   width: 200,
                                   height: 150, // 이미지 높이 조절
                                   child: PageView.builder(
-                                    //listview로 하면 한장씩 안넘어가서 페이지뷰함
                                     scrollDirection: Axis.horizontal,
                                     itemCount: diaryImage.length > 3
                                         ? 3
@@ -430,7 +387,7 @@ class _writediaryState extends State<writediary> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(5),
+                                              BorderRadius.circular(5),
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
                                                 image: FileImage(
@@ -443,101 +400,74 @@ class _writediaryState extends State<writediary> {
                                     },
                                   )),
                             ),
-                            // Container(
-                            //     margin: EdgeInsets.all(10),
-                            //     //color: Colors.amber,
-                            //     width: 200,
-                            //     height: 150,
-                            //     child: GridView.builder(
-                            //         padding: EdgeInsets.all(0),
-                            //         shrinkWrap: true,
-                            //         itemCount: images.length,
-                            //         gridDelegate:
-                            //             SliverGridDelegateWithFixedCrossAxisCount(
-                            //           crossAxisCount: 3,
-                            //           childAspectRatio: 1 / 1,
-                            //           mainAxisSpacing: 10,
-                            //           crossAxisSpacing: 10,
-                            //         ),
-                            //         itemBuilder:
-                            //             (BuildContext context, int index) {
-                            //           print(
-                            //               "Image size: ${File(images[index]!.path).lengthSync()} bytes");
-                            //           return Container(
-                            //             decoration: BoxDecoration(
-                            //                 borderRadius:
-                            //                     BorderRadius.circular(5),
-                            //                 image: DecorationImage(
-                            //                   fit: BoxFit.cover,
-                            //                   image: FileImage(
-                            //                     File(images[index]!.path),
-                            //                   ),
-                            //                 )),
-                            //           );
-                            //         })),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                          child: Column(
-                            children: [
-                              SliderTheme(
-                                data: SliderThemeData(
-                                  inactiveTrackColor: Color(0xFFF8F5EB),
-                                ),
-                                child: Slider(
-                                  min: 0,
-                                  max: duration.inSeconds.toDouble(),
-                                  value: position.inSeconds.toDouble(),
-                                  onChanged: (value) async {
-                                    final position = Duration(seconds: value.toInt());
-                                    await audioPlayer.seek(position);
-                                    await audioPlayer.resume();
-                                  },
-                                  activeColor: Color(0xFF968C83),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      formatTime(position),
-                                      style: TextStyle(color: Colors.brown),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                              child: Column(
+                                children: [
+                                  SliderTheme(
+                                    data: SliderThemeData(
+                                      inactiveTrackColor: Color(0xFFF8F5EB),
                                     ),
-                                    SizedBox(width: 20),
-                                    CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: Colors.transparent,
-                                      child: IconButton(
-                                        padding: EdgeInsets.only(bottom: 50),
-                                        icon: Icon(
-                                          isPlaying ? Icons.pause : Icons.play_arrow,
-                                          color: Colors.brown,
+                                    child: Slider(
+                                      min: 0,
+                                      max: duration.inSeconds.toDouble(),
+                                      value: position.inSeconds.toDouble(),
+                                      onChanged: (value) async {
+                                        final position = Duration(
+                                            seconds: value.toInt());
+                                        await audioPlayer.seek(position);
+                                        await audioPlayer.resume();
+                                      },
+                                      activeColor: Color(0xFF968C83),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceBetween,
+                                      children: [
+                                        Text(
+                                          formatTime(position),
+                                          style: TextStyle(color: Colors.brown),
                                         ),
-                                        iconSize: 25,
-                                        onPressed: () async {
-                                          if (isPlaying) {
-                                            await audioPlayer.pause();
-                                            setState(() {
-                                              isPlaying = false;
-                                            });
-                                          } else {
-                                            await playAudio(); // 녹음된 오디오 재생
-                                          }
-                                        },
-                                      ),
+                                        SizedBox(width: 20),
+                                        CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: Colors.transparent,
+                                          child: IconButton(
+                                            padding: EdgeInsets.only(
+                                                bottom: 50),
+                                            icon: Icon(
+                                              isPlaying ? Icons.pause : Icons
+                                                  .play_arrow,
+                                              color: Colors.brown,
+                                            ),
+                                            iconSize: 25,
+                                            onPressed: () async {
+                                              if (isPlaying) {
+                                                await audioPlayer.pause();
+                                                setState(() {
+                                                  isPlaying = false;
+                                                });
+                                              } else {
+                                                await playAudio(); // 녹음된 오디오 재생
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        Text(
+                                          formatTime(duration),
+                                          style: TextStyle(color: Colors.brown),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 20),
-                                    Text(
-                                      formatTime(duration),
-                                      style: TextStyle(color: Colors.brown),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                                  )
+                                ],
+                              ),
+                            ),
                             //음성
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -548,9 +478,9 @@ class _writediaryState extends State<writediary> {
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1.0,
-                                ))),
+                                          color: Colors.transparent,
+                                          width: 1.0,
+                                        ))),
                               ),
                             )
                           ],
@@ -566,11 +496,11 @@ class _writediaryState extends State<writediary> {
                             child: IconButton(
                               onPressed: () async {
                                 final List<XFile> image =
-                                    await _picker.pickMultiImage();
+                                await _picker.pickMultiImage();
                                 setState(() {
                                   diaryImage.addAll(image);
                                 });
-                                                            },
+                              },
                               icon: Image.asset(
                                 "images/main/gallery.png",
                                 width: 35,

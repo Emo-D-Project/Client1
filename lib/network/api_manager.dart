@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'package:capston1/comment.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
-import 'package:drift/drift.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../calendar.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
 import '../models/Message.dart';
@@ -29,48 +26,52 @@ class ApiManager {
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
-    final response = await http.get(Uri.parse('$baseUrl$endpoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endpoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
     );
 
-
-    if (response.statusCode == 200) { // 통신 성공 시
+    if (response.statusCode == 200) {
+      // 통신 성공 시
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data from the API');
     }
   }
-
 
   Future<List<dynamic>> GetList(String endpoint) async {
     String accessToken = tokenManager.getAccessToken();
 
-    final response = await http.get(Uri.parse('$baseUrl$endpoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endpoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
     );
 
-    if (response.statusCode == 200) { // 통신 성공 시
+    if (response.statusCode == 200) {
+      // 통신 성공 시
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data from the API');
     }
   }
 
-  Future<List<dynamic>> GetListWithHeadData(String endpoint,
-      String data) async {
+  Future<List<dynamic>> GetListWithHeadData(
+      String endpoint, String data) async {
     String accessToken = tokenManager.getAccessToken();
 
-    final response = await http.get(Uri.parse('$baseUrl$endpoint/$data'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endpoint/$data'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
     );
 
-    if (response.statusCode == 200) { // 통신 성공 시
+    if (response.statusCode == 200) {
+      // 통신 성공 시
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data from the API');
@@ -101,8 +102,8 @@ class ApiManager {
         return response.data;
       } else {
         print("응답 코드: ${response.statusCode}");
-        throw Exception('Failed to make a POST request. Status code: ${response
-            .statusCode}');
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -112,19 +113,19 @@ class ApiManager {
     }
   }
 
-
   Future<Map<String, dynamic>> Get(String endpoint) async {
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
-    final response = await http.get(Uri.parse('$baseUrl$endpoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endpoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
     );
 
-
-    if (response.statusCode == 200) { // 통신 성공 시
+    if (response.statusCode == 200) {
+      // 통신 성공 시
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data from the API');
@@ -135,13 +136,15 @@ class ApiManager {
   Future<Map<String, dynamic>> getServerToken(String kakaoAccessToken) async {
     String endpoint = "/user/auth/kakao";
 
-    final response = await http.get(Uri.parse('$baseUrl/$endpoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl/$endpoint'),
       headers: <String, String>{
         'kakaoAccessToken': 'Bearer $kakaoAccessToken', // 요청 헤더 설정
       },
     );
 
-    if (response.statusCode == 200) { // 통신 성공 시
+    if (response.statusCode == 200) {
+      // 통신 성공 시
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data from the API');
@@ -160,35 +163,31 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/calendars/date";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
     );
 
-    if (response.statusCode == 200) { // 통신 성공 시
+    if (response.statusCode == 200) {
+      // 통신 성공 시
       print("getCalendarData에서 서버로부터 받아온 데이터의 body : " + response.body);
 
-      Map<DateTime, String> output = convertToDateTimeMap(
-          json.decode(response.body));
+      Map<DateTime, String> output =
+          convertToDateTimeMap(json.decode(response.body));
       return output;
     } else {
       throw Exception('Failed to load data from the API');
     }
-    // Make an API request to fetch diary data
-    // Parse the response and return a map of DateTime to List<DiaryEntry>
-    return {
-      DateTime(2023, 11, 1): "angry",
-      DateTime(2023, 11, 2): "flutter",
-      // Additional entries for other dates
-    };
   }
 
   Future<List<ChatRoom>> getChatList() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/messages/chatList";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -218,7 +217,8 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/diaries/mine/{userid}";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -232,8 +232,7 @@ class ApiManager {
         return Diary(
             date: DateTime.parse(data['createdAt']),
             content: data['content'],
-            emotion: data['emotion']
-        );
+            emotion: data['emotion']);
       }).toList();
 
       return diaries;
@@ -298,13 +297,12 @@ class ApiManager {
         print("post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
-        throw Exception('Failed to make a POST request. Status code: ${response
-            .statusCode}');
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
-      // 에러를 처리하거나 사용자에게 알릴 수 있음
-      // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
+
       throw e;
     }
   }
@@ -313,7 +311,8 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/read";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -344,7 +343,8 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/report/analysis";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -376,7 +376,8 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/userInfo";
 
-    final response = await http.get(Uri.parse('$baseUrl$endPoint'),
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -417,7 +418,7 @@ class ApiManager {
 
       List<Diary> diaries = rawData.map((data) {
         return Diary(
-          content: data['content'] ,
+          content: data['content'],
           date: DateTime.parse(data['createdAt']),
           emotion: data['emotion'],
           userId: data['user_id'] as int ?? 0,
@@ -444,20 +445,18 @@ class ApiManager {
 
     final response = await http.put(
       Uri.parse('$baseUrl$endPoint'),
-
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
     );
     if (response.statusCode == 200) {
-
     } else {
-      throw Exception("좋아요 오류  : ${response.statusCode}");
+      throw Exception("Fail to load favorite data from the API : ${response.statusCode}");
     }
   }
 
 //post 댓글작성
-  void sendComment (String content, int postId) async {
+  void sendComment(String content, int postId) async {
     String endpoint = "/api/comments/create";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
@@ -475,7 +474,6 @@ class ApiManager {
         data: {
           "content": content,
           "postId": postId,
-
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
@@ -484,8 +482,8 @@ class ApiManager {
         print("post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
-        throw Exception('Failed to make a POST request. Status code: ${response
-            .statusCode}');
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -511,18 +509,18 @@ class ApiManager {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
       print("diary Comment list data: " + response.body);
 
-      List<Comment>comment = rawData.map((data) {
+      List<Comment> comment = rawData.map((data) {
         return Comment(
           content: data['content'],
-          user_id: data['user_id'] ,
-          post_id: data['post_id'] ,
+          user_id: data['user_id'],
+          post_id: data['post_id'],
           id: data['id'],
         );
       }).toList();
 
       return comment;
     } else {
-      throw Exception("Fail to load diary data from the API");
+      throw Exception("Fail to load comment data from the API");
     }
   }
 
@@ -552,18 +550,13 @@ class ApiManager {
         print("post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
-        throw Exception('Failed to make a POST request. Status code: ${response
-            .statusCode}');
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
-      // 에러를 처리하거나 사용자에게 알릴 수 있음
-      // 예를 들어, ScaffoldMessenger 또는 showDialog를 사용하여 에러 메시지 표시
+
       throw e;
     }
   }
-
-
 }
-
-

@@ -1,21 +1,8 @@
 import 'package:capston1/main.dart';
 import 'package:capston1/MessageRoom.dart';
-import 'package:capston1/MessageRoom.dart';
-import 'package:capston1/models/Message.dart';
-import 'package:capston1/models/MessageData.dart';
-import 'package:capston1/screens/ChatRoomScreen.dart';
-import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'MessageRoom.dart';
-import 'MessageRoom.dart';
-import 'message_write.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
-
-
-
-
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -42,9 +29,7 @@ Widget A_good = Row(
   ],
 );
 
-//---------------------------------------------------------------------------------------
-
-final DateTime smonth = DateTime(DateTime.now().month, 3);  // ~월의 감정 통지서
+final DateTime smonth = DateTime(DateTime.now().month, 3); // ~월의 감정 통지서
 
 class shareData {
   final DateTime smonth;
@@ -58,7 +43,8 @@ class shareData {
 class A_Emod extends StatefulWidget {
   final DateTime stitle;
 
-  const A_Emod({super.key,
+  const A_Emod({
+    super.key,
     required this.stitle,
   });
 
@@ -94,7 +80,7 @@ class _A_EmodState extends State<A_Emod> {
               ),
             ),
             Text(
-              '${smonth.month}월의 감정 통지서가 도착했습니다!' ,
+              '${smonth.month}월의 감정 통지서가 도착했습니다!',
               style: TextStyle(fontFamily: 'soojin', fontSize: 13),
             ),
           ],
@@ -104,10 +90,8 @@ class _A_EmodState extends State<A_Emod> {
         )
       ],
     );
-    ;
   }
 }
-//---------------------------------------------------------------------------------------
 
 //알람 - 댓글 알람
 Widget A_Chat = Row(
@@ -170,8 +154,6 @@ Widget A_Question = Row(
   ],
 );
 
-//---------------------------------------------------------------------------------------
-
 //알람- 쪽지 알람
 Widget A_Message = Row(
   children: [
@@ -195,9 +177,6 @@ Widget A_Message = Row(
     )
   ],
 );
-
-
-//---------------------------------------------------------------------------------------
 
 class alrampage extends StatelessWidget {
   const alrampage({super.key});
@@ -248,8 +227,6 @@ class alrampage extends StatelessWidget {
   }
 }
 
-//---------------------------------------------------------------------------------------
-
 // 언제 뭔 알람 온지
 class Item {
   String title;
@@ -265,7 +242,9 @@ class FirstScreen extends StatelessWidget {
     final sizeX = MediaQuery.of(context).size.width;
 
     List<Item> itemList = [
-      Item(title: '오늘', contentList: [A_good, A_good, A_Emod(stitle: smonth), A_Question]),
+      Item(
+          title: '오늘',
+          contentList: [A_good, A_good, A_Emod(stitle: smonth), A_Question]),
       Item(title: '어제', contentList: [A_Chat, A_Message]),
       Item(title: '5일전', contentList: [A_Question, A_good, A_good]),
     ];
@@ -359,29 +338,22 @@ class FirstScreen extends StatelessWidget {
   }
 }
 
-
-//---------------------------------------------------------------------------------------
-
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
-
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
 
 class _SecondScreenState extends State<SecondScreen> {
-  //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
 
   late String message_content = " ";
-  late int sender_Id ;
+  late int sender_Id;
+
   late int receiver_Id;
   late DateTime sentAt;
 
-  List<ChatRoom> chatRooms = [
-    //ChatRoom(id: "2", name: "Room 2"),
-    // ... 다른 채팅방들
-  ];
+  List<ChatRoom> chatRooms = [];
 
   @override
   void initState() {
@@ -392,17 +364,15 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   Future<void> fetchDataFromServer() async {
-    try{
+    try {
       final data = await apiManager.getChatList();
       setState(() {
         chatRooms = data! as List<ChatRoom>;
       });
-    }
-    catch (error) {
+    } catch (error) {
       // 에러 제어하는 부분
       print('Error getting chat list: $error');
     }
-
   }
 
   // 화면을 갱신하는 메서드
@@ -414,8 +384,6 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   // 서버에서 가져온 가상의 채팅방 목록
-
-
   Future<void> GetMessage(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
@@ -424,8 +392,6 @@ class _SecondScreenState extends State<SecondScreen> {
       final value = response['content']; // 키를 통해 value를 받아오기
       print('content: $value');
       message_content = value;
-
-      //title = response['title'];
     } catch (e) {
       print('Error: $e');
     }
@@ -437,8 +403,6 @@ class _SecondScreenState extends State<SecondScreen> {
       final value = response['senderId']; // 키를 통해 value를 받아오기
       print('senderId: $value');
       sender_Id = value;
-
-      //title = response['title'];
     } catch (e) {
       print('Error: $e');
     }
@@ -450,8 +414,6 @@ class _SecondScreenState extends State<SecondScreen> {
       final value = response['receiverId']; // 키를 통해 value를 받아오기
       print('receiverId: $value');
       receiver_Id = value;
-
-      //title = response['title'];
     } catch (e) {
       print('Error: $e');
     }
@@ -464,8 +426,6 @@ class _SecondScreenState extends State<SecondScreen> {
       final value = response['sentAt']; // 키를 통해 value를 받아오기
       print('sentAt: $value');
       sentAt = value;
-
-      //title = response['title'];
     } catch (e) {
       print('Error: $e');
     }
@@ -487,11 +447,14 @@ class _SecondScreenState extends State<SecondScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MessageRoom(otherUserId: int.parse(chatRooms[index].id),)),
+                        builder: (context) => MessageRoom(
+                              otherUserId: int.parse(chatRooms[index].id),
+                            )),
                   ).then((value) async {
                     // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
                     // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
-                    await Future.delayed(Duration(milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
+                    await Future.delayed(Duration(
+                        milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
                     fetchDataFromServer();
                   });
                 },
@@ -547,22 +510,21 @@ class _SecondScreenState extends State<SecondScreen> {
                             padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             width: 20,
                             height: 20,
-                            child: Icon(Icons.circle, color: Colors.redAccent, size: 10),
+                            child: Icon(Icons.circle,
+                                color: Colors.redAccent, size: 10),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-
               );
             },
-            separatorBuilder: (BuildContext context, int index) =>
-                Divider(
-                  height: 10,
-                  thickness: 1.0,
-                  color: Color(0xff7D5A50),
-                ),
+            separatorBuilder: (BuildContext context, int index) => Divider(
+              height: 10,
+              thickness: 1.0,
+              color: Color(0xff7D5A50),
+            ),
           ),
         ),
       ],
