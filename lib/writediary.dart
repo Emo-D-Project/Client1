@@ -75,13 +75,13 @@ class _writediaryState extends State<writediary> {
   //   }
   // }
 
-
   final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
   bool isRecording = false;
   String audioPath = '';
+  String playAudioPath = '';
 
   //재생에 필요한 것들
   final AudioPlayer audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
@@ -94,7 +94,7 @@ class _writediaryState extends State<writediary> {
   void initState() {
     super.initState();
 
-    //playRecording();
+    playAudio();
 
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
@@ -130,49 +130,41 @@ class _writediaryState extends State<writediary> {
     super.dispose();
   }
 
-  // Future<void> playRecording() async {
+  // Future<void> playAudio() async {
   //   try {
-  //     File audioFile = File(audioPath);
-  //     if (await audioFile.exists()) {
-  //       print("audioPath : $audioPath");
-  //       print("audioFile: $audioFile");
-  //
-  //       final Uri uri = Uri.parse(audioFile.path);
-  //       final UriAudioSource audioSource = UriAudioSource(uri: uri);
-  //
-  //       await audioPlayer.setAudioSource(audioSource);
-  //       await audioPlayer.play();
+  //     if (await soundPlayer.isStopped) {
+  //       await soundPlayer.startPlayer(fromURI: playAudioPath);
+  //       setState(() {
+  //         isPlaying = true;
+  //       });
+  //       print('오디오 재생 시작: $playAudioPath');
   //     } else {
-  //       print('File does not exist');
+  //       print('오디오가 이미 재생 중입니다.');
   //     }
   //   } catch (e) {
-  //     print("Error playing Recording : $e");
+  //     print("audioPath : $playAudioPath");
+  //     print("오디오 재생 중 오류 발생 : $e");
   //   }
   // }
 
-  void onPlayButtonPressed() async {
-    if (!isPlaying) {
-      await playAudio(audioPath);
-    } else {
-      print('오디오가 이미 재생 중입니다.');
-    }
-  }
-
-  Future<void> playAudio(String audioPath) async {
+  Future<void> playAudio() async {
     try {
-      if (await soundPlayer.isStopped) {
-        await soundPlayer.startPlayer(fromURI: audioPath);
-        setState(() {
-          isPlaying = true;
-        });
-        print('오디오 재생 시작: $audioPath');
-      } else {
-        print('오디오가 이미 재생 중입니다.');
+      if (isPlaying == PlayerState.playing) {
+        await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
       }
+
+      await audioPlayer.setSourceDeviceFile(playAudioPath);
+      audioPlayer.play;
+      setState(() {
+        isPlaying = true;
+      });
+      print('오디오 재생 시작: $playAudioPath');
     } catch (e) {
+      print("audioPath : $playAudioPath");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }
+
 
   Future initRecorder() async {
     final status = await Permission.microphone.request();
@@ -215,6 +207,7 @@ class _writediaryState extends State<writediary> {
       await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
 
       print('Complete Saving recording: ${newFile.path}');
+      playAudioPath = newFile.path;
 
       return newFile.path; // 새로운 파일의 경로 반환
     } catch (e) {
@@ -529,7 +522,7 @@ class _writediaryState extends State<writediary> {
                                               isPlaying = false;
                                             });
                                           } else {
-                                            await playAudio(audioPath); // 녹음된 오디오 재생
+                                            await playAudio(); // 녹음된 오디오 재생
                                           }
                                         },
                                       ),
