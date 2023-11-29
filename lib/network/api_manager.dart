@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:capston1/comment.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
@@ -11,7 +12,7 @@ import '../models/Message.dart';
 import '../models/MonthData.dart';
 import '../models/TotalData.dart';
 import '../models/Mypage.dart';
-
+import '../models/Comment.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -457,7 +458,7 @@ class ApiManager {
 
 //post 댓글작성
   void sendComment (String content, int postId) async {
-    String endpoint = "/api/messages";
+    String endpoint = "/api/comments/create";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
@@ -490,6 +491,38 @@ class ApiManager {
       print('에러 발생: $e');
 
       throw e;
+    }
+  }
+
+//get 댓글 확인
+  Future<List<Comment>> getCommentData(int postId) async {
+    String accessToken = tokenManager.getAccessToken();
+
+    String endPoint = "/api/comments/read/${postId}";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("diary Comment list data: " + response.body);
+
+      List<Comment>comment = rawData.map((data) {
+        return Comment(
+          content: data['content'],
+          user_id: data['user_id'] ,
+          post_id: data['post_id'] ,
+          id: data['id'],
+        );
+      }).toList();
+
+      return comment;
+    } else {
+      throw Exception("Fail to load diary data from the API");
     }
   }
 

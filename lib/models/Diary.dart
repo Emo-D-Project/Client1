@@ -8,6 +8,7 @@ class Diary {
   bool favoriteColor;
   int userId;
   int diaryId;
+  int diaryComment;
 
   Diary({
     required this.date,
@@ -19,5 +20,6 @@ class Diary {
     this.favoriteCount = 0,
     this.favoriteColor = false,
     this.userId = 1,
+    this.diaryComment = 0,
   });
 }
