@@ -8,6 +8,7 @@ import 'package:capston1/models/Comment.dart';
 final cat_image = 'images/send/cat_real_image.png';
 
 class comment extends StatefulWidget {
+  final int postId;
   const comment({super.key, required this.postId});
 
   @override
