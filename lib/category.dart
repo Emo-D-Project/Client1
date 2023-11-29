@@ -1,14 +1,8 @@
 import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
-import 'package:capston1/notification.dart';
 import 'package:flutter/material.dart';
 import 'help.dart';
-import 'home.dart';
 import 'mypage.dart';
-import 'alramsetting.dart';
-import 'diaryReplay.dart';
-import 'notification.dart';
-import 'message_write.dart';
 import 'opinion.dart';
 
 class category extends StatefulWidget {
@@ -20,34 +14,31 @@ class category extends StatefulWidget {
 
 class _categoryState extends State<category> {
 
-  // @override
-  // void initState(){
-  //   FlutterLocalNotification.init();
-  //
-  //   Future.delayed(const Duration(seconds: 3),
-  //     FlutterLocalNotification.requestNotificationPermission()
-  //   );
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
+    final sizeX = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final sizeY = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Text("CATEGORY",
-          style: TextStyle(fontSize: 30, fontFamily: 'kim',color: Color(0xFF968C83),),
+          style: TextStyle(
+            fontSize: 30, fontFamily: 'kim', color: Color(0xFF968C83),),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => MyApp()));
           },
-          icon: Icon(Icons.arrow_back_ios,color: Color(0xFF968C83),),
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83),),
         ),
       ),
       body: Container(
@@ -90,8 +81,10 @@ class _categoryState extends State<category> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Text("유저 설정",style: TextStyle(fontSize: 15,fontFamily: 'soojin',color: Color(0xFF7D5A50)),)
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: Text("유저 설정", style: TextStyle(fontSize: 15,
+                          fontFamily: 'soojin',
+                          color: Color(0xFF7D5A50)),)
                   ), //유저 설정
                   SizedBox(
                     child: ElevatedButton(
@@ -105,9 +98,12 @@ class _categoryState extends State<category> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
+                          Icon(Icons.person_2_outlined, color: Colors.black,
+                            size: 25,),
                           SizedBox(width: 5,),
-                          Text("마이 페이지",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
+                          Text("마이 페이지", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -120,13 +116,17 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const alramsetting()));
+                            MaterialPageRoute(builder: (
+                                context) => const alramsetting()));
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.access_alarm, color: Colors.black,size: 25,),
+                          Icon(Icons.access_alarm, color: Colors.black,
+                            size: 25,),
                           SizedBox(width: 5,),
-                          Text("알람 설정",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
+                          Text("알람 설정", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -146,7 +146,9 @@ class _categoryState extends State<category> {
                 children: [
                   Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Text("지원",style: TextStyle(fontSize: 15,fontFamily: 'soojin',color: Color(0xFF7D5A50)))
+                      child: Text("지원", style: TextStyle(fontSize: 15,
+                          fontFamily: 'soojin',
+                          color: Color(0xFF7D5A50)))
                   ), //지원
                   SizedBox(
                     child: ElevatedButton(
@@ -154,15 +156,19 @@ class _categoryState extends State<category> {
                         elevation: 0.0,
                         backgroundColor: Colors.white,
                       ),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const opinion()));
+                            MaterialPageRoute(builder: (
+                                context) => const opinion()));
                       }, //=> FlutterLocalNotification.showNotification(),
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
+                          Icon(Icons.person_2_outlined, color: Colors.black,
+                            size: 25,),
                           SizedBox(width: 5,),
-                          Text("의견 보내기",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
+                          Text("의견 보내기", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -175,14 +181,17 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const help()));
-
+                            MaterialPageRoute(builder: (
+                                context) => const help()));
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
+                          Icon(Icons.person_2_outlined, color: Colors.black,
+                            size: 25,),
                           SizedBox(width: 5,),
-                          Text("자주 하는 질문",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
+                          Text("자주 하는 질문", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -202,7 +211,9 @@ class _categoryState extends State<category> {
                 children: [
                   Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Text("기타",style: TextStyle(fontSize: 15,fontFamily: 'soojin',color: Color(0xFF7D5A50)))
+                      child: Text("기타", style: TextStyle(fontSize: 15,
+                          fontFamily: 'soojin',
+                          color: Color(0xFF7D5A50)))
                   ), //기타
                   SizedBox(
                     child: ElevatedButton(
@@ -216,9 +227,12 @@ class _categoryState extends State<category> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.person_2_outlined, color: Colors.black,size: 25,),
+                          Icon(Icons.person_2_outlined, color: Colors.black,
+                            size: 25,),
                           SizedBox(width: 5,),
-                          Text("앱 정보",style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
+                          Text("앱 정보", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -235,7 +249,8 @@ class _categoryState extends State<category> {
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
-                          Text("로그아웃", style: TextStyle(color: Colors.black, fontFamily: 'soojin')),
+                          Text("로그아웃", style: TextStyle(
+                              color: Colors.black, fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -252,7 +267,9 @@ class _categoryState extends State<category> {
                       child: Row(
                         children: [
                           SizedBox(width: 30,),
-                          Text("회원탈퇴", style: TextStyle(color: Colors.black,fontSize: 15, fontFamily: 'soojin')),
+                          Text("회원탈퇴", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
                         ],
                       ),
                     ),
@@ -268,74 +285,87 @@ class _categoryState extends State<category> {
 }
 
 Future<dynamic> _showLogoutDialog(BuildContext context) {
-  final sizeY = MediaQuery.of(context).size.height;
+  final sizeY = MediaQuery
+      .of(context)
+      .size
+      .height;
 
   return showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (BuildContext context) => AlertDialog(
-      title: Text(' '),
-      content: SizedBox(
-        height: sizeY*0.05,
-        child: Center(child: Text("정말 로그아웃 하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),))
-      ),
-      actions: [
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                backgroundColor: Color(0x4D968C83),
-                minimumSize: Size(150, 30)
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20, fontFamily: 'soojin'))),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                backgroundColor: Color(0xFF7D5A50),
-                minimumSize: Size(150, 30)
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20, fontFamily: 'soojin'))),
-      ],
-    ),
+    builder: (BuildContext context) =>
+        AlertDialog(
+          title: Text(' '),
+          content: SizedBox(
+              height: sizeY * 0.05,
+              child: Center(child: Text(
+                "정말 로그아웃 하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),))
+          ),
+          actions: [
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0x4D968C83),
+                    minimumSize: Size(150, 30)
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('취소', style: TextStyle(
+                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0xFF7D5A50),
+                    minimumSize: Size(150, 30)
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('확인', style: TextStyle(
+                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+          ],
+        ),
   );
 }
 
 Future<dynamic> _showDialog(BuildContext context) {
-  final sizeY = MediaQuery.of(context).size.height;
+  final sizeY = MediaQuery
+      .of(context)
+      .size
+      .height;
 
   return showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (BuildContext context) => AlertDialog(
-      title: Text(' '),
-      content: SizedBox(
-        height: sizeY*0.07,
-        child: Center(
-          child: Text("회원 탈퇴 시, 작성된 일기들은 "
-              "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?",
-            style: TextStyle(fontFamily: 'soojin'),
+    builder: (BuildContext context) =>
+        AlertDialog(
+          title: Text(' '),
+          content: SizedBox(
+            height: sizeY * 0.07,
+            child: Center(
+              child: Text("회원 탈퇴 시, 작성된 일기들은 "
+                  "모두 삭제됩니다. 정말로 탈퇴하시겠습니까?",
+                style: TextStyle(fontFamily: 'soojin'),
+              ),
+            ),
           ),
+          actions: [
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0x4D968C83),
+                    minimumSize: Size(150, 30)
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                    '취소', style: TextStyle(color: Colors.black, fontSize: 20))),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0xFF7D5A50),
+                    minimumSize: Size(150, 30)
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                    '확인', style: TextStyle(color: Colors.black, fontSize: 20))),
+          ],
         ),
-      ),
-      actions: [
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                backgroundColor: Color(0x4D968C83),
-                minimumSize: Size(150, 30)
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('취소',style: TextStyle(color: Colors.black,fontSize: 20))),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                backgroundColor: Color(0xFF7D5A50),
-                minimumSize: Size(150, 30)
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('확인',style: TextStyle(color: Colors.black,fontSize: 20))),
-      ],
-    ),
   );
 }

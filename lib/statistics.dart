@@ -17,15 +17,17 @@ class statistics extends StatelessWidget {
         title: Text(
           "EMO:D",
           style: TextStyle(
-              color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30
-          ),
+              color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MyApp()));
           },
-          icon: Icon(Icons.arrow_back_ios,color: Color(0xFF968C83),),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFF968C83),
+          ),
         ),
       ),
       body: Center(
@@ -50,9 +52,8 @@ class statistics extends StatelessWidget {
                                   builder: (context) => monthlyStatistics()));
                         },
                         icon: Image.asset(
-                          'images/emotion/catimage.png',
-                        )
-                    ),
+                          'images/emotion/footprint.png',
+                        )),
                   ),
                   Text("이달의 감정")
                 ],
@@ -76,14 +77,12 @@ class statistics extends StatelessWidget {
                                     builder: (context) => gatherEmotion()));
                           },
                           icon: Image.asset(
-                            'images/emotion/catimage.png',
-                          )
-                      ),
+                            'images/emotion/footprint.png',
+                          )),
                     ),
                     Text("감정 모아보기")
                   ],
-                )
-            ), //감정별 모아보기
+                )), //감정별 모아보기
             Container(
               margin: EdgeInsets.fromLTRB(0, 70, 100, 40),
               child: Column(
@@ -99,14 +98,11 @@ class statistics extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => fullStatistics()
-                              )
-                          );
+                                  builder: (context) => fullStatistics()));
                         },
                         icon: Image.asset(
-                          'images/emotion/catimage.png',
-                        )
-                    ),
+                          'images/emotion/footprint.png',
+                        )),
                   ),
                   Text("감정 누적")
                 ],

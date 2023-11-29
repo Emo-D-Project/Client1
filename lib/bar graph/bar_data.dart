@@ -1,6 +1,6 @@
 import 'individual_bar.dart';
 
-class BarData{
+class BarData {
   final double smile;
   final double flutter;
   final double angry;
@@ -20,7 +20,8 @@ class BarData{
   });
 
   List<IndividualBar> barData = [];
-  void initializeBarData(){
+
+  void initializeBarData() {
     barData = [
       IndividualBar(x: 0, y: smile),
       IndividualBar(x: 1, y: flutter),
@@ -31,5 +32,4 @@ class BarData{
       IndividualBar(x: 6, y: calmness),
     ];
   }
-
 }

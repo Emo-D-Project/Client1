@@ -1,6 +1,6 @@
 import 'pieIN.dart';
 
-class PieData{
+class PieData {
   final double smile;
   final double flutter;
   final double angry;
@@ -20,7 +20,8 @@ class PieData{
   });
 
   List<IndividualPie> pieData = [];
-  void initializePieData(){
+
+  void initializePieData() {
     pieData = [
       if (smile.isFinite && smile >= 0) IndividualPie(x: smile),
       if (flutter.isFinite && flutter >= 0) IndividualPie(x: flutter),
@@ -31,5 +32,4 @@ class PieData{
       if (calmness.isFinite && calmness >= 0) IndividualPie(x: calmness),
     ];
   }
-
 }

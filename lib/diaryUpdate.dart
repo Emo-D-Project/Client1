@@ -1,17 +1,12 @@
 import 'package:capston1/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:timer_builder/timer_builder.dart';
-import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'diaryUpdate.dart';
 import 'models/Diary.dart';
 
 class diaryUpdate extends StatefulWidget {
   final Diary diary;
+
   const diaryUpdate({super.key, required this.diary});
 
   @override
@@ -29,19 +24,16 @@ class _diaryUpdateState extends State<diaryUpdate> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
-  _diaryUpdateState(Diary diary){
+  _diaryUpdateState(Diary diary) {
     this.diary = diary;
   }
-
-
 
   @override
   void initState() {
     super.initState();
+    setAudio();
 
     _diaryController = TextEditingController(text: diary!.content);
-
-    setAudio();
 
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -63,9 +55,8 @@ class _diaryUpdateState extends State<diaryUpdate> {
   }
 
   Future setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-
     String url = ' ';
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
     audioPlayer.setSourceUrl(url);
   }
 
@@ -84,132 +75,111 @@ class _diaryUpdateState extends State<diaryUpdate> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0.0,
-        backgroundColor: Color(0xFFF8F5EB),
-        title: Container(
-          child: (() {
-            switch (diary?.emotion) {
-              case 'smile':
-                return Image.asset(
-                  'images/emotion/1.gif',
-                  height: 50,
-                  width: 50,
-                );
-              case 'flutter':
-                return Image.asset(
-                  'images/emotion/2.gif',
-                  height: 50,
-                  width: 50,
-                );
-              case 'angry':
-                return Image.asset(
-                  'images/emotion/angry.png',
-                  height: 50,
-                  width: 50,
-                );
-              case 'annoying':
-                return Image.asset(
-                  'images/emotion/4.gif',
-                  height: 50,
-                  width: 50,
-                );
-              case 'tired':
-                return Image.asset(
-                  'images/emotion/5.gif',
-                  height: 50,
-                  width: 50,
-                );
-              case 'sad':
-                return Image.asset(
-                  'images/emotion/6.gif',
-                  height: 50,
-                  width: 50,
-                );
-              case 'calmness':
-                return Image.asset(
-                  'images/emotion/7.gif',
-                  height: 50,
-                  width: 50,
-                );
-            }
-          })(),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0.0,
+          backgroundColor: Color(0xFFF8F5EB),
+          title: Container(
+            child: (() {
+              switch (diary?.emotion) {
+                case 'smile':
+                  return Image.asset(
+                    'images/emotion/smile.gif',
+                    height: 50,
+                    width: 50,
+                  );
+                case 'flutter':
+                  return Image.asset(
+                    'images/emotion/flutter.gif',
+                    height: 50,
+                    width: 50,
+                  );
+                case 'angry':
+                  return Image.asset(
+                    'images/emotion/angry.png',
+                    height: 50,
+                    width: 50,
+                  );
+                case 'annoying':
+                  return Image.asset(
+                    'images/emotion/annoying.gif',
+                    height: 50,
+                    width: 50,
+                  );
+                case 'tired':
+                  return Image.asset(
+                    'images/emotion/tired.gif',
+                    height: 50,
+                    width: 50,
+                  );
+                case 'sad':
+                  return Image.asset(
+                    'images/emotion/sad.gif',
+                    height: 50,
+                    width: 50,
+                  );
+                case 'calmness':
+                  return Image.asset(
+                    'images/emotion/calmness.gif',
+                    height: 50,
+                    width: 50,
+                  );
+              }
+            })(),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyApp()));
+            },
+            icon: Icon(Icons.arrow_back_ios),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyApp()));
+                },
+                icon: Icon(Icons.upload))
+          ],
         ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyApp()));
-          },
-          icon: Icon(Icons.arrow_back_ios),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyApp()));
-              },
-              icon: Icon(Icons.upload))
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFF8F5EB),
-        ),
-        padding : EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Expanded(
-          child: () {
-            if (diary!.imagePath.isNotEmpty  &&
-                diary!.voice == "") {
-              return customWidget1(
+        body: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFFF8F5EB),
+          ),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Expanded(
+            child: () {
+              if (diary!.imagePath.isNotEmpty && diary!.voice == "") {
+                return customWidget1(
                   sdate: diary!.date,
                   sdiaryImage: diary!.imagePath,
-              );
-            } else if (diary!.imagePath.isEmpty &&
-                diary!.voice == "") {
-              return customWidget2(
-                sdate: diary!.date,
-              );
-            } else if (diary!.imagePath.isEmpty &&
-                diary!.voice != "") {
-              return customwidget3(
-                sdate: diary!.date,
-                svoice: diary!.voice,
-              );
-            } else if (diary!.imagePath.isNotEmpty &&
-                diary!.voice != "") {
-              return customwidget4(
-                sdate: diary!.date,
-                sdiaryImage: diary!.imagePath,
-                svoice: diary!.voice,
-              );
-            }
-            else {
-              // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
-              return Container();
-            }
-          }(),
-        ),
-      )
-    );
+                );
+              } else if (diary!.imagePath.isEmpty && diary!.voice == "") {
+                return customWidget2(
+                  sdate: diary!.date,
+                );
+              } else if (diary!.imagePath.isEmpty && diary!.voice != "") {
+                return customwidget3(
+                  sdate: diary!.date,
+                  svoice: diary!.voice,
+                );
+              } else if (diary!.imagePath.isNotEmpty && diary!.voice != "") {
+                return customwidget4(
+                  sdate: diary!.date,
+                  sdiaryImage: diary!.imagePath,
+                  svoice: diary!.voice,
+                );
+              } else {
+                // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
+                return Container();
+              }
+            }(),
+          ),
+        ));
   }
-}
-
-class shareData {
-  final DateTime date;
-  final String diaryImage;
-  final String voice;
-
-  shareData({
-    required this.date,
-    required this.diaryImage,
-    required this.voice,
-  });
 }
 
 // 일기 버전 1 - 텍스트 + 사진
@@ -228,8 +198,6 @@ class customWidget1 extends StatefulWidget {
 }
 
 class _customWidget1State extends State<customWidget1> {
-
-//-----------------------
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -292,11 +260,13 @@ class _customWidget1State extends State<customWidget1> {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: widget.sdiaryImage.length > 3
                                       ? 3
-                                      : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                                      : widget.sdiaryImage.length,
+                                  // 최대 3장까지만 허용
                                   itemBuilder: (context, index) {
                                     return Container(
                                       child: Center(
-                                        child: Image.asset(widget.sdiaryImage[index]),
+                                        child: Image.asset(
+                                            widget.sdiaryImage[index]),
                                       ),
                                     );
                                   },
@@ -313,8 +283,8 @@ class _customWidget1State extends State<customWidget1> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                    ))),
+                              color: Colors.transparent,
+                            ))),
                           ),
                         ),
                       ],
@@ -392,11 +362,10 @@ class _customWidget2State extends State<customWidget2> {
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                ))),
+                          color: Colors.transparent,
+                        ))),
                       ),
                     ),
-
                   ),
                 ), //글
                 //수정버튼
@@ -423,7 +392,6 @@ class customwidget3 extends StatefulWidget {
 }
 
 class _customwidget3State extends State<customwidget3> {
-
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -433,7 +401,6 @@ class _customwidget3State extends State<customwidget3> {
   @override
   void initState() {
     super.initState();
-
     setAudio();
 
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -456,9 +423,8 @@ class _customwidget3State extends State<customwidget3> {
   }
 
   Future setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-
     String url = ' ';
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
     audioPlayer.setSourceUrl(url);
   }
 
@@ -475,7 +441,6 @@ class _customwidget3State extends State<customwidget3> {
     ].join(':');
   }
 
-//-----------------------
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -531,7 +496,7 @@ class _customwidget3State extends State<customwidget3> {
                                   value: position.inSeconds.toDouble(),
                                   onChanged: (value) async {
                                     final position =
-                                    Duration(seconds: value.toInt());
+                                        Duration(seconds: value.toInt());
                                     await audioPlayer.seek(position);
                                     await audioPlayer.resume();
                                   },
@@ -539,11 +504,11 @@ class _customwidget3State extends State<customwidget3> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       formatTime(position), // 진행중인 시간
@@ -602,8 +567,8 @@ class _customwidget3State extends State<customwidget3> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                    ))),
+                              color: Colors.transparent,
+                            ))),
                           ),
                         ),
                       ],
@@ -645,7 +610,6 @@ class _customwidget4State extends State<customwidget4> {
   @override
   void initState() {
     super.initState();
-
     setAudio();
 
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -668,9 +632,8 @@ class _customwidget4State extends State<customwidget4> {
   }
 
   Future setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-
     String url = ' ';
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
     audioPlayer.setSourceUrl(url);
   }
 
@@ -687,7 +650,6 @@ class _customwidget4State extends State<customwidget4> {
     ].join(':');
   }
 
-//-----------------------
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -709,22 +671,21 @@ class _customwidget4State extends State<customwidget4> {
               children: [
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Row(
-                      children: [
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Text(
-                          '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                          style: TextStyle(
-                            fontFamily: 'soojin',
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 135,
-                        ),
-                      ]),
+                  child: Row(children: [
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                      style: TextStyle(
+                        fontFamily: 'soojin',
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 135,
+                    ),
+                  ]),
                 ), //날짜
                 Expanded(
                   child: SingleChildScrollView(
@@ -740,11 +701,13 @@ class _customwidget4State extends State<customwidget4> {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: widget.sdiaryImage.length > 3
                                       ? 3
-                                      : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                                      : widget.sdiaryImage.length,
+                                  // 최대 3장까지만 허용
                                   itemBuilder: (context, index) {
                                     return Container(
                                       child: Center(
-                                        child: Image.asset(widget.sdiaryImage[index]),
+                                        child: Image.asset(
+                                            widget.sdiaryImage[index]),
                                       ),
                                     );
                                   },
@@ -765,7 +728,7 @@ class _customwidget4State extends State<customwidget4> {
                                   value: position.inSeconds.toDouble(),
                                   onChanged: (value) async {
                                     final position =
-                                    Duration(seconds: value.toInt());
+                                        Duration(seconds: value.toInt());
                                     await audioPlayer.seek(position);
                                     await audioPlayer.resume();
                                   },
@@ -773,11 +736,11 @@ class _customwidget4State extends State<customwidget4> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       formatTime(position), // 진행중인 시간
@@ -836,8 +799,8 @@ class _customwidget4State extends State<customwidget4> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                    ))),
+                              color: Colors.transparent,
+                            ))),
                           ),
                         ),
                       ],

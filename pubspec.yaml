@@ -57,6 +57,7 @@ dependencies:
   record: ^4.4.4
   permission_handler: ^11.0.1
   audioplayers: ^5.2.0
+  just_audio_cache: ^0.1.1
   dotted_border: ^2.1.0
   fl_chart: ^0.60.0
   flutter_local_notifications: ^16.1.0

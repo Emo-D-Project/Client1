@@ -1,21 +1,16 @@
-
 class MyInfo {
   static final MyInfo myInfo = new MyInfo();
   late String nickName;
 
-
-  MyInfo getMyInfo(){
+  MyInfo getMyInfo() {
     return myInfo;
   }
 
-  String getNickName(){
+  String getNickName() {
     return nickName;
   }
 
-  void setNickName(String newNickName){
+  void setNickName(String newNickName) {
     nickName = newNickName;
   }
-
-
 }
-
