@@ -25,8 +25,6 @@ class writediary extends StatefulWidget {
   State<writediary> createState() => _writediaryState();
 }
 
-var audioFile;
-
 class _writediaryState extends State<writediary> {
   final ImagePicker _picker = ImagePicker();
   List<XFile?> diaryImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
@@ -85,16 +83,18 @@ class _writediaryState extends State<writediary> {
   String audioPath = '';
 
   //재생에 필요한 것들
-  final audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
+  final AudioPlayer audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
+  final sound.FlutterSoundPlayer soundPlayer = sound.FlutterSoundPlayer();
   bool isPlaying = false; //현재 재생중인지
   Duration duration = Duration.zero; //총 시간
   Duration position = Duration.zero; //진행중인 시간
+  sound.FlutterSoundPlayer? _audioPalyer;
 
   @override
   void initState() {
     super.initState();
 
-    playRecording();
+    //playRecording();
 
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
@@ -123,22 +123,54 @@ class _writediaryState extends State<writediary> {
 
   @override
   void dispose() {
+    soundPlayer.stopPlayer(); // 재생 중인 오디오를 정지시킴
     recorder.closeRecorder();
     audioPlayer.dispose();
-
-    // audioRecord.dispose();
-    // audioPlayer.dispose();
 
     super.dispose();
   }
 
-  Future<void> playRecording() async {
+  // Future<void> playRecording() async {
+  //   try {
+  //     File audioFile = File(audioPath);
+  //     if (await audioFile.exists()) {
+  //       print("audioPath : $audioPath");
+  //       print("audioFile: $audioFile");
+  //
+  //       final Uri uri = Uri.parse(audioFile.path);
+  //       final UriAudioSource audioSource = UriAudioSource(uri: uri);
+  //
+  //       await audioPlayer.setAudioSource(audioSource);
+  //       await audioPlayer.play();
+  //     } else {
+  //       print('File does not exist');
+  //     }
+  //   } catch (e) {
+  //     print("Error playing Recording : $e");
+  //   }
+  // }
+
+  void onPlayButtonPressed() async {
+    if (!isPlaying) {
+      await playAudio(audioPath);
+    } else {
+      print('오디오가 이미 재생 중입니다.');
+    }
+  }
+
+  Future<void> playAudio(String audioPath) async {
     try {
-      Source urlSource = UrlSource(audioPath);
-      print("audioUrl: $urlSource");
-      await audioPlayer.play(urlSource);
+      if (await soundPlayer.isStopped) {
+        await soundPlayer.startPlayer(fromURI: audioPath);
+        setState(() {
+          isPlaying = true;
+        });
+        print('오디오 재생 시작: $audioPath');
+      } else {
+        print('오디오가 이미 재생 중입니다.');
+      }
     } catch (e) {
-      print("Error playing Recording : $e");
+      print("오디오 재생 중 오류 발생 : $e");
     }
   }
 
@@ -162,7 +194,7 @@ class _writediaryState extends State<writediary> {
     if (!isRecording) return;
     await recorder.startRecorder(toFile: 'audio');
   }
-//저장함수
+  //저장함수
   Future<String> saveRecordingLocally() async {
     if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
 
@@ -191,7 +223,7 @@ class _writediaryState extends State<writediary> {
     }
   }
 
-// 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
+  // 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
   Future<void> stop() async {
 
     final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
@@ -202,62 +234,7 @@ class _writediaryState extends State<writediary> {
     });
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
-
-    if (savedFilePath.isNotEmpty) {
-      final savedFile = File(savedFilePath);
-      if (savedFile.existsSync()) {
-        final fileContent = await savedFile.readAsString(); // 파일 내용 읽기
-        print('Content of saved file: $fileContent'); // 파일 내용 출력
-
-        // 새로운 AudioPlayer 인스턴스 생성
-        final audioPlayerForFile = AudioPlayer();
-
-        // 녹음된 파일을 AudioPlayer에 설정
-        await audioPlayerForFile.setSourceUrl(savedFilePath);
-
-        // 파일의 duration을 가져오기 위해 await 사용
-        final durationResult = await audioPlayerForFile.getDuration();
-
-        if (durationResult == null) {
-          // 파일의 duration을 가져올 수 없을 때 처리
-          print('Error: Cannot get duration of the file');
-        } else {
-          // 파일의 duration을 가져온 경우 UI에 반영
-          setState(() {
-            duration = durationResult;
-          });
-        }
-
-      } else {
-        print('Error: File does not exist');
-      }
-    } else {
-    }
   }
-  ///data/data/com.example.capston1/app_flutter/recordings/audio.mp3
-
-  // Future setAudio() async {
-  //   //audioPlayer.setReleaseMode(ReleaseMode.loop);
-  //
-  //   String url = ' ';
-  //   audioPlayer.setSourceUrl(url);
-  //
-  //   final result = await FilePicker.platform.pickFiles();
-  //
-  //   if(result !=null){
-  //   final file = File(result.files.single.path!);
-  //   audioPlayer.setSourceUrl(
-  //     '/data/user/0/com.example.capston1/cache/audio',
-  //   );
-  //   }
-  // }
-
-  // Future setAudio() async{
-  //   audioPlayer.setReleaseMode(ReleaseMode.loop);
-  //   String url = audioPath;
-  //   audioPlayer.setSourceUrl(url);
-  //   print('Playing audio: $url');
-  // }
 
   //파일 서버에 보내기
   //run(audioFile as String);
@@ -446,33 +423,31 @@ class _writediaryState extends State<writediary> {
                         child: Column(
                           children: [
                             SingleChildScrollView(
-                              child: Container(
+                              child: SizedBox(
                                   width: 200,
                                   height: 150, // 이미지 높이 조절
-                                  child: Container(
-                                    child: PageView.builder(
-                                      //listview로 하면 한장씩 안넘어가서 페이지뷰함
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: diaryImage.length > 3
-                                          ? 3
-                                          : diaryImage.length, // 최대 3장까지만 허용
-                                      itemBuilder: (context, index) {
-                                        return Center(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: FileImage(
-                                                    File(diaryImage[index]!
-                                                        .path),
-                                                  ),
-                                                )),
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                  child: PageView.builder(
+                                    //listview로 하면 한장씩 안넘어가서 페이지뷰함
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: diaryImage.length > 3
+                                        ? 3
+                                        : diaryImage.length, // 최대 3장까지만 허용
+                                    itemBuilder: (context, index) {
+                                      return Center(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: FileImage(
+                                                  File(diaryImage[index]!
+                                                      .path),
+                                                ),
+                                              )),
+                                        ),
+                                      );
+                                    },
                                   )),
                             ),
                             // Container(
@@ -507,80 +482,69 @@ class _writediaryState extends State<writediary> {
                             //                 )),
                             //           );
                             //         })),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                              child: Column(
-                                children: [
-                                  SliderTheme(
-                                    data: SliderThemeData(
-                                      inactiveTrackColor: Color(0xFFF8F5EB),
-                                    ),
-                                    child: Slider(
-                                      min: 0,
-                                      max: duration.inSeconds.toDouble(),
-                                      value: position.inSeconds.toDouble(),
-                                      onChanged: (value) async {
-                                        final position =
-                                            Duration(seconds: value.toInt());
-                                        await audioPlayer.seek(position);
-                                        await audioPlayer.resume();
-                                      },
-                                      activeColor: Color(0xFF968C83),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          formatTime(position), // 진행중인 시간
-                                          style: TextStyle(
-                                              color: Colors
-                                                  .brown), // Set text color to black
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        CircleAvatar(
-                                          radius: 15,
-                                          backgroundColor: Colors.transparent,
-                                          child: IconButton(
-                                            padding:
-                                                EdgeInsets.only(bottom: 50),
-                                            icon: Icon(
-                                              isPlaying
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
-                                              color: Colors.brown,
-                                            ),
-                                            iconSize: 25,
-                                            onPressed: () async {
-                                              if (isPlaying) {
-                                                await audioPlayer.pause();
-                                              } else {
-                                                await audioPlayer.resume();
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Text(
-                                          formatTime(duration), //총 시간
-                                          style: TextStyle(
-                                            color: Colors.brown,
-                                          ), // Set text color to black
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                        Container(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Column(
+                            children: [
+                              SliderTheme(
+                                data: SliderThemeData(
+                                  inactiveTrackColor: Color(0xFFF8F5EB),
+                                ),
+                                child: Slider(
+                                  min: 0,
+                                  max: duration.inSeconds.toDouble(),
+                                  value: position.inSeconds.toDouble(),
+                                  onChanged: (value) async {
+                                    final position = Duration(seconds: value.toInt());
+                                    await audioPlayer.seek(position);
+                                    await audioPlayer.resume();
+                                  },
+                                  activeColor: Color(0xFF968C83),
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      formatTime(position),
+                                      style: TextStyle(color: Colors.brown),
+                                    ),
+                                    SizedBox(width: 20),
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: Colors.transparent,
+                                      child: IconButton(
+                                        padding: EdgeInsets.only(bottom: 50),
+                                        icon: Icon(
+                                          isPlaying ? Icons.pause : Icons.play_arrow,
+                                          color: Colors.brown,
+                                        ),
+                                        iconSize: 25,
+                                        onPressed: () async {
+                                          if (isPlaying) {
+                                            await audioPlayer.pause();
+                                            setState(() {
+                                              isPlaying = false;
+                                            });
+                                          } else {
+                                            await playAudio(audioPath); // 녹음된 오디오 재생
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Text(
+                                      formatTime(duration),
+                                      style: TextStyle(color: Colors.brown),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                             //음성
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -610,12 +574,10 @@ class _writediaryState extends State<writediary> {
                               onPressed: () async {
                                 final List<XFile> image =
                                     await _picker.pickMultiImage();
-                                if (image != null) {
-                                  setState(() {
-                                    diaryImage.addAll(image);
-                                  });
-                                }
-                              },
+                                setState(() {
+                                  diaryImage.addAll(image);
+                                });
+                                                            },
                               icon: Image.asset(
                                 "images/main/gallery.png",
                                 width: 35,
