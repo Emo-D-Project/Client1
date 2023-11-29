@@ -7,11 +7,13 @@ class Diary {
   int favoriteCount;
   bool favoriteColor;
   int userId;
+  int diaryId;
 
   Diary({
     required this.date,
     required this.content,
     required this.emotion,
+    this.diaryId = 0,
     this.imagePath = const [],
     this.voice = "",
     this.favoriteCount = 0,
