@@ -23,18 +23,18 @@ List<String> content = [
 ];
 
 List<String> emo = [
-  'images/emotion/1.gif',
-  'images/emotion/2.gif',
-  'images/emotion/1.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
-  'images/emotion/2.gif',
+  'images/emotion/smile.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/smile.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
+  'images/emotion/flutter.gif',
 ];
 
 class gatherEmotion extends StatefulWidget {
@@ -157,13 +157,13 @@ class _gatherEmotionState extends State<gatherEmotion> {
                                   switch (emotion){
                                     case "smile":
                                       return Image.asset(
-                                        'images/emotion/1.gif',
+                                        'images/emotion/smile.gif',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "flutter":
                                       return Image.asset(
-                                        'images/emotion/2.gif',
+                                        'images/emotion/flutter.gif',
                                         width: 40,
                                         height: 40,
                                       );
@@ -175,25 +175,25 @@ class _gatherEmotionState extends State<gatherEmotion> {
                                       );
                                     case "annoying":
                                       return Image.asset(
-                                        'images/emotion/4.gif',
+                                        'images/emotion/annoying.gif',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "tired":
                                       return Image.asset(
-                                        'images/emotion/5.gif',
+                                        'images/emotion/tired.gif',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "sad":
                                       return Image.asset(
-                                        'images/emotion/6.gif',
+                                        'images/emotion/sad.gif',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "calmness":
                                       return Image.asset(
-                                        'images/emotion/7.gif',
+                                        'images/emotion/calmness.gif',
                                         width: 40,
                                         height: 40,
                                       );

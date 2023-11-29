@@ -131,25 +131,25 @@ class _calendarState extends State<calendar> {
                       image = 'images/emotion/angry.png';
                       break;
                     case "flutter":
-                      image = 'images/emotion/2.gif';
+                      image = 'images/emotion/flutter.gif';
                       break;
                     case "smile":
-                      image = 'images/emotion/1.gif';
+                      image = 'images/emotion/smile.gif';
                       break;
                     case "annoying":
-                      image = 'images/emotion/4.gif';
+                      image = 'images/emotion/annoying.gif';
                       break;
                     case "sad":
-                      image = 'images/emotion/6.gif';
+                      image = 'images/emotion/sad.gif';
                       break;
                     case "calmness":
-                      image = 'images/emotion/7.gif';
+                      image = 'images/emotion/calmness.gif';
                       break;
                     case "tired":
-                      image = 'images/emotion/5.gif';
+                      image = 'images/emotion/tired.gif';
                       break;
                     default:
-                      image = 'images/emotion/2.gif';
+                      image = 'images/emotion/flutter.gif';
                       break;
                   }
                   // If there are events, highlight the cell with an image

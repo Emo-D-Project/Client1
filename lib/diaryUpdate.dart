@@ -98,13 +98,13 @@ class _diaryUpdateState extends State<diaryUpdate> {
             switch (diary?.emotion) {
               case 'smile':
                 return Image.asset(
-                  'images/emotion/1.gif',
+                  'images/emotion/smile.gif',
                   height: 50,
                   width: 50,
                 );
               case 'flutter':
                 return Image.asset(
-                  'images/emotion/2.gif',
+                  'images/emotion/flutter.gif',
                   height: 50,
                   width: 50,
                 );
@@ -116,25 +116,25 @@ class _diaryUpdateState extends State<diaryUpdate> {
                 );
               case 'annoying':
                 return Image.asset(
-                  'images/emotion/4.gif',
+                  'images/emotion/annoying.gif',
                   height: 50,
                   width: 50,
                 );
               case 'tired':
                 return Image.asset(
-                  'images/emotion/5.gif',
+                  'images/emotion/tired.gif',
                   height: 50,
                   width: 50,
                 );
               case 'sad':
                 return Image.asset(
-                  'images/emotion/6.gif',
+                  'images/emotion/sad.gif',
                   height: 50,
                   width: 50,
                 );
               case 'calmness':
                 return Image.asset(
-                  'images/emotion/7.gif',
+                  'images/emotion/calmness.gif',
                   height: 50,
                   width: 50,
                 );

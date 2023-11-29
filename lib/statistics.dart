@@ -50,7 +50,7 @@ class statistics extends StatelessWidget {
                                   builder: (context) => monthlyStatistics()));
                         },
                         icon: Image.asset(
-                          'images/emotion/catimage.png',
+                          'images/emotion/footprint.png',
                         )
                     ),
                   ),
@@ -76,7 +76,7 @@ class statistics extends StatelessWidget {
                                     builder: (context) => gatherEmotion()));
                           },
                           icon: Image.asset(
-                            'images/emotion/catimage.png',
+                            'images/emotion/footprint.png',
                           )
                       ),
                     ),
@@ -104,7 +104,7 @@ class statistics extends StatelessWidget {
                           );
                         },
                         icon: Image.asset(
-                          'images/emotion/catimage.png',
+                          'images/emotion/footprint.png',
                         )
                     ),
                   ),

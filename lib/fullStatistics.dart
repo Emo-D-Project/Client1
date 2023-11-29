@@ -10,7 +10,7 @@ import 'models/TotalData.dart';
 
 final DateTime title = DateTime(2023, 3, 22); // 가장 많은 일기의 날짜
 
-final String imagepath = 'images/emotion/1.gif';
+final String imagepath = 'images/emotion/smile.gif';
 final List<String> diaryimage = ['images/send/sj1.jpg','images/send/sj3.jpg','images/send/sj2.jpg','images/send/sj1.jpg'];
 final String voice = "yes";
 final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
@@ -238,7 +238,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                  'images/emotion/1.gif',
+                                                  'images/emotion/smile.gif',
                                                 ),
                                                 fit: BoxFit.contain,
                                               ),
@@ -252,7 +252,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    'images/emotion/2.gif'),
+                                                    'images/emotion/flutter.gif'),
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
@@ -278,7 +278,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    'images/emotion/4.gif'),
+                                                    'images/emotion/annoying.gif'),
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
@@ -291,7 +291,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    'images/emotion/5.gif'),
+                                                    'images/emotion/tired.gif'),
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
@@ -304,7 +304,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    'images/emotion/6.gif'),
+                                                    'images/emotion/sad.gif'),
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
@@ -317,7 +317,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    'images/emotion/7.gif'),
+                                                    'images/emotion/calmness.gif'),
                                                 fit: BoxFit.contain,
                                               ),
                                             ),

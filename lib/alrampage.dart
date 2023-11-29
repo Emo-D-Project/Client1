@@ -179,7 +179,7 @@ Widget A_Message = Row(
       children: [
         Container(
           child: Image.asset(
-            'images/send/mail.png',
+            'images/send/real_chat.png',
             width: 15,
           ),
         ),

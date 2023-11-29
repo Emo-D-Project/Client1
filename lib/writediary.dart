@@ -319,13 +319,13 @@ class _writediaryState extends State<writediary> {
             switch (widget.emotion) {
               case 'smile':
                 return Image.asset(
-                  'images/emotion/1.gif',
+                  'images/emotion/smile.gif',
                   height: 45,
                   width: 45,
                 );
               case 'flutter':
                 return Image.asset(
-                  'images/emotion/2.gif',
+                  'images/emotion/flutter.gif',
                   height: 45,
                   width: 45,
                 );
@@ -337,25 +337,25 @@ class _writediaryState extends State<writediary> {
                 );
               case 'annoying':
                 return Image.asset(
-                  'images/emotion/4.gif',
+                  'images/emotion/annoying.gif',
                   height: 45,
                   width: 45,
                 );
               case 'tired':
                 return Image.asset(
-                  'images/emotion/5.gif',
+                  'images/emotion/tired.gif',
                   height: 45,
                   width: 45,
                 );
               case 'sad':
                 return Image.asset(
-                  'images/emotion/6.gif',
+                  'images/emotion/sad.gif',
                   height: 45,
                   width: 45,
                 );
               case 'calmness':
                 return Image.asset(
-                  'images/emotion/7.gif',
+                  'images/emotion/calmness.gif',
                   height: 45,
                   width: 45,
                 );

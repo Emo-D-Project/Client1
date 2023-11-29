@@ -15,13 +15,13 @@ import 'models/Diary.dart';
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
-  'images/emotion/7.gif',
-  'images/emotion/1.gif',
-  'images/emotion/2.gif',
+  'images/emotion/calmness.gif',
+  'images/emotion/smile.gif',
+  'images/emotion/flutter.gif',
   'images/emotion/angry.png',
-  'images/emotion/4.gif',
-  'images/emotion/5.gif',
-  'images/emotion/6.gif',
+  'images/emotion/annoying.gif',
+  'images/emotion/tired.gif',
+  'images/emotion/sad.gif',
 ];
 
 //String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
@@ -30,7 +30,7 @@ final List<String> imagePaths = [
 final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 
-String selectedImageEmotion = ' '; // 기본으로 'images/emotion/7.gif'를 선택
+String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
 
 //----------------------------------------
 
@@ -145,22 +145,22 @@ class _diaryshareState extends State<diaryshare> {
                   case 'images/emotion/angry.png':
                     emotion = "angry";
                     break;
-                  case "images/emotion/2.gif":
+                  case "images/emotion/flutter.gif":
                     emotion = 'flutter';
                     break;
-                  case "images/emotion/1.gif":
+                  case "images/emotion/smile.gif":
                     emotion = 'smile';
                     break;
-                  case "images/emotion/4.gif":
+                  case "images/emotion/annoying.gif":
                     emotion = 'annoying';
                     break;
-                  case "images/emotion/6.gif":
+                  case "images/emotion/sad.gif":
                     emotion = 'sad';
                     break;
-                  case "images/emotion/7.gif":
+                  case "images/emotion/calmness.gif":
                     emotion = 'calmness';
                     break;
-                  case "images/emotion/5.gif":
+                  case "images/emotion/tired.gif":
                     emotion = 'tired';
                     break;
                   default:
@@ -331,25 +331,25 @@ class _customWidget1State extends State<customWidget1> {
         imagePath = 'images/emotion/angry.png';
         break;
       case "flutter":
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
       case "smile":
-        imagePath = 'images/emotion/1.gif';
+        imagePath = 'images/emotion/smile.gif';
         break;
       case "annoying":
-        imagePath = 'images/emotion/4.gif';
+        imagePath = 'images/emotion/annoying.gif';
         break;
       case "sad":
-        imagePath = 'images/emotion/6.gif';
+        imagePath = 'images/emotion/sad.gif';
         break;
       case "calmness":
-        imagePath = 'images/emotion/7.gif';
+        imagePath = 'images/emotion/calmness.gif';
         break;
       case "tired":
-        imagePath = 'images/emotion/5.gif';
+        imagePath = 'images/emotion/tired.gif';
         break;
       default:
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
     }
   }
@@ -631,25 +631,25 @@ class _customWidget2State extends State<customWidget2> {
         imagePath = 'images/emotion/angry.png';
         break;
       case "flutter":
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
       case "smile":
-        imagePath = 'images/emotion/1.gif';
+        imagePath = 'images/emotion/smile.gif';
         break;
       case "annoying":
-        imagePath = 'images/emotion/4.gif';
+        imagePath = 'images/emotion/annoying.gif';
         break;
       case "sad":
-        imagePath = 'images/emotion/6.gif';
+        imagePath = 'images/emotion/sad.gif';
         break;
       case "calmness":
-        imagePath = 'images/emotion/7.gif';
+        imagePath = 'images/emotion/calmness.gif';
         break;
       case "tired":
-        imagePath = 'images/emotion/5.gif';
+        imagePath = 'images/emotion/tired.gif';
         break;
       default:
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
     }
   }
@@ -881,25 +881,25 @@ class _customwidget3State extends State<customwidget3> {
         imagePath = 'images/emotion/angry.png';
         break;
       case "flutter":
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
       case "smile":
-        imagePath = 'images/emotion/1.gif';
+        imagePath = 'images/emotion/smile.gif';
         break;
       case "annoying":
-        imagePath = 'images/emotion/4.gif';
+        imagePath = 'images/emotion/annoying.gif';
         break;
       case "sad":
-        imagePath = 'images/emotion/6.gif';
+        imagePath = 'images/emotion/sad.gif';
         break;
       case "calmness":
-        imagePath = 'images/emotion/7.gif';
+        imagePath = 'images/emotion/calmness.gif';
         break;
       case "tired":
-        imagePath = 'images/emotion/5.gif';
+        imagePath = 'images/emotion/tired.gif';
         break;
       default:
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
     }
 
@@ -1234,25 +1234,25 @@ class _customwidget4State extends State<customwidget4> {
         imagePath = 'images/emotion/angry.png';
         break;
       case "flutter":
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
       case "smile":
-        imagePath = 'images/emotion/1.gif';
+        imagePath = 'images/emotion/smile.gif';
         break;
       case "annoying":
-        imagePath = 'images/emotion/4.gif';
+        imagePath = 'images/emotion/annoying.gif';
         break;
       case "sad":
-        imagePath = 'images/emotion/6.gif';
+        imagePath = 'images/emotion/sad.gif';
         break;
       case "calmness":
-        imagePath = 'images/emotion/7.gif';
+        imagePath = 'images/emotion/calmness.gif';
         break;
       case "tired":
-        imagePath = 'images/emotion/5.gif';
+        imagePath = 'images/emotion/tired.gif';
         break;
       default:
-        imagePath = 'images/emotion/2.gif';
+        imagePath = 'images/emotion/flutter.gif';
         break;
     }
 

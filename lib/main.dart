@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
                   MaterialPageRoute(builder: (context) => const category()));
             },
             icon: Image.asset(
-              'images/bottom/free-icon-menu-1828859.png',
+              'images/bottom/menu.png',
               width: 30,
               height: 30,color: Color(0xFF968C83),
             )),
@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
                   MaterialPageRoute(builder: (context) => const statistics()));
             },
             icon: Image.asset(
-              'images/bottom/free-icon-stats-223407.png',
+              'images/bottom/stats.png',
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
                   MaterialPageRoute(builder: (context) => alrampage()));
             },
             icon: Image.asset(
-              'images/bottom/free-icon-alarm-bell-2088595.png',
+              'images/bottom/bell.png',
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -128,7 +128,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             label: '홈화면',
             icon: Image.asset(
-              "images/bottom/free-icon-home-1828871.png",
+              "images/bottom/home.png",
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             label: '일기공유',
             icon: Image.asset(
-              "images/bottom/free-icon-globe-721998.png",
+              "images/bottom/globe.png",
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -146,7 +146,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             label: '캘린더',
             icon: Image.asset(
-              "images/bottom/free-icon-calendar-5115146.png",
+              "images/bottom/calendar.png",
               width: 35,
               height: 35,
               color: Color(0xFF968C83),

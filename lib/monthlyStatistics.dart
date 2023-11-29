@@ -578,13 +578,13 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                             switch (monthDatas[index].mostEmotion){
                                                               case 1:
                                                                 return Image.asset(
-                                                                  'images/emotion/1.gif',
+                                                                  'images/emotion/smile.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 2:
                                                                 return Image.asset(
-                                                                  'images/emotion/2.gif',
+                                                                  'images/emotion/flutter.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
@@ -596,25 +596,25 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                                 );
                                                               case 4:
                                                                 return Image.asset(
-                                                                  'images/emotion/4.gif',
+                                                                  'images/emotion/annoying.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 5:
                                                                 return Image.asset(
-                                                                  'images/emotion/5.gif',
+                                                                  'images/emotion/tired.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 6:
                                                                 return Image.asset(
-                                                                  'images/emotion/6.gif',
+                                                                  'images/emotion/sad.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 7:
                                                                 return Image.asset(
-                                                                  'images/emotion/7.gif',
+                                                                  'images/emotion/calmness.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
@@ -646,13 +646,13 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                             switch (monthDatas[index].leastEmotion){
                                                               case 1:
                                                                 return Image.asset(
-                                                                  'images/emotion/1.gif',
+                                                                  'images/emotion/smile.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 2:
                                                                 return Image.asset(
-                                                                  'images/emotion/2.gif',
+                                                                  'images/emotion/flutter.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
@@ -664,25 +664,25 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                                 );
                                                               case 4:
                                                                 return Image.asset(
-                                                                  'images/emotion/4.gif',
+                                                                  'images/emotion/annoying.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 5:
                                                                 return Image.asset(
-                                                                  'images/emotion/5.gif',
+                                                                  'images/emotion/tired.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 6:
                                                                 return Image.asset(
-                                                                  'images/emotion/6.gif',
+                                                                  'images/emotion/sad.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
                                                               case 7:
                                                                 return Image.asset(
-                                                                  'images/emotion/7.gif',
+                                                                  'images/emotion/calmness.gif',
                                                                   width: 90,
                                                                   height: 90,
                                                                 );
@@ -740,7 +740,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: AssetImage(
-                                                          'images/emotion/1.gif',
+                                                          'images/emotion/smile.gif',
                                                         ),
                                                         fit: BoxFit.contain,
                                                       ),
@@ -755,7 +755,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: AssetImage(
-                                                            'images/emotion/2.gif'),
+                                                            'images/emotion/flutter.gif'),
                                                         fit: BoxFit.contain,
                                                       ),
                                                     ),
@@ -783,7 +783,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: AssetImage(
-                                                            'images/emotion/4.gif'),
+                                                            'images/emotion/annoying.gif'),
                                                         fit: BoxFit.contain,
                                                       ),
                                                     ),
@@ -797,7 +797,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: AssetImage(
-                                                            'images/emotion/5.gif'),
+                                                            'images/emotion/tired.gif'),
                                                         fit: BoxFit.contain,
                                                       ),
                                                     ),
@@ -811,7 +811,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: AssetImage(
-                                                            'images/emotion/6.gif'),
+                                                            'images/emotion/sad.gif'),
                                                         fit: BoxFit.contain,
                                                       ),
                                                     ),
@@ -825,7 +825,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
                                                         image: AssetImage(
-                                                            'images/emotion/7.gif'),
+                                                            'images/emotion/calmness.gif'),
                                                         fit: BoxFit.contain,
                                                       ),
                                                     ),

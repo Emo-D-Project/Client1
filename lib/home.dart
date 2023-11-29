@@ -38,7 +38,7 @@ class home extends StatelessWidget {
                         children: [
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                            child: Image.asset('images/emotion/pinkcatimage.png',width: 60,height: 60,),
+                            child: Image.asset('images/emotion/pinkfootprint.png',width: 60,height: 60,),
                           ), //냥발바닥
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -61,7 +61,7 @@ class home extends StatelessWidget {
                                         )
                                       );
                                     },
-                                    icon: Image.asset('images/emotion/1.gif',width: 50,height: 50,)
+                                    icon: Image.asset('images/emotion/smile.gif',width: 50,height: 50,)
                                 ),
                                 IconButton(
                                     iconSize: 40,
@@ -73,7 +73,7 @@ class home extends StatelessWidget {
                                           )
                                       );
                                     },
-                                    icon: Image.asset('images/emotion/2.gif')),
+                                    icon: Image.asset('images/emotion/flutter.gif')),
                                 Container(
                                   child: IconButton(
                                     iconSize: 40,
@@ -105,7 +105,7 @@ class home extends StatelessWidget {
                                           )
                                       );
                                     },
-                                    icon: Image.asset('images/emotion/4.gif')
+                                    icon: Image.asset('images/emotion/annoying.gif')
                                 ),
                                 IconButton(
                                     iconSize: 40,
@@ -117,7 +117,7 @@ class home extends StatelessWidget {
                                           )
                                       );
                                     },
-                                    icon: Image.asset('images/emotion/5.gif')
+                                    icon: Image.asset('images/emotion/tired.gif')
                                 ),
                                 IconButton(
                                     iconSize: 40,
@@ -129,7 +129,7 @@ class home extends StatelessWidget {
                                           )
                                       );
                                     },
-                                    icon: Image.asset('images/emotion/6.gif')
+                                    icon: Image.asset('images/emotion/sad.gif')
                                 ),
                                 IconButton(
                                     iconSize: 40,
@@ -141,7 +141,7 @@ class home extends StatelessWidget {
                                           )
                                       );
                                     },
-                                    icon: Image.asset('images/emotion/7.gif')
+                                    icon: Image.asset('images/emotion/calmness.gif')
                                 )
                               ],
                             ),
@@ -153,7 +153,7 @@ class home extends StatelessWidget {
                 }
                 );
           },
-          child: Image.asset('images/emotion/catimage.png',width: 40,height: 40,),
+          child: Image.asset('images/emotion/footprint.png',width: 40,height: 40,),
         );
       }),
     );

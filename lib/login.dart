@@ -198,7 +198,7 @@ class _MyLoginState extends State<MyLogin> {
                     }
                   },
                   icon: Image.asset(
-                    'images/main/kaka.png',
+                    'images/main/kakao.png',
                     fit: BoxFit.contain,
                   ),
                   iconSize: 230,
