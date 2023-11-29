@@ -8,7 +8,6 @@ import 'package:capston1/models/Comment.dart';
 final cat_image = 'images/send/cat_real_image.png';
 
 class comment extends StatefulWidget {
-  final int postId;
   const comment({super.key, required this.postId});
 
   @override
@@ -16,7 +15,6 @@ class comment extends StatefulWidget {
 }
 
 class _commentState extends State<comment> {
-  //------------------------------------------------
 
   TextEditingController _commentController = TextEditingController(); //댓글 저장 변수
   ApiManager apiManager = ApiManager().getApiManager();
@@ -24,9 +22,11 @@ class _commentState extends State<comment> {
   late int postId;
   late String comment;
 
-  List<Comment> comments = [];
+  final List<int> num = [];
 
+  List<Comment> comments = [];
   List<Diary> diaryshare = [];
+
 
   _commentState(this.postId);
 
@@ -41,23 +41,22 @@ class _commentState extends State<comment> {
       final data = await apiManager.getDiaryShareData();
       setState(() {
         diaryshare = data!;
-
       });
     } catch (error) {
       print('Error getting DiaryShare list : $error');
     }
   }
 
+
   Future<void> GetComment(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint);
       final value = response['post_id'];
-      print(' post_id: $value');
+      print('post_id: $value');
       postId = value;
     } catch (e) {
       print('Error: $e');
     }
-
     try {
       final response = await apiManager.Get(endpoint);
       final value = response['comment'];
@@ -69,26 +68,25 @@ class _commentState extends State<comment> {
   }
 
   // 댓글 전송 기능
-  void _sendComment() {
+  void sendComment() {
     String text = _commentController.text.trim(); //trim은 걍 앞 뒤 공백 제거 해주는거
-
     if (text.isNotEmpty) {
-      apiManager.sendComment(text, postId);
+      apiManager.sendComment(text,postId);
       _commentController.clear();
     }
   }
 
-  void addComment(int postId, String text) {
+  void addComment(int user_id, String text) {
     setState(() {
       comments.add(Comment(
-        post_id: postId,
+        user_id: user_id,
         content: text,
       ));
+      print('보낸 사람: $user_id , 전송 메세지: $text');
     });
-    print('보낸 사람: $postId , 전송 메세지: $text');
   }
 
-  //========================================
+
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +140,7 @@ class _commentState extends State<comment> {
                                 Container(
                                   padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                   child: Text(
-                                    '삼냥이 ${comment.post_id}',
+                                    '삼냥이 ',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 13,
@@ -216,7 +214,7 @@ class _commentState extends State<comment> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: _sendComment, // _sendMessage 메서드를 호출
+                        onTap: sendComment,
                         child: Container(
                           height: 30,
                           width: 30,

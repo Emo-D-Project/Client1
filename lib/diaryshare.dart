@@ -220,7 +220,7 @@ class _diaryshareState extends State<diaryshare> {
                           simagePath: diaries[index].emotion,
                           otherUserId: diaries[index].userId,
                           diaryId: diaries[index].diaryId,
-                          diaryComment: diaries [index].diaryComment,
+                          //diaryComment: diaries [index].diaryId,
                         );
                       } else if (diaries[index].imagePath.isEmpty &&
                           diaries[index].voice != "") {
@@ -543,7 +543,6 @@ class customWidget2 extends StatefulWidget {
   final bool sfavoritColor;
   final int otherUserId;
   final int diaryId;
-  final int diaryComment;
 
   const customWidget2({
     super.key,
@@ -553,13 +552,11 @@ class customWidget2 extends StatefulWidget {
     required this.sfavoritCount,
     required this.otherUserId,
     required this.diaryId,
-    required this.diaryComment,
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State(otherUserId, diaryId, sfavoritCount,diaryComment);
+  State<customWidget2> createState() => _customWidget2State(otherUserId, diaryId, sfavoritCount,);
 }
-
 class _customWidget2State extends State<customWidget2> {
   late bool sfavoritColor; //false로 초기화
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
@@ -569,20 +566,15 @@ class _customWidget2State extends State<customWidget2> {
   TextEditingController _commentController = TextEditingController();
   int _commentCount = 0;
   int favoriteCounts = 0;
-
-
   int diaryComment = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customWidget2State(int otherUserId, int diaryId, int sfavoritCount,int diaryComment) {
+  _customWidget2State(int otherUserId, int diaryId, int sfavoritCount,) {
     this.otherUserId = otherUserId;
     this.diaryId = diaryId;
     this.favoriteCounts = favoriteCounts;
-    this.diaryComment = diaryComment;
-
   }
-
 
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
@@ -590,18 +582,21 @@ class _customWidget2State extends State<customWidget2> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
+        print('다이어리 아이디 $diaryId');
         return SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-          child: comment(postId: diaryComment),
+            child: comment(postId: diaryId),
           ),
         );
       },
     );
   }
+
 
   void initState() {
     super.initState();
