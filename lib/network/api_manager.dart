@@ -390,7 +390,7 @@ class ApiManager {
 
       List<Diary> diaries = rawData.map((data) {
         return Diary(
-          content: data['content'],
+          content: data['content'] ,
           date: DateTime.parse(data['createdAt']),
           emotion: data['emotion'],
           userId: data['user_id'] as int ?? 0,
@@ -398,6 +398,7 @@ class ApiManager {
           voice: data["voice"] ?? "",
           imagePath: List<String>.from(data['imagePath'] ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
+          diaryId: data['id'] ?? 0,
         );
       }).toList();
 
@@ -407,9 +408,12 @@ class ApiManager {
     }
   }
 
-  Future<int> putFavoriteCount(int id) async {
+  //좋아요 수
+  Future<void> putFavoriteCount(int id) async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/diaries/recommend/${id}";
+
+    print("put favoriteCount diary id: $id");
 
     final response = await http.put(
       Uri.parse('$baseUrl$endPoint'),
@@ -420,15 +424,10 @@ class ApiManager {
     );
     if (response.statusCode == 200) {
 
-      int favoriteCount = json.decode(utf8.decode(response.bodyBytes));
-      print("// FavoriteCount data: ${response.body}");
-      return favoriteCount;
-
     } else {
-      throw Exception("Fail to update favorite count through the API  : ${response.statusCode}");
+      throw Exception("좋아요 오류  : ${response.statusCode}");
     }
   }
-
 
 //post 댓글작성
   void sendComment (String content, int postId) async {

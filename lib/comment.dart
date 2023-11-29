@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/models/Comment.dart';
-
 final cat_image = 'images/send/cat_real_image.png';
 
 class comment extends StatefulWidget {
@@ -27,7 +26,7 @@ class _commentState extends State<comment> {
 
       // ApiManager apiManager = ApiManager().getApiManager();
 
-      // int postId = 1; //  postId를 1로 설정
+      // int postId = 1;
 
       // if (postId != null) {
       setState(() {

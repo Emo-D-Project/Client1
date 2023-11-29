@@ -53,7 +53,6 @@ class _diaryshareState extends State<diaryshare> {
   void initState() {
     super.initState();
     fetchDataFromServer();
-    HowFavoriteCount();
 
   }
 
@@ -73,18 +72,6 @@ class _diaryshareState extends State<diaryshare> {
 
   int favoriteCounts = 0;
 
-  Future<void> HowFavoriteCount() async {
-    try {
-      // Fetch data from the API
-      final int data = await apiManager.putFavoriteCount(0);
-
-      setState(() {
-        favoriteCounts = data;
-      });
-    } catch (error) {
-      print('Error getting favorite count: $error');
-    }
-  }
 
   String selectedValue = '최신순';
 
@@ -233,6 +220,7 @@ class _diaryshareState extends State<diaryshare> {
                           sfavoritCount: diaries[index].favoriteCount,
                           simagePath: diaries[index].emotion,
                           otherUserId: diaries[index].userId,
+                          diaryId: diaries[index].diaryId,
                         );
                       } else if (diaries[index].imagePath.isEmpty &&
                           diaries[index].voice != "") {
@@ -273,11 +261,13 @@ class _diaryshareState extends State<diaryshare> {
 
 class shareData {
   final String imagePath;
+  final DateTime createdAt;
   final String diaryImage;
   final String diarycomment;
   final int favoritCount;
   final bool favoritColor;
   final String voice;
+  final int userId;
 
   shareData({
     required this.imagePath,
@@ -286,6 +276,8 @@ class shareData {
     required this.favoritColor,
     required this.favoritCount,
     required this.voice,
+    required this.createdAt,
+    required this.userId
   });
 }
 
@@ -309,7 +301,7 @@ class customWidget1 extends StatefulWidget {
   });
 
   @override
-  State<customWidget1> createState() => _customWidget1State(otherUserId);
+  State<customWidget1> createState() => _customWidget1State(otherUserId, sfavoritCount);
 }
 
 class _customWidget1State extends State<customWidget1> {
@@ -323,25 +315,13 @@ class _customWidget1State extends State<customWidget1> {
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  Future<void> HowFavoirteCount() async {
-    try{
-      final int data = await apiManager.putFavoriteCount(DiaryId);
-      setState(() {
-        favoriteCounts = data;
-      });
-    }
-    catch(error) {
-      print('Error getting favorite count: $error');
-    }
-  }
-
-  _customWidget1State(int otherUserId) {
+  _customWidget1State(int otherUserId, int favoriteCounts) {
     this.otherUserId = otherUserId;
+    this.favoriteCounts = favoriteCounts;
   }
 
   void initState() {
     super.initState();
-    HowFavoirteCount();
 
     favoriteCounts = widget.sfavoritCount;
     sfavoritColor = widget.sfavoritColor;
@@ -576,6 +556,7 @@ class customWidget2 extends StatefulWidget {
   final int sfavoritCount;
   final bool sfavoritColor;
   final int otherUserId;
+  final int diaryId;
 
   const customWidget2({
     super.key,
@@ -584,45 +565,29 @@ class customWidget2 extends StatefulWidget {
     required this.sfavoritColor,
     required this.sfavoritCount,
     required this.otherUserId,
+    required this.diaryId,
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State(otherUserId);
+  State<customWidget2> createState() => _customWidget2State(otherUserId, diaryId, sfavoritCount);
 }
 
 class _customWidget2State extends State<customWidget2> {
-   late bool sfavoritColor;//false = 회색
+  late bool sfavoritColor; //false로 초기화
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
   int otherUserId = 36;
   String imagePath = "";
-
-
+  int diaryId = 0;
   TextEditingController _commentController = TextEditingController();
-
-  // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
-  int _commentCount = 1;
-  int DiaryId = 1;
+  int _commentCount = 0;
   int favoriteCounts = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  Future<void> HowFavoirteCount() async {
-    try{
-      final data = await apiManager.putFavoriteCount(DiaryId);
-
-      setState(() {
-        favoriteCounts = data!;
-      });
-    }
-    catch(error) {
-
-      print('Error getting favorite count: $error');
-    }
-  }
-
-
-  _customWidget2State(int otherUserId) {
+  _customWidget2State(int otherUserId, int diaryId, int sfavoritCount) {
     this.otherUserId = otherUserId;
+    this.diaryId = diaryId;
+    this.favoriteCounts = favoriteCounts;
   }
 
   void addComment(String name, String text) {
@@ -657,10 +622,9 @@ class _customWidget2State extends State<customWidget2> {
 
   void initState() {
     super.initState();
-    HowFavoirteCount();
 
     favoriteCounts = widget.sfavoritCount; // 초기화
-    sfavoritColor = widget.sfavoritColor; // 초기화
+    sfavoritColor = widget.sfavoritColor;
 
     switch (widget.simagePath) {
       case "angry":
@@ -745,7 +709,8 @@ class _customWidget2State extends State<customWidget2> {
                     ],
                   ),
                 ),
-                //텍스트
+
+
                 Container(
                     width: 380,
                     padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
@@ -763,7 +728,6 @@ class _customWidget2State extends State<customWidget2> {
             ),
           ),
 
-          //좋아요,댓글
           Container(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -774,6 +738,7 @@ class _customWidget2State extends State<customWidget2> {
                   children: [
                     GestureDetector(
                       onTap: () async {
+                        apiManager.putFavoriteCount(diaryId);
                         try {
                           setState(() {
                             if (sfavoritColor) {
@@ -783,13 +748,10 @@ class _customWidget2State extends State<customWidget2> {
                             }
                             sfavoritColor = !sfavoritColor;
                           });
-
-                          await HowFavoirteCount();
                         } catch (error) {
                           print('Error updating favorite count: $error');
                         }
                       },
-                      onLongPress: () {},
                       child: Icon(
                         Icons.favorite,
                         color: sfavoritColor ? Colors.red : Colors.grey,
