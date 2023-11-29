@@ -58,7 +58,6 @@ class _diaryshareState extends State<diaryshare> {
 
   Future<void> fetchDataFromServer() async {
     try {
-      // 상대방과의 대화나눈 메시지 가져오기
       final data = await apiManager.getDiaryShareData();
 
       setState(() {
@@ -221,6 +220,7 @@ class _diaryshareState extends State<diaryshare> {
                           simagePath: diaries[index].emotion,
                           otherUserId: diaries[index].userId,
                           diaryId: diaries[index].diaryId,
+                          diaryComment: diaries [index].diaryComment,
                         );
                       } else if (diaries[index].imagePath.isEmpty &&
                           diaries[index].voice != "") {
@@ -358,20 +358,6 @@ class _customWidget1State extends State<customWidget1> {
 
   // TextEditingController _commentController = TextEditingController();
 
-  // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
-  int _commentCount = 1;
-
-  void addComment(String name, String text) {
-    setState(() {
-      comments.add(Comment(
-        name: '$name $_commentCount',
-        text: text,
-      ));
-      _commentCount++;
-    });
-    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-  }
-
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
@@ -384,7 +370,7 @@ class _customWidget1State extends State<customWidget1> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(), // 수정이 필요한 부분
+            //child: comment(postId:), // 수정이 필요한 부분
           ),
         );
       },
@@ -557,6 +543,7 @@ class customWidget2 extends StatefulWidget {
   final bool sfavoritColor;
   final int otherUserId;
   final int diaryId;
+  final int diaryComment;
 
   const customWidget2({
     super.key,
@@ -566,10 +553,11 @@ class customWidget2 extends StatefulWidget {
     required this.sfavoritCount,
     required this.otherUserId,
     required this.diaryId,
+    required this.diaryComment,
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State(otherUserId, diaryId, sfavoritCount);
+  State<customWidget2> createState() => _customWidget2State(otherUserId, diaryId, sfavoritCount,diaryComment);
 }
 
 class _customWidget2State extends State<customWidget2> {
@@ -582,24 +570,19 @@ class _customWidget2State extends State<customWidget2> {
   int _commentCount = 0;
   int favoriteCounts = 0;
 
+
+  int diaryComment = 0;
+
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customWidget2State(int otherUserId, int diaryId, int sfavoritCount) {
+  _customWidget2State(int otherUserId, int diaryId, int sfavoritCount,int diaryComment) {
     this.otherUserId = otherUserId;
     this.diaryId = diaryId;
     this.favoriteCounts = favoriteCounts;
+    this.diaryComment = diaryComment;
+
   }
 
-  void addComment(String name, String text) {
-    setState(() {
-      comments.add(Comment(
-        name: '$name $_commentCount',
-        text: text,
-      ));
-      _commentCount++;
-    });
-    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-  }
 
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
@@ -613,7 +596,7 @@ class _customWidget2State extends State<customWidget2> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(),
+          child: comment(postId: diaryComment),
           ),
         );
       },
@@ -784,8 +767,6 @@ class _customWidget2State extends State<customWidget2> {
                   ],
                 ),
               ),
-
-
             ],
           )),
         ],
@@ -833,16 +814,7 @@ class _customwidget3State extends State<customwidget3> {
     this.otherUserId = otherUserId;
   }
 
-  void addComment(String name, String text) {
-    setState(() {
-      comments.add(Comment(
-        name: '$name $_commentCount',
-        text: text,
-      ));
-      _commentCount++;
-    });
-    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
-  }
+
 
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
@@ -856,7 +828,7 @@ class _customwidget3State extends State<customwidget3> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(),
+            //child: comment(),
           ),
         );
       },
@@ -1177,24 +1149,8 @@ class _customwidget4State extends State<customwidget4> {
 
   TextEditingController _commentController = TextEditingController();
 
-  // 댓글 추가 기능
-
-  // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
-  int _commentCount = 1;
-
   _customwidget4State(int otherUserId) {
     this.otherUserId = otherUserId;
-  }
-
-  void addComment(String name, String text) {
-    setState(() {
-      comments.add(Comment(
-        name: '$name $_commentCount',
-        text: text,
-      ));
-      _commentCount++;
-    });
-    print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
   }
 
   void plusDialog(BuildContext context) {
@@ -1209,7 +1165,7 @@ class _customwidget4State extends State<customwidget4> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(),
+         //   child: comment(),
           ),
         );
       },

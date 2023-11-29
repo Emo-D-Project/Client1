@@ -32,7 +32,6 @@ class _message_writeState extends State<message_write> {
       apiManager.sendMessage(message, otherUserId, DateTime.now());
       _contentEditController.clear();
 
-      // 이전 화면으로 돌아가기
       Navigator.pop(context);
     }
   }

@@ -1,64 +1,93 @@
+import 'package:capston1/diaryshare.dart';
+import 'package:capston1/models/Diary.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/models/Comment.dart';
+
 final cat_image = 'images/send/cat_real_image.png';
 
 class comment extends StatefulWidget {
-  const comment({super.key});
+  final int postId;
+  const comment({super.key, required this.postId});
 
   @override
-  State<comment> createState() => _commentState();
+  State<comment> createState() => _commentState(postId);
 }
 
-late String content;
-late int post_id;
-List<Comment> comments = []; // 댓글을 관리하는 리스트
-
 class _commentState extends State<comment> {
-  TextEditingController _commentController = TextEditingController();
+  //------------------------------------------------
 
-
+  TextEditingController _commentController = TextEditingController(); //댓글 저장 변수
   ApiManager apiManager = ApiManager().getApiManager();
-  int _commentCount = 1;
 
-  void addComment(String name, String text) {
+  late int postId;
+  late String comment;
+
+  List<Comment> comments = [];
+
+  List<Diary> diaryshare = [];
+
+  _commentState(this.postId);
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  Future<void> fetchDataFromServer() async {
     try {
-
-      // ApiManager apiManager = ApiManager().getApiManager();
-
-      // int postId = 1;
-
-      // if (postId != null) {
+      final data = await apiManager.getDiaryShareData();
       setState(() {
-        comments.add(Comment(
-          name: '$name $_commentCount',
-          text: text,
-        ));
-        _commentCount++;
+        diaryshare = data!;
+
       });
-      // }
-
-      print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
     } catch (error) {
-      print('에러 발생: $error');
-
+      print('Error getting DiaryShare list : $error');
     }
   }
 
+  Future<void> GetComment(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint);
+      final value = response['post_id'];
+      print(' post_id: $value');
+      postId = value;
+    } catch (e) {
+      print('Error: $e');
+    }
 
+    try {
+      final response = await apiManager.Get(endpoint);
+      final value = response['comment'];
+      print('comment: $value');
+      comment = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   // 댓글 전송 기능
-  void _sendMessage() {
-    String name = "삼냥이";
-    String text = _commentController.text.trim();
+  void _sendComment() {
+    String text = _commentController.text.trim(); //trim은 걍 앞 뒤 공백 제거 해주는거
 
     if (text.isNotEmpty) {
-      addComment(name, text);
-
-      // 댓글 전송 후 컨트롤러 비우기
+      apiManager.sendComment(text, postId);
       _commentController.clear();
     }
   }
+
+  void addComment(int postId, String text) {
+    setState(() {
+      comments.add(Comment(
+        post_id: postId,
+        content: text,
+      ));
+    });
+    print('보낸 사람: $postId , 전송 메세지: $text');
+  }
+
   //========================================
 
   @override
@@ -108,23 +137,27 @@ class _commentState extends State<comment> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                              child: Text(
-                                comment.name,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF7D5A50),
-                                  fontFamily: 'soojin',
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                  child: Text(
+                                    '삼냥이 ${comment.post_id}',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF7D5A50),
+                                      fontFamily: 'soojin',
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                             Container(
                               padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                               child: Text(
-                                comment.text,
+                                comment.content,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 13,
@@ -143,7 +176,6 @@ class _commentState extends State<comment> {
           ),
 
           //댓글 달 수 있는 칸
-//댓글 달 수 있는 칸
           Container(
             height: 70,
             width: double.infinity,
@@ -184,7 +216,7 @@ class _commentState extends State<comment> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: _sendMessage, // _sendMessage 메서드를 호출
+                        onTap: _sendComment, // _sendMessage 메서드를 호출
                         child: Container(
                           height: 30,
                           width: 30,
@@ -202,10 +234,6 @@ class _commentState extends State<comment> {
               ],
             ),
           ),
-
-
-
-
         ],
       ),
     );
