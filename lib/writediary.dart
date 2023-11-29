@@ -17,15 +17,17 @@ String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 class writediary extends StatefulWidget {
   const writediary({super.key, required this.emotion});
 
-  final String emotion;
+  final String emotion;  //감정 선택해서 넘어온 값
 
   @override
   State<writediary> createState() => _writediaryState();
 }
 
+
 class _writediaryState extends State<writediary> {
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker(); //이미지 선택 시 필요
   List<XFile?> diaryImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
+  Duration duration = Duration.zero; //총 시간
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -35,27 +37,29 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
+
   final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
-  bool isRecording = false;
-  String audioPath = '';
-  String playAudioPath = '';
+  bool isRecording = false; //녹음 상태
+  String audioPath = '';  //녹음중단 시 경로 받아올 변수
+  String playAudioPath = '';  //저장할때 받아올 변수 , 재생 시 필요
 
   //재생에 필요한 것들
   final AudioPlayer audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
-  final sound.FlutterSoundPlayer soundPlayer = sound.FlutterSoundPlayer();
   bool isPlaying = false; //현재 재생중인지
-  Duration duration = Duration.zero; //총 시간
+
   Duration position = Duration.zero; //진행중인 시간
 
   @override
   void initState() {
+
     super.initState();
     playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
+
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -76,12 +80,12 @@ class _writediaryState extends State<writediary> {
       setState(() {
         position = newPosition;
       });
+      print('Current position: $position');
     });
   }
 
   @override
   void dispose() {
-    soundPlayer.stopPlayer(); // 재생 중인 오디오를 정지시킴
     recorder.closeRecorder();
     audioPlayer.dispose();
     super.dispose();
@@ -104,6 +108,7 @@ class _writediaryState extends State<writediary> {
   //   }
   // }
 
+
   Future<void> playAudio() async {
     try {
       if (isPlaying == PlayerState.playing) {
@@ -111,11 +116,20 @@ class _writediaryState extends State<writediary> {
       }
 
       await audioPlayer.setSourceDeviceFile(playAudioPath);
-      audioPlayer.play;
+      print("duration: $duration" );
+      await Future.delayed(Duration(seconds: 2));
+      print("after wait duration: $duration" );
+
       setState(() {
         isPlaying = true;
+        duration = duration;
+
       });
+
+      audioPlayer.play;
+
       print('오디오 재생 시작: $playAudioPath');
+      print("duration: $duration");
     } catch (e) {
       print("audioPath : $playAudioPath");
       print("오디오 재생 중 오류 발생 : $e");
@@ -181,6 +195,8 @@ class _writediaryState extends State<writediary> {
     });
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
+    print("savedFilePath: $savedFilePath");
+
   }
 
   //파일 서버에 보내기
@@ -237,17 +253,18 @@ class _writediaryState extends State<writediary> {
   // }
 
   String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inMinutes.remainder(60));
+    print("formatTime duration: $duration");
 
-    return [
-      if (duration.inHours > 0) hours,
-      minutes,
-      seconds,
-    ].join(':');
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+
+    String result = '$minutes:${seconds.toString().padLeft(2, '0')}';
+
+    print("formatTime result: $result");
+    return result;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -329,7 +346,6 @@ class _writediaryState extends State<writediary> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
-              print("PostExample 실행");
             },
             icon: Image.asset(
               "images/send/upload.png",
@@ -413,8 +429,9 @@ class _writediaryState extends State<writediary> {
                                       max: duration.inSeconds.toDouble(),
                                       value: position.inSeconds.toDouble(),
                                       onChanged: (value) async {
-                                        final position = Duration(
-                                            seconds: value.toInt());
+                                        setState(() {
+                                          position = Duration(seconds: value.toInt());
+                                        });
                                         await audioPlayer.seek(position);
                                         await audioPlayer.resume();
                                       },
@@ -446,6 +463,8 @@ class _writediaryState extends State<writediary> {
                                             ),
                                             iconSize: 25,
                                             onPressed: () async {
+                                              print("isplaying $isPlaying");
+
                                               if (isPlaying) {
                                                 await audioPlayer.pause();
                                                 setState(() {
