@@ -1,9 +1,7 @@
 import 'package:capston1/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'firebase_options.dart';
 import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -13,18 +11,11 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'tokenManager.dart' as tk;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: '002001aad48dcca2375e4c52bb8c1281');
   await initializeDateFormatting();
-
-  /*WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );*/
-
 
   runApp(MaterialApp(theme: style.theme, home: MyLogin()));
 }
@@ -56,11 +47,8 @@ class _MyLoginState extends State<MyLogin> {
 
       tokenManager.setAccessToken(jsonResponse["access_token"]);
       tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
-      //print("access 토큰: " + tokenManager.getAccessToken());
-      //print("refresh 토큰: " + tokenManager.getRefreshToken());
 
       myInfo.setNickName(jsonResponse["properties"]["nickname"]);
-      //print("nickname: " + myInfo.getNickName());
 
       ApiManager apiManager = ApiManager().getApiManager();
       apiManager.tokenManager = tokenManager;

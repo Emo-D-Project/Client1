@@ -28,7 +28,6 @@ class _mypageState extends State<mypage> {
 
   late String title;
   late String content;
-
   late String tititle;
 
   List<Mypage> myPageDatas = [];
@@ -67,9 +66,9 @@ class _mypageState extends State<mypage> {
 
   void _sendMyPage() {
     String title = tititle;
-    String content = _contentEditController.text;
+    String content = _answerEditController.text;
     apiManager.sendMypage(title, content);
-    _contentEditController.clear();
+    _answerEditController.clear();
 
     Navigator.of(context).pop();
   }

@@ -1,41 +1,7 @@
-import 'package:capston1/diaryReplay.dart';
 import 'package:flutter/material.dart';
 import 'network/api_manager.dart';
 import 'statistics.dart';
 import 'package:intl/intl.dart';
-
-List<DateTime> title = [DateTime(2023, 10)];
-
-List<String> content = [
-  "1011",
-  "1025",
-  "1031",
-  "1025",
-  "1025",
-  "1025",
-  "1025",
-  "1025",
-  "1025",
-  "1025",
-  "1025",
-  "1025",
-
-];
-
-List<String> emo = [
-  'images/emotion/smile.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/smile.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/flutter.gif',
-];
 
 class gatherEmotion extends StatefulWidget {
   const gatherEmotion({super.key});
@@ -47,8 +13,8 @@ class gatherEmotion extends StatefulWidget {
 class _gatherEmotionState extends State<gatherEmotion> {
   ApiManager apiManager = ApiManager().getApiManager();
 
-  Map<DateTime, String> _events = {
-  };// map.getkey를 해서 10월에 맞는 날짜를 추출해서 리스트로 만들고 쓰기
+  Map<DateTime, String> _events =
+      {}; // map.getkey를 해서 10월에 맞는 날짜를 추출해서 리스트로 만들고 쓰기
 
   @override
   void initState() {
@@ -64,18 +30,12 @@ class _gatherEmotionState extends State<gatherEmotion> {
         _events = data!;
       });
     } catch (error) {
-      // Handle error
-      //print('Error fetching data: $error');
       print('Error fetching data: ${error.toString()}');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final SizeX = MediaQuery.of(context).size.width;
-    final SizeY = MediaQuery.of(context).size.height;
-
-
     Map<DateTime, String> sortedMap = Map.fromEntries(
         _events.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));
 
@@ -87,17 +47,15 @@ class _gatherEmotionState extends State<gatherEmotion> {
       bool isCheck = false;
 
       yearMonthList.forEach((element) {
-          if(element.year == key.year && element.month == key.month ){
-            isCheck = true;
-          }
-        });
+        if (element.year == key.year && element.month == key.month) {
+          isCheck = true;
+        }
+      });
       // 겹치는 값이 없으면
-      if(isCheck == false){
+      if (isCheck == false) {
         yearMonthList.add(key);
       }
     });
-
-
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -121,7 +79,11 @@ class _gatherEmotionState extends State<gatherEmotion> {
           itemCount: yearMonthList.length,
           itemBuilder: (BuildContext context, int index) {
             DateTime currentMonth = yearMonthList[index];
-            List<DateTime> monthDates = dateList.where((date) => date.year == currentMonth.year && date.month == currentMonth.month).toList();
+            List<DateTime> monthDates = dateList
+                .where((date) =>
+                    date.year == currentMonth.year &&
+                    date.month == currentMonth.month)
+                .toList();
             return Container(
               margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
               child: Column(
@@ -154,7 +116,7 @@ class _gatherEmotionState extends State<gatherEmotion> {
                               Container(
                                 child: (() {
                                   String emotion = valueList[dateIndex];
-                                  switch (emotion){
+                                  switch (emotion) {
                                     case "smile":
                                       return Image.asset(
                                         'images/emotion/smile.gif',
@@ -200,8 +162,13 @@ class _gatherEmotionState extends State<gatherEmotion> {
                                   }
                                 })(),
                               ),
-                              Text( '${currentDate.month}${currentDate.day}',
-                                style: TextStyle(fontFamily: 'soojin', fontSize: 15, color: Colors.brown),)
+                              Text(
+                                '${currentDate.month}${currentDate.day}',
+                                style: TextStyle(
+                                    fontFamily: 'soojin',
+                                    fontSize: 15,
+                                    color: Colors.brown),
+                              )
                             ],
                           ),
                         );

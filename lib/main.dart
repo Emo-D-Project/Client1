@@ -1,6 +1,5 @@
 import 'package:capston1/network/api_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -10,18 +9,14 @@ import 'home.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:capston1/config/fcm_setting.dart';
 
 void main() async {
-
   print("debug1");
   WidgetsFlutterBinding.ensureInitialized();
-
   print("debug2");
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -37,8 +32,11 @@ void main() async {
   await initializeDateFormatting();
   print("debug5");
 
-
-  runApp(MaterialApp(theme: style.theme, home: MyApp(firebaseToken: firebaseToken,)));
+  runApp(MaterialApp(
+      theme: style.theme,
+      home: MyApp(
+        firebaseToken: firebaseToken,
+      )));
 }
 
 class MyApp extends StatefulWidget {
@@ -49,12 +47,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
+  ApiManager apiManager = ApiManager().getApiManager();
 
   var tab = 0;
 
-  ApiManager apiManager = ApiManager().getApiManager();
   late List<Map<String, dynamic>> data;
 
   @override
@@ -79,7 +75,8 @@ class _MyAppState extends State<MyApp> {
             icon: Image.asset(
               'images/bottom/menu.png',
               width: 30,
-              height: 30,color: Color(0xFF968C83),
+              height: 30,
+              color: Color(0xFF968C83),
             )),
         actions: [
           IconButton(

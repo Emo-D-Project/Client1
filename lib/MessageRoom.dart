@@ -1,9 +1,6 @@
-import 'package:capston1/screens/ChatRoomScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:capston1/main.dart';
 import 'message_write.dart';
 import 'package:intl/intl.dart';
-import 'models/ChatRoom.dart';
 import 'models/Message.dart';
 import 'network/api_manager.dart';
 
@@ -19,13 +16,12 @@ class MessageRoom extends StatefulWidget {
 class _MessageRoomState extends State<MessageRoom> {
 //보낸 쪽지 시간
   String sendtime = DateFormat('MM/dd hh:mm').format(DateTime.now());
-
   final int otherUserId;
-
-  _MessageRoomState(this.otherUserId); // 생성자 수정
 
   // 상대방과의 대화 나눈 메시지 리스트
   List<Message> messageList = [];
+
+  _MessageRoomState(this.otherUserId); // 생성자 수정
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -33,21 +29,19 @@ class _MessageRoomState extends State<MessageRoom> {
   void initState() {
     super.initState();
     print("메시지 목록 갱신 ");
-    // 서버로부터 채팅방 목록 불러오기
     fetchDataFromServer();
   }
 
   // 서버로부터 데이터를 가져오는 함수
   Future<void> fetchDataFromServer() async {
-    try{
+    try {
       // 상대방과의 대화나눈 메시지 가져오기
       final data = await apiManager.getMessageList(otherUserId);
 
       setState(() {
         messageList = data!;
       });
-    }
-    catch (error) {
+    } catch (error) {
       // 에러 제어하는 부분
       print('Error getting chat list: $error');
     }
@@ -79,7 +73,8 @@ class _MessageRoomState extends State<MessageRoom> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => message_write(otherUserId: otherUserId),
+                    builder: (context) =>
+                        message_write(otherUserId: otherUserId),
                   ),
                 ).then((value) async {
                   // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
@@ -87,7 +82,6 @@ class _MessageRoomState extends State<MessageRoom> {
                   await Future.delayed(Duration(seconds: 1)); // 1초 대기
                   fetchDataFromServer();
                 });
-
               },
               icon: Image.asset(
                 'images/send/real_send.png',
@@ -123,7 +117,7 @@ class _MessageRoomState extends State<MessageRoom> {
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
                                         // senderId와 receiverId를 비교하여 쪽지 유형 결정
-                                            () {
+                                        () {
                                           if (messageList[index].isMyMessage) {
                                             return "보낸 쪽지 ";
                                           } else {
@@ -135,7 +129,8 @@ class _MessageRoomState extends State<MessageRoom> {
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: () {
-                                            if (messageList[index].isMyMessage) {
+                                            if (messageList[index]
+                                                .isMyMessage) {
                                               return Colors.green; // 받은 쪽지
                                             } else {
                                               return Colors.blue; // 보낸 쪽지
@@ -150,7 +145,8 @@ class _MessageRoomState extends State<MessageRoom> {
                                       width: 100,
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
-                                        DateFormat('MM/dd hh:mm').format(messageList[index].sendtime),
+                                        DateFormat('MM/dd hh:mm').format(
+                                            messageList[index].sendtime),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 15,
@@ -193,5 +189,4 @@ class _MessageRoomState extends State<MessageRoom> {
       ),
     );
   }
-
 }

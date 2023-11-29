@@ -1,10 +1,6 @@
-import 'package:capston1/diaryshare.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:capston1/main.dart';
-import 'MessageRoom.dart';
 import 'package:intl/intl.dart';
-import 'models/Message.dart';
 
 class message_write extends StatefulWidget {
   final int otherUserId;
@@ -58,7 +54,6 @@ class _message_writeState extends State<message_write> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83)),
         ),
-
         actions: [
           ElevatedButton(
             onPressed: () {

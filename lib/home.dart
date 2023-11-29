@@ -10,13 +10,13 @@ class home extends StatelessWidget {
       backgroundColor: Color(0xFFF8F5EB),
       body: Center(
           child: SizedBox(
-            child: Image.asset('images/main/catmovereal.gif',
-              width: 1200,
-              height : 1000,
-              fit: BoxFit.contain,
-            ),
-          )
-      ),
+        child: Image.asset(
+          'images/main/catmovereal.gif',
+          width: 1200,
+          height: 1000,
+          fit: BoxFit.contain,
+        ),
+      )),
       floatingActionButton: Builder(builder: (context) {
         return FloatingActionButton(
           backgroundColor: Color(0xFFD2C6BC),
@@ -38,13 +38,20 @@ class home extends StatelessWidget {
                         children: [
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                            child: Image.asset('images/emotion/pinkfootprint.png',width: 60,height: 60,),
+                            child: Image.asset(
+                              'images/emotion/pinkfootprint.png',
+                              width: 60,
+                              height: 60,
+                            ),
                           ), //냥발바닥
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                            child: Text("오늘의 감정을 선택해주세요.",
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,fontFamily: 'fontnanum'
-                              ),
+                            child: Text(
+                              "오늘의 감정을 선택해주세요.",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'fontnanum'),
                             ),
                           ), //오늘의 감정을 선택해주세요
                           SizedBox(
@@ -55,38 +62,43 @@ class home extends StatelessWidget {
                                     iconSize: 40,
                                     onPressed: () {
                                       Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context)=>writediary(emotion: 'smile',)
-                                        )
-                                      );
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => writediary(
+                                                    emotion: 'smile',
+                                                  )));
                                     },
-                                    icon: Image.asset('images/emotion/smile.gif',width: 50,height: 50,)
-                                ),
+                                    icon: Image.asset(
+                                      'images/emotion/smile.gif',
+                                      width: 50,
+                                      height: 50,
+                                    )),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context)=>writediary(emotion: 'flutter',)
-                                          )
-                                      );
+                                              builder: (context) => writediary(
+                                                    emotion: 'flutter',
+                                                  )));
                                     },
-                                    icon: Image.asset('images/emotion/flutter.gif')),
+                                    icon: Image.asset(
+                                        'images/emotion/flutter.gif')),
                                 Container(
                                   child: IconButton(
-                                    iconSize: 40,
+                                      iconSize: 40,
                                       onPressed: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context)=>writediary(emotion: 'angry',)
-                                            )
-                                        );
+                                                builder: (context) =>
+                                                    writediary(
+                                                      emotion: 'angry',
+                                                    )));
                                       },
-                                      icon: Image.asset('images/emotion/angry.png')
-                                  ),
+                                      icon: Image.asset(
+                                          'images/emotion/angry.png')),
                                 )
                               ],
                             ),
@@ -101,48 +113,48 @@ class home extends StatelessWidget {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context)=>writediary(emotion: 'annoying',)
-                                          )
-                                      );
+                                              builder: (context) => writediary(
+                                                    emotion: 'annoying',
+                                                  )));
                                     },
-                                    icon: Image.asset('images/emotion/annoying.gif')
-                                ),
+                                    icon: Image.asset(
+                                        'images/emotion/annoying.gif')),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context)=>writediary(emotion: 'tired',)
-                                          )
-                                      );
+                                              builder: (context) => writediary(
+                                                    emotion: 'tired',
+                                                  )));
                                     },
-                                    icon: Image.asset('images/emotion/tired.gif')
-                                ),
+                                    icon: Image.asset(
+                                        'images/emotion/tired.gif')),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context)=>writediary(emotion: 'sad',)
-                                          )
-                                      );
+                                              builder: (context) => writediary(
+                                                    emotion: 'sad',
+                                                  )));
                                     },
-                                    icon: Image.asset('images/emotion/sad.gif')
-                                ),
+                                    icon:
+                                        Image.asset('images/emotion/sad.gif')),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context)=>writediary(emotion: 'calmness',)
-                                          )
-                                      );
+                                              builder: (context) => writediary(
+                                                    emotion: 'calmness',
+                                                  )));
                                     },
-                                    icon: Image.asset('images/emotion/calmness.gif')
-                                )
+                                    icon: Image.asset(
+                                        'images/emotion/calmness.gif'))
                               ],
                             ),
                           ), //감정 둘째줄
@@ -150,10 +162,13 @@ class home extends StatelessWidget {
                       ),
                     ),
                   );
-                }
-                );
+                });
           },
-          child: Image.asset('images/emotion/footprint.png',width: 40,height: 40,),
+          child: Image.asset(
+            'images/emotion/footprint.png',
+            width: 40,
+            height: 40,
+          ),
         );
       }),
     );

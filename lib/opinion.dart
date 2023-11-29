@@ -1,4 +1,3 @@
-import 'package:capston1/main.dart';
 import 'category.dart';
 import 'package:flutter/material.dart';
 
