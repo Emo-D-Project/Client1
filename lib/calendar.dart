@@ -128,16 +128,22 @@ class _calendarState extends State<calendar> {
                     // 이벤트가 있는 날짜를 클릭 시 해당 일기 보여주는 부분
                     onTap: () {
                       // 선택한 날짜에 대한 일기 항목 가져오기
-                      Diary diary = getDiaryForDate(
-                          DateTime(day.year, day.month, day.day));
+                      Diary? diary;
+                      for(Diary d in _diaryEntries){
+                        if(d.date.year == day.year && d.date.month == day.month && d.date.day == day.day){
+                          diary = d;
+                          print("매칭되는 다이어리 발견");
+                        }
+                      }
                       // 선택한 날짜에 대한 일기 항목이 있는지 확인
                       if (diary != null) {
                         // 사용자에게 일기 내용 표시
+                        print("매칭되는 다이어리의 id ${diary.diaryId}");
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => diaryReplay(
-                                      diary: diary,
+                                      diary: diary!,
                                     )));
                       }
                       // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가

@@ -108,6 +108,35 @@ class _writediaryState extends State<writediary> {
   //   }
   // }
 
+  Future<void> GetWriteDiary(String endpoint) async {
+    try {
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+      // 요청 응답 받기
+      final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+      //title = response['title'];
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> PostWriteDiary(String endpoint) async {
+    ApiManager apiManager = ApiManager().getApiManager();
+
+    try {
+      final postData = {
+        'content': content,
+        'emotion': sendEmotion,
+        'is_share': _isCheckedShare,
+        'is_comm': _isChecked,
+        //오디오 전송
+      };
+      print(postData);
+      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   Future<void> playAudio() async {
     try {
@@ -346,6 +375,7 @@ class _writediaryState extends State<writediary> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
+              PostWriteDiary("/api/diaries/create");
             },
             icon: Image.asset(
               "images/send/upload.png",

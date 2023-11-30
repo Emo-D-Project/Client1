@@ -230,7 +230,7 @@ class _mypageState extends State<mypage> {
                 ),
               ),
             ),
-            controller: _contentEditController,
+            controller: _answerEditController,
           ),
           actions: <Widget>[
             ElevatedButton(
@@ -249,8 +249,12 @@ class _mypageState extends State<mypage> {
                     elevation: 0.0,
                     backgroundColor: Color(0xFF7D5A50),
                     minimumSize: Size(150, 30)),
-                onPressed: () {
+                onPressed: () async {
                   _sendMyPage();
+                  final data = await apiManager.getMypageData();
+                  setState(() {
+                    myPageDatas = data!;
+                  });
                 }, //showContainer로 데이터 넘기기 // 디비에 저장하기
                 child: Text('확인',
                     style: TextStyle(

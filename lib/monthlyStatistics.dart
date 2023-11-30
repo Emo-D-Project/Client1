@@ -69,7 +69,7 @@ Widget sadM = Column(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('images/main/free-icon-communication-3820107.png',
+              Image.asset('images/main/communication.png',
                   width: 40, height: 40, color: Colors.brown),
               Column(
                 children: [

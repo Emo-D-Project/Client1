@@ -1,4 +1,5 @@
 import 'package:capston1/main.dart';
+import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -13,8 +14,12 @@ class diaryReplay extends StatefulWidget {
   State<diaryReplay> createState() => _writediaryState(diary);
 }
 
+List<Diary> diaries = [];
+
 class _writediaryState extends State<diaryReplay> {
   Diary? diary;
+
+  ApiManager apiManager = ApiManager().getApiManager();
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
@@ -26,10 +31,24 @@ class _writediaryState extends State<diaryReplay> {
     this.diary = diary;
   }
 
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+      setState(() {
+        diaries = data!;
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     setAudio();
+    fetchDataFromServer();
+
 
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -144,17 +163,22 @@ class _writediaryState extends State<diaryReplay> {
               return customWidget1(
                   sdate: diary!.date,
                   sdiaryImage: diary!.imagePath,
-                  scomment: diary!.content);
+                  scomment: diary!.content,
+                sdiaryid: diary!.diaryId,
+              );
             } else if (diary!.imagePath.isEmpty && diary!.voice == "") {
               return customWidget2(
                 sdate: diary!.date,
                 scomment: diary!.content,
+                diaryId: diary!.diaryId,
+
               );
             } else if (diary!.imagePath.isEmpty && diary!.voice != "") {
               return customwidget3(
                 sdate: diary!.date,
                 scomment: diary!.content,
                 svoice: diary!.voice,
+                sdiaryid: diary!.diaryId,
               );
             } else if (diary!.imagePath.isNotEmpty && diary!.voice != "") {
               return customwidget4(
@@ -162,6 +186,7 @@ class _writediaryState extends State<diaryReplay> {
                 sdiaryImage: diary!.imagePath,
                 scomment: diary!.content,
                 svoice: diary!.voice,
+                sdiaryid: diary!.diaryId,
               );
             } else {
               // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
@@ -179,12 +204,14 @@ class customWidget1 extends StatefulWidget {
   final DateTime sdate;
   final List<String> sdiaryImage;
   final String scomment;
+  final int sdiaryid;
 
   const customWidget1({
     super.key,
     required this.sdate,
     required this.sdiaryImage,
     required this.scomment,
+    required this.sdiaryid,
   });
 
   @override
@@ -225,7 +252,7 @@ class _customWidget1State extends State<customWidget1> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
                     ),
                     IconButton(
                         onPressed: () {
@@ -234,10 +261,14 @@ class _customWidget1State extends State<customWidget1> {
                           //     MaterialPageRoute(
                           //         builder: (context) => diaryUpdate(diary: diary,)));
                         },
-                        icon: Icon(
-                          Icons.edit,
-                          size: 30,
-                        )),
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
+                    ),
                   ]),
                 ), //날짜
                 Expanded(
@@ -296,18 +327,28 @@ class _customWidget1State extends State<customWidget1> {
 class customWidget2 extends StatefulWidget {
   final String scomment;
   final DateTime sdate;
+  final int diaryId;
 
   const customWidget2({
     super.key,
     required this.scomment,
     required this.sdate,
+    required this.diaryId,
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State();
+  State<customWidget2> createState() => _customWidget2State(diaryId);
 }
 
 class _customWidget2State extends State<customWidget2> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customWidget2State(int diaryId) {
+    this.diaryId = diaryId;
+  }
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -341,20 +382,21 @@ class _customWidget2State extends State<customWidget2> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
                     ),
-                    // IconButton(
-                    //     onPressed: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => diaryUpdate(
-                    //                   date: DateTime(2023, 11, 24))));
-                    //     },
-                    //     icon: Icon(
-                    //       Icons.edit,
-                    //       size: 30,
-                    //     )),
+                     IconButton(
+                         onPressed: () {
+                           //apiManager.RemoveDiary(diaryId);
+                         },
+                       icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                     ),
+                    IconButton(
+                        onPressed: () {
+                          apiManager.RemoveDiary(diaryId);
+                          print('다이어리 아이디 : ${diaryId}');
+                        },
+                        icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
+                        ),
                   ]),
                 ), //날짜
                 Expanded(
@@ -388,12 +430,14 @@ class customwidget3 extends StatefulWidget {
   final String scomment;
   final String svoice;
   final DateTime sdate;
+  final int sdiaryid;
 
   const customwidget3({
     super.key,
     required this.scomment,
     required this.svoice,
     required this.sdate,
+    required this.sdiaryid,
   });
 
   @override
@@ -483,20 +527,24 @@ class _customwidget3State extends State<customwidget3> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
                     ),
-                    // IconButton(
-                    //     onPressed: () {
+                    IconButton(
+                         onPressed: () {
                     //       Navigator.push(
                     //           context,
                     //           MaterialPageRoute(
                     //               builder: (context) => diaryUpdate(
                     //                   date: DateTime(2023, 11, 24))));
-                    //     },
-                    //     icon: Icon(
-                    //       Icons.edit,
-                    //       size: 30,
-                    //     )),
+                         },
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
+                    ),
                   ]),
                 ), //날짜
                 Expanded(
@@ -610,6 +658,7 @@ class customwidget4 extends StatefulWidget {
   final String scomment; // 일기 내용
   final String svoice; // 녹음 기능
   final DateTime sdate;
+  final int sdiaryid;
 
   const customwidget4({
     super.key,
@@ -617,6 +666,7 @@ class customwidget4 extends StatefulWidget {
     required this.scomment,
     required this.svoice,
     required this.sdate,
+    required this.sdiaryid,
   });
 
   @override
@@ -706,20 +756,24 @@ class _customwidget4State extends State<customwidget4> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
                     ),
-                    // IconButton(
-                    //     onPressed: () {
+                    IconButton(
+                         onPressed: () {
                     //       Navigator.push(
                     //           context,
                     //           MaterialPageRoute(
                     //               builder: (context) => diaryUpdate(
                     //                   date: DateTime(2023, 11, 24))));
-                    //     },
-                    //     icon: Icon(
-                    //       Icons.edit,
-                    //       size: 30,
-                    //     )),
+                        },
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
+                    ),
                   ]),
                 ), //날짜
                 Expanded(

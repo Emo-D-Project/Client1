@@ -203,6 +203,7 @@ class _customWidget1State extends State<customWidget1> {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
+    Diary diary;
     return SingleChildScrollView(
       child: Center(
         child: Container(
@@ -231,7 +232,7 @@ class _customWidget1State extends State<customWidget1> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
                     ),
                     IconButton(
                         onPressed: () {
@@ -240,10 +241,14 @@ class _customWidget1State extends State<customWidget1> {
                           //     MaterialPageRoute(
                           //         builder: (context) => diaryUpdate(diary: diary,)));
                         },
-                        icon: Icon(
-                          Icons.edit,
-                          size: 30,
-                        )),
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
+                    ),
                   ]),
                 ), //날짜
                 Expanded(
@@ -346,7 +351,22 @@ class _customWidget2State extends State<customWidget2> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => diaryUpdate(diary: diary,)));
+                      },
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
                   ]),
                 ), //날짜
@@ -474,7 +494,22 @@ class _customwidget3State extends State<customwidget3> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => diaryUpdate(diary: diary,)));
+                      },
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
                   ]),
                 ), //날짜
@@ -683,7 +718,22 @@ class _customwidget4State extends State<customwidget4> {
                       ),
                     ),
                     SizedBox(
-                      width: 135,
+                      width: 90,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => diaryUpdate(diary: diary,)));
+                      },
+                      icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
                   ]),
                 ), //날짜

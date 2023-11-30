@@ -232,7 +232,9 @@ class ApiManager {
         return Diary(
             date: DateTime.parse(data['createdAt']),
             content: data['content'],
-            emotion: data['emotion']);
+            emotion: data['emotion'],
+            diaryId: data['id'],
+        );
       }).toList();
 
       return diaries;
@@ -559,4 +561,64 @@ class ApiManager {
       throw e;
     }
   }
+
+  void RemoveDiary(int id) async {
+    String accessToken = tokenManager.getAccessToken();
+    baseUrl = "http://34.64.78.183:8080";
+    String endPoint = "/api/diaries/delete/${id}";
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Authorization': 'Bearer $accessToken',
+    };
+    try {
+      var response = await _dio.delete(
+        '$baseUrl$endPoint',
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 200) {
+        print("diary 삭제 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+    }
+  }
+
+  // Future<Diary> getdiaData() async {
+  //   String accessToken = tokenManager.getAccessToken();
+  //   String endPoint = "/api/diaries/read/";
+  //
+  //   final response = await http.get(
+  //     Uri.parse('$baseUrl$endPoint'),
+  //     headers: <String, String>{
+  //       'Authorization': 'Bearer $accessToken',
+  //     },
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+  //     print("Diarydi data: " + response.body);
+  //
+  //     Diary diarYdata = Diary(
+  //       emotions: List<double>.from(rawData['emotions']),
+  //       date: DateTime.parse(rawData['ceatedAt']),
+  //       content: rawData['content'],
+  //       emotion: rawData['emotion'],
+  //       userId: rawData['user_id'],
+  //       diaryId: rawData['id'],
+  //     );
+  //
+  //     return TSatisdata;
+  //   } else {
+  //     throw Exception("Fail to load total data from the API");
+  //   }
+  // }
+  //
+
 }
