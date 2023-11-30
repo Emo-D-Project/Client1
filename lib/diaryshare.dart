@@ -37,6 +37,13 @@ List<Diary> diaries = [];
 
 Map<int, int> commentCount = {};
 
+Map<int,FavoriteCount> favoriteMap = {};
+
+class FavoriteCount {
+  bool favoriteColor = false;
+  int  favoriteCount = 0;
+}
+
 class _diaryshareState extends State<diaryshare> {
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -52,18 +59,35 @@ class _diaryshareState extends State<diaryshare> {
 
   Future<void> fetchDataFromServer() async {
     try {
+
       final data = await apiManager.getDiaryShareData();
+      apiManager.getFavoriteCount(30);
+
       setState(() {
         diaries = data!;
 
         for(Diary diary in diaries){
-          apiManager.getCommentData(diary.diaryId).then((List<Comment> commentList) {
-            // commentList의 길이에 접근
-            int listLength = commentList.length;
+            FavoriteCount favoriteCount = new FavoriteCount();
 
-            commentCount.addAll({diary.diaryId : listLength});
+            {
+              bool favoriteColor = false;
+              int  favoriteCount = 0;
+            }
+            apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+              favoriteCount.favoriteCount = value;
+            });
 
-            // 원하는 작업 수행
+            apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+              favoriteCount.favoriteColor = value;
+            });
+
+            apiManager.getCommentData(diary.diaryId).then((List<Comment> commentList) {
+              favoriteMap.addAll({diary.diaryId : favoriteCount});
+              // commentList의 길이에 접근
+              int listLength = commentList.length;
+
+              commentCount.addAll({diary.diaryId : listLength});
+              // 원하는 작업 수행
           }).catchError((error) {
             print('Error getting commentList: $error');
           });
@@ -214,6 +238,7 @@ class _diaryshareState extends State<diaryshare> {
                           otherUserId: diaries[index].userId,
                           diaryId: diaries[index].diaryId,
                           scommentCount: diaries[index].scommentCount,
+
 
                         );
                       } else if (diaries[index].imagePath.isEmpty &&
@@ -525,32 +550,33 @@ class customWidget2 extends StatefulWidget {
   State<customWidget2> createState() => _customWidget2State(
         otherUserId,
         diaryId,
-        sfavoritCount,
-
       );
 }
 
 class _customWidget2State extends State<customWidget2> {
-  late bool sfavoritColor;
 
+  bool sfavoritColor = false;
   int otherUserId = 36;
   String imagePath = "";
   int diaryId = 0;
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
 
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    print("setState 호출됨 위젯2");
+  }
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget2State(
     int otherUserId,
     int diaryId,
-    int sfavoritCount,
 
   ) {
     this.otherUserId = otherUserId;
     this.diaryId = diaryId;
-    this.favoriteCounts = sfavoritCount;
-
   }
 
   void plusDialog(BuildContext context) async {
@@ -573,18 +599,19 @@ class _customWidget2State extends State<customWidget2> {
       },
     );
 
-    // Update the UI after the dialog is closed
-    setState(() {
-      // Update your comment count here
-      // commentList is likely updated in the comment widget itself, so you can use its length
-      //commentCountText  = commentList.length;
-    });
+
   }
 
+  @override
   void initState() {
     super.initState();
-    favoriteCounts = widget.sfavoritCount;
-   sfavoritColor = widget.sfavoritColor;
+
+    favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
+    sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
+
+    print("init state 좋아요 카운트: $favoriteCounts");
+
+
     switch (widget.simagePath) {
       case "angry":
         imagePath = 'images/emotion/angry.png';
@@ -701,9 +728,9 @@ class _customWidget2State extends State<customWidget2> {
                         try {
                           setState(() {
                             if (sfavoritColor) {
-                              favoriteCounts--;
+                              favoriteCounts = favoriteCounts - 1;
                             } else {
-                              favoriteCounts++;
+                              favoriteCounts = favoriteCounts + 1;
                             }
                             sfavoritColor = !sfavoritColor;
                           });
@@ -717,7 +744,7 @@ class _customWidget2State extends State<customWidget2> {
                       ),
                     ),
                     Text(
-                      '$favoriteCounts',
+                      '${favoriteCounts}',
                       style: TextStyle(fontSize: 11),
                     ),
                   ],

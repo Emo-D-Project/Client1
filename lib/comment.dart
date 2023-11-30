@@ -38,7 +38,11 @@ class _commentState extends State<comment> {
     fetchDataFromServer();
   }
 
+
+  // 다이어리 아이디랑 페이보릿 카운트
+
   Future<void> fetchDataFromServer() async {
+
     try {
       final data = await apiManager.getCommentData(postId);
       setState(() {
@@ -240,7 +244,9 @@ class _commentState extends State<comment> {
                         onTap: () async {
                           print('dkdkdkdkdkdk:   ${commentList.length}');
                           _sendComment();
+
                           await Future.delayed(Duration(milliseconds: 100));
+
                           final data = await apiManager.getCommentData(postId);
                           setState(() {
                             commentList = data!;

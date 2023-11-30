@@ -455,6 +455,56 @@ class ApiManager {
     }
   }
 
+//get 좋아요수 확인
+  Future<int> getFavoriteCount(int id) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/diaries/read/$id";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+
+      return data["empathy"];
+    } else {
+      throw Exception("Fail to load getFavorite data from the API");
+    }
+  }
+
+  Future<bool> GetFavoriteColor(int diaryId) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/diaries/recommend/$diaryId";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+
+      if (data == 0 || data == 1) {
+        bool favoriteColor = data == 1;
+
+        return favoriteColor;
+      } else {
+        throw Exception("Unexpected data value received from the API");
+      }
+    } else {
+      throw Exception("Fail to load getFavorite data from the API");
+    }
+  }
+
+
+
+
 //post 댓글작성
   void sendComment(String content, int post_id) async {
     String endpoint = "/api/comments/create";
