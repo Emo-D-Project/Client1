@@ -1,4 +1,3 @@
-import 'package:capston1/diaryshare.dart';
 import 'package:capston1/models/Diary.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -7,8 +6,11 @@ import 'package:capston1/models/Comment.dart';
 
 final cat_image = 'images/send/cat_real_image.png';
 
+List<Comment> commentList = [  ];
+
 class comment extends StatefulWidget {
   final int postId;
+
   const comment({super.key, required this.postId});
 
   @override
@@ -16,38 +18,45 @@ class comment extends StatefulWidget {
 }
 
 class _commentState extends State<comment> {
-
   TextEditingController _commentController = TextEditingController(); //댓글 저장 변수
   ApiManager apiManager = ApiManager().getApiManager();
 
   late int postId;
   late String comment;
 
-  final List<int> num = [];
+  final Map<int, List<int>> userTitle = {};
+  final Map<int,List<Comment>> commentCount={};
 
-  List<Comment> comments = [];
-  List<Diary> diaryshare = [];
-
+  Map<int, int> catCount = {};
 
   _commentState(this.postId);
 
   @override
   void initState() {
     super.initState();
+
     fetchDataFromServer();
   }
 
   Future<void> fetchDataFromServer() async {
     try {
-      final data = await apiManager.getDiaryShareData();
+      final data = await apiManager.getCommentData(postId);
       setState(() {
-        diaryshare = data!;
+        commentList = data!;
+
+        int count = 1;
+        for (Comment c in commentList) {
+          if (!catCount.containsKey(c.user_id)) {
+            catCount.addAll({c.user_id: count});
+            count++;
+          }
+        }
+
       });
     } catch (error) {
-      print('Error getting DiaryShare list : $error');
+      print('Error getting Comment list : $error');
     }
   }
-
 
   Future<void> GetComment(String endpoint) async {
     try {
@@ -68,30 +77,43 @@ class _commentState extends State<comment> {
     }
   }
 
-  // 댓글 전송 기능
-  void sendComment() {
-    String text = _commentController.text.trim(); //trim은 걍 앞 뒤 공백 제거 해주는거
-    if (text.isNotEmpty) {
-      apiManager.sendComment(text,postId);
-      _commentController.clear();
-    }
-  }
-
   void addComment(int user_id, String text) {
     setState(() {
-      comments.add(Comment(
+
+      if (!userTitle.containsKey(user_id)) {
+        userTitle[user_id] = [1];
+      } else {
+        userTitle[user_id]!.add(userTitle[user_id]!.length + 1); // 댓글 번호 추가
+      }
+
+      commentList.add(Comment(
         user_id: user_id,
         content: text,
       ));
+
       print('보낸 사람: $user_id , 전송 메세지: $text');
     });
   }
 
+  void _sendComment() async {
+    String text = _commentController.text.trim();
+    print('sendcomment 실행');
 
+
+
+    if (text.isNotEmpty) {
+      apiManager.sendComment(text, postId);
+      print('포스트아이디:${postId}');
+      _commentController.clear();
+
+      await fetchDataFromServer();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
+
     return Container(
       height: sizeY * 0.7,
       decoration: BoxDecoration(
@@ -111,14 +133,13 @@ class _commentState extends State<comment> {
               color: Color.fromRGBO(117, 117, 117, 100),
             ),
           ), // 맨위에 회색 줄
-
           //댓글 부분
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: comments.length,
+              itemCount: commentList.length,
               itemBuilder: (context, index) {
-                Comment comment = comments[index];
+                //Comment comment = commentList[index];
                 return Container(
                   width: double.infinity,
                   child: Row(
@@ -141,7 +162,8 @@ class _commentState extends State<comment> {
                                 Container(
                                   padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                   child: Text(
-                                    '삼냥이 ',
+                                    '삼냥이 ${catCount[commentList[index].user_id]}',
+                                    //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 13,
@@ -156,7 +178,7 @@ class _commentState extends State<comment> {
                             Container(
                               padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                               child: Text(
-                                comment.content,
+                                commentList[index].content,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 13,
@@ -215,7 +237,23 @@ class _commentState extends State<comment> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: sendComment,
+                        onTap: () async {
+                          print('dkdkdkdkdkdk:   ${commentList.length}');
+                          _sendComment();
+                          await Future.delayed(Duration(milliseconds: 100));
+                          final data = await apiManager.getCommentData(postId);
+                          setState(() {
+                            commentList = data!;
+
+                            int count = 1;
+                            for (Comment c in commentList) {
+                              if (!catCount.containsKey(c.user_id)) {
+                                catCount.addAll({c.user_id: count});
+                                count++;
+                              }
+                            }
+                          });
+                        },
                         child: Container(
                           height: 30,
                           width: 30,

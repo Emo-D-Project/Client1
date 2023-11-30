@@ -7,6 +7,8 @@ import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
 import 'models/Diary.dart';
+import 'package:capston1/models/Comment.dart';
+
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
@@ -19,6 +21,8 @@ final List<String> imagePaths = [
   'images/emotion/sad.gif',
 ];
 
+//late final int postId;
+
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
 
@@ -30,6 +34,8 @@ class diaryshare extends StatefulWidget {
 }
 
 List<Diary> diaries = [];
+
+Map<int, int> commentCount = {};
 
 class _diaryshareState extends State<diaryshare> {
   ApiManager apiManager = ApiManager().getApiManager();
@@ -49,6 +55,19 @@ class _diaryshareState extends State<diaryshare> {
       final data = await apiManager.getDiaryShareData();
       setState(() {
         diaries = data!;
+
+        for(Diary diary in diaries){
+          apiManager.getCommentData(diary.diaryId).then((List<Comment> commentList) {
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
+
+            commentCount.addAll({diary.diaryId : listLength});
+
+            // 원하는 작업 수행
+          }).catchError((error) {
+            print('Error getting commentList: $error');
+          });
+        }
       });
     } catch (error) {
       // 에러 제어하는 부분
@@ -58,6 +77,7 @@ class _diaryshareState extends State<diaryshare> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       color: Color(0xFFF8F5EB),
       child: Column(
@@ -113,10 +133,7 @@ class _diaryshareState extends State<diaryshare> {
             scrollDirection: Axis.horizontal,
             physics: ClampingScrollPhysics(),
             child: Row(
-              children: imagePaths
-                  .asMap()
-                  .entries
-                  .map((entry) {
+              children: imagePaths.asMap().entries.map((entry) {
                 String imagePath = entry.value;
                 String emotion = "";
                 switch (imagePath) {
@@ -147,7 +164,7 @@ class _diaryshareState extends State<diaryshare> {
                 }
                 // 해당 이미지에 대한 일기 내용을 찾기
                 List<Diary> diariesWithSelectedEmotion =
-                diaries.where((diary) => diary.emotion == emotion).toList();
+                    diaries.where((diary) => diary.emotion == emotion).toList();
 
                 return Padding(
                   padding: EdgeInsets.all(3),
@@ -196,7 +213,8 @@ class _diaryshareState extends State<diaryshare> {
                           simagePath: diaries[index].emotion,
                           otherUserId: diaries[index].userId,
                           diaryId: diaries[index].diaryId,
-                          //diaryComment: diaries[index].diaryComment,
+                          scommentCount: diaries[index].scommentCount,
+
                         );
                       } else if (diaries[index].imagePath.isEmpty &&
                           diaries[index].voice != "") {
@@ -260,13 +278,12 @@ class customWidget1 extends StatefulWidget {
 }
 
 class _customWidget1State extends State<customWidget1> {
-  //late int sfavoritCount; // 추가된 부분
   late bool sfavoritColor; // 추가된 부분
   String imagePath = "";
   int otherUserId = 36;
   int DiaryId = 1;
   int favoriteCounts = 0;
-  final List<Comment> comments = []; // 댓글을 관리하는 리스트
+  final List<Comment> comments = [];
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -308,10 +325,7 @@ class _customWidget1State extends State<customWidget1> {
   }
 
   void plusDialog(BuildContext context) {
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -319,10 +333,7 @@ class _customWidget1State extends State<customWidget1> {
         return SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
-                bottom: MediaQuery
-                    .of(context)
-                    .viewInsets
-                    .bottom),
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             //child: comment(postId:), // 수정이 필요한 부분
@@ -355,19 +366,19 @@ class _customWidget1State extends State<customWidget1> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 50),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
+                          ),
+                        ),
+                      )),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
@@ -408,7 +419,8 @@ class _customWidget1State extends State<customWidget1> {
                         ),
                       )),
                 ),
-                //텍스트
+
+                //일기 내용
                 Container(
                     width: 380,
                     padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
@@ -428,59 +440,59 @@ class _customWidget1State extends State<customWidget1> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 누를 때 색 변경 및 count 증가
-                              if (sfavoritColor) {
-                                favoriteCounts--;
-                              } else {
-                                favoriteCounts++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$favoriteCounts',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // 좋아요 누를 때 색 변경 및 count 증가
+                          if (sfavoritColor) {
+                            favoriteCounts--;
+                          } else {
+                            favoriteCounts++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '$favoriteCounts',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '0',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
-                  ),
-                ],
-              )),
+                    //댓글 숫자
+                    Text(
+                      '10',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
@@ -495,6 +507,7 @@ class customWidget2 extends StatefulWidget {
   final bool sfavoritColor;
   final int otherUserId;
   final int diaryId;
+  final int scommentCount;
 
   const customWidget2({
     super.key,
@@ -504,62 +517,74 @@ class customWidget2 extends StatefulWidget {
     required this.sfavoritCount,
     required this.otherUserId,
     required this.diaryId,
+    required this.scommentCount,
+
   });
 
   @override
-  State<customWidget2> createState() =>
-      _customWidget2State(otherUserId, diaryId, sfavoritCount,);
+  State<customWidget2> createState() => _customWidget2State(
+        otherUserId,
+        diaryId,
+        sfavoritCount,
+
+      );
 }
 
 class _customWidget2State extends State<customWidget2> {
-  late bool sfavoritColor; //false로 초기화
-  final List<Comment> comments = []; // 댓글을 관리하는 리스트
+  late bool sfavoritColor;
+
   int otherUserId = 36;
   String imagePath = "";
   int diaryId = 0;
-  TextEditingController _commentController = TextEditingController();
-  int _commentCount = 0;
+  //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
-  int diaryComment = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customWidget2State(int otherUserId, int diaryId, int sfavoritCount,) {
+  _customWidget2State(
+    int otherUserId,
+    int diaryId,
+    int sfavoritCount,
+
+  ) {
     this.otherUserId = otherUserId;
     this.diaryId = diaryId;
-    this.favoriteCounts = favoriteCounts;
+    this.favoriteCounts = sfavoritCount;
+
   }
 
-  void plusDialog(BuildContext context) {
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
-    showModalBottomSheet(
+  void plusDialog(BuildContext context) async {
+    final sizeY = MediaQuery.of(context).size.height;
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         print('다이어리 아이디 $diaryId');
         return SingleChildScrollView(
-            child: Container(
+          child: Container(
             padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        height: sizeY * 0.8,
-        color: Color(0xFF737373),
-        child: comment(postId:
-        diaryId
-        )
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
+            height: sizeY * 0.8,
+            color: Color(0xFF737373),
+            child: comment(postId: diaryId),
+          ),
         );
       },
     );
+
+    // Update the UI after the dialog is closed
+    setState(() {
+      // Update your comment count here
+      // commentList is likely updated in the comment widget itself, so you can use its length
+      //commentCountText  = commentList.length;
+    });
   }
 
   void initState() {
     super.initState();
-    favoriteCounts = widget.sfavoritCount; // 초기화
-    sfavoritColor = widget.sfavoritColor;
+    favoriteCounts = widget.sfavoritCount;
+   sfavoritColor = widget.sfavoritColor;
     switch (widget.simagePath) {
       case "angry":
         imagePath = 'images/emotion/angry.png';
@@ -590,6 +615,8 @@ class _customWidget2State extends State<customWidget2> {
 
   @override
   Widget build(BuildContext context) {
+
+    print("commentCount: ${commentCount[diaryId]}");
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -611,19 +638,19 @@ class _customWidget2State extends State<customWidget2> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 50),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
+                          ),
+                        ),
+                      )),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
@@ -661,61 +688,63 @@ class _customWidget2State extends State<customWidget2> {
           ),
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            apiManager.putFavoriteCount(diaryId);
-                            try {
-                              setState(() {
-                                if (sfavoritColor) {
-                                  favoriteCounts--;
-                                } else {
-                                  favoriteCounts++;
-                                }
-                                sfavoritColor = !sfavoritColor;
-                              });
-                            } catch (error) {
-                              print('Error updating favorite count: $error');
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        apiManager.putFavoriteCount(diaryId);
+                        print("좋아요 누름 :${diaryId}");
+                        try {
+                          setState(() {
+                            if (sfavoritColor) {
+                              favoriteCounts--;
+                            } else {
+                              favoriteCounts++;
                             }
-                          },
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$favoriteCounts',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                            sfavoritColor = !sfavoritColor;
+                          });
+                        } catch (error) {
+                          print('Error updating favorite count: $error');
+                        }
+                      },
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                    Text(
+                      '$favoriteCounts',
+                      style: TextStyle(fontSize: 11),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                        print(commentList.length);
+                        //postId = diaryId;
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
+                    ),
+                    Text(
+                      style: TextStyle(fontSize: 11),
+                      '${commentCount[diaryId]}',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
@@ -760,10 +789,7 @@ class _customwidget3State extends State<customwidget3> {
   }
 
   void plusDialog(BuildContext context) {
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -771,10 +797,7 @@ class _customwidget3State extends State<customwidget3> {
         return SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
-                bottom: MediaQuery
-                    .of(context)
-                    .viewInsets
-                    .bottom),
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             //child: comment(),
@@ -884,19 +907,19 @@ class _customwidget3State extends State<customwidget3> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 50),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
+                          ),
+                        ),
+                      )),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
@@ -941,7 +964,7 @@ class _customwidget3State extends State<customwidget3> {
                               formatTime(position), // 진행중인 시간
                               style: TextStyle(
                                   color:
-                                  Colors.brown), // Set text color to black
+                                      Colors.brown), // Set text color to black
                             ),
                             SizedBox(
                               width: 20,
@@ -1000,57 +1023,57 @@ class _customwidget3State extends State<customwidget3> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (sfavoritColor) {
-                                sfavoritCount--;
-                              } else {
-                                sfavoritCount++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$sfavoritCount',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (sfavoritColor) {
+                            sfavoritCount--;
+                          } else {
+                            sfavoritCount++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                    Text(
+                      '$sfavoritCount',
+                      style: TextStyle(fontSize: 11),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
+                    ),
+                    //댓글 숫자
+                    Text(
+                      '6', //
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
@@ -1095,10 +1118,7 @@ class _customwidget4State extends State<customwidget4> {
   }
 
   void plusDialog(BuildContext context) {
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final sizeY = MediaQuery.of(context).size.height;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1106,10 +1126,7 @@ class _customwidget4State extends State<customwidget4> {
         return SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
-                bottom: MediaQuery
-                    .of(context)
-                    .viewInsets
-                    .bottom),
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
             //   child: comment(),
@@ -1221,19 +1238,19 @@ class _customwidget4State extends State<customwidget4> {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              margin: EdgeInsets.only(left: 50),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          margin: EdgeInsets.only(left: 50),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imagePath),
+                              fit: BoxFit.contain,
                             ),
-                          )),
+                          ),
+                        ),
+                      )),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
@@ -1297,7 +1314,7 @@ class _customwidget4State extends State<customwidget4> {
                               formatTime(position), // 진행중인 시간
                               style: TextStyle(
                                   color:
-                                  Colors.brown), // Set text color to black
+                                      Colors.brown), // Set text color to black
                             ),
                             SizedBox(
                               width: 20,
@@ -1356,58 +1373,58 @@ class _customwidget4State extends State<customwidget4> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 누를 때 색 변경 및 count 증가
-                              if (sfavoritColor) {
-                                sfavoritCount--;
-                              } else {
-                                sfavoritCount++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$sfavoritCount',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // 좋아요 누를 때 색 변경 및 count 증가
+                          if (sfavoritColor) {
+                            sfavoritCount--;
+                          } else {
+                            sfavoritCount++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        //댓글 숫자
-                        Text(
-                          '6', //
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                    Text(
+                      '$sfavoritCount',
+                      style: TextStyle(fontSize: 11),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
+                    ),
+                    //댓글 숫자
+                    Text(
+                      '6',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );

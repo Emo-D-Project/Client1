@@ -254,7 +254,7 @@ class ApiManager {
 
     if (response.statusCode == 200) {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("message List data: " + response.body);
+      print("댓글 data: " + response.body);
 
       List<Message> messages = rawData.map((data) {
         return Message(
@@ -276,7 +276,6 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
-    // 요청 헤더를 Map으로 정의
     Map<String, dynamic> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken',
@@ -451,12 +450,13 @@ class ApiManager {
     );
     if (response.statusCode == 200) {
     } else {
-      throw Exception("Fail to load favorite data from the API : ${response.statusCode}");
+      throw Exception(
+          "Fail to load favorite data from the API : ${response.statusCode}");
     }
   }
 
 //post 댓글작성
-  void sendComment(String content, int postId) async {
+  void sendComment(String content, int post_id) async {
     String endpoint = "/api/comments/create";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
@@ -473,7 +473,7 @@ class ApiManager {
         '$baseUrl$endpoint',
         data: {
           "content": content,
-          "postId": postId,
+          "post_id": post_id,
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
@@ -495,7 +495,6 @@ class ApiManager {
 //get 댓글 확인
   Future<List<Comment>> getCommentData(int postId) async {
     String accessToken = tokenManager.getAccessToken();
-
     String endPoint = "/api/comments/read/${postId}";
 
     final response = await http.get(
@@ -517,7 +516,6 @@ class ApiManager {
           id: data['id'],
         );
       }).toList();
-
       return comment;
     } else {
       throw Exception("Fail to load comment data from the API");
