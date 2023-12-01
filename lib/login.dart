@@ -1,4 +1,4 @@
-import 'package:capston1/MyInfo.dart';
+import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

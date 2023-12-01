@@ -94,7 +94,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => mypage()));
+                            MaterialPageRoute(builder: (context) => mypage(userId: 36,))); // 수정 필요
                       },
                       child: Row(
                         children: [
