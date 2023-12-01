@@ -130,10 +130,14 @@ class _writediaryState extends State<writediary> {
         'emotion': sendEmotion,
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
-        //오디오 전송
       };
+
+      print("write diary의 audioPath: $audioPath");
+      apiManager.sendPostDiary(postData, diaryImage, audioPath);
+
+      final postAudio = {'audioFile' : audioPath};
+
       print(postData);
-      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
     } catch (e) {
       print('Error: $e');
     }
@@ -463,7 +467,7 @@ class _writediaryState extends State<writediary> {
                                           position = Duration(seconds: value.toInt());
                                         });
                                         await audioPlayer.seek(position);
-                                        await audioPlayer.resume();
+                                        //await audioPlayer.resume();
                                       },
                                       activeColor: Color(0xFF968C83),
                                     ),
@@ -501,7 +505,8 @@ class _writediaryState extends State<writediary> {
                                                   isPlaying = false; //상태변경하기..?
                                                 });
                                               } else { //멈춘 상태였으면
-                                                await playAudio(); // 녹음된 오디오 재생
+                                                await playAudio();
+                                                await audioPlayer.resume();// 녹음된 오디오 재생
                                               }
                                               print("isplaying 후 : $isPlaying");
                                             },

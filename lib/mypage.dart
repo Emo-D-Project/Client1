@@ -256,7 +256,7 @@ class _mypageState extends State<mypage> {
                     backgroundColor: Color(0xFF7D5A50),
                     minimumSize: Size(150, 30)),
                 onPressed: () async {
-                  _sendMyPage();
+                  _sendMyPage(); //
                   final data = await apiManager.getMypageData();
                   setState(() {
                     myPageDatas = data!;
