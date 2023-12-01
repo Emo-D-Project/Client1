@@ -164,21 +164,20 @@ class _writediaryState extends State<diaryReplay> {
                   sdate: diary!.date,
                   sdiaryImage: diary!.imagePath,
                   scomment: diary!.content,
-                sdiaryid: diary!.diaryId,
+                diaryId: diary!.diaryId,
               );
             } else if (diary!.imagePath.isEmpty && diary!.voice == "") {
               return customWidget2(
                 sdate: diary!.date,
                 scomment: diary!.content,
                 diaryId: diary!.diaryId,
-
               );
             } else if (diary!.imagePath.isEmpty && diary!.voice != "") {
               return customwidget3(
                 sdate: diary!.date,
                 scomment: diary!.content,
                 svoice: diary!.voice,
-                sdiaryid: diary!.diaryId,
+                diaryId: diary!.diaryId,
               );
             } else if (diary!.imagePath.isNotEmpty && diary!.voice != "") {
               return customwidget4(
@@ -186,7 +185,7 @@ class _writediaryState extends State<diaryReplay> {
                 sdiaryImage: diary!.imagePath,
                 scomment: diary!.content,
                 svoice: diary!.voice,
-                sdiaryid: diary!.diaryId,
+                diaryId: diary!.diaryId,
               );
             } else {
               // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
@@ -204,21 +203,30 @@ class customWidget1 extends StatefulWidget {
   final DateTime sdate;
   final List<String> sdiaryImage;
   final String scomment;
-  final int sdiaryid;
+  final int diaryId;
 
   const customWidget1({
     super.key,
     required this.sdate,
     required this.sdiaryImage,
     required this.scomment,
-    required this.sdiaryid,
+    required this.diaryId,
   });
 
   @override
-  State<customWidget1> createState() => _customWidget1State();
+  State<customWidget1> createState() => _customWidget1State(diaryId);
 }
 
 class _customWidget1State extends State<customWidget1> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customWidget1State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -265,7 +273,8 @@ class _customWidget1State extends State<customWidget1> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
@@ -386,7 +395,6 @@ class _customWidget2State extends State<customWidget2> {
                     ),
                      IconButton(
                          onPressed: () {
-                           //apiManager.RemoveDiary(diaryId);
                          },
                        icon: Image.asset('images/main/pencil.png', width: 30, height: 30,),
                      ),
@@ -430,21 +438,30 @@ class customwidget3 extends StatefulWidget {
   final String scomment;
   final String svoice;
   final DateTime sdate;
-  final int sdiaryid;
+  final int diaryId;
 
   const customwidget3({
     super.key,
     required this.scomment,
     required this.svoice,
     required this.sdate,
-    required this.sdiaryid,
+    required this.diaryId,
   });
 
   @override
-  State<customwidget3> createState() => _customwidget3State();
+  State<customwidget3> createState() => _customwidget3State(diaryId);
 }
 
 class _customwidget3State extends State<customwidget3> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customwidget3State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -541,7 +558,8 @@ class _customwidget3State extends State<customwidget3> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
@@ -658,7 +676,7 @@ class customwidget4 extends StatefulWidget {
   final String scomment; // 일기 내용
   final String svoice; // 녹음 기능
   final DateTime sdate;
-  final int sdiaryid;
+  final int diaryId;
 
   const customwidget4({
     super.key,
@@ -666,14 +684,23 @@ class customwidget4 extends StatefulWidget {
     required this.scomment,
     required this.svoice,
     required this.sdate,
-    required this.sdiaryid,
+    required this.diaryId,
   });
 
   @override
-  State<customwidget4> createState() => _customwidget4State();
+  State<customwidget4> createState() => _customwidget4State(diaryId);
 }
 
 class _customwidget4State extends State<customwidget4> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customwidget4State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -770,7 +797,8 @@ class _customwidget4State extends State<customwidget4> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),

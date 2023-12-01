@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'models/Diary.dart';
+import 'network/api_manager.dart';
 
 class diaryUpdate extends StatefulWidget {
   final Diary diary;
@@ -13,10 +14,14 @@ class diaryUpdate extends StatefulWidget {
   State<diaryUpdate> createState() => _diaryUpdateState(diary);
 }
 
+List<Diary> diaries = [];
 TextEditingController? _diaryController;
 
 class _diaryUpdateState extends State<diaryUpdate> {
   Diary? diary;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
@@ -28,10 +33,23 @@ class _diaryUpdateState extends State<diaryUpdate> {
     this.diary = diary;
   }
 
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+      setState(() {
+        diaries = data!;
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     setAudio();
+    fetchDataFromServer();
 
     _diaryController = TextEditingController(text: diary!.content);
 
@@ -156,21 +174,25 @@ class _diaryUpdateState extends State<diaryUpdate> {
                 return customWidget1(
                   sdate: diary!.date,
                   sdiaryImage: diary!.imagePath,
+                  diaryId: diary!.diaryId,
                 );
               } else if (diary!.imagePath.isEmpty && diary!.voice == "") {
                 return customWidget2(
                   sdate: diary!.date,
+                  diaryId: diary!.diaryId,
                 );
               } else if (diary!.imagePath.isEmpty && diary!.voice != "") {
                 return customwidget3(
                   sdate: diary!.date,
                   svoice: diary!.voice,
+                  diaryId: diary!.diaryId,
                 );
               } else if (diary!.imagePath.isNotEmpty && diary!.voice != "") {
                 return customwidget4(
                   sdate: diary!.date,
                   sdiaryImage: diary!.imagePath,
                   svoice: diary!.voice,
+                  diaryId: diary!.diaryId,
                 );
               } else {
                 // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
@@ -186,18 +208,29 @@ class _diaryUpdateState extends State<diaryUpdate> {
 class customWidget1 extends StatefulWidget {
   final DateTime sdate;
   final List<String> sdiaryImage;
+  final int diaryId;
 
   const customWidget1({
     super.key,
     required this.sdate,
     required this.sdiaryImage,
+    required this.diaryId,
   });
 
   @override
-  State<customWidget1> createState() => _customWidget1State();
+  State<customWidget1> createState() => _customWidget1State(diaryId);
 }
 
 class _customWidget1State extends State<customWidget1> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customWidget1State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -245,7 +278,8 @@ class _customWidget1State extends State<customWidget1> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
@@ -307,17 +341,28 @@ class _customWidget1State extends State<customWidget1> {
 //글만 있는 거
 class customWidget2 extends StatefulWidget {
   final DateTime sdate;
+  final int diaryId;
 
   const customWidget2({
     super.key,
     required this.sdate,
+    required this.diaryId,
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State();
+  State<customWidget2> createState() => _customWidget2State(diaryId);
 }
 
 class _customWidget2State extends State<customWidget2> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customWidget2State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -364,7 +409,8 @@ class _customWidget2State extends State<customWidget2> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
@@ -400,18 +446,29 @@ class _customWidget2State extends State<customWidget2> {
 class customwidget3 extends StatefulWidget {
   final String svoice;
   final DateTime sdate;
+  final int diaryId;
 
   const customwidget3({
     super.key,
     required this.svoice,
     required this.sdate,
+    required this.diaryId,
   });
 
   @override
-  State<customwidget3> createState() => _customwidget3State();
+  State<customwidget3> createState() => _customwidget3State(diaryId);
 }
 
 class _customwidget3State extends State<customwidget3> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customwidget3State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -507,6 +564,8 @@ class _customwidget3State extends State<customwidget3> {
                     ),
                     IconButton(
                       onPressed: () {
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
 
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
@@ -623,19 +682,30 @@ class customwidget4 extends StatefulWidget {
   final List<String> sdiaryImage; // 다이어리 안에 이미지
   final String svoice; // 녹음 기능
   final DateTime sdate;
+  final int diaryId;
 
   const customwidget4({
     super.key,
     required this.sdiaryImage,
     required this.svoice,
     required this.sdate,
+    required this.diaryId,
   });
 
   @override
-  State<customwidget4> createState() => _customwidget4State();
+  State<customwidget4> createState() => _customwidget4State(diaryId);
 }
 
 class _customwidget4State extends State<customwidget4> {
+
+  int diaryId = 0;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  _customwidget4State(int diaryId) {
+    this.diaryId = diaryId;
+  }
+
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -731,7 +801,8 @@ class _customwidget4State extends State<customwidget4> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        apiManager.RemoveDiary(diaryId);
+                        print('다이어리 아이디 : ${diaryId}');
                       },
                       icon: Image.asset('images/main/trash.png', width: 30, height: 30,),
                     ),
