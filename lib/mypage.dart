@@ -1,24 +1,47 @@
+import 'package:capston1/models/MyInfo.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
 import 'models/Mypage.dart';
 import 'network/api_manager.dart';
+import 'models/Diary.dart';
+import 'diaryshare.dart';
+
 
 class mypage extends StatefulWidget {
-  const mypage({super.key});
+  final int userId;  //일기 공유에서
+
+  const mypage({super.key,required this.userId});
 
   @override
-  State<mypage> createState() => _mypageState();
+  State<mypage> createState() => _mypageState(userId);
 }
+
 
 final _contentEditController = TextEditingController(); //소개답변 저장 변수
 final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 
 class _mypageState extends State<mypage> {
+
   ApiManager apiManager = ApiManager().getApiManager();
-  String login = "mine"; // 내 로그인 정보 담아두고
-  String mine = "mine"; // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
+ // ApiManager apiManager = ApiManager().GetOtherUserPage(id);
+
+  int userId;
+
+  late String title;
+  late String content;
+  late String tititle;
+
+  List<Mypage> myPageDatas = [];
+  List<Mypage> otherPageDatas = [];
+
+
+  //List<Mypage> otherPageDatas = [];
+  //String login = "mine"; // 내 로그인 정보 담아두고
+  //String mine = "mine"; // 버튼 누른 사람의 정보를 담아서  비교하면 내가 원하는대로 되려나
 
   List<Map<String, dynamic>> mypages = [];
+
+  _mypageState(this.userId);
 
   @override
   void initState() {
@@ -26,43 +49,24 @@ class _mypageState extends State<mypage> {
     fetchDataFromServer();
   }
 
-  late String title;
-  late String content;
-  late String tititle;
 
-  List<Mypage> myPageDatas = [];
 
   Future<void> fetchDataFromServer() async {
     try {
-      final data = await apiManager.getMypageData();
+      final data = await apiManager.GetMyPageDataById(userId);
+      final otherData = await apiManager.getMypageData();
+
+
       setState(() {
         myPageDatas = data!;
+        otherPageDatas = otherData!;
+
       });
     } catch (error) {
       print('Error getting MP list: $error');
     }
   }
 
-  Future<void> GetMyPage(String endpoint) async {
-    try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-      // 요청 응답 받기
-      final value = response['title']; // 키를 통해 value를 받아오기
-      print('title: $value');
-      title = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['content']; // 키를 통해 value를 받아오기
-      print('content: $value');
-      content = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
 
   void _sendMyPage() {
     String title = tititle;
@@ -72,6 +76,7 @@ class _mypageState extends State<mypage> {
 
     Navigator.of(context).pop();
   }
+
 
   //질문 선택 창
   void plusDialog(context) {
@@ -200,6 +205,7 @@ class _mypageState extends State<mypage> {
     );
   }
 
+  //질문 답변창
   Future<void> _showDialog(BuildContext context, String item) {
     return showDialog<void>(
       context: context,
@@ -267,6 +273,9 @@ class _mypageState extends State<mypage> {
     );
   }
 
+
+  //``````````````````````````````````````````````````````````````````````````````
+
   @override
   Widget build(BuildContext context) {
     final SizeX = MediaQuery.of(context).size.width;
@@ -280,7 +289,7 @@ class _mypageState extends State<mypage> {
         backgroundColor: Colors.transparent,
         title: SizedBox(
           child: (() {
-            if (login == mine) {
+            if (userId == myPageDatas) {
               return Text(
                 "MYPAGE",
                 style: TextStyle(
@@ -319,9 +328,9 @@ class _mypageState extends State<mypage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
-                      if (login == mine) {
+                      if (MyInfo.myInfo.myUserId == userId) {
                         return Text(
-                          "해지니",
+                          "권해진 바보",
                           //myInfo.getNickName(),
                           style: TextStyle(
                               fontSize: 28,
@@ -372,17 +381,27 @@ class _mypageState extends State<mypage> {
                       padding: const EdgeInsets.all(10),
                       itemCount: myPageDatas.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return CustomQuestionContainer(
-                          vquestion: myPageDatas[index].title,
-                          vanswer: myPageDatas[index].content,
-                        );
+                        if(MyInfo.myInfo.myUserId == userId){
+                          return CustomQuestionContainer(
+                            //답변 받는 부분
+                            vquestion: myPageDatas[index].title,
+                            vanswer: myPageDatas[index].content,
+                          );
+                        }else{
+                          return CustomQuestionContainer(
+                            //답변 받는 부분
+                            vquestion: otherPageDatas[index].title,
+                            vanswer: otherPageDatas[index].content,
+                          );
+                        }
+
                       },
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: (() {
-                      if (login == mine) {
+                      if (MyInfo.myInfo.myUserId == userId) {
                         return IconButton(
                             onPressed: () {
                               plusDialog(context);
