@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
 import '../models/Message.dart';
@@ -10,6 +13,7 @@ import '../models/MonthData.dart';
 import '../models/TotalData.dart';
 import '../models/Mypage.dart';
 import '../models/Comment.dart';
+import 'package:http_parser/http_parser.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -230,10 +234,10 @@ class ApiManager {
 
       List<Diary> diaries = rawData.map((data) {
         return Diary(
-            date: DateTime.parse(data['createdAt']),
-            content: data['content'],
-            emotion: data['emotion'],
-            diaryId: data['id'],
+          date: DateTime.parse(data['createdAt']),
+          content: data['content'],
+          emotion: data['emotion'],
+          diaryId: data['id'],
         );
       }).toList();
 
@@ -504,9 +508,6 @@ class ApiManager {
     }
   }
 
-
-
-
 //post 댓글작성
   void sendComment(String content, int post_id) async {
     String endpoint = "/api/comments/create";
@@ -575,6 +576,7 @@ class ApiManager {
   }
 
   void sendMypage(String title, String content) async {
+    //post
     String endpoint = "/api/userInfo";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
@@ -669,4 +671,71 @@ class ApiManager {
   // }
   //
 
+
+
+  Future<File?> saveXFileToFile(XFile? xFile) async {
+    if (xFile == null) return null;
+
+    final bytes = await xFile.readAsBytes();
+    final tempDir = await getTemporaryDirectory();
+    final tempPath = tempDir.path;
+    final fileName = '${DateTime.now().millisecondsSinceEpoch}.png'; // 파일 이름 설정
+
+    final File file = File('$tempPath/$fileName');
+    await file.writeAsBytes(bytes);
+    return file;
+  }
+
+  Future<void> sendPostDiary(dynamic data, List<XFile?> images, dynamic audio) async {
+    var url = Uri.parse("http://34.64.78.183:8080/api/diaries/create");
+    String accessToken = tokenManager.getAccessToken();
+
+    var requestData = {
+      "request": {
+        "content": data['content'],
+        "emotion": data['emotion'],
+        "is_share": data['is_share'],
+        "is_comm": data['is_comm']
+      },
+    };
+
+    List<File?> files = [];
+    for (var xFile in images) {
+      File? file = await saveXFileToFile(xFile);
+      if (file != null) {
+        files.add(file);
+      }
+    }
+
+
+    var audioFile = audio; // 오디오 파일
+
+    var request = http.MultipartRequest('POST', url);
+
+    request.fields['requestData'] = jsonEncode(requestData['request']);
+
+    for (var imageFile in files) {
+      if (imageFile != null) {
+        request.files.add(await http.MultipartFile.fromPath('imageFile', imageFile.path, contentType: MediaType('image', 'jpeg')));
+      }
+    }
+
+    // 오디오 파일을 추가
+    request.files.add(await http.MultipartFile.fromPath('audioFile', audioFile, contentType: MediaType('audio', 'mp3')));
+
+    request.headers['Authorization'] = 'Bearer $accessToken';
+
+    try {
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Uploaded!');
+        print(await response.stream.bytesToString());
+      } else {
+        print('Upload failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error uploading data: $e');
+    }
+  }
 }
