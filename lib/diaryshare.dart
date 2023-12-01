@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:capston1/mypage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/network/api_manager.dart';
@@ -8,7 +9,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
 import 'models/Diary.dart';
 import 'package:capston1/models/Comment.dart';
-
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
@@ -37,11 +37,11 @@ List<Diary> diaries = [];
 
 Map<int, int> commentCount = {};
 
-Map<int,FavoriteCount> favoriteMap = {};
+Map<int, FavoriteCount> favoriteMap = {};
 
 class FavoriteCount {
   bool favoriteColor = false;
-  int  favoriteCount = 0;
+  int favoriteCount = 0;
 }
 
 class _diaryshareState extends State<diaryshare> {
@@ -59,35 +59,36 @@ class _diaryshareState extends State<diaryshare> {
 
   Future<void> fetchDataFromServer() async {
     try {
-
       final data = await apiManager.getDiaryShareData();
       apiManager.getFavoriteCount(30);
 
       setState(() {
         diaries = data!;
 
-        for(Diary diary in diaries){
-            FavoriteCount favoriteCount = new FavoriteCount();
+        for (Diary diary in diaries) {
+          FavoriteCount favoriteCount = new FavoriteCount();
 
-            {
-              bool favoriteColor = false;
-              int  favoriteCount = 0;
-            }
-            apiManager.getFavoriteCount(diary.diaryId).then((int value) {
-              favoriteCount.favoriteCount = value;
-            });
+          {
+            bool favoriteColor = false;
+            int favoriteCount = 0;
+          }
+          apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+            favoriteCount.favoriteCount = value;
+          });
 
-            apiManager.GetFavoriteColor(diary.diaryId).then((value) {
-              favoriteCount.favoriteColor = value;
-            });
+          apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+            favoriteCount.favoriteColor = value;
+          });
 
-            apiManager.getCommentData(diary.diaryId).then((List<Comment> commentList) {
-              favoriteMap.addAll({diary.diaryId : favoriteCount});
-              // commentList의 길이에 접근
-              int listLength = commentList.length;
+          apiManager
+              .getCommentData(diary.diaryId)
+              .then((List<Comment> commentList) {
+            favoriteMap.addAll({diary.diaryId: favoriteCount});
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
 
-              commentCount.addAll({diary.diaryId : listLength});
-              // 원하는 작업 수행
+            commentCount.addAll({diary.diaryId: listLength});
+            // 원하는 작업 수행
           }).catchError((error) {
             print('Error getting commentList: $error');
           });
@@ -101,7 +102,6 @@ class _diaryshareState extends State<diaryshare> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: Color(0xFFF8F5EB),
       child: Column(
@@ -238,8 +238,6 @@ class _diaryshareState extends State<diaryshare> {
                           otherUserId: diaries[index].userId,
                           diaryId: diaries[index].diaryId,
                           scommentCount: diaries[index].scommentCount,
-
-
                         );
                       } else if (diaries[index].imagePath.isEmpty &&
                           diaries[index].voice != "") {
@@ -525,6 +523,7 @@ class _customWidget1State extends State<customWidget1> {
 }
 
 //글만 있는 거
+
 class customWidget2 extends StatefulWidget {
   final String simagePath;
   final String scomment;
@@ -543,7 +542,6 @@ class customWidget2 extends StatefulWidget {
     required this.otherUserId,
     required this.diaryId,
     required this.scommentCount,
-
   });
 
   @override
@@ -554,28 +552,27 @@ class customWidget2 extends StatefulWidget {
 }
 
 class _customWidget2State extends State<customWidget2> {
-
   bool sfavoritColor = false;
-  int otherUserId = 36;
+  int userId = -1;
   String imagePath = "";
   int diaryId = 0;
+
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
-
 
   @override
   void setState(VoidCallback fn) {
     super.setState(fn);
     print("setState 호출됨 위젯2");
   }
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget2State(
     int otherUserId,
     int diaryId,
-
   ) {
-    this.otherUserId = otherUserId;
+    this.userId = otherUserId;
     this.diaryId = diaryId;
   }
 
@@ -598,8 +595,6 @@ class _customWidget2State extends State<customWidget2> {
         );
       },
     );
-
-
   }
 
   @override
@@ -610,7 +605,6 @@ class _customWidget2State extends State<customWidget2> {
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
 
     print("init state 좋아요 카운트: $favoriteCounts");
-
 
     switch (widget.simagePath) {
       case "angry":
@@ -642,8 +636,10 @@ class _customWidget2State extends State<customWidget2> {
 
   @override
   Widget build(BuildContext context) {
-
     print("commentCount: ${commentCount[diaryId]}");
+
+    print("otherUserId: ${userId}");
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -665,26 +661,38 @@ class _customWidget2State extends State<customWidget2> {
                     children: [
                       Expanded(
                           child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          width: 35,
-                          height: 35,
-                          margin: EdgeInsets.only(left: 50),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(imagePath),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      )),
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => mypage(
+                                        userId: userId,
+                                      ),
+                                    ),
+                                  );
+                                  print('감정 탭하기');
+                                },
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  margin: EdgeInsets.only(left: 50),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(imagePath),
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ))),
                       IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  message_write(otherUserId: otherUserId),
+                                  message_write(otherUserId: userId),
                             ),
                           );
                         },
@@ -750,6 +758,7 @@ class _customWidget2State extends State<customWidget2> {
                   ],
                 ),
               ),
+
               //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
@@ -758,14 +767,15 @@ class _customWidget2State extends State<customWidget2> {
                     GestureDetector(
                       onTap: () {
                         plusDialog(context);
-                        print(commentList.length);
-                        //postId = diaryId;
+                        Future.delayed(Duration(seconds: 4), () {
+                          print(commentList.length);
+                        });
                       },
                       child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
                     Text(
-                      style: TextStyle(fontSize: 11),
                       '${commentCount[diaryId]}',
+                      style: TextStyle(fontSize: 11),
                     ),
                   ],
                 ),

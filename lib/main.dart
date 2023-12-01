@@ -1,3 +1,4 @@
+import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'statistics.dart';
@@ -14,23 +15,16 @@ import 'firebase_options.dart';
 import 'package:capston1/config/fcm_setting.dart';
 
 void main() async {
-  print("debug1");
   WidgetsFlutterBinding.ensureInitialized();
-  print("debug2");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  print("debug3");
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
-
-  print("fcmToken: ${fcmToken.toString()}");
-
   String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  print("debug4");
-
   await initializeDateFormatting();
-  print("debug5");
+
+  // MyInfo.myInfo.myUserId = ApiManager().getApiManager().GetMyUserId;
 
   runApp(MaterialApp(
       theme: style.theme,

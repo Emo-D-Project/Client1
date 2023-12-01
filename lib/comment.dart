@@ -6,7 +6,7 @@ import 'package:capston1/models/Comment.dart';
 
 final cat_image = 'images/send/cat_real_image.png';
 
-List<Comment> commentList = [  ];
+List<Comment> commentList = [];
 
 class comment extends StatefulWidget {
   final int postId;
@@ -25,7 +25,7 @@ class _commentState extends State<comment> {
   late String comment;
 
   final Map<int, List<int>> userTitle = {};
-  final Map<int,List<Comment>> commentCount={};
+  final Map<int, List<Comment>> commentCount = {};
 
   Map<int, int> catCount = {};
 
@@ -34,15 +34,12 @@ class _commentState extends State<comment> {
   @override
   void initState() {
     super.initState();
-
     fetchDataFromServer();
   }
-
 
   // 다이어리 아이디랑 페이보릿 카운트
 
   Future<void> fetchDataFromServer() async {
-
     try {
       final data = await apiManager.getCommentData(postId);
       setState(() {
@@ -55,7 +52,6 @@ class _commentState extends State<comment> {
             count++;
           }
         }
-
       });
     } catch (error) {
       print('Error getting Comment list : $error');
@@ -83,7 +79,6 @@ class _commentState extends State<comment> {
 
   void addComment(int user_id, String text) {
     setState(() {
-
       if (!userTitle.containsKey(user_id)) {
         userTitle[user_id] = [1];
       } else {
@@ -102,8 +97,6 @@ class _commentState extends State<comment> {
   void _sendComment() async {
     String text = _commentController.text.trim();
     print('sendcomment 실행');
-
-
 
     if (text.isNotEmpty) {
       apiManager.sendComment(text, postId);
@@ -242,7 +235,7 @@ class _commentState extends State<comment> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          print('dkdkdkdkdkdk:   ${commentList.length}');
+                          print('  ${commentList.length}');
                           _sendComment();
 
                           await Future.delayed(Duration(milliseconds: 100));

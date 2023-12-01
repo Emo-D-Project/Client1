@@ -405,6 +405,37 @@ class ApiManager {
     }
   }
 
+  Future<List<Mypage>> GetMyPageDataById(int id) async {
+    //Id는 OtherUser Id
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/userInfo/$id";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("OtherUser page data: " + response.body);
+
+      List<Mypage> mypagedata = rawData.map((data) {
+        return Mypage(
+          userId: data['userId'],
+          title: data['title'],
+          content: data['content'],
+        );
+      }).toList();
+
+      return mypagedata;
+    } else {
+      throw Exception("Fail to load OtherUser page data from the API");
+    }
+  }
+
   Future<List<Diary>> getDiaryShareData() async {
     String accessToken = tokenManager.getAccessToken();
 
@@ -640,6 +671,7 @@ class ApiManager {
     }
   }
 
+
   // Future<Diary> getdiaData() async {
   //   String accessToken = tokenManager.getAccessToken();
   //   String endPoint = "/api/diaries/read/";
@@ -738,4 +770,35 @@ class ApiManager {
       print('Error uploading data: $e');
     }
   }
+  
+// Future<Diary> getdiaData() async {
+//   String accessToken = tokenManager.getAccessToken();
+//   String endPoint = "/api/diaries/read/";
+//
+//   final response = await http.get(
+//     Uri.parse('$baseUrl$endPoint'),
+//     headers: <String, String>{
+//       'Authorization': 'Bearer $accessToken',
+//     },
+//   );
+//
+//   if (response.statusCode == 200) {
+//     dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+//     print("Diarydi data: " + response.body);
+//
+//     Diary diarYdata = Diary(
+//       emotions: List<double>.from(rawData['emotions']),
+//       date: DateTime.parse(rawData['ceatedAt']),
+//       content: rawData['content'],
+//       emotion: rawData['emotion'],
+//       userId: rawData['user_id'],
+//       diaryId: rawData['id'],
+//     );
+//
+//     return TSatisdata;
+//   } else {
+//     throw Exception("Fail to load total data from the API");
+//   }
+// }
+//
 }
