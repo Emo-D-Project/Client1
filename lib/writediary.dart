@@ -66,6 +66,7 @@ class _writediaryState extends State<writediary> {
       setState(() {
         isPlaying = state == PlayerState.playing;
       });
+      print("헨들러 isplaying : $isPlaying");
     });
 
     //재생 파일의 전체 길이를 감지하는 이벤트 핸들러
@@ -121,9 +122,8 @@ class _writediaryState extends State<writediary> {
       print("after wait duration: $duration" );
 
       setState(() {
-        isPlaying = true;
         duration = duration;
-
+        isPlaying = true;
       });
 
       audioPlayer.play;
@@ -463,16 +463,17 @@ class _writediaryState extends State<writediary> {
                                             ),
                                             iconSize: 25,
                                             onPressed: () async {
-                                              print("isplaying $isPlaying");
+                                              print("isplaying 전 : $isPlaying");
 
-                                              if (isPlaying) {
-                                                await audioPlayer.pause();
+                                              if (isPlaying) {  //재생중이면
+                                                await audioPlayer.pause(); //멈춤고
                                                 setState(() {
-                                                  isPlaying = false;
+                                                  isPlaying = false; //상태변경하기..?
                                                 });
-                                              } else {
+                                              } else { //멈춘 상태였으면
                                                 await playAudio(); // 녹음된 오디오 재생
                                               }
+                                              print("isplaying 후 : $isPlaying");
                                             },
                                           ),
                                         ),
