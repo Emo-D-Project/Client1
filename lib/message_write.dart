@@ -1,10 +1,6 @@
-import 'package:capston1/diaryshare.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:capston1/main.dart';
-import 'MessageRoom.dart';
 import 'package:intl/intl.dart';
-import 'models/Message.dart';
 
 class message_write extends StatefulWidget {
   final int otherUserId;
@@ -29,11 +25,9 @@ class _message_writeState extends State<message_write> {
     String message = _contentEditController.text;
     if (message.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
-
       apiManager.sendMessage(message, otherUserId, DateTime.now());
       _contentEditController.clear();
 
-      // 이전 화면으로 돌아가기
       Navigator.pop(context);
     }
   }
@@ -60,7 +54,6 @@ class _message_writeState extends State<message_write> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Color(0xFF968C83)),
         ),
-
         actions: [
           ElevatedButton(
             onPressed: () {

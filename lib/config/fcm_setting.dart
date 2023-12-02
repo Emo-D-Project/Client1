@@ -4,8 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class FcmSetting {
-
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
     await Firebase.initializeApp();
     print("Handling a background message: ${message.messageId}");
   }
@@ -40,17 +40,17 @@ class FcmSetting {
     print("User granted permission: ${settings.authorizationStatus}");
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-        'somain_notification'
-        ,'somain_notification',
-        description: '알림입니다',
-        importance: Importance.max
-    );
+        'somain_notification', 'somain_notification',
+        description: '알림입니다', importance: Importance.max);
 
     print("fcmSetting 4");
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
 
     // foreground 푸시 알림 핸들링
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -60,19 +60,18 @@ class FcmSetting {
       print('Got a message whilst in the foreground!');
       print('Message notification: ${message.notification.toString()}');
 
-      if(message.notification != null && android != null){
+      if (message.notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification?.title,
             notification?.body,
             NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channelDescription: channel.description,
-                icon: android.smallIcon,
-              )
-            ));
+                android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              icon: android.smallIcon,
+            )));
         print('Message also contained a notification: ${message.notification}');
       }
     });

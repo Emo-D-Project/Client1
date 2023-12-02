@@ -3,10 +3,8 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
-import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart' ;
-import 'package:timer_builder/timer_builder.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:permission_handler/permission_handler.dart';
@@ -19,18 +17,17 @@ String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 class writediary extends StatefulWidget {
   const writediary({super.key, required this.emotion});
 
-  final String emotion;
+  final String emotion;  //감정 선택해서 넘어온 값
 
   @override
   State<writediary> createState() => _writediaryState();
 }
 
-var audioFile;
 
 class _writediaryState extends State<writediary> {
-  final picker = ImagePicker();
-  List<XFile?> multiImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
-  List<XFile?> images = []; // 가져온 사진들을 보여주기 위한 변수
+  final ImagePicker _picker = ImagePicker(); //이미지 선택 시 필요
+  List<XFile?> diaryImage = []; // 갤러리에서 여러장의 사진을 선택해서 저장할 변수
+  Duration duration = Duration.zero; //총 시간
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -41,78 +38,35 @@ class _writediaryState extends State<writediary> {
   bool _isCheckedShare = false;
 
 
-  Future<void> GetWriteDiary(String endpoint) async {
-    try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-
-      // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-
-      //title = response['title'];
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  // onpress():
-  //      PostExample("/api/message");
-  //
-  // 다른버튼 onperss():
-  //       PostExample("api/title");
-
-  Future<void> PostWriteDiary(String endpoint) async {
-    ApiManager apiManager = ApiManager().getApiManager();
-
-    try {
-      final postData = {
-          'content': content,
-          'emotion': sendEmotion,
-          'is_share': _isCheckedShare,
-          'is_comm': _isChecked,
-      };
-      //print(postData);
-      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  final _contentEditController = TextEditingController();
+  final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
-  bool isRecording = false;
-  // late Record audioRecord;
-  // late AudioPlayer audioPlayer;
-  // bool isRecording = false;
-  String audioPath = '';
+  bool isRecording = false; //녹음 상태
+  String audioPath = '';  //녹음중단 시 경로 받아올 변수
+  String playAudioPath = '';  //저장할때 받아올 변수 , 재생 시 필요
 
   //재생에 필요한 것들
-  final audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
+  final AudioPlayer audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
   bool isPlaying = false; //현재 재생중인지
-  Duration duration = Duration.zero; //총 시간
+
   Duration position = Duration.zero; //진행중인 시간
-s
+
   @override
   void initState() {
-    // audioPlayer = AudioPlayer();
-    // audioRecord = Record();
 
     super.initState();
-
-    //오디오 설정, 재생모드를 설정하고 소스 URL을 지정
-    //setAudio();
-    playRecording();
-
+    playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
+
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
         isPlaying = state == PlayerState.playing;
       });
+      print("헨들러 isplaying : $isPlaying");
     });
 
     //재생 파일의 전체 길이를 감지하는 이벤트 핸들러
@@ -127,53 +81,93 @@ s
       setState(() {
         position = newPosition;
       });
+      print('Current position: $position');
     });
   }
-
-  // Future setAudio() async {
-  //   //audioPlayer.setReleaseMode(ReleaseMode.loop);
-  //
-  //   String url = ' ';
-  //   audioPlayer.setSourceUrl(url);
-  //
-  //   final result = await FilePicker.platform.pickFiles();
-  //
-  //   if(result !=null){
-  //   final file = File(result.files.single.path!);
-  //   audioPlayer.setSourceUrl(
-  //     '/data/user/0/com.example.capston1/cache/audio',
-  //   );
-  //   }
-  // }
-
-  // Future setAudio() async{
-  //   audioPlayer.setReleaseMode(ReleaseMode.loop);
-  //   String url = audioPath;
-  //   audioPlayer.setSourceUrl(url);
-  //   print('Playing audio: $url');
-  // }
 
   @override
   void dispose() {
     recorder.closeRecorder();
     audioPlayer.dispose();
-
-    // audioRecord.dispose();
-    // audioPlayer.dispose();
-
     super.dispose();
   }
 
-  Future<void> playRecording() async {
+  // Future<void> playAudio() async {
+  //   try {
+  //     if (await soundPlayer.isStopped) {
+  //       await soundPlayer.startPlayer(fromURI: playAudioPath);
+  //       setState(() {
+  //         isPlaying = true;
+  //       });
+  //       print('오디오 재생 시작: $playAudioPath');
+  //     } else {
+  //       print('오디오가 이미 재생 중입니다.');
+  //     }
+  //   } catch (e) {
+  //     print("audioPath : $playAudioPath");
+  //     print("오디오 재생 중 오류 발생 : $e");
+  //   }
+  // }
+
+  Future<void> GetWriteDiary(String endpoint) async {
     try {
-      Source urlSource = UrlSource(audioPath);
-      print("audioUrl: $urlSource");
-      await audioPlayer.play(urlSource);
+      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+      // 요청 응답 받기
+      final value = response['key']; // 키를 통해 value를 받아오기
+      print('Data: $value');
+      //title = response['title'];
     } catch (e) {
-      print("Error playing Recording : $e");
+      print('Error: $e');
     }
   }
 
+  Future<void> PostWriteDiary(String endpoint) async {
+    ApiManager apiManager = ApiManager().getApiManager();
+
+    try {
+      final postData = {
+        'content': content,
+        'emotion': sendEmotion,
+        'is_share': _isCheckedShare,
+        'is_comm': _isChecked,
+      };
+
+      print("write diary의 audioPath: $audioPath");
+      apiManager.sendPostDiary(postData, diaryImage, audioPath);
+
+      final postAudio = {'audioFile' : audioPath};
+
+      print(postData);
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> playAudio() async {
+    try {
+      if (isPlaying == PlayerState.playing) {
+        await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
+      }
+
+      await audioPlayer.setSourceDeviceFile(playAudioPath);
+      print("duration: $duration" );
+      await Future.delayed(Duration(seconds: 2));
+      print("after wait duration: $duration" );
+
+      setState(() {
+        duration = duration;
+        isPlaying = true;
+      });
+
+      audioPlayer.play;
+
+      print('오디오 재생 시작: $playAudioPath');
+      print("duration: $duration");
+    } catch (e) {
+      print("audioPath : $playAudioPath");
+      print("오디오 재생 중 오류 발생 : $e");
+    }
+  }
 
   Future initRecorder() async {
     final status = await Permission.microphone.request();
@@ -196,18 +190,18 @@ s
     await recorder.startRecorder(toFile: 'audio');
   }
 
-
+  //저장함수
   Future<String> saveRecordingLocally() async {
     if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
 
     final audioFile = File(audioPath);
     if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
-
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final newPath = p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
-      final newFile = File(p.join(newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
-
+      final newPath =
+      p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+      final newFile = File(p.join(
+          newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
       if (!(await newFile.parent.exists())) {
         await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
       }
@@ -215,6 +209,7 @@ s
       await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
 
       print('Complete Saving recording: ${newFile.path}');
+      playAudioPath = newFile.path;
 
       return newFile.path; // 새로운 파일의 경로 반환
     } catch (e) {
@@ -223,10 +218,8 @@ s
     }
   }
 
-// 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
-  Future<String> stop() async {
-    if (!isRecording) return '';
-
+  // 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
+  Future<void> stop() async {
     final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
     audioPath = path!;
 
@@ -235,25 +228,12 @@ s
     });
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
-
-    if (savedFilePath.isNotEmpty) {
-      final savedFile = File(savedFilePath);
-      if (savedFile.existsSync()) {
-        final fileContent = await savedFile.readAsString(); // 파일 내용 읽기
-        print('Content of saved file: $fileContent'); // 파일 내용 출력
-      } else {
-        print('Error: File does not exist');
-      }
-      return savedFilePath; // 저장된 파일의 경로 반환
-    } else {
-      return ''; // 저장 실패 시 빈 문자열 반환
-    }
+    print("savedFilePath: $savedFilePath");
 
   }
 
-
   //파일 서버에 보내기
-    //run(audioFile as String);
+  //run(audioFile as String);
 
   // Future<String> run(String audioUrl) async {
   //   String openApiURL = " ";
@@ -305,24 +285,30 @@ s
   //   return '';
   // }
 
-
   String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inMinutes.remainder(60));
+    print("formatTime duration: $duration");
 
-    return [
-      if (duration.inHours > 0) hours,
-      minutes,
-      seconds,
-    ].join(':');
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+
+    String result = '$minutes:${seconds.toString().padLeft(2, '0')}';
+
+    print("formatTime result: $result");
+    return result;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
+    final sizeX = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final sizeY = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -331,18 +317,17 @@ s
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
         title: Container(
-          //decoration: BoxDecoration(color: Colors.amber),
           child: (() {
             switch (widget.emotion) {
               case 'smile':
                 return Image.asset(
-                  'images/emotion/1.gif',
+                  'images/emotion/smile.gif',
                   height: 45,
                   width: 45,
                 );
               case 'flutter':
                 return Image.asset(
-                  'images/emotion/2.gif',
+                  'images/emotion/flutter.gif',
                   height: 45,
                   width: 45,
                 );
@@ -354,25 +339,25 @@ s
                 );
               case 'annoying':
                 return Image.asset(
-                  'images/emotion/4.gif',
+                  'images/emotion/annoying.gif',
                   height: 45,
                   width: 45,
                 );
               case 'tired':
                 return Image.asset(
-                  'images/emotion/5.gif',
+                  'images/emotion/tired.gif',
                   height: 45,
                   width: 45,
                 );
               case 'sad':
                 return Image.asset(
-                  'images/emotion/6.gif',
+                  'images/emotion/sad.gif',
                   height: 45,
                   width: 45,
                 );
               case 'calmness':
                 return Image.asset(
-                  'images/emotion/7.gif',
+                  'images/emotion/calmness.gif',
                   height: 45,
                   width: 45,
                 );
@@ -394,7 +379,6 @@ s
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
-              print("PostExample 실행");
               PostWriteDiary("/api/diaries/create");
             },
             icon: Image.asset(
@@ -439,38 +423,33 @@ s
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Container(
-                                margin: EdgeInsets.all(10),
-                                //color: Colors.amber,
-                                width: 200,
-                                height: 150,
-                                child: GridView.builder(
-                                    padding: EdgeInsets.all(0),
-                                    shrinkWrap: true,
-                                    itemCount: images.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      childAspectRatio: 1 / 1,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
-                                    ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      print(
-                                          "Image size: ${File(images[index]!.path).lengthSync()} bytes");
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: FileImage(
-                                                File(images[index]!.path),
-                                              ),
-                                            )),
+                            SingleChildScrollView(
+                              child: SizedBox(
+                                  width: 200,
+                                  height: 150, // 이미지 높이 조절
+                                  child: PageView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: diaryImage.length > 3
+                                        ? 3
+                                        : diaryImage.length, // 최대 3장까지만 허용
+                                    itemBuilder: (context, index) {
+                                      return Center(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(5),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: FileImage(
+                                                  File(diaryImage[index]!
+                                                      .path),
+                                                ),
+                                              )),
+                                        ),
                                       );
-                                    })),
+                                    },
+                                  )),
+                            ),
                             Container(
                               padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: Column(
@@ -484,10 +463,11 @@ s
                                       max: duration.inSeconds.toDouble(),
                                       value: position.inSeconds.toDouble(),
                                       onChanged: (value) async {
-                                        final position =
-                                            Duration(seconds: value.toInt());
+                                        setState(() {
+                                          position = Duration(seconds: value.toInt());
+                                        });
                                         await audioPlayer.seek(position);
-                                        await audioPlayer.resume();
+                                        //await audioPlayer.resume();
                                       },
                                       activeColor: Color(0xFF968C83),
                                     ),
@@ -496,60 +476,54 @@ s
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceBetween,
                                       children: [
                                         Text(
-                                          formatTime(position), // 진행중인 시간
-                                          style: TextStyle(
-                                              color: Colors
-                                                  .brown), // Set text color to black
+                                          formatTime(position),
+                                          style: TextStyle(color: Colors.brown),
                                         ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
+                                        SizedBox(width: 20),
                                         CircleAvatar(
                                           radius: 15,
                                           backgroundColor: Colors.transparent,
                                           child: IconButton(
-                                            padding:
-                                                EdgeInsets.only(bottom: 50),
+                                            padding: EdgeInsets.only(
+                                                bottom: 50),
                                             icon: Icon(
-                                              isPlaying
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
+                                              isPlaying ? Icons.pause : Icons
+                                                  .play_arrow,
                                               color: Colors.brown,
                                             ),
                                             iconSize: 25,
                                             onPressed: () async {
-                                              if (isPlaying) {
-                                                await audioPlayer.pause();
-                                              } else {
-                                                await audioPlayer.resume();
+                                              print("isplaying 전 : $isPlaying");
+
+                                              if (isPlaying) {  //재생중이면
+                                                await audioPlayer.pause(); //멈춤고
+                                                setState(() {
+                                                  isPlaying = false; //상태변경하기..?
+                                                });
+                                              } else { //멈춘 상태였으면
+                                                await playAudio();
+                                                await audioPlayer.resume();// 녹음된 오디오 재생
                                               }
+                                              print("isplaying 후 : $isPlaying");
                                             },
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
+                                        SizedBox(width: 20),
                                         Text(
-                                          formatTime(duration), //총 시간
-                                          style: TextStyle(
-                                            color: Colors.brown,
-                                          ), // Set text color to black
+                                          formatTime(duration),
+                                          style: TextStyle(color: Colors.brown),
                                         ),
                                       ],
                                     ),
                                   )
                                 ],
                               ),
-                            ), //음성
-                            // if(!isRecording && audioPath !=null)
-                            // ElevatedButton(
-                            //   onPressed: playRecording,
-                            //   child: const Text(("play")),
-                            // ),
+                            ),
+                            //음성
                             Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextField(
@@ -559,9 +533,9 @@ s
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1.0,
-                                ))),
+                                          color: Colors.transparent,
+                                          width: 1.0,
+                                        ))),
                               ),
                             )
                           ],
@@ -576,9 +550,10 @@ s
                           SizedBox(
                             child: IconButton(
                               onPressed: () async {
-                                multiImage = await picker.pickMultiImage();
+                                final List<XFile> image =
+                                await _picker.pickMultiImage();
                                 setState(() {
-                                  images.addAll(multiImage);
+                                  diaryImage.addAll(image);
                                 });
                               },
                               icon: Image.asset(
@@ -646,19 +621,6 @@ s
                                   ),
                                 ),
                               ),
-                              // if (isRecording) Text("Recording in Progress"),
-                              // SizedBox(
-                              //   child: IconButton(
-                              //     onPressed: isRecording
-                              //         ? stopRecording
-                              //         : startRecording,
-                              //     icon: Icon(
-                              //       isRecording ? Icons.stop : Icons.mic,
-                              //       size: 30,
-                              //       color: Colors.black,
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ],

@@ -1,6 +1,6 @@
+import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -10,35 +10,27 @@ import 'home.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:capston1/config/fcm_setting.dart';
 
 void main() async {
-
-  print("debug1");
   WidgetsFlutterBinding.ensureInitialized();
-
-  print("debug2");
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  print("debug3");
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
-
-  print("fcmToken: ${fcmToken.toString()}");
-
   String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  print("debug4");
-
   await initializeDateFormatting();
-  print("debug5");
 
+  // MyInfo.myInfo.myUserId = ApiManager().getApiManager().GetMyUserId;
 
-  runApp(MaterialApp(theme: style.theme, home: MyApp(firebaseToken: firebaseToken,)));
+  runApp(MaterialApp(
+      theme: style.theme,
+      home: MyApp(
+        firebaseToken: firebaseToken,
+      )));
 }
 
 class MyApp extends StatefulWidget {
@@ -49,12 +41,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
+  ApiManager apiManager = ApiManager().getApiManager();
 
   var tab = 0;
 
-  ApiManager apiManager = ApiManager().getApiManager();
   late List<Map<String, dynamic>> data;
 
   @override
@@ -77,9 +67,10 @@ class _MyAppState extends State<MyApp> {
                   MaterialPageRoute(builder: (context) => const category()));
             },
             icon: Image.asset(
-              'images/bottom/free-icon-menu-1828859.png',
+              'images/bottom/menu.png',
               width: 30,
-              height: 30,color: Color(0xFF968C83),
+              height: 30,
+              color: Color(0xFF968C83),
             )),
         actions: [
           IconButton(
@@ -88,7 +79,7 @@ class _MyAppState extends State<MyApp> {
                   MaterialPageRoute(builder: (context) => const statistics()));
             },
             icon: Image.asset(
-              'images/bottom/free-icon-stats-223407.png',
+              'images/bottom/stats.png',
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -100,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                   MaterialPageRoute(builder: (context) => alrampage()));
             },
             icon: Image.asset(
-              'images/bottom/free-icon-alarm-bell-2088595.png',
+              'images/bottom/bell.png',
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -128,7 +119,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             label: '홈화면',
             icon: Image.asset(
-              "images/bottom/free-icon-home-1828871.png",
+              "images/bottom/home.png",
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -137,7 +128,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             label: '일기공유',
             icon: Image.asset(
-              "images/bottom/free-icon-globe-721998.png",
+              "images/bottom/globe.png",
               width: 30,
               height: 30,
               color: Color(0xFF968C83),
@@ -146,7 +137,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             label: '캘린더',
             icon: Image.asset(
-              "images/bottom/free-icon-calendar-5115146.png",
+              "images/bottom/calendar.png",
               width: 35,
               height: 35,
               color: Color(0xFF968C83),

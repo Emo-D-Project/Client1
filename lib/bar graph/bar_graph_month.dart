@@ -35,8 +35,7 @@ class MyBarGraph_M extends StatelessWidget {
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
               sideTitles: SideTitles(
-                  showTitles: true, getTitlesWidget: getBottomTitles))
-      ),
+                  showTitles: true, getTitlesWidget: getBottomTitles))),
       barGroups: myBarData.barData
           .map((data) => BarChartGroupData(x: data.x, barRods: [
                 BarChartRodData(
@@ -82,4 +81,3 @@ class MyBarGraph_M extends StatelessWidget {
     return SideTitleWidget(axisSide: meta.axisSide, child: text);
   }
 }
-

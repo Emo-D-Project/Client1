@@ -5,7 +5,7 @@ class TotalData {
   DateTime firstDate;
   DateTime mostYearMonth;
   int mostNums;
-  int mostViewed;  // 일기의 아이디값
+  int mostViewed; // 일기의 아이디값
   int mostViewedEmpathy;
   int mostViewedComments;
 

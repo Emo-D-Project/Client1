@@ -1,67 +1,82 @@
-//import 'package:capston1/MyInfo.dart';
+import 'package:capston1/models/MyInfo.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
+import 'models/Mypage.dart';
 import 'network/api_manager.dart';
+import 'models/Diary.dart';
+import 'diaryshare.dart';
+
 
 class mypage extends StatefulWidget {
-  const mypage({super.key});
+  final int userId;  //일기 공유에서
+
+  const mypage({super.key,required this.userId});
 
   @override
-  State<mypage> createState() => _mypageState();
+  State<mypage> createState() => _mypageState(userId);
 }
+
 
 final _contentEditController = TextEditingController(); //소개답변 저장 변수
 final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 
-
 class _mypageState extends State<mypage> {
-  var item1;
-  final List<String> question = [];
-  final List<String> answer = [];
 
-  //-------------------------------------------------------------------------------
   ApiManager apiManager = ApiManager().getApiManager();
-  String login = "mine"; // 내 로그인 정보 담아두고
-  String mine = "mine"; // 버튼 누른 사람의 정보를 담아서   비교하면 내가 원하는대로 되려나
+ // ApiManager apiManager = ApiManager().GetOtherUserPage(id);
 
-// 화면을 갱신하는 메서드
-  void _updateScreen() {
-    // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
-    setState(() {
-      //myData = '갱신된 값';
-    });
+  int userId;
+
+  late String title;
+  late String content;
+  late String tititle;
+
+  List<Mypage> myPageDatas = [];
+  List<Mypage> otherPageDatas = [];
+
+
+  //List<Mypage> otherPageDatas = [];
+  //String login = "mine"; // 내 로그인 정보 담아두고
+  //String mine = "mine"; // 버튼 누른 사람의 정보를 담아서  비교하면 내가 원하는대로 되려나
+
+  List<Map<String, dynamic>> mypages = [];
+
+  _mypageState(this.userId);
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
   }
 
-  Future<void> GetMyPage(String endpoint) async {
+
+
+  Future<void> fetchDataFromServer() async {
     try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
+      final data = await apiManager.GetMyPageDataById(userId);
+      final otherData = await apiManager.getMypageData();
 
-      // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
 
-      //title = response['title'];
-    } catch (e) {
-      print('Error: $e');
+      setState(() {
+        myPageDatas = data!;
+        otherPageDatas = otherData!;
+
+      });
+    } catch (error) {
+      print('Error getting MP list: $error');
     }
   }
 
-  /*Future<void> PostMyPage(String endpoint) async {
-    ApiManager apiManager = ApiManager().getApiManager();
 
-    try {
-      final postData = {
+  void _sendMyPage() {
+    String title = tititle;
+    String content = _answerEditController.text;
+    apiManager.sendMypage(title, content);
+    _answerEditController.clear();
 
-      };
+    Navigator.of(context).pop();
+  }
 
-      print(postData);
-
-      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
-    } catch (e) {
-      print('Error: $e');
-    }
-  }*/
-  //-------------------------------------------------------------------------------
 
   //질문 선택 창
   void plusDialog(context) {
@@ -109,7 +124,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 영화");
-                      question.add("최애 영화");
+                      tititle = "최애 영화";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -124,7 +139,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 노래");
-                      question.add("최애 노래");
+                      tititle = "최애 노래";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -139,7 +154,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "MBTI");
-                      question.add("MBTI");
+                      tititle = "MBTI";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -154,7 +169,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 드라마");
-                      question.add("최애 드라마");
+                      tititle = "최애 드라마";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -169,8 +184,7 @@ class _mypageState extends State<mypage> {
                   ElevatedButton(
                     onPressed: () {
                       _showDialog(context, "최애 색깔");
-                      question.add("최애 색깔");
-
+                      tititle = "최애 색깔";
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
@@ -180,8 +194,7 @@ class _mypageState extends State<mypage> {
                         style: TextStyle(
                             color: Color(0xFF7D5A50),
                             fontSize: 15,
-                            fontFamily: 'soojin')
-                    ),
+                            fontFamily: 'soojin')),
                   ),
                 ],
               ),
@@ -192,15 +205,19 @@ class _mypageState extends State<mypage> {
     );
   }
 
+  //질문 답변창
   Future<void> _showDialog(BuildContext context, String item) {
-    print("item : $item");
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(item,
-            style: TextStyle(fontFamily: 'soojin', color: Color(0xFF7D5A50),),
+          title: Text(
+            item,
+            style: TextStyle(
+              fontFamily: 'soojin',
+              color: Color(0xFF7D5A50),
+            ),
           ),
           content: TextField(
             style: TextStyle(fontFamily: 'soojin'),
@@ -209,14 +226,17 @@ class _mypageState extends State<mypage> {
               hintText: '20자 이내로 작성해주세요.',
               hintStyle: TextStyle(fontFamily: 'soojin'),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black54,),
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black54,),
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
               ),
             ),
             controller: _answerEditController,
-
           ),
           actions: <Widget>[
             ElevatedButton(
@@ -235,13 +255,12 @@ class _mypageState extends State<mypage> {
                     elevation: 0.0,
                     backgroundColor: Color(0xFF7D5A50),
                     minimumSize: Size(150, 30)),
-                onPressed: () {
+                onPressed: () async {
+                  _sendMyPage(); //
+                  final data = await apiManager.getMypageData();
                   setState(() {
-                    String answerText = _answerEditController.text;
-                    answer.add(answerText);
-                    _answerEditController.clear();
+                    myPageDatas = data!;
                   });
-                  Navigator.of(context).pop();
                 }, //showContainer로 데이터 넘기기 // 디비에 저장하기
                 child: Text('확인',
                     style: TextStyle(
@@ -254,15 +273,14 @@ class _mypageState extends State<mypage> {
     );
   }
 
+
+  //``````````````````````````````````````````````````````````````````````````````
+
   @override
   Widget build(BuildContext context) {
-    //print("item1 ${item1}");
-    //print(question);
-    //print(answer);
     final SizeX = MediaQuery.of(context).size.width;
     final SizeY = MediaQuery.of(context).size.height;
 
-    //MyInfo myInfo = MyInfo().getMyInfo();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF8F5EB),
@@ -271,7 +289,7 @@ class _mypageState extends State<mypage> {
         backgroundColor: Colors.transparent,
         title: SizedBox(
           child: (() {
-            if (login == mine) {
+            if (userId == myPageDatas) {
               return Text(
                 "MYPAGE",
                 style: TextStyle(
@@ -310,9 +328,9 @@ class _mypageState extends State<mypage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
-                      if (login == mine) {
+                      if (MyInfo.myInfo.myUserId == userId) {
                         return Text(
-                          "해지니",
+                          "권해진 바보",
                           //myInfo.getNickName(),
                           style: TextStyle(
                               fontSize: 28,
@@ -361,19 +379,29 @@ class _mypageState extends State<mypage> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(10),
-                      itemCount: answer.length,
+                      itemCount: myPageDatas.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return CustomQuestionContainer(
-                            vquestion: question[index],
-                            vanswer: answer[index]
-                        );
+                        if(MyInfo.myInfo.myUserId == userId){
+                          return CustomQuestionContainer(
+                            //답변 받는 부분
+                            vquestion: myPageDatas[index].title,
+                            vanswer: myPageDatas[index].content,
+                          );
+                        }else{
+                          return CustomQuestionContainer(
+                            //답변 받는 부분
+                            vquestion: otherPageDatas[index].title,
+                            vanswer: otherPageDatas[index].content,
+                          );
+                        }
+
                       },
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: (() {
-                      if (login == mine) {
+                      if (MyInfo.myInfo.myUserId == userId) {
                         return IconButton(
                             onPressed: () {
                               plusDialog(context);
@@ -432,68 +460,6 @@ class _mypageState extends State<mypage> {
     );
   }
 }
-
-//마이페이지에 나타나는 질답컨테이너
-// class _showContainer extends StatelessWidget {
-//   const _showContainer({Key? key, this.item2}) : super(key: key);
-//   final item2;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     print("item2 $item2");
-//     return Container(
-//       //margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-//       width: 300,
-//       height: 70,
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.all(Radius.circular(10)),
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Row(
-//             children: [
-//               SizedBox(
-//                 width: 20,
-//               ),
-//               Container(
-//                 child: Text(
-//                   "${question[item2]}",
-//                   style: TextStyle(
-//                       fontFamily: 'soojin',
-//                       fontSize: 17,
-//                       color: Color(0xFF7D5A50)),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           Container(
-//             //칸 나누는 줄
-//             color: Colors.grey,
-//             width: 260, height: 1,
-//             margin: EdgeInsets.fromLTRB(0, 5, 0, 6),
-//           ),
-//           Row(
-//             children: [
-//               SizedBox(
-//                 width: 25,
-//               ),
-//               Container(
-//                 child: Text("${answer[item2]}",
-//                     style: TextStyle(
-//                       fontSize: 17,
-//                       fontFamily: 'soojin',
-//                     )),
-//               )
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 void singoDialog(context) {
   final sizeX = MediaQuery.of(context).size.width;
@@ -680,21 +646,12 @@ Future<dynamic> _showchadanDialog(BuildContext context) {
   );
 }
 
-class QuestionData {
-  final String question;
-  final String answer;
-
-  QuestionData({
-    required this.question,
-    required this.answer,
-  });
-}
-
 class CustomQuestionContainer extends StatelessWidget {
   final String vquestion;
   final String vanswer;
 
-  CustomQuestionContainer({super.key,
+  CustomQuestionContainer({
+    super.key,
     required this.vquestion,
     required this.vanswer,
   });
@@ -706,7 +663,7 @@ class CustomQuestionContainer extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-      height: SizeY*0.08,
+      height: SizeY * 0.08,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -732,7 +689,7 @@ class CustomQuestionContainer extends StatelessWidget {
           Container(
             //칸 나누는 줄
             color: Colors.grey,
-            width: SizeX*0.8, height: 1,
+            width: SizeX * 0.8, height: 1,
             margin: EdgeInsets.fromLTRB(0, 5, 0, 6),
           ),
           Row(
@@ -740,11 +697,13 @@ class CustomQuestionContainer extends StatelessWidget {
               SizedBox(
                 width: 25,
               ),
-              Text(vanswer,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontFamily: 'soojin',
-                  ))
+              Text(
+                vanswer,
+                style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: 'soojin',
+                ),
+              )
             ],
           ),
         ],
