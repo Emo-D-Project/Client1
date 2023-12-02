@@ -19,11 +19,13 @@ class mypage extends StatefulWidget {
 
 final _contentEditController = TextEditingController(); //소개답변 저장 변수
 final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
+final _introduceEditController = TextEditingController(); //질문에 대한 답변 저장 변수
+
 
 class _mypageState extends State<mypage> {
 
   ApiManager apiManager = ApiManager().getApiManager();
- // ApiManager apiManager = ApiManager().GetOtherUserPage(id);
+  //ApiManager apiManager = ApiManager().GetOtherUserPage(userId);
 
   int userId;
 
@@ -34,12 +36,12 @@ class _mypageState extends State<mypage> {
   List<Mypage> myPageDatas = [];
   List<Mypage> otherPageDatas = [];
 
+  List<Mypage> myPageIntro= [];
+  List<Mypage> otherPageIntro = [];
 
-  //List<Mypage> otherPageDatas = [];
-  //String login = "mine"; // 내 로그인 정보 담아두고
-  //String mine = "mine"; // 버튼 누른 사람의 정보를 담아서  비교하면 내가 원하는대로 되려나
 
-  List<Map<String, dynamic>> mypages = [];
+
+  //List<Map<String, dynamic>> mypages = [];
 
   _mypageState(this.userId);
 
@@ -47,19 +49,19 @@ class _mypageState extends State<mypage> {
   void initState() {
     super.initState();
     fetchDataFromServer();
+    fetchIntroduceFromServer();
   }
 
 
 
   Future<void> fetchDataFromServer() async {
     try {
-      final data = await apiManager.GetMyPageDataById(userId);
-      final otherData = await apiManager.getMypageData();
-
+      final otherData = await apiManager.GetMyPageDataById(userId);
+      final data = await apiManager.getMypageData();
 
       setState(() {
-        myPageDatas = data!;
-        otherPageDatas = otherData!;
+        myPageDatas = otherData!;
+        otherPageDatas = data!;
 
       });
     } catch (error) {
@@ -67,11 +69,40 @@ class _mypageState extends State<mypage> {
     }
   }
 
-
   void _sendMyPage() {
     String title = tititle;
     String content = _answerEditController.text;
-    apiManager.sendMypage(title, content);
+
+    apiManager.sendMypage(userId ,title, content);
+
+    _answerEditController.clear();
+
+    Navigator.of(context).pop();
+  }
+
+
+
+  //마이페이지 소개 부분
+  Future<void> fetchIntroduceFromServer() async {
+    try {
+      final otherIntro = await apiManager.GetMyPageDataItrodById(userId);
+      final intro = await apiManager.GetMyPageDataIntrod();
+
+      setState(() {
+        myPageIntro = otherIntro!;
+        otherPageIntro = intro!;
+
+      });
+    } catch (error) {
+      print('Error getting MP list: $error');
+    }
+  }
+
+  void _sendMyPageIntro() {
+    String content = _introduceEditController.text;
+
+    apiManager.sendMypageIntroduce(content);
+
     _answerEditController.clear();
 
     Navigator.of(context).pop();
@@ -306,8 +337,7 @@ class _mypageState extends State<mypage> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => category()));
+            Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
@@ -328,7 +358,7 @@ class _mypageState extends State<mypage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
-                      if (MyInfo.myInfo.myUserId == userId) {
+                      if (userId == 36) {
                         return Text(
                           "권해진 바보",
                           //myInfo.getNickName(),
@@ -357,7 +387,7 @@ class _mypageState extends State<mypage> {
                     width: 300,
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: TextField(
-                      controller: _contentEditController,
+                      controller: _introduceEditController,
                       maxLength: 20,
                       decoration: InputDecoration(
                         hintText: '소개(20자 이내로 적어주세요.)',
@@ -373,23 +403,32 @@ class _mypageState extends State<mypage> {
                         ),
                       ),
                       style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
+                        onChanged: (value) async {
+                         _sendMyPageIntro();
+                        final data = await apiManager.GetMyPageDataIntrod();
+                        setState(() {
+                          myPageIntro = data!;
+                        });
+                      },
                     ),
                   ),
+
                   Expanded(
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(10),
                       itemCount: myPageDatas.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if(MyInfo.myInfo.myUserId == userId){
+                        if(userId == userId){
                           return CustomQuestionContainer(
-                            //답변 받는 부분
+                            vuserId: myPageDatas[index].userId,
                             vquestion: myPageDatas[index].title,
                             vanswer: myPageDatas[index].content,
                           );
                         }else{
                           return CustomQuestionContainer(
                             //답변 받는 부분
+                            vuserId: otherPageDatas[index].userId,
                             vquestion: otherPageDatas[index].title,
                             vanswer: otherPageDatas[index].content,
                           );
@@ -401,7 +440,7 @@ class _mypageState extends State<mypage> {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: (() {
-                      if (MyInfo.myInfo.myUserId == userId) {
+                      if (userId ==36) {
                         return IconButton(
                             onPressed: () {
                               plusDialog(context);
@@ -647,11 +686,13 @@ Future<dynamic> _showchadanDialog(BuildContext context) {
 }
 
 class CustomQuestionContainer extends StatelessWidget {
+  final int vuserId;
   final String vquestion;
   final String vanswer;
 
   CustomQuestionContainer({
     super.key,
+    required this.vuserId,
     required this.vquestion,
     required this.vanswer,
   });

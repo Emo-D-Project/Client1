@@ -373,6 +373,7 @@ class ApiManager {
     }
   }
 
+// 자신의 마이페이지에 등록한 정보들을 불러오는 기능
   Future<List<Mypage>> getMypageData() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/userInfo";
@@ -390,6 +391,7 @@ class ApiManager {
 
       List<Mypage> mypagedata = rawData.map((data) {
         return Mypage(
+          userId: data['userId'],
           title: data['title'],
           content: data['content'],
         );
@@ -401,11 +403,75 @@ class ApiManager {
     }
   }
 
-  Future<List<Mypage>> GetMyPageDataById(int id) async {
+  // 아이디로 마이페이지에 등록한 정보들을 불러오는 기능
+  Future<List<Mypage>> GetMyPageDataById(int userId) async {
     //Id는 OtherUser Id
 
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/userInfo/$id";
+    String endPoint = "/api/userInfo/$userId";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("OtherUser page data: " + response.body);
+
+      List<Mypage> mypagedata = rawData.map((data) {
+        return Mypage(
+          userId: data['userId'],
+          title: data['title'],
+          content: data['content'],
+        );
+      }).toList();
+
+      return mypagedata;
+    } else {
+      throw Exception("Fail to load OtherUser page data from the API");
+    }
+  }
+
+  // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
+  Future<List<Mypage>> GetMyPageDataIntrod() async {
+    //Id는 OtherUser Id
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/userInfo/my";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("OtherUser page data: " + response.body);
+
+      List<Mypage> mypagedata = rawData.map((data) {
+        return Mypage(
+          userId: data['userId'],
+          title: data['title'],
+          content: data['content'],
+        );
+      }).toList();
+
+      return mypagedata;
+    } else {
+      throw Exception("Fail to load OtherUser page data from the API");
+    }
+  }
+
+  // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
+  Future<List<Mypage>> GetMyPageDataItrodById(int userId) async {
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/userInfo/description/$userId";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
@@ -602,7 +668,44 @@ class ApiManager {
     }
   }
 
-  void sendMypage(String title, String content) async {
+  // 마이페이지에 정보 등록하는 기능
+  void sendMypageIntroduce(String content) async {
+    String endpoint = "/api/userInfo/my/description";
+    baseUrl = "http://34.64.78.183:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "content": content,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
+
+//마이페이지에 자기 소개 정보를 등록하는 기능
+  void sendMypage(int userId, String title, String content) async {
     String endpoint = "/api/userInfo";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
@@ -618,6 +721,7 @@ class ApiManager {
       var response = await _dio.post(
         '$baseUrl$endpoint',
         data: {
+          "userId":userId,
           "title": title,
           "content": content,
         }, // 요청 데이터
@@ -638,6 +742,8 @@ class ApiManager {
     }
   }
 
+
+  //==================================================
   void RemoveDiary(int id) async {
     String accessToken = tokenManager.getAccessToken();
     baseUrl = "http://34.64.78.183:8080";
