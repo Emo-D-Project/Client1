@@ -41,7 +41,7 @@ class ApiManager {
     }
   }
 
-  Future<List<dynamic>> GetList(String endpoint) async {
+  Future<dynamic> GetDynamic(String endpoint) async {
     String accessToken = tokenManager.getAccessToken();
 
     final response = await http.get(Uri.parse('$baseUrl$endpoint'),
@@ -57,7 +57,7 @@ class ApiManager {
     }
   }
 
-  Future<List<dynamic>> GetListWithHeadData(String endpoint, String data) async {
+  Future<dynamic> GetDynamicWithHeadData(String endpoint, String data) async {
     String accessToken = tokenManager.getAccessToken();
 
     final response = await http.get(Uri.parse('$baseUrl$endpoint/$data'),
