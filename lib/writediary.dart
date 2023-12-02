@@ -133,13 +133,15 @@ class _writediaryState extends State<writediary> {
       };
 
       print("write diary의 audioPath: $audioPath");
-      apiManager.sendPostDiary(postData, diaryImage, audioPath);
+      await apiManager.sendPostDiary(postData, diaryImage, audioPath);
 
-      final postAudio = {'audioFile' : audioPath};
-
+      //final postImage = {'imageFile' : diaryImage ?? 'default_image_path'};
+      //final postAudio = {'audioFile': audioPath ?? 'default_audio_path'};
       print(postData);
     } catch (e) {
-      print('Error: $e');
+      // apiManager.sendPostDiary에서 발생한 오류 처리
+      print('Error sending post diary: $e');
+      // 에러를 더 자세히 처리하거나 사용자에게 알릴 수 있습니다.
     }
   }
 

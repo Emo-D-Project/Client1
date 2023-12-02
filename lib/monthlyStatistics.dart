@@ -360,19 +360,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
     }
   }
 
-  String selectedValue = '최신순';
-
-/*  void _reverseList() {
-    setState(() {
-      date = List.from(date.reversed);
-      emotions = List.from(emotions.reversed);
-      mostEmotion = List.from(mostEmotion.reversed);
-      leastEmotion = List.from(leastEmotion.reversed);
-      comment = List.from(comment.reversed);
-      point = List.from(point.reversed);
-    });
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -399,44 +386,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  DropdownButton<String>(
-                    value: selectedValue,
-                    // 현재 선택된 값
-                    items: <String>['최신순', '오래된순'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedValue = value!;
-
-                        /* if (selectedValue == '오래된순') {
-                          _reverseList(); // Reverse the list
-                        }
-                        else {
-                          _reverseList();
-                        }*/
-                      });
-                    },
-                    underline: Container(
-                      height: 2,
-                      color: Colors.brown,
-                    ),
-                    dropdownColor: Color(0xFFF8F5EB),
-                    icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  SizedBox(width: 25),
-                ],
-              ),
-            ),
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
