@@ -202,7 +202,7 @@ class _commentState extends State<comment> {
                               visible: commentList[index].user_id == 36,
                               child: IconButton(
                                 onPressed: () {
-                                  apiManager.RemoveComment(id);
+                                  apiManager.RemoveComment(commentList[index].id);
                                   print('댓글 아이디 : ${commentList[index].id}');
                                 },
                                 icon: Image.asset('images/main/trash.png', width: 20, height: 20,),
