@@ -66,6 +66,7 @@ class _writediaryState extends State<writediary> {
       setState(() {
         isPlaying = state == PlayerState.playing;
       });
+      print("헨들러 isplaying : $isPlaying");
     });
 
     //재생 파일의 전체 길이를 감지하는 이벤트 핸들러
@@ -129,12 +130,18 @@ class _writediaryState extends State<writediary> {
         'emotion': sendEmotion,
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
-        //오디오 전송
       };
+
+      print("write diary의 audioPath: $audioPath");
+      await apiManager.sendPostDiary(postData, diaryImage, audioPath);
+
+      //final postImage = {'imageFile' : diaryImage ?? 'default_image_path'};
+      //final postAudio = {'audioFile': audioPath ?? 'default_audio_path'};
       print(postData);
-      await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
     } catch (e) {
-      print('Error: $e');
+      // apiManager.sendPostDiary에서 발생한 오류 처리
+      print('Error sending post diary: $e');
+      // 에러를 더 자세히 처리하거나 사용자에게 알릴 수 있습니다.
     }
   }
 
@@ -150,9 +157,8 @@ class _writediaryState extends State<writediary> {
       print("after wait duration: $duration" );
 
       setState(() {
-        isPlaying = true;
         duration = duration;
-
+        isPlaying = true;
       });
 
       audioPlayer.play;
@@ -463,7 +469,7 @@ class _writediaryState extends State<writediary> {
                                           position = Duration(seconds: value.toInt());
                                         });
                                         await audioPlayer.seek(position);
-                                        await audioPlayer.resume();
+                                        //await audioPlayer.resume();
                                       },
                                       activeColor: Color(0xFF968C83),
                                     ),
@@ -493,16 +499,18 @@ class _writediaryState extends State<writediary> {
                                             ),
                                             iconSize: 25,
                                             onPressed: () async {
-                                              print("isplaying $isPlaying");
+                                              print("isplaying 전 : $isPlaying");
 
-                                              if (isPlaying) {
-                                                await audioPlayer.pause();
+                                              if (isPlaying) {  //재생중이면
+                                                await audioPlayer.pause(); //멈춤고
                                                 setState(() {
-                                                  isPlaying = false;
+                                                  isPlaying = false; //상태변경하기..?
                                                 });
-                                              } else {
-                                                await playAudio(); // 녹음된 오디오 재생
+                                              } else { //멈춘 상태였으면
+                                                await playAudio();
+                                                await audioPlayer.resume();// 녹음된 오디오 재생
                                               }
+                                              print("isplaying 후 : $isPlaying");
                                             },
                                           ),
                                         ),

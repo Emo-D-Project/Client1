@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
 import '../models/Message.dart';
@@ -10,6 +13,7 @@ import '../models/MonthData.dart';
 import '../models/TotalData.dart';
 import '../models/Mypage.dart';
 import '../models/Comment.dart';
+import 'package:http_parser/http_parser.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -59,8 +63,8 @@ class ApiManager {
     }
   }
 
-  Future<List<dynamic>> GetListWithHeadData(
-      String endpoint, String data) async {
+  Future<List<dynamic>> GetListWithHeadData(String endpoint,
+      String data) async {
     String accessToken = tokenManager.getAccessToken();
 
     final response = await http.get(
@@ -103,7 +107,8 @@ class ApiManager {
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response.statusCode}');
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -175,7 +180,7 @@ class ApiManager {
       print("getCalendarData에서 서버로부터 받아온 데이터의 body : " + response.body);
 
       Map<DateTime, String> output =
-          convertToDateTimeMap(json.decode(response.body));
+      convertToDateTimeMap(json.decode(response.body));
       return output;
     } else {
       throw Exception('Failed to load data from the API');
@@ -299,7 +304,8 @@ class ApiManager {
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response.statusCode}');
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -547,8 +553,7 @@ class ApiManager {
         'Authorization': 'Bearer $accessToken',
       },
     );
-    if (response.statusCode == 200) {
-    } else {
+    if (response.statusCode == 200) {} else {
       throw Exception(
           "Fail to load favorite data from the API : ${response.statusCode}");
     }
@@ -629,7 +634,8 @@ class ApiManager {
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response.statusCode}');
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -706,6 +712,7 @@ class ApiManager {
 
 //마이페이지에 자기 소개 정보를 등록하는 기능
   void sendMypage(int userId, String title, String content) async {
+
     String endpoint = "/api/userInfo";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
@@ -733,7 +740,8 @@ class ApiManager {
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response.statusCode}');
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -765,41 +773,144 @@ class ApiManager {
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response.statusCode}');
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
     }
   }
 
-// Future<Diary> getdiaData() async {
-//   String accessToken = tokenManager.getAccessToken();
-//   String endPoint = "/api/diaries/read/";
-//
-//   final response = await http.get(
-//     Uri.parse('$baseUrl$endPoint'),
-//     headers: <String, String>{
-//       'Authorization': 'Bearer $accessToken',
-//     },
-//   );
-//
-//   if (response.statusCode == 200) {
-//     dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
-//     print("Diarydi data: " + response.body);
-//
-//     Diary diarYdata = Diary(
-//       emotions: List<double>.from(rawData['emotions']),
-//       date: DateTime.parse(rawData['ceatedAt']),
-//       content: rawData['content'],
-//       emotion: rawData['emotion'],
-//       userId: rawData['user_id'],
-//       diaryId: rawData['id'],
-//     );
-//
-//     return TSatisdata;
-//   } else {
-//     throw Exception("Fail to load total data from the API");
-//   }
-// }
-//
+  Future<File?> saveXFileToFile(XFile? xFile) async {
+    if (xFile == null) return null;
+
+    try {
+      final bytes = await xFile.readAsBytes();
+      final tempDir = await getTemporaryDirectory();
+      final tempPath = tempDir.path;
+      final fileName = '${DateTime
+          .now()
+          .millisecondsSinceEpoch}.png';
+
+      if (!await Directory(tempPath).exists()) {
+        await Directory(tempPath).create(recursive: true);
+      }
+
+      final File file = File('$tempPath/$fileName');
+      await file.writeAsBytes(bytes);
+
+      // 파일이 성공적으로 저장되었는지 확인하는 로그
+      print('Image File saved to: ${file.path}');
+
+      return file;
+    } catch (e) {
+      // 파일 저장 중 발생한 오류 로그
+      print('Error saving image file: $e');
+      return null;
+    }
+  }
+
+  Future<void> sendPostDiary(dynamic data, List<XFile?> images,
+      dynamic audio) async {
+    var url = Uri.parse("http://34.64.78.183:8080/api/diaries/create");
+    String accessToken = tokenManager.getAccessToken();
+
+    var requestData = {
+      "request": {
+        "content": data['content'],
+        "emotion": data['emotion'],
+        "is_share": data['is_share'],
+        "is_comm": data['is_comm']
+      },
+    };
+
+    var request = http.MultipartRequest('POST', url);
+
+    // 이미지 파일이 있는 경우에만 처리
+    if (images != null && images.isNotEmpty) {
+      List<File?> files = [];
+      for (var xFile in images) {
+        if (xFile != null) {
+          File? file = await saveXFileToFile(xFile);
+          if (file != null) {
+            files.add(file);
+          } else {
+            print('Warning: Failed to get file from XFile. Skipping file.');
+          }
+        } else {
+          print('Warning: xFile is null. Skipping xFile.');
+        }
+      }
+
+      // 이미지 파일을 추가
+      for (var imageFile in files) {
+        if (imageFile != null) {
+          print('Image File Path: ${imageFile.path}');
+          request.files.add(await http.MultipartFile.fromPath(
+              'imageFile', imageFile.path,
+              contentType: MediaType('image', 'jpeg')));
+        } else {
+          print('Warning: imageFile is empty or null. Skipping imageFile.');
+        }
+      }
+    } else {
+      print('Warning: images list is null or empty. No image files to upload.');
+    }
+
+    var audioFile = audio; // 오디오 파일
+
+    request.fields['requestData'] = jsonEncode(requestData['request']);
+    request.headers['Authorization'] = 'Bearer $accessToken';
+
+    // 오디오 파일을 추가
+    if (audioFile != null && audioFile.isNotEmpty) {
+      print('Audio File Path: $audioFile');
+
+      request.files.add(await http.MultipartFile.fromPath(
+          'audioFile', audioFile, contentType: MediaType('audio', 'mp3')));
+    } else {
+      print('Warning: audioFile is empty or null. Skipping audioFile.');
+    }
+
+    try {
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Uploaded!');
+        print(await response.stream.bytesToString());
+      } else {
+        print('Upload failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error uploading data: $e');
+    }
+  }
+
+  void RemoveComment(int id) async {
+    String accessToken = tokenManager.getAccessToken();
+    baseUrl = "http://34.64.78.183:8080";
+    String endPoint = "/api/comments/delete/${id}";
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Authorization': 'Bearer $accessToken',
+    };
+    try {
+      var response = await _dio.delete(
+        '$baseUrl$endPoint',
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 200) {
+        print("댓글 삭제 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+    }
+  }
 }

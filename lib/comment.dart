@@ -1,6 +1,4 @@
-import 'package:capston1/models/Diary.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/models/Comment.dart';
 
@@ -11,7 +9,10 @@ List<Comment> commentList = [];
 class comment extends StatefulWidget {
   final int postId;
 
-  const comment({super.key, required this.postId});
+  const comment({
+    super.key,
+    required this.postId,
+  });
 
   @override
   State<comment> createState() => _commentState(postId);
@@ -23,6 +24,7 @@ class _commentState extends State<comment> {
 
   late int postId;
   late String comment;
+  int id = 0;
 
   final Map<int, List<int>> userTitle = {};
   final Map<int, List<Comment>> commentCount = {};
@@ -38,7 +40,6 @@ class _commentState extends State<comment> {
   }
 
   // 다이어리 아이디랑 페이보릿 카운트
-
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getCommentData(postId);
@@ -72,6 +73,14 @@ class _commentState extends State<comment> {
       final value = response['comment'];
       print('comment: $value');
       comment = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      final value = response['id'];
+      print('id: $value');
+      id = value;
     } catch (e) {
       print('Error: $e');
     }
@@ -151,36 +160,52 @@ class _commentState extends State<comment> {
                         ),
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                      child: Text(
+                                        '삼냥이 ${catCount[commentList[index].user_id]}',
+                                        //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF7D5A50),
+                                          fontFamily: 'soojin',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 Container(
+                                  width: 300,
                                   padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                   child: Text(
-                                    '삼냥이 ${catCount[commentList[index].user_id]}',
-                                    //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
+                                    commentList[index].content,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF7D5A50),
                                       fontFamily: 'soojin',
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                              child: Text(
-                                commentList[index].content,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: 'soojin',
-                                ),
+                            //Padding(padding: EdgeInsets.fromLTRB(200, 0, 0, 0),),
+                            Visibility(
+                              visible: commentList[index].user_id == 36,
+                              child: IconButton(
+                                onPressed: () {
+                                  apiManager.RemoveComment(commentList[index].id);
+                                  print('댓글 아이디 : ${commentList[index].id}');
+                                },
+                                icon: Image.asset('images/main/trash.png', width: 20, height: 20,),
                               ),
                             ),
                           ],
@@ -275,3 +300,5 @@ class _commentState extends State<comment> {
     );
   }
 }
+
+
