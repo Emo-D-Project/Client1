@@ -1,36 +1,16 @@
+import 'dart:core';
 import 'package:capston1/alrampage.dart';
-import 'package:capston1/models/Diary.dart';
+
+import 'package:capston1/gatherEmotion.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'comment.dart';
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
-
 import 'models/Comment.dart';
-import 'models/Message.dart';
 
-//일기내용 오늘의 감정
-final List<String> imagepath = [
-  'images/emotion/1.gif',
-  'images/emotion/7.gif',
-  'images/emotion/7.gif',
-  'images/emotion/2.gif',
-  'images/emotion/4.gif'
-];
-final List<String> diaryimage = [
-  'images/send/sj3.jpg',
-  'noimage',
-  'noimage',
-  'noimage',
-  'images/send/sj1.jpg'
-];
-final List<String> voice = ["no", "no", "no", "yes", "yes"];
-final List<String> diarycomment = ['일기1', '일기2', '일기2-1', '일기3', '일기 4'];
-final List<int> favoritcount = [4, 5, 20, 6, 7];
-final List<bool> favoritcolor = [false, false, false, false, false];
-
-//----------------------------------------
+import 'models/Diary.dart';
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
@@ -43,18 +23,13 @@ final List<String> imagePaths = [
   'images/emotion/6.gif',
 ];
 
-final List<String> d_imagePaths = [
-  'images/send/sj3.jpg',
-  'images/send/sj1.jpg',
-  //'images/send/sj2.jpg',
-];
-String selectedImagePath =
-    'images/emotion/7.gif'; // 기본으로 'images/emotion/7.gif'를 선택
 
 String dynamicText = '행복한 하루입니다람지 제가 잘하고 있는게 맞나요?';
 
 final String start = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
+
+String selectedImageEmotion = ' '; // 기본으로 'images/emotion/7.gif'를 선택
 
 //----------------------------------------
 
@@ -65,10 +40,33 @@ class diaryshare extends StatefulWidget {
   State<diaryshare> createState() => _diaryshareState();
 }
 
+List<Diary> diaries = [];
+
 class _diaryshareState extends State<diaryshare> {
 
-  List<Diary> diaries = [];
+  ApiManager apiManager = ApiManager().getApiManager();
+  List<Diary> selectedEmotionDiaries = [];
 
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  // 서버로부터 데이터를 가져오는 함수
+  Future<void> fetchDataFromServer() async {
+    try {
+      // 상대방과의 대화나눈 메시지 가져오기
+      final data = await apiManager.getDiaryShareData();
+
+      setState(() {
+        diaries = data!;
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
 
   String selectedValue = '최신순';
 
@@ -91,7 +89,7 @@ class _diaryshareState extends State<diaryshare> {
                 DropdownButton<String>(
                   value: selectedValue,
                   // 현재 선택된 값
-                  items: <String>['최신순', '추천순'].map((String value) {
+                  items: <String>['공감순', '최신순'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -108,7 +106,7 @@ class _diaryshareState extends State<diaryshare> {
                   ),
                   dropdownColor: Color(0xFFF8F5EB),
                   icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
-                  style: TextStyle(color: Colors.black,fontFamily: 'soojin'),
+                  style: TextStyle(color: Colors.black, fontFamily: 'soojin'),
                 ),
                 SizedBox(width: 25),
               ],
@@ -135,12 +133,40 @@ class _diaryshareState extends State<diaryshare> {
             physics: ClampingScrollPhysics(),
             child: Row(
               children: imagePaths.asMap().entries.map((entry) {
-                int imagePathIndex = entry.key;
                 String imagePath = entry.value;
 
+                String emotion = "";
+                switch (imagePath) {
+                  case 'images/emotion/angry.png':
+                    emotion = "angry";
+                    break;
+                  case "images/emotion/2.gif":
+                    emotion = 'flutter';
+                    break;
+                  case "images/emotion/1.gif":
+                    emotion = 'smile';
+                    break;
+                  case "images/emotion/4.gif":
+                    emotion = 'annoying';
+                    break;
+                  case "images/emotion/6.gif":
+                    emotion = 'sad';
+                    break;
+                  case "images/emotion/7.gif":
+                    emotion = 'calmness';
+                    break;
+                  case "images/emotion/5.gif":
+                    emotion = 'tired';
+                    break;
+                  default:
+                    emotion = 'flutter';
+                    break;
+                }
+
                 // 해당 이미지에 대한 일기 내용을 찾기
-                int diaryIndex = imagepath.indexWhere(
-                    (diaryImagePath) => diaryImagePath == imagePath);
+                List<Diary> diariesWithSelectedEmotion =
+                    diaries.where((diary) => diary.emotion == emotion).toList();
+
                 return Padding(
                   padding: EdgeInsets.all(3),
                   child: IconButton(
@@ -151,7 +177,8 @@ class _diaryshareState extends State<diaryshare> {
                     ),
                     onPressed: () {
                       setState(() {
-                        selectedImagePath = imagePath; // 선택된 이미지의 경로 업데이트
+                        selectedImageEmotion = emotion;
+                        selectedEmotionDiaries = diariesWithSelectedEmotion;
                       });
                     },
                   ),
@@ -166,44 +193,49 @@ class _diaryshareState extends State<diaryshare> {
               padding: const EdgeInsets.all(10),
               itemCount: diaries.length,
               itemBuilder: (BuildContext context, int index) {
-                // 'images/emotion/7.gif'를 기본으로 선택한 경우 해당 일기 표시
-                if (selectedImagePath == diaries[index].emotion) {
+
+                if (selectedImageEmotion == diaries[index].emotion) {
                   return SizedBox(
                     child: (() {
-                      if (diaryimage[index] != "noimage" &&
-                          voice[index] == "no") {
+                      if (diaries[index].imagePath.isNotEmpty &&
+                          diaries[index].voice == "") {
                         return customWidget1(
-                            simagePath: imagepath[index],
-                            sdiaryImage: diaryimage[index],
-                            scomment: diarycomment[index],
-                            sfavoritColor: favoritcolor[index],
-                            sfavoritCount: favoritcount[index]);
-                      } else if (diaryimage[index] == "noimage" &&
-                          voice[index] == "no") {
+                          simagePath: diaries[index].emotion,
+                          sdiaryImage: diaries[index].imagePath,
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          otherUserId: diaries[index].userId,
+                        );
+                      } else if (diaries[index].imagePath.isEmpty &&
+                          diaries[index].voice == "") {
                         return customWidget2(
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          simagePath: diaries[index].emotion,
+                          otherUserId: diaries[index].userId,
                         );
-                      } else if (diaryimage[index] == "noimage" &&
-                          voice[index] == "yes") {
+                      } else if (diaries[index].imagePath.isEmpty &&
+                          diaries[index].voice != "") {
                         return customwidget3(
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                          svoice: voice[index],
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          simagePath: diaries[index].emotion,
+                          svoice: diaries[index].voice,
+                          otherUserId: diaries[index].userId,
                         );
-                      } else if (diaryimage[index] != "noimage" &&
-                          voice[index] == "yes") {
+                      } else if (diaries[index].imagePath.isNotEmpty &&
+                          diaries[index].voice != "") {
                         return customwidget4(
-                          sdiaryImage: diaryimage[index],
-                          scomment: diarycomment[index],
-                          sfavoritColor: favoritcolor[index],
-                          sfavoritCount: favoritcount[index],
-                          simagePath: imagepath[index],
-                          svoice: voice[index],
+                          sdiaryImage: diaries[index].imagePath,
+                          scomment: diaries[index].content,
+                          sfavoritColor: diaries[index].favoriteColor,
+                          sfavoritCount: diaries[index].favoriteCount,
+                          simagePath: diaries[index].emotion,
+                          svoice: diaries[index].voice,
+                          otherUserId: diaries[index].userId,
                         );
                       }
                     })(),
@@ -221,7 +253,6 @@ class _diaryshareState extends State<diaryshare> {
   }
 }
 
-//음성 데이터 추가해야함
 class shareData {
   final String imagePath;
   final String diaryImage;
@@ -243,10 +274,11 @@ class shareData {
 // 일기 버전 1 - 텍스트 + 사진
 class customWidget1 extends StatefulWidget {
   final String simagePath;
-  final String sdiaryImage;
+  final List<String> sdiaryImage;
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
+  final int otherUserId;
 
   const customWidget1({
     super.key,
@@ -255,20 +287,54 @@ class customWidget1 extends StatefulWidget {
     required this.scomment,
     required this.sfavoritColor,
     required this.sfavoritCount,
+    required this.otherUserId,
   });
 
   @override
-  State<customWidget1> createState() => _customWidget1State();
+  State<customWidget1> createState() => _customWidget1State(otherUserId);
 }
 
 class _customWidget1State extends State<customWidget1> {
   late int sfavoritCount; // 추가된 부분
   late bool sfavoritColor; // 추가된 부분
+  String imagePath = "";
+  int otherUserId = 36;
+
+  _customWidget1State(int otherUserId) {
+    this.otherUserId = otherUserId;
+  }
 
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount;
     sfavoritColor = widget.sfavoritColor;
+
+    switch (widget.simagePath) {
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
   }
 
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
@@ -288,7 +354,6 @@ class _customWidget1State extends State<customWidget1> {
     });
     print('보낸 사람: $name $_commentCount, 전송 메세지: $text');
   }
-
 
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
@@ -310,6 +375,8 @@ class _customWidget1State extends State<customWidget1> {
   }
 
 //-----------------------
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -340,18 +407,20 @@ class _customWidget1State extends State<customWidget1> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
                         ),
                       )),
-                      /*IconButton(
+                      IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => message_write(otherUserId: ),
+                              builder: (context) =>
+                                  message_write(otherUserId: otherUserId),
+                            ),
                           );
                         },
                         icon: Image.asset(
@@ -359,7 +428,7 @@ class _customWidget1State extends State<customWidget1> {
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
                         ),
-                      ),*/
+                      ),
                     ],
                   ),
                 ),
@@ -370,15 +439,14 @@ class _customWidget1State extends State<customWidget1> {
                       height: 150, // 이미지 높이 조절
                       child: Container(
                         child: PageView.builder(
-                          //listview로 하면 한장씩 안넘어가서 페이지뷰함
                           scrollDirection: Axis.horizontal,
-                          itemCount: d_imagePaths.length > 3
+                          itemCount: widget.sdiaryImage.length > 3
                               ? 3
-                              : d_imagePaths.length, // 최대 3장까지만 허용
+                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
-                                child: Image.asset(d_imagePaths[index]),
+                                child: Image.asset(widget.sdiaryImage[index]),
                               ),
                             );
                           },
@@ -406,40 +474,39 @@ class _customWidget1State extends State<customWidget1> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 누를 때 색 변경 및 count 증가
-                              if (sfavoritColor) {
-                                sfavoritCount--;
-                              } else {
-                                sfavoritCount++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$sfavoritCount',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // 좋아요 누를 때 색 변경 및 count 증가
+                          if (sfavoritColor) {
+                            sfavoritCount--;
+                          } else {
+                            sfavoritCount++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '$sfavoritCount',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-
-                  //댓글
+              //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Column(
@@ -452,7 +519,7 @@ class _customWidget1State extends State<customWidget1> {
                     ),
                     //댓글 숫자
                     Text(
-                      '6', //
+                      '0',
                       style: TextStyle(fontSize: 11),
                     ),
                   ],
@@ -472,6 +539,7 @@ class customWidget2 extends StatefulWidget {
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
+  final int otherUserId;
 
   const customWidget2({
     super.key,
@@ -479,23 +547,28 @@ class customWidget2 extends StatefulWidget {
     required this.scomment,
     required this.sfavoritColor,
     required this.sfavoritCount,
+    required this.otherUserId,
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State();
+  State<customWidget2> createState() => _customWidget2State(otherUserId);
 }
 
 class _customWidget2State extends State<customWidget2> {
   late int sfavoritCount; // 추가된 부분
   late bool sfavoritColor; // 추가된 부분
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
+  int otherUserId = 36;
+  String imagePath = "";
 
   TextEditingController _commentController = TextEditingController();
 
-  // 댓글 추가 기능
-
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
+
+  _customWidget2State(int otherUserId) {
+    this.otherUserId = otherUserId;
+  }
 
   void addComment(String name, String text) {
     setState(() {
@@ -526,10 +599,38 @@ class _customWidget2State extends State<customWidget2> {
       },
     );
   }
+
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
+
+    switch (widget.simagePath) {
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
   }
 
   @override
@@ -562,18 +663,20 @@ class _customWidget2State extends State<customWidget2> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
                         ),
                       )),
-                    /*  IconButton(
+                      IconButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => message_write()),
+                              builder: (context) =>
+                                  message_write(otherUserId: otherUserId),
+                            ),
                           );
                         },
                         icon: Image.asset(
@@ -581,7 +684,7 @@ class _customWidget2State extends State<customWidget2> {
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
                         ),
-                      ),*/
+                      ),
                     ],
                   ),
                 ),
@@ -606,39 +709,39 @@ class _customWidget2State extends State<customWidget2> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 누를 때 색 변경 및 count 증가
-                              if (sfavoritColor) {
-                                sfavoritCount--;
-                              } else {
-                                sfavoritCount++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$sfavoritCount',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // 좋아요 누를 때 색 변경 및 count 증가
+                          if (sfavoritColor) {
+                            sfavoritCount--;
+                          } else {
+                            sfavoritCount++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '$sfavoritCount',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
+              //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Column(
@@ -672,6 +775,7 @@ class customwidget3 extends StatefulWidget {
   final int sfavoritCount;
   final bool sfavoritColor;
   final String svoice;
+  final int otherUserId;
 
   const customwidget3({
     super.key,
@@ -680,10 +784,11 @@ class customwidget3 extends StatefulWidget {
     required this.sfavoritColor,
     required this.sfavoritCount,
     required this.svoice,
+    required this.otherUserId,
   });
 
   @override
-  State<customwidget3> createState() => _customwidget3State();
+  State<customwidget3> createState() => _customwidget3State(otherUserId);
 }
 
 class _customwidget3State extends State<customwidget3> {
@@ -693,10 +798,14 @@ class _customwidget3State extends State<customwidget3> {
 
   late int sfavoritCount; // 추가된 부분
   late bool sfavoritColor; // 추가된 부분
-
+  int otherUserId = 36;
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
+
+  _customwidget3State(int otherUserId) {
+    this.otherUserId = otherUserId;
+  }
 
   void addComment(String name, String text) {
     setState(() {
@@ -733,12 +842,40 @@ class _customwidget3State extends State<customwidget3> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  String imagePath = "";
 
   @override
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
+
+    switch (widget.simagePath) {
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
 
     setAudio();
 
@@ -812,14 +949,22 @@ class _customwidget3State extends State<customwidget3> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
                         ),
                       )),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  message_write(otherUserId: otherUserId),
+                            ),
+                          );
+                        },
                         icon: Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
@@ -915,41 +1060,39 @@ class _customwidget3State extends State<customwidget3> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 누를 때 색 변경 및 count 증가
-                              if (sfavoritColor) {
-                                sfavoritCount--;
-                              } else {
-                                sfavoritCount++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$sfavoritCount',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // 좋아요 누를 때 색 변경 및 count 증가
+                          if (sfavoritColor) {
+                            sfavoritCount--;
+                          } else {
+                            sfavoritCount++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '$sfavoritCount',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-
-
-                  //댓글
+              //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Column(
@@ -978,12 +1121,13 @@ class _customwidget3State extends State<customwidget3> {
 
 // 일기 버전4 - 텍스트 + 음성 + 사진
 class customwidget4 extends StatefulWidget {
-  final String sdiaryImage; // 다이어리 안에 이미지
+  final List<String> sdiaryImage; // 다이어리 안에 이미지
   final String simagePath; // 감정 이모지 사진
   final String scomment; // 일기 내용
   final int sfavoritCount; // 좋아요 수
   final bool sfavoritColor; // 좋아요 색 변하는 거
   final String svoice; // 녹음 기능
+  final int otherUserId;
 
   const customwidget4({
     super.key,
@@ -993,16 +1137,17 @@ class customwidget4 extends StatefulWidget {
     required this.sfavoritColor,
     required this.sfavoritCount,
     required this.svoice,
+    required this.otherUserId,
   });
 
   @override
-  State<customwidget4> createState() => _customwidget4State();
+  State<customwidget4> createState() => _customwidget4State(otherUserId);
 }
 
 class _customwidget4State extends State<customwidget4> {
   late int sfavoritCount;
   late bool sfavoritColor; // 추가된 부분
-
+  int otherUserId = 36;
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
   TextEditingController _commentController = TextEditingController();
@@ -1011,6 +1156,10 @@ class _customwidget4State extends State<customwidget4> {
 
   // 댓글 추가 기능 댓글이 쌓이면 숫자 증가함
   int _commentCount = 1;
+
+  _customwidget4State(int otherUserId) {
+    this.otherUserId = otherUserId;
+  }
 
   void addComment(String name, String text) {
     setState(() {
@@ -1047,12 +1196,40 @@ class _customwidget4State extends State<customwidget4> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  String imagePath = "";
 
   @override
   void initState() {
     super.initState();
     sfavoritCount = widget.sfavoritCount; // 초기화
     sfavoritColor = widget.sfavoritColor; // 초기화
+
+    switch (widget.simagePath) {
+      case "angry":
+        imagePath = 'images/emotion/angry.png';
+        break;
+      case "flutter":
+        imagePath = 'images/emotion/2.gif';
+        break;
+      case "smile":
+        imagePath = 'images/emotion/1.gif';
+        break;
+      case "annoying":
+        imagePath = 'images/emotion/4.gif';
+        break;
+      case "sad":
+        imagePath = 'images/emotion/6.gif';
+        break;
+      case "calmness":
+        imagePath = 'images/emotion/7.gif';
+        break;
+      case "tired":
+        imagePath = 'images/emotion/5.gif';
+        break;
+      default:
+        imagePath = 'images/emotion/2.gif';
+        break;
+    }
 
     setAudio();
 
@@ -1126,14 +1303,22 @@ class _customwidget4State extends State<customwidget4> {
                           margin: EdgeInsets.only(left: 50),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.simagePath),
+                              image: AssetImage(imagePath),
                               fit: BoxFit.contain,
                             ),
                           ),
                         ),
                       )),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  message_write(otherUserId: otherUserId),
+                            ),
+                          );
+                        },
                         icon: Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
@@ -1149,15 +1334,14 @@ class _customwidget4State extends State<customwidget4> {
                       height: 150, // 이미지 높이 조절
                       child: Container(
                         child: PageView.builder(
-                          //listview로 하면 한장씩 안넘어가서 페이지뷰함
                           scrollDirection: Axis.horizontal,
-                          itemCount: d_imagePaths.length > 3
+                          itemCount: widget.sdiaryImage.length > 3
                               ? 3
-                              : d_imagePaths.length, // 최대 3장까지만 허용
+                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
-                                child: Image.asset(d_imagePaths[index]),
+                                child: Image.asset(widget.sdiaryImage[index]),
                               ),
                             );
                           },
@@ -1249,37 +1433,37 @@ class _customwidget4State extends State<customwidget4> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 누를 때 색 변경 및 count 증가
-                              if (sfavoritColor) {
-                                sfavoritCount--;
-                              } else {
-                                sfavoritCount++;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          },
-                          onLongPress: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '$sfavoritCount',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // 좋아요 누를 때 색 변경 및 count 증가
+                          if (sfavoritColor) {
+                            sfavoritCount--;
+                          } else {
+                            sfavoritCount++;
+                          }
+                          sfavoritColor = !sfavoritColor;
+                        });
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '$sfavoritCount',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
               //댓글
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 20, 0),

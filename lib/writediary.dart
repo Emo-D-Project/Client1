@@ -66,11 +66,10 @@ class _writediaryState extends State<writediary> {
 
     try {
       final postData = {
-        'content': content,
-        'emotion': sendEmotion,
-        'is_share': _isCheckedShare,
-        'is_comm': _isChecked,
-        //오디오 전송
+          'content': content,
+          'emotion': sendEmotion,
+          'is_share': _isCheckedShare,
+          'is_comm': _isChecked,
       };
       //print(postData);
       await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
@@ -551,20 +550,20 @@ s
                             //   onPressed: playRecording,
                             //   child: const Text(("play")),
                             // ),
-                            // Container(
-                            //   margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            //   child: TextField(
-                            //     style: TextStyle(fontFamily: 'soojin'),
-                            //     controller: _contentEditController,
-                            //     maxLines: 10,
-                            //     decoration: InputDecoration(
-                            //         enabledBorder: OutlineInputBorder(
-                            //             borderSide: BorderSide(
-                            //       color: Colors.transparent,
-                            //       width: 1.0,
-                            //     ))),
-                            //   ),
-                            // )
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: TextField(
+                                style: TextStyle(fontFamily: 'soojin'),
+                                controller: _contentEditController,
+                                maxLines: 10,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ))),
+                              ),
+                            )
                           ],
                         ),
                       ),

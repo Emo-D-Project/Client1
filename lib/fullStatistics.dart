@@ -29,32 +29,10 @@ class fullStatistics extends StatefulWidget {
 }
 
 class _fullStatisticsState extends State<fullStatistics> {
-  List<double> emotioncount = [159, 150, 100, 80, 50, 40, 5];
 
-//enum으로 바꿔보기
-  int num_comment = 25; // 공유된 일기 중 가장 많은 댓글 수
-  int num_like = 3; // 공유된 일기 중 가장 많은 좋아요 수
   String name = '수진'; //닉네임
 
-  // 가장 많이 일기를 작성한  시간대
-  //
-  String Dawn = '새벽(00~06)';
-  String morning = '아침(06~12)';
-  String Am = '오전(12~18)';
-  String Pm = '밤(18~00)';
 
-  // 이때까지 몇개의 일기를 작성한지
-  int count = 0; // 맨 처음 시작한 일기는 0으로 시작
-
-  /*
-  void writeDiary() {
-    setState(() {
-      count++; // 다음 일기를 작성하면 1 증가
-    });
-  }*/
-
-  // 몇월 - 몇개로 가장 많은 일기 수
-  int w_diary = 25;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
