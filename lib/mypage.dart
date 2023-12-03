@@ -6,26 +6,24 @@ import 'network/api_manager.dart';
 import 'models/Diary.dart';
 import 'diaryshare.dart';
 
-
 class mypage extends StatefulWidget {
-  final int userId;  //일기 공유에서
+  final int userId; //일기 공유에서 받아온거 내꺼일수도 잇고 남거일수도
 
-  const mypage({super.key,required this.userId});
+  const mypage({super.key, required this.userId});
 
   @override
   State<mypage> createState() => _mypageState(userId);
 }
 
 
+
+
 final _contentEditController = TextEditingController(); //소개답변 저장 변수
 final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 final _introduceEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 
-
 class _mypageState extends State<mypage> {
-
   ApiManager apiManager = ApiManager().getApiManager();
-  //ApiManager apiManager = ApiManager().GetOtherUserPage(userId);
 
   int userId;
 
@@ -39,9 +37,7 @@ class _mypageState extends State<mypage> {
   List<Mypage> myPageIntro= [];
   List<Mypage> otherPageIntro = [];
 
-
-
-  //List<Map<String, dynamic>> mypages = [];
+  List<Map<String, dynamic>> mypages = [];
 
   _mypageState(this.userId);
 
@@ -52,35 +48,19 @@ class _mypageState extends State<mypage> {
     fetchIntroduceFromServer();
   }
 
-
-
   Future<void> fetchDataFromServer() async {
     try {
       final otherData = await apiManager.GetMyPageDataById(userId);
       final data = await apiManager.getMypageData();
 
       setState(() {
-        myPageDatas = otherData!;
-        otherPageDatas = data!;
-
+        otherPageDatas = otherData!;
+        myPageDatas = data!;
       });
     } catch (error) {
       print('Error getting MP list: $error');
     }
   }
-
-  void _sendMyPage() {
-    String title = tititle;
-    String content = _answerEditController.text;
-
-    apiManager.sendMypage(userId ,title, content);
-
-    _answerEditController.clear();
-
-    Navigator.of(context).pop();
-  }
-
-
 
   //마이페이지 소개 부분
   Future<void> fetchIntroduceFromServer() async {
@@ -89,24 +69,48 @@ class _mypageState extends State<mypage> {
       final intro = await apiManager.GetMyPageDataIntrod();
 
       setState(() {
-        myPageIntro = otherIntro!;
-        otherPageIntro = intro!;
+        otherPageIntro = otherIntro!;
+        myPageIntro = intro!;
 
       });
     } catch (error) {
-      print('Error getting MP list: $error');
+      print('Error getting intro list: $error');
     }
   }
 
-  void _sendMyPageIntro() {
-    String content = _introduceEditController.text;
 
-    apiManager.sendMypageIntroduce(content);
+  //정보 등록
+  void _sendMyPage() {
+    String title = tititle;
+    String content = _answerEditController.text;
+
+    apiManager.sendMypage(userId, title, content);
 
     _answerEditController.clear();
 
     Navigator.of(context).pop();
+
+    fetchDataFromServer();
   }
+
+
+  //소개 등록 기능
+  void _sendMyPageIntro() {
+    try {
+      String title = "자기 소개";
+      String content = _introduceEditController.text;
+
+      apiManager.sendMypageIntroduce(userId, title, content);
+
+      _introduceEditController.clear();
+
+      fetchIntroduceFromServer();
+
+    } catch (error) {
+      print('Error sending MyPage Intro: $error');
+    }
+  }
+
 
 
   //질문 선택 창
@@ -304,7 +308,6 @@ class _mypageState extends State<mypage> {
     );
   }
 
-
   //``````````````````````````````````````````````````````````````````````````````
 
   @override
@@ -320,7 +323,7 @@ class _mypageState extends State<mypage> {
         backgroundColor: Colors.transparent,
         title: SizedBox(
           child: (() {
-            if (userId == myPageDatas) {
+            if(apiManager.GetMyId() == userId){
               return Text(
                 "MYPAGE",
                 style: TextStyle(
@@ -358,7 +361,7 @@ class _mypageState extends State<mypage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
-                      if (userId == 36) {
+                      if(apiManager.GetMyId() == userId){
                         return Text(
                           "권해진 바보",
                           //myInfo.getNickName(),
@@ -403,44 +406,56 @@ class _mypageState extends State<mypage> {
                         ),
                       ),
                       style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                        onChanged: (value) async {
-                         _sendMyPageIntro();
+                      onEditingComplete: () async {
+                        _sendMyPageIntro();
+                        FocusScope.of(context).unfocus();  //텍스트 필드 내려갔을때 저장되는거
+                        fetchIntroduceFromServer();
                         final data = await apiManager.GetMyPageDataIntrod();
                         setState(() {
-                          myPageIntro = data!;
+                          myPageDatas = data!;
                         });
                       },
                     ),
                   ),
-
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(10),
-                      itemCount: myPageDatas.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if(userId == userId){
-                          return CustomQuestionContainer(
-                            vuserId: myPageDatas[index].userId,
-                            vquestion: myPageDatas[index].title,
-                            vanswer: myPageDatas[index].content,
-                          );
-                        }else{
-                          return CustomQuestionContainer(
-                            //답변 받는 부분
-                            vuserId: otherPageDatas[index].userId,
-                            vquestion: otherPageDatas[index].title,
-                            vanswer: otherPageDatas[index].content,
-                          );
-                        }
-
-                      },
-                    ),
+                  Container(
+                    child: ((){
+                      if(apiManager.GetMyId() == userId){
+                        return Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(10),
+                              itemCount: myPageDatas.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                  return CustomQuestionContainer(
+                                    vuserId: myPageDatas[index].userId,
+                                    vquestion: myPageDatas[index].title,
+                                    vanswer: myPageDatas[index].content,
+                                  );
+                              },
+                            )
+                        );
+                      }else{
+                        return Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(10),
+                            itemCount: otherPageDatas.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CustomQuestionContainer(
+                                  vuserId: otherPageDatas[index].userId,
+                                  vquestion: otherPageDatas[index].title,
+                                  vanswer: otherPageDatas[index].content,
+                                );
+                              }
+                          ),
+                        );
+                      }
+                    }()),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: (() {
-                      if (userId ==36) {
+                      if(apiManager.GetMyId() == userId){
                         return IconButton(
                             onPressed: () {
                               plusDialog(context);
