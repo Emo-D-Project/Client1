@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -411,7 +412,6 @@ class ApiManager {
 
   // 아이디로 마이페이지에 등록한 정보들을 불러오는 기능
   Future<List<Mypage>> GetMyPageDataById(int userId) async {
-    //Id는 OtherUser Id
 
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/userInfo/$userId";
@@ -437,13 +437,12 @@ class ApiManager {
 
       return mypagedata;
     } else {
-      throw Exception("Fail to load OtherUser page data from the API");
+      throw Exception("Fail to load OtherUser page data from the API 2");
     }
   }
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
   Future<List<Mypage>> GetMyPageDataIntrod() async {
-    //Id는 OtherUser Id
 
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/userInfo/my";
@@ -461,17 +460,39 @@ class ApiManager {
 
       List<Mypage> mypagedata = rawData.map((data) {
         return Mypage(
-          userId: data['userId'],
-          title: data['title'],
+          userId: data['userId'] ,
+          title: data['title'] ,
           content: data['content'],
         );
       }).toList();
 
       return mypagedata;
     } else {
-      throw Exception("Fail to load OtherUser page data from the API");
+      throw Exception("Fail to load OtherUser page data from the API 3 ");
     }
   }
+
+  // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
+  Future<void> GetMyId() async {
+
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/user";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {}else {
+      throw Exception("Fail to load My ID from the API");
+    }
+  }
+
+
+
+
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
   Future<List<Mypage>> GetMyPageDataItrodById(int userId) async {
@@ -675,7 +696,7 @@ class ApiManager {
   }
 
   // 마이페이지에 정보 등록하는 기능
-  void sendMypageIntroduce(String content) async {
+  void sendMypageIntroduce(int userId, String title, String content) async {
     String endpoint = "/api/userInfo/my/description";
     baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();

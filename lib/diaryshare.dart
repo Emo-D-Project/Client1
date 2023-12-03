@@ -778,6 +778,7 @@ class _customWidget2State extends State<customWidget2> {
                     GestureDetector(
                       onTap: () async {
                         apiManager.putFavoriteCount(diaryId);
+                        print("내 아이디!!!!!!!!!:${apiManager.GetMyId().toString()}");
                         print("좋아요 누름 :${diaryId}");
                         try {
                           setState(() {
