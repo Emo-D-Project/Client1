@@ -476,10 +476,9 @@ class ApiManager {
   }
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
-  Future<void> GetMyId() async {
-
+  Future<int> GetMyId() async {
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/user";
+    String endPoint = "/user";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
@@ -488,7 +487,9 @@ class ApiManager {
       },
     );
 
-    if (response.statusCode == 200) {}else {
+    if (response.statusCode == 200) {
+      return int.parse(response.body);
+    }else {
       throw Exception("Fail to load My ID from the API");
     }
   }

@@ -26,6 +26,8 @@ class _commentState extends State<comment> {
   late String comment;
   int id = 0;
 
+  int Myid = 0;
+
   final Map<int, List<int>> userTitle = {};
   final Map<int, List<Comment>> commentCount = {};
 
@@ -37,6 +39,7 @@ class _commentState extends State<comment> {
   void initState() {
     super.initState();
     fetchDataFromServer();
+    fetchMyIDFromServer();
   }
 
   // 다이어리 아이디랑 페이보릿 카운트
@@ -56,6 +59,18 @@ class _commentState extends State<comment> {
       });
     } catch (error) {
       print('Error getting Comment list : $error');
+    }
+  }
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
     }
   }
 
@@ -199,7 +214,7 @@ class _commentState extends State<comment> {
                             ),
                             //Padding(padding: EdgeInsets.fromLTRB(200, 0, 0, 0),),
                             Visibility(
-                              visible: commentList[index].user_id == 36,
+                              visible: commentList[index].user_id == Myid,
                               child: IconButton(
                                 onPressed: () {
                                   apiManager.RemoveComment(commentList[index].id);
@@ -300,5 +315,3 @@ class _commentState extends State<comment> {
     );
   }
 }
-
-
