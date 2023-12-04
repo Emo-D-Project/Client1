@@ -6,19 +6,19 @@ import 'network/api_manager.dart';
 import 'models/Diary.dart';
 import 'diaryshare.dart';
 
-class mypage extends StatefulWidget {
+class otherMypage extends StatefulWidget {
   final int userId; //일기 공유에서 받아온거 내꺼일수도 잇고 남거일수도
 
-  const mypage({super.key, required this.userId});
+  const otherMypage({super.key, required this.userId});
 
   @override
-  State<mypage> createState() => _mypageState(userId);
+  State<otherMypage> createState() => _otherMypageState(userId);
 }
 
 final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 final _introduceEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 
-class _mypageState extends State<mypage> {
+class _otherMypageState extends State<otherMypage> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   int userId;
@@ -27,13 +27,13 @@ class _mypageState extends State<mypage> {
   late String content;
   late String tititle;
 
-  List<Mypage> myPageDatas = [];
+  List<Mypage> otherPageDatas = [];
 
-  List<Mypage> myPageIntro= [];
+  List<Mypage> otherPageIntro = [];
 
   List<Map<String, dynamic>> mypages = [];
 
-  _mypageState(this.userId);
+  _otherMypageState(this.userId);
 
   @override
   void initState() {
@@ -44,28 +44,29 @@ class _mypageState extends State<mypage> {
 
   Future<void> fetchDataFromServer() async {
     try {
-      final data = await apiManager.getMypageData();
+      final otherData = await apiManager.GetMyPageDataById(userId);
 
       setState(() {
-        myPageDatas = data!;
+        otherPageDatas = otherData!;
       });
     } catch (error) {
-      print('Error getting MP list: $error');
+      print('Error getting OP list: $error');
     }
   }
 
   //마이페이지 소개 부분
   Future<void> fetchIntroduceFromServer() async {
     try {
-      final intro = await apiManager.GetMyPageDataIntrod();
+      final otherIntro = await apiManager.GetMyPageDataItrodById(userId);
 
       setState(() {
-        myPageIntro = intro!;
+        otherPageIntro = otherIntro!;
       });
     } catch (error) {
       print('Error getting intro list: $error');
     }
   }
+
 
   //정보 등록
   void _sendMyPage() {
@@ -73,8 +74,11 @@ class _mypageState extends State<mypage> {
     String content = _answerEditController.text;
 
     apiManager.sendMypage(userId, title, content);
+
     _answerEditController.clear();
+
     Navigator.of(context).pop();
+
     fetchDataFromServer();
   }
 
@@ -84,209 +88,213 @@ class _mypageState extends State<mypage> {
     try {
       String title = "자기 소개";
       String content = _introduceEditController.text;
-
       apiManager.sendMypageIntroduce(userId, title, content);
       _introduceEditController.clear();
       fetchIntroduceFromServer();
+
     } catch (error) {
       print('Error sending MyPage Intro: $error');
     }
   }
 
-  //질문 선택 창
-  void plusDialog(context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
 
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: sizeY * 0.5,
-          color: Color(0xFF737373),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-            ),
-            child: Center(
-              child: Column(
-                children: [
-                  Container(
-                    width: 130,
-                    height: 5,
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                    color: Color.fromRGBO(117, 117, 117, 100),
-                  ),
-                  SizedBox(
-                    child: Text(
-                      "질문 선택",
-                      style: TextStyle(
-                          color: Color(0xFF7D5A50),
-                          fontSize: 14,
-                          fontFamily: 'soojin'),
-                    ),
-                  ),
-                  Container(
-                    //칸 나누는 줄
-                    margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                    color: Colors.black54,
-                    width: sizeX, height: 1,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showDialog(context, "최애 영화");
-                      tititle = "최애 영화";
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Text('최애 영화',
-                        style: TextStyle(
-                            color: Color(0xFF7D5A50),
-                            fontSize: 15,
-                            fontFamily: 'soojin')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showDialog(context, "최애 노래");
-                      tititle = "최애 노래";
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Text("최애 노래",
-                        style: TextStyle(
-                            color: Color(0xFF7D5A50),
-                            fontSize: 15,
-                            fontFamily: 'soojin')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showDialog(context, "MBTI");
-                      tititle = "MBTI";
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Text("MBTI",
-                        style: TextStyle(
-                            color: Color(0xFF7D5A50),
-                            fontSize: 15,
-                            fontFamily: 'soojin')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showDialog(context, "최애 드라마");
-                      tititle = "최애 드라마";
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Text("최애 드라마",
-                        style: TextStyle(
-                            color: Color(0xFF7D5A50),
-                            fontSize: 15,
-                            fontFamily: 'soojin')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showDialog(context, "최애 색깔");
-                      tititle = "최애 색깔";
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Text("최애 색깔",
-                        style: TextStyle(
-                            color: Color(0xFF7D5A50),
-                            fontSize: 15,
-                            fontFamily: 'soojin')),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 
-  //질문 답변창
-  Future<void> _showDialog(BuildContext context, String item) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            item,
-            style: TextStyle(
-              fontFamily: 'soojin',
-              color: Color(0xFF7D5A50),
-            ),
-          ),
-          content: TextField(
-            style: TextStyle(fontFamily: 'soojin'),
-            maxLength: 20,
-            decoration: InputDecoration(
-              hintText: '20자 이내로 작성해주세요.',
-              hintStyle: TextStyle(fontFamily: 'soojin'),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black54,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black54,
-                ),
-              ),
-            ),
-            controller: _answerEditController,
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Color(0x4D968C83),
-                    minimumSize: Size(150, 30)),
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('취소',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'soojin'))),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 0.0,
-                    backgroundColor: Color(0xFF7D5A50),
-                    minimumSize: Size(150, 30)),
-                onPressed: () async {
-                  _sendMyPage(); //
-                  final data = await apiManager.getMypageData();
-                  setState(() {
-                    myPageDatas = data!;
-                  });
-                }, //showContainer로 데이터 넘기기 // 디비에 저장하기
-                child: Text('확인',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'soojin'))),
-          ],
-        );
-      },
-    );
-  }
+  // //질문 선택 창
+  // void plusDialog(context) {
+  //   final sizeX = MediaQuery.of(context).size.width;
+  //   final sizeY = MediaQuery.of(context).size.height;
+  //
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         height: sizeY * 0.5,
+  //         color: Color(0xFF737373),
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(30),
+  //               topRight: Radius.circular(30),
+  //             ),
+  //           ),
+  //           child: Center(
+  //             child: Column(
+  //               children: [
+  //                 Container(
+  //                   width: 130,
+  //                   height: 5,
+  //                   margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+  //                   color: Color.fromRGBO(117, 117, 117, 100),
+  //                 ),
+  //                 SizedBox(
+  //                   child: Text(
+  //                     "질문 선택",
+  //                     style: TextStyle(
+  //                         color: Color(0xFF7D5A50),
+  //                         fontSize: 14,
+  //                         fontFamily: 'soojin'),
+  //                   ),
+  //                 ),
+  //                 Container(
+  //                   //칸 나누는 줄
+  //                   margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+  //                   color: Colors.black54,
+  //                   width: sizeX, height: 1,
+  //                 ),
+  //                 ElevatedButton(
+  //                   onPressed: () {
+  //                     _showDialog(context, "최애 영화");
+  //                     tititle = "최애 영화";
+  //                   },
+  //                   style: ElevatedButton.styleFrom(
+  //                     elevation: 0.0,
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //                   child: Text('최애 영화',
+  //                       style: TextStyle(
+  //                           color: Color(0xFF7D5A50),
+  //                           fontSize: 15,
+  //                           fontFamily: 'soojin')),
+  //                 ),
+  //                 ElevatedButton(
+  //                   onPressed: () {
+  //                     _showDialog(context, "최애 노래");
+  //                     tititle = "최애 노래";
+  //                   },
+  //                   style: ElevatedButton.styleFrom(
+  //                     elevation: 0.0,
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //                   child: Text("최애 노래",
+  //                       style: TextStyle(
+  //                           color: Color(0xFF7D5A50),
+  //                           fontSize: 15,
+  //                           fontFamily: 'soojin')),
+  //                 ),
+  //                 ElevatedButton(
+  //                   onPressed: () {
+  //                     _showDialog(context, "MBTI");
+  //                     tititle = "MBTI";
+  //                   },
+  //                   style: ElevatedButton.styleFrom(
+  //                     elevation: 0.0,
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //                   child: Text("MBTI",
+  //                       style: TextStyle(
+  //                           color: Color(0xFF7D5A50),
+  //                           fontSize: 15,
+  //                           fontFamily: 'soojin')),
+  //                 ),
+  //                 ElevatedButton(
+  //                   onPressed: () {
+  //                     _showDialog(context, "최애 드라마");
+  //                     tititle = "최애 드라마";
+  //                   },
+  //                   style: ElevatedButton.styleFrom(
+  //                     elevation: 0.0,
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //                   child: Text("최애 드라마",
+  //                       style: TextStyle(
+  //                           color: Color(0xFF7D5A50),
+  //                           fontSize: 15,
+  //                           fontFamily: 'soojin')),
+  //                 ),
+  //                 ElevatedButton(
+  //                   onPressed: () {
+  //                     _showDialog(context, "최애 색깔");
+  //                     tititle = "최애 색깔";
+  //                   },
+  //                   style: ElevatedButton.styleFrom(
+  //                     elevation: 0.0,
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //                   child: Text("최애 색깔",
+  //                       style: TextStyle(
+  //                           color: Color(0xFF7D5A50),
+  //                           fontSize: 15,
+  //                           fontFamily: 'soojin')),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  // //질문 답변창
+  // Future<void> _showDialog(BuildContext context, String item) {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text(
+  //           item,
+  //           style: TextStyle(
+  //             fontFamily: 'soojin',
+  //             color: Color(0xFF7D5A50),
+  //           ),
+  //         ),
+  //         content: TextField(
+  //           style: TextStyle(fontFamily: 'soojin'),
+  //           maxLength: 20,
+  //           decoration: InputDecoration(
+  //             hintText: '20자 이내로 작성해주세요.',
+  //             hintStyle: TextStyle(fontFamily: 'soojin'),
+  //             enabledBorder: UnderlineInputBorder(
+  //               borderSide: BorderSide(
+  //                 color: Colors.black54,
+  //               ),
+  //             ),
+  //             focusedBorder: UnderlineInputBorder(
+  //               borderSide: BorderSide(
+  //                 color: Colors.black54,
+  //               ),
+  //             ),
+  //           ),
+  //           controller: _answerEditController,
+  //         ),
+  //         actions: <Widget>[
+  //           ElevatedButton(
+  //               style: ElevatedButton.styleFrom(
+  //                   elevation: 0.0,
+  //                   backgroundColor: Color(0x4D968C83),
+  //                   minimumSize: Size(150, 30)),
+  //               onPressed: () => Navigator.of(context).pop(),
+  //               child: Text('취소',
+  //                   style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontSize: 20,
+  //                       fontFamily: 'soojin'))),
+  //           ElevatedButton(
+  //               style: ElevatedButton.styleFrom(
+  //                   elevation: 0.0,
+  //                   backgroundColor: Color(0xFF7D5A50),
+  //                   minimumSize: Size(150, 30)),
+  //               onPressed: () async {
+  //                 _sendMyPage(); //
+  //                 final data = await apiManager.getMypageData();
+  //                 setState(() {
+  //                   myPageDatas = data!;
+  //                 });
+  //               }, //showContainer로 데이터 넘기기 // 디비에 저장하기
+  //               child: Text('확인',
+  //                   style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontSize: 20,
+  //                       fontFamily: 'soojin'))),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+  //``````````````````````````````````````````````````````````````````````````````
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +310,7 @@ class _mypageState extends State<mypage> {
         title: SizedBox(
           child: (() {
               return Text(
-                "MYPAGE",
+                "PROFILE",
                 style: TextStyle(
                     color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
               );
@@ -332,8 +340,7 @@ class _mypageState extends State<mypage> {
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
                         return Text(
-                          "권해진 바보",
-                          //myInfo.getNickName(),
+                          "삼냥이",
                           style: TextStyle(
                               fontSize: 28,
                               fontFamily: 'soojin',
@@ -370,9 +377,9 @@ class _mypageState extends State<mypage> {
                         _sendMyPageIntro();
                         FocusScope.of(context).unfocus();  //텍스트 필드 내려갔을때 저장되는거
                         fetchIntroduceFromServer();
-                        final data = await apiManager.GetMyPageDataIntrod();
+                        final data = await apiManager.GetMyPageDataItrodById(userId);
                         setState(() {
-                          myPageDatas = data!;
+                          otherPageIntro = data!;
                         });
                       },
                     ),
@@ -380,35 +387,22 @@ class _mypageState extends State<mypage> {
                   Container(
                     child: ((){
                         return Expanded(
-                            child: ListView.builder(
+                          child: ListView.builder(
                               shrinkWrap: true,
                               padding: const EdgeInsets.all(10),
-                              itemCount: myPageDatas.length,
+                              itemCount: otherPageDatas.length,
                               itemBuilder: (BuildContext context, int index) {
-                                  return CustomQuestionContainer(
-                                    vuserId: myPageDatas[index].userId,
-                                    vquestion: myPageDatas[index].title,
-                                    vanswer: myPageDatas[index].content,
-                                  );
-                              },
-                            )
+                                return CustomQuestionContainer(
+                                  vuserId: otherPageDatas[index].userId,
+                                  vquestion: otherPageDatas[index].title,
+                                  vanswer: otherPageDatas[index].content,
+                                );
+                              }
+                          ),
                         );
                     }()),
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: (() {
-                        return IconButton(
-                            onPressed: () {
-                              plusDialog(context);
-                            },
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: Color(0xFF7D5A50),
-                              size: 40,
-                            ));
-                    })(),
-                  ),
+
                   /*Container(
                           width: sizeX * 0.8,
                           child: (() {

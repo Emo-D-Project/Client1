@@ -14,6 +14,7 @@ import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:capston1/models/Comment.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
+import 'package:capston1/otherMypage.dart';
 
 
 //맨 위 상단 감정 7개
@@ -195,7 +196,6 @@ class _diaryshareState extends State<diaryshare> {
                 // 해당 이미지에 대한 일기 내용을 찾기
                 List<Diary> diariesWithSelectedEmotion =
                     diaries.where((diary) => diary.emotion == emotion).toList();
-
                 return Padding(
                   padding: EdgeInsets.all(3),
                   child: IconButton(
@@ -423,7 +423,7 @@ class _customWidget1State extends State<customWidget1> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => mypage(
+                                      builder: (context) => otherMypage(
                                         userId: userId,
                                       ),
                                     ),
@@ -713,7 +713,7 @@ class _customWidget2State extends State<customWidget2> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => mypage(
+                                      builder: (context) => otherMypage(
                                         userId: userId,
                                       ),
                                     ),
@@ -778,7 +778,6 @@ class _customWidget2State extends State<customWidget2> {
                     GestureDetector(
                       onTap: () async {
                         apiManager.putFavoriteCount(diaryId);
-                        print("내 아이디!!!!!!!!!:${apiManager.GetMyId().toString()}");
                         print("좋아요 누름 :${diaryId}");
                         try {
                           setState(() {
@@ -1121,7 +1120,7 @@ class _customwidget3State extends State<customwidget3> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => mypage(
+                                      builder: (context) => otherMypage(
                                         userId: userId,
                                       ),
                                     ),
@@ -1606,7 +1605,7 @@ class _customwidget4State extends State<customwidget4> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => mypage(
+                                      builder: (context) => otherMypage(
                                         userId: userId,
                                       ),
                                     ),
