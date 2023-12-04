@@ -737,6 +737,7 @@ class _customWidget2State extends State<customWidget2> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () {
+                                  if(userId != Myid){
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -744,7 +745,17 @@ class _customWidget2State extends State<customWidget2> {
                                         userId: userId,
                                       ),
                                     ),
-                                  );
+                                  );}
+                                  else{
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => mypage(
+                                            userId: userId,
+                                          ),
+                                        ),
+                                    );
+                                  }
                                   print('감정 탭하기');
                                 },
                                 child: Container(
