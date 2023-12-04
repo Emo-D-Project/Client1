@@ -113,7 +113,7 @@ class _diaryshareState extends State<diaryshare> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // 드롭박스
+/*          // 드롭박스
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
@@ -144,10 +144,10 @@ class _diaryshareState extends State<diaryshare> {
                 SizedBox(width: 25),
               ],
             ),
-          ),
+          ),*/
           //날짜
           Container(
-            //   margin: EdgeInsets.fromLTRB(0, 20, 120, 20),
+               margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
             child: Text(
               formattedDate,
               style: TextStyle(
@@ -192,9 +192,7 @@ class _diaryshareState extends State<diaryshare> {
                     emotion = 'flutter';
                     break;
                 }
-                // 해당 이미지에 대한 일기 내용을 찾기
-                List<Diary> diariesWithSelectedEmotion =
-                    diaries.where((diary) => diary.emotion == emotion).toList();
+
 
                 return Padding(
                   padding: EdgeInsets.all(3),
@@ -206,8 +204,13 @@ class _diaryshareState extends State<diaryshare> {
                     ),
                     onPressed: () {
                       setState(() {
+                        // 해당 이미지에 대한 일기 내용을 찾기
+                        List<Diary> diariesWithSelectedEmotion =
+                        diaries.where((diary) => diary.emotion == emotion).toList();
+
                         selectedImageEmotion = emotion;
                         selectedEmotionDiaries = diariesWithSelectedEmotion;
+
                       });
                     },
                   ),
@@ -219,58 +222,93 @@ class _diaryshareState extends State<diaryshare> {
             child: ListView.builder(
               shrinkWrap: true,
               padding: const EdgeInsets.all(10),
-              itemCount: diaries.length,
+              itemCount: selectedEmotionDiaries.length,
               itemBuilder: (BuildContext context, int index) {
-                if (selectedImageEmotion == diaries[index].emotion) {
+
+                print("selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
+                selectedEmotionDiaries.forEach((element) {
+                  print("selected diaries emotion: ${element.emotion}");
+                });
+                String emotionImagePath;
+
+                switch (selectedEmotionDiaries[index].emotion) {
+                  case "angry":
+                    emotionImagePath = 'images/emotion/angry.png';
+                    break;
+                  case "flutter":
+                    emotionImagePath = 'images/emotion/flutter.gif';
+                    break;
+                  case "smile":
+                    emotionImagePath = 'images/emotion/smile.gif';
+                    break;
+                  case "annoying":
+                    emotionImagePath = 'images/emotion/annoying.gif';
+                    break;
+                  case "sad":
+                    emotionImagePath = 'images/emotion/sad.gif';
+                    break;
+                  case "calmness":
+                    emotionImagePath = 'images/emotion/calmness.gif';
+                    break;
+                  case "tired":
+                    emotionImagePath = 'images/emotion/tired.gif';
+                    break;
+                  default:
+                    emotionImagePath = 'images/emotion/flutter.gif';
+                    break;
+                }
+
+
+                if (selectedImageEmotion == selectedEmotionDiaries[index].emotion) {
                   return SizedBox(
                     child: (() {
-                      if (diaries[index].imagePath.isNotEmpty &&
-                          diaries[index].voice == "") {
+                      if (selectedEmotionDiaries[index].imagePath.isNotEmpty &&
+                          selectedEmotionDiaries[index].voice == "") {
                         return customWidget1(
-                          simagePath: diaries[index].emotion,
-                          sdiaryImage: diaries[index].imagePath,
-                          scomment: diaries[index].content,
-                          sfavoritColor: diaries[index].favoriteColor,
-                          sfavoritCount: diaries[index].favoriteCount,
-                          otherUserId: diaries[index].userId,
-                          diaryId: diaries[index].diaryId,
-                          scommentCount: diaries[index].scommentCount,
+                          simagePath: selectedEmotionDiaries[index].emotion,
+                          sdiaryImage: selectedEmotionDiaries[index].imagePath,
+                          scomment: selectedEmotionDiaries[index].content,
+                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          otherUserId: selectedEmotionDiaries[index].userId,
+                          diaryId: selectedEmotionDiaries[index].diaryId,
+                          scommentCount: selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (diaries[index].imagePath.isEmpty &&
-                          diaries[index].voice == "") {
+                      } else if (selectedEmotionDiaries[index].imagePath.isEmpty &&
+                          selectedEmotionDiaries[index].voice == "") {
                         return customWidget2(
-                          scomment: diaries[index].content,
-                          sfavoritColor: diaries[index].favoriteColor,
-                          sfavoritCount: diaries[index].favoriteCount,
-                          simagePath: diaries[index].emotion,
-                          otherUserId: diaries[index].userId,
-                          diaryId: diaries[index].diaryId,
-                          scommentCount: diaries[index].scommentCount,
+                          scomment: selectedEmotionDiaries[index].content,
+                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          simagePath: emotionImagePath,
+                          otherUserId: selectedEmotionDiaries[index].userId,
+                          diaryId: selectedEmotionDiaries[index].diaryId,
+                          scommentCount: selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (diaries[index].imagePath.isEmpty &&
-                          diaries[index].voice != "") {
+                      } else if (selectedEmotionDiaries[index].imagePath.isEmpty &&
+                          selectedEmotionDiaries[index].voice != "") {
                         return customwidget3(
-                          scomment: diaries[index].content,
-                          sfavoritColor: diaries[index].favoriteColor,
-                          sfavoritCount: diaries[index].favoriteCount,
-                          simagePath: diaries[index].emotion,
-                          svoice: diaries[index].voice,
-                          otherUserId: diaries[index].userId,
-                          diaryId: diaries[index].diaryId,
-                          scommentCount: diaries[index].scommentCount,
+                          scomment: selectedEmotionDiaries[index].content,
+                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          simagePath: selectedEmotionDiaries[index].emotion,
+                          svoice: selectedEmotionDiaries[index].voice,
+                          otherUserId: selectedEmotionDiaries[index].userId,
+                          diaryId: selectedEmotionDiaries[index].diaryId, //여기 문제있나요?
+                          scommentCount: selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (diaries[index].imagePath.isNotEmpty &&
-                          diaries[index].voice != "") {
+                      } else if (selectedEmotionDiaries[index].imagePath.isNotEmpty &&
+                          selectedEmotionDiaries[index].voice != "") {
                         return customwidget4(
-                          sdiaryImage: diaries[index].imagePath,
-                          scomment: diaries[index].content,
-                          sfavoritColor: diaries[index].favoriteColor,
-                          sfavoritCount: diaries[index].favoriteCount,
-                          simagePath: diaries[index].emotion,
-                          svoice: diaries[index].voice,
-                          otherUserId: diaries[index].userId,
-                          diaryId: diaries[index].diaryId,
-                          scommentCount: diaries[index].scommentCount,
+                          sdiaryImage: selectedEmotionDiaries[index].imagePath,
+                          scomment: selectedEmotionDiaries[index].content,
+                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          simagePath: selectedEmotionDiaries[index].emotion,
+                          svoice: selectedEmotionDiaries[index].voice,
+                          otherUserId: selectedEmotionDiaries[index].userId,
+                          diaryId: selectedEmotionDiaries[index].diaryId,
+                          scommentCount: selectedEmotionDiaries[index].scommentCount,
                         );
                       }
                     })(),
@@ -296,7 +334,6 @@ class customWidget1 extends StatefulWidget {
   final int sfavoritCount;
   final bool sfavoritColor;
   final int otherUserId;
-
   final int diaryId;
   final int scommentCount;
 
@@ -324,7 +361,7 @@ class _customWidget1State extends State<customWidget1> {
   String imagePath = "";
 
   int userId = 36;
-  int diaryId = 0;
+  int diaryId = 36;
   int favoriteCounts = 0;
   final List<Comment> comments = [];
 
@@ -337,7 +374,6 @@ class _customWidget1State extends State<customWidget1> {
 
   void initState() {
     super.initState();
-
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
     print("init state 좋아요 카운트: $favoriteCounts");
@@ -512,14 +548,15 @@ class _customWidget1State extends State<customWidget1> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            apiManager.putFavoriteCount(diaryId);
+                            await apiManager.putFavoriteCount(diaryId);
                             print("좋아요 누름 :${diaryId}");
                             try {
+
                               setState(() {
                                 if (sfavoritColor) {
-                                  favoriteCounts = favoriteCounts - 1;
+                                  favoriteCounts = favoriteCounts -1;
                                 } else {
-                                  favoriteCounts = favoriteCounts + 1;
+                                  favoriteCounts = favoriteCounts +1;
                                 }
                                 sfavoritColor = !sfavoritColor;
                               });
@@ -594,14 +631,15 @@ class customWidget2 extends StatefulWidget {
   State<customWidget2> createState() => _customWidget2State(
         otherUserId,
         diaryId,
+        simagePath,
       );
 }
 
 class _customWidget2State extends State<customWidget2> {
   bool sfavoritColor = false;
-  int userId = -1;
+  int userId = 36;
   String imagePath = "";
-  int diaryId = 0;
+  int diaryId = 36;
 
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
@@ -615,11 +653,13 @@ class _customWidget2State extends State<customWidget2> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget2State(
-    int otherUserId,
-    int diaryId,
+      int otherUserId,
+      int diaryId,
+      String imagePath,
   ) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
+    this.imagePath = imagePath;
   }
 
   void plusDialog(BuildContext context) async {
@@ -650,41 +690,19 @@ class _customWidget2State extends State<customWidget2> {
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
 
+    print("imagepath = ${imagePath}");
     print("init state 좋아요 카운트: $favoriteCounts");
 
-    switch (widget.simagePath) {
-      case "angry":
-        imagePath = 'images/emotion/angry.png';
-        break;
-      case "flutter":
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-      case "smile":
-        imagePath = 'images/emotion/smile.gif';
-        break;
-      case "annoying":
-        imagePath = 'images/emotion/annoying.gif';
-        break;
-      case "sad":
-        imagePath = 'images/emotion/sad.gif';
-        break;
-      case "calmness":
-        imagePath = 'images/emotion/calmness.gif';
-        break;
-      case "tired":
-        imagePath = 'images/emotion/tired.gif';
-        break;
-      default:
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-    }
+
+
   }
 
   @override
   Widget build(BuildContext context) {
     print("commentCount: ${commentCount[diaryId]}");
-
     print("otherUserId: ${userId}");
+
+    print("실행되는 감정 path: ${imagePath}");
 
     return SingleChildScrollView(
       child: Column(
@@ -726,7 +744,7 @@ class _customWidget2State extends State<customWidget2> {
                                   margin: EdgeInsets.only(left: 50),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(imagePath),
+                                      image: AssetImage(widget.simagePath),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -777,7 +795,7 @@ class _customWidget2State extends State<customWidget2> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        apiManager.putFavoriteCount(diaryId);
+                        await apiManager.putFavoriteCount(diaryId);
                         print("내 아이디!!!!!!!!!:${apiManager.GetMyId().toString()}");
                         print("좋아요 누름 :${diaryId}");
                         try {
