@@ -1,12 +1,11 @@
 import 'package:capston1/bar%20graph/bar_graph.dart';
 import 'package:flutter/material.dart';
+import 'models/Diary.dart';
 import 'statistics.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'network/api_manager.dart';
 import 'models/TotalData.dart';
-
-final DateTime title = DateTime(2023, 3, 22); // 가장 많은 일기의 날짜
 
 final String imagepath = 'images/emotion/smile.gif';
 final List<String> diaryimage = [
@@ -15,9 +14,6 @@ final List<String> diaryimage = [
   'images/send/sj2.jpg',
   'images/send/sj1.jpg'
 ];
-final String voice = "yes";
-final comment = "오늘 하루 아주 만족스러운 날이다. 친구들이랑 맛있게 밥도 먹고 하늘도 너무 이뻤다!";
-final String name = '수진'; //닉네임
 
 class fullStatistics extends StatefulWidget {
   const fullStatistics({super.key});
@@ -33,119 +29,43 @@ class _fullStatisticsState extends State<fullStatistics> {
   void initState() {
     super.initState();
     fetchDataFromServer();
+    fetchDataFromServerDiary();
   }
 
-  late int nums;
-  late List<double> emotions;
-  late String mostWritten;
-  late DateTime firstDate;
-  late DateTime mostYearMonth;
-  late int mostNums;
-  late int mostViewed; // 일기의 아이디값
-  late int mostViewedEmpathy;
-  late int mostViewedComments;
   TotalData? totalDatas;
+  Diary? diaries;
+  int diaryID = 0;
 
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getTSatisData();
-      if (data != null) {
-        setState(() {
-          totalDatas = data;
-        });
-      }
+      setState(() {
+        totalDatas = data;
+        diaryID = totalDatas!.mostViewed;
+      });
     } catch (error) {
       // 오류 처리
       print('Error getting TS list: $error');
     }
   }
 
-  Future<void> GetTStatis(String endpoint) async {
+  Future<void> fetchDataFromServerDiary() async {
     try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['nums']; // 키를 통해 value를 받아오기
-      print('nums: $value');
-      nums = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['emotions']; // 키를 통해 value를 받아오기
-      print('emotions: $value');
-      emotions = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['mostWritten']; // 키를 통해 value를 받아오기
-      print('mostWritten: $value');
-      mostWritten = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['firstDate']; // 키를 통해 value를 받아오기
-      print('firstDate: $value');
-      firstDate = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['mostYearMonth']; // 키를 통해 value를 받아오기
-      print('mostYearMonth: $value');
-      mostYearMonth = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['mostNums']; // 키를 통해 value를 받아오기
-      print('mostNums: $value');
-      mostNums = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['mostViewed']; // 키를 통해 value를 받아오기
-      print('mostViewed: $value');
-      mostViewed = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['mostViewedEmpathy']; // 키를 통해 value를 받아오기
-      print('mostViewedEmpathy: $value');
-      mostViewedEmpathy = value;
-    } catch (e) {
-      print('Error: $e');
-    }
-    try {
-      final response = await apiManager.Get(endpoint);
-      // 실제 API 엔드포인트로 대체
-      final value = response['mostViewedComments']; // 키를 통해 value를 받아오기
-      print('mostViewedComments: $value');
-      mostViewedComments = value;
-    } catch (e) {
-      print('Error: $e');
+      final data = await apiManager.getMyDiaryData(diaryID);
+
+      setState(() {
+        diaries = data;
+      });
+    } catch (error) {
+      // 에러 처리
+      print('Error getting share diaries list: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    //print("DiaryID: ${diaries!.diaryId}");
+
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       appBar: AppBar(
@@ -169,7 +89,7 @@ class _fullStatisticsState extends State<fullStatistics> {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Column(
               children: [
@@ -385,8 +305,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         ),
                                         children: [
                                           TextSpan(
-                                              text: totalDatas != null
-                                                  ? '${totalDatas!.nums}'
+                                              text: diaries != null
+                                                  ? diaryID.toString()
                                                   : ""),
                                           TextSpan(text: '개'),
                                         ]))),
@@ -412,7 +332,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: name,
+                                          text: '수진',
                                           style: TextStyle(
                                               fontFamily: 'soojin',
                                               fontWeight: FontWeight.w700,
@@ -442,7 +362,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               fontSize: 18,
                                               color: Colors.brown)),
                                     ]))),
-                            Container(
+                            SizedBox(
                                 width: 300,
                                 height: 40,
                                 child: RichText(
@@ -555,7 +475,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               color: Colors.white,
                                             ),
                                             children: [
-                                              TextSpan(text: name),
+                                              TextSpan(text: '수진'),
                                               //닉네임
                                               TextSpan(text: '님의 공유된 일기 중'),
                                               //일
@@ -578,16 +498,47 @@ class _fullStatisticsState extends State<fullStatistics> {
                               ],
                             ),
                           ),
-                          // 가장 공감 많이 받은 일기 보여줌
                           Container(
-                            child: customWidget3(
-                              stitle: title,
-                              sdiaryImage: diaryimage[0],
-                              simagePath: imagepath,
-                              scomment: comment,
-                              svoice: voice,
-                            ),
+                            child: diaries != null
+                                ? Container(
+                                    child: (() {
+                                      if (diaries!.imagePath.isNotEmpty &&
+                                          diaries!.voice.isEmpty) {
+                                        return customWidget1(
+                                          stitle: diaries!.date,
+                                          simagePath: diaries!.emotion,
+                                          sdiaryImage: diaries!.imagePath,
+                                          scomment: diaries!.content,
+                                        );
+                                      } else if (diaries!
+                                              .imagePath.isNotEmpty &&
+                                          diaries!.voice.isEmpty) {
+                                        return customWidget2(
+                                            stitle: diaries!.date,
+                                            simagePath: diaries!.emotion,
+                                            scomment: diaries!.content);
+                                      } else if (diaries!
+                                              .imagePath.isNotEmpty &&
+                                          diaries!.voice.isEmpty) {
+                                        return customWidget3(
+                                          stitle: diaries!.date,
+                                          sdiaryImage: diaries!.imagePath,
+                                          simagePath: diaries!.emotion,
+                                          scomment: diaries!.content,
+                                          svoice: diaries!.voice,
+                                        );
+                                      } else {
+                                        return customWidget4(
+                                            stitle: diaries!.date,
+                                            simagePath: diaries!.emotion,
+                                            scomment: diaries!.content,
+                                            svoice: diaries!.voice);
+                                      }
+                                    }()),
+                                  )
+                                : Container(),
                           ),
+                          // 가장 공감 많이 받은 일기 보여줌
                           // ~개의 공감과 ~개의 댓글을 받았어요
                           Container(
                               width: 300,
@@ -633,12 +584,12 @@ class _fullStatisticsState extends State<fullStatistics> {
   }
 }
 
-// 일기 버전 1 - 텍스트 + 사진
+//일기 버전 1 - 텍스트 + 사진
 class customWidget1 extends StatefulWidget {
-  final DateTime stitle;
-  final String simagePath;
-  final String sdiaryImage;
-  final String scomment;
+  final DateTime stitle; //날짜
+  final String simagePath; //감정 사진
+  final List<String> sdiaryImage; //일기 사진
+  final String scomment; //일기 내용
 
   const customWidget1({
     super.key,
@@ -821,7 +772,7 @@ class _customWidget2State extends State<customWidget2> {
 class customWidget3 extends StatefulWidget {
   final DateTime stitle;
   final String simagePath;
-  final String sdiaryImage;
+  final List<String> sdiaryImage;
   final String scomment;
   final String svoice;
 

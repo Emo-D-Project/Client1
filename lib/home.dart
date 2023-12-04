@@ -23,7 +23,6 @@ class _homeState extends State<home> {
     fetchDataFromServer();
   }
 
-
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getDiaryShareData();
@@ -33,23 +32,22 @@ class _homeState extends State<home> {
         emotionToday = diaries
             .firstWhere(
               (diary) =>
-          diary.date.year == now.year &&
-              diary.date.month == now.month &&
-              diary.date.day == now.day,
-          orElse: () => Diary(
-            date: DateTime.now(),
-            content: '',
-            emotion: 'calmness', // 기본 감정 설정
-          ),
-        ).emotion;
-
+                  diary.date.year == now.year &&
+                  diary.date.month == now.month &&
+                  diary.date.day == now.day &&
+                  diary.userId == 36,
+              orElse: () => Diary(
+                date: DateTime.now(),
+                content: '',
+                emotion: 'calmness', // 기본 감정 설정
+              ),
+            ).emotion;
       });
     } catch (error) {
       // 에러 제어하는 부분
       print('Error getting share diaries list: $error');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,39 +69,45 @@ class _homeState extends State<home> {
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
-              );case 'angry':
+              );
+            case 'angry':
               return Image.asset(
                 'images/main/angry.gif',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
-              );case 'annoying':
+              );
+            case 'annoying':
               return Image.asset(
                 'images/main/anoying.gif',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
-              );case 'smile':
+              );
+            case 'smile':
               return Image.asset(
                 'images/main/smile.gif',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
-              );case 'tired':
+              );
+            case 'tired':
               return Image.asset(
                 'images/main/tired.gif',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
-              );case 'calmness':
+              );
+            case 'calmness':
               return Image.asset(
                 'images/main/catmovereal.gif',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
-              );case 'sad':
+              );
+            case 'sad':
               return Image.asset(
-                'images/main/catmovereal.gif',
+                'images/main/sad.gif',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
