@@ -445,8 +445,7 @@ class ApiManager {
   }
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
-  Future<List<Mypage>> GetMyPageDataIntrod() async {
-
+  Future<String> GetMyPageDataIntrod() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/api/userInfo/my";
 
@@ -458,18 +457,7 @@ class ApiManager {
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("OtherUser page data: " + response.body);
-
-      List<Mypage> mypagedata = rawData.map((data) {
-        return Mypage(
-          userId: data['userId'] ,
-          title: data['title'] ,
-          content: data['content'],
-        );
-      }).toList();
-
-      return mypagedata;
+      return response.body.toString();
     } else {
       throw Exception("Fail to load OtherUser page data from the API 3 ");
     }
@@ -493,9 +481,6 @@ class ApiManager {
       throw Exception("Fail to load My ID from the API");
     }
   }
-
-
-
 
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
@@ -715,9 +700,7 @@ class ApiManager {
     try {
       var response = await _dio.post(
         '$baseUrl$endpoint',
-        data: {
-          "content": content,
-        }, // 요청 데이터
+          data:content, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
