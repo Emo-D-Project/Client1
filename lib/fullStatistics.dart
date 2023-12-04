@@ -362,7 +362,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               fontSize: 18,
                                               color: Colors.brown)),
                                     ]))),
-                            Container(
+                            SizedBox(
                                 width: 300,
                                 height: 40,
                                 child: RichText(
