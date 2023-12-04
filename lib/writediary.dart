@@ -92,23 +92,6 @@ class _writediaryState extends State<writediary> {
     super.dispose();
   }
 
-  // Future<void> playAudio() async {
-  //   try {
-  //     if (await soundPlayer.isStopped) {
-  //       await soundPlayer.startPlayer(fromURI: playAudioPath);
-  //       setState(() {
-  //         isPlaying = true;
-  //       });
-  //       print('오디오 재생 시작: $playAudioPath');
-  //     } else {
-  //       print('오디오가 이미 재생 중입니다.');
-  //     }
-  //   } catch (e) {
-  //     print("audioPath : $playAudioPath");
-  //     print("오디오 재생 중 오류 발생 : $e");
-  //   }
-  // }
-
   Future<void> GetWriteDiary(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
@@ -236,59 +219,6 @@ class _writediaryState extends State<writediary> {
 
   }
 
-  //파일 서버에 보내기
-  //run(audioFile as String);
-
-  // Future<String> run(String audioUrl) async {
-  //   String openApiURL = " ";
-  //   String accessKey = " "; // 발급받은 API Key
-  //   String languageCode = "korean"; // 언어 코드
-  //   String audioFilePath = audioUrl; // 녹음된 음성 파일 경로
-  //   String audioContents;
-  //   var gson = JsonCodec();
-  //
-  //   Map<String, dynamic> request = {
-  //     'argument': {'language_code': languageCode},
-  //   };
-  //
-  //   try {
-  //     var file = File(audioFilePath);
-  //     var audioBytes = await file.readAsBytes();
-  //     audioContents = base64.encode(audioBytes);
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  //
-  //  // request['argument']['audio'] = audioContents;
-  //
-  //   var url = Uri.parse(openApiURL);
-  //   var responseCode;
-  //   var responseBody;
-  //
-  //   try {
-  //     var request = await HttpClient().postUrl(url);
-  //     request.headers.set('Content-Type', 'application/json; charset=UTF-8');
-  //     request.headers.set('Authorization', accessKey);
-  //
-  //     request.write(json.encode(request));
-  //     var response = await request.close();
-  //
-  //     responseCode = response.statusCode;
-  //     var contents = await utf8.decodeStream(response);
-  //     responseBody = contents;
-  //
-  //     print('[responseCode] $responseCode');
-  //     print('[responseBody]');
-  //     print(responseBody);
-  //
-  //     return 'responseBody: $responseBody';
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  //
-  //   return '';
-  // }
-
   String formatTime(Duration duration) {
     print("formatTime duration: $duration");
 
@@ -300,8 +230,6 @@ class _writediaryState extends State<writediary> {
     print("formatTime result: $result");
     return result;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
