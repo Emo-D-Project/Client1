@@ -505,7 +505,7 @@ class _SecondScreenState extends State<SecondScreen> {
                           ),
                         ),
                         Visibility(
-                          visible: !chatRooms[index].isRead,
+                          visible: chatRooms[index].isRead,
                           child: Container(
                             padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             width: 20,
