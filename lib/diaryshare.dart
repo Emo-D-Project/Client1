@@ -58,6 +58,8 @@ class _diaryshareState extends State<diaryshare> {
   int favoriteCounts = 0;
   String selectedValue = '최신순';
 
+  int Myid = 0;
+
   @override
   void initState() {
     super.initState();
@@ -114,39 +116,6 @@ class _diaryshareState extends State<diaryshare> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-/*          // 드롭박스
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                DropdownButton<String>(
-                  value: selectedValue,
-                  // 현재 선택된 값
-                  items: <String>['공감순', '최신순'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedValue = value!; // 선택된 값 업데이트
-                    });
-                  },
-                  underline: Container(
-                    height: 2,
-                    color: Colors.brown,
-                  ),
-                  dropdownColor: Color(0xFFF8F5EB),
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.brown),
-                  style: TextStyle(color: Colors.black, fontFamily: 'soojin'),
-                ),
-                SizedBox(width: 25),
-              ],
-            ),
-          ),*/
-          //날짜
           Container(
                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
             child: Text(
@@ -367,6 +336,8 @@ class _customWidget1State extends State<customWidget1> {
   int favoriteCounts = 0;
   final List<Comment> comments = [];
 
+  int Myid = 0;
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget1State(int otherUserId, int diaryId) {
@@ -376,6 +347,8 @@ class _customWidget1State extends State<customWidget1> {
 
   void initState() {
     super.initState();
+    fetchMyIDFromServer();
+
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
     print("init state 좋아요 카운트: $favoriteCounts");
@@ -405,6 +378,18 @@ class _customWidget1State extends State<customWidget1> {
       default:
         imagePath = 'images/emotion/flutter.gif';
         break;
+    }
+  }
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
     }
   }
 
@@ -482,19 +467,23 @@ class _customWidget1State extends State<customWidget1> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  message_write(otherUserId: userId),
-                            ),
-                          );
+                          if (userId != Myid) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
+                          }
                         },
-                        icon: Image.asset(
+                        icon: userId != Myid
+                            ? Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
-                        ),
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
                   ),
@@ -643,6 +632,9 @@ class _customWidget2State extends State<customWidget2> {
   String imagePath = "";
   int diaryId = 36;
 
+  int Myid = 0;
+
+
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
 
@@ -689,6 +681,8 @@ class _customWidget2State extends State<customWidget2> {
   void initState() {
     super.initState();
 
+    fetchMyIDFromServer();
+
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
 
@@ -697,6 +691,19 @@ class _customWidget2State extends State<customWidget2> {
 
 
 
+  }
+
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
+    }
   }
 
   @override
@@ -754,7 +761,7 @@ class _customWidget2State extends State<customWidget2> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          if (userId != 36) {
+                          if (userId != Myid) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -764,7 +771,7 @@ class _customWidget2State extends State<customWidget2> {
                             );
                           }
                         },
-                        icon: userId != 36
+                        icon: userId != Myid
                             ? Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
@@ -896,6 +903,8 @@ class _customwidget3State extends State<customwidget3> {
   String imagePath = "";
   int diaryId = 0;
 
+  int Myid = 0;
+
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -936,9 +945,24 @@ class _customwidget3State extends State<customwidget3> {
   Duration position = Duration.zero;
   //String imagePath = "";
 
+
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchMyIDFromServer();
 
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
@@ -1166,19 +1190,23 @@ class _customwidget3State extends State<customwidget3> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  message_write(otherUserId: userId),
-                            ),
-                          );
+                          if (userId != Myid) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
+                          }
                         },
-                        icon: Image.asset(
+                        icon: userId != Myid
+                            ? Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
-                        ),
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
                   ),
@@ -1378,6 +1406,8 @@ class _customwidget4State extends State<customwidget4> {
   int otherUserId = 36;
   int diaryId = 0;
 
+  int Myid = 0;
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customwidget4State(int otherUserId,int diaryId) {
@@ -1419,9 +1449,23 @@ class _customwidget4State extends State<customwidget4> {
   Duration position = Duration.zero;
   String imagePath = "";
 
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchMyIDFromServer();
     setAudio();
 
 
@@ -1651,19 +1695,23 @@ class _customwidget4State extends State<customwidget4> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  message_write(otherUserId: userId),
-                            ),
-                          );
+                          if (userId != Myid) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
+                          }
                         },
-                        icon: Image.asset(
+                        icon: userId != Myid
+                            ? Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
-                        ),
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
                   ),
