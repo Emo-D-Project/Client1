@@ -116,29 +116,32 @@ class _MessageRoomState extends State<MessageRoom> {
                                       width: 100,
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
-                                        // senderId와 receiverId를 비교하여 쪽지 유형 결정
-                                        () {
-                                          if (messageList[index].isMyMessage) {
-                                            return "보낸 쪽지 ";
-                                          } else {
-                                            return "받은 쪽지";
-                                          }
+                                            () {
+
+                                              if (messageList[index].receiverId == otherUserId) {
+                                              return "보낸 쪽지";
+                                            } else {
+                                              // 만약 otherUserId가 아닌 다른 유저에게 보낸 쪽지라면
+                                              return "받은 쪽지";
+                                            }
+
                                         }(),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: () {
-                                            if (messageList[index]
-                                                .isMyMessage) {
-                                              return Colors.green; // 받은 쪽지
-                                            } else {
+                                            if (messageList[index].receiverId == otherUserId) {
                                               return Colors.blue; // 보낸 쪽지
+                                            } else {
+                                              return Colors.green; // 받은 쪽지
                                             }
                                           }(),
                                         ),
                                       ),
                                     ),
+
+
                                     Expanded(child: Container()),
                                     // 시간
                                     Container(

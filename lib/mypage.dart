@@ -15,10 +15,6 @@ class mypage extends StatefulWidget {
   State<mypage> createState() => _mypageState(userId);
 }
 
-
-
-
-final _contentEditController = TextEditingController(); //소개답변 저장 변수
 final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 final _introduceEditController = TextEditingController(); //질문에 대한 답변 저장 변수
 
@@ -32,29 +28,18 @@ class _mypageState extends State<mypage> {
   late String tititle;
 
   List<Mypage> myPageDatas = [];
-  List<Mypage> otherPageDatas = [];
 
-  List<Mypage> myPageIntro= [];
-  List<Mypage> otherPageIntro = [];
+  String myPageIntro = '소개';
 
   List<Map<String, dynamic>> mypages = [];
 
   _mypageState(this.userId);
 
-  @override
-  void initState() {
-    super.initState();
-    fetchDataFromServer();
-    fetchIntroduceFromServer();
-  }
-
   Future<void> fetchDataFromServer() async {
     try {
-      final otherData = await apiManager.GetMyPageDataById(userId);
       final data = await apiManager.getMypageData();
 
       setState(() {
-        otherPageDatas = otherData!;
         myPageDatas = data!;
       });
     } catch (error) {
@@ -65,19 +50,15 @@ class _mypageState extends State<mypage> {
   //마이페이지 소개 부분
   Future<void> fetchIntroduceFromServer() async {
     try {
-      final otherIntro = await apiManager.GetMyPageDataItrodById(userId);
       final intro = await apiManager.GetMyPageDataIntrod();
 
       setState(() {
-        otherPageIntro = otherIntro!;
         myPageIntro = intro!;
-
       });
     } catch (error) {
       print('Error getting intro list: $error');
     }
   }
-
 
   //정보 등록
   void _sendMyPage() {
@@ -85,14 +66,10 @@ class _mypageState extends State<mypage> {
     String content = _answerEditController.text;
 
     apiManager.sendMypage(userId, title, content);
-
     _answerEditController.clear();
-
     Navigator.of(context).pop();
-
     fetchDataFromServer();
   }
-
 
   //소개 등록 기능
   void _sendMyPageIntro() {
@@ -101,17 +78,19 @@ class _mypageState extends State<mypage> {
       String content = _introduceEditController.text;
 
       apiManager.sendMypageIntroduce(userId, title, content);
-
       _introduceEditController.clear();
-
       fetchIntroduceFromServer();
-
     } catch (error) {
       print('Error sending MyPage Intro: $error');
     }
   }
 
-
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+    fetchIntroduceFromServer();
+  }
 
   //질문 선택 창
   void plusDialog(context) {
@@ -308,7 +287,73 @@ class _mypageState extends State<mypage> {
     );
   }
 
-  //``````````````````````````````````````````````````````````````````````````````
+  Future<void> _showIntroDialog(BuildContext context, String item) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            item,
+            style: TextStyle(
+              fontFamily: 'soojin',
+              color: Color(0xFF7D5A50),
+            ),
+          ),
+          content: TextField(
+            style: TextStyle(fontFamily: 'soojin'),
+            maxLength: 20,
+            decoration: InputDecoration(
+              hintText: '20자 이내로 작성해주세요.',
+              hintStyle: TextStyle(fontFamily: 'soojin'),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+            controller: _answerEditController,
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0x4D968C83),
+                    minimumSize: Size(150, 30)),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('취소',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0xFF7D5A50),
+                    minimumSize: Size(150, 30)),
+                onPressed: () async {
+                  _sendMyPageIntro();
+                  fetchIntroduceFromServer();
+                  final data = await apiManager.GetMyPageDataIntrod();
+                  setState(() {
+                    myPageIntro = data!;
+                  });
+                },
+                child: Text('확인',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -323,19 +368,11 @@ class _mypageState extends State<mypage> {
         backgroundColor: Colors.transparent,
         title: SizedBox(
           child: (() {
-            if(apiManager.GetMyId() == userId){
-              return Text(
-                "MYPAGE",
-                style: TextStyle(
-                    color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
-              );
-            } else {
-              return Text(
-                "PROFILE",
-                style: TextStyle(
-                    color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
-              );
-            }
+            return Text(
+              "MYPAGE",
+              style: TextStyle(
+                  color: Color(0xFF968C83), fontFamily: 'kim', fontSize: 30),
+            );
           })(),
         ),
         leading: IconButton(
@@ -361,24 +398,14 @@ class _mypageState extends State<mypage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
-                      if(apiManager.GetMyId() == userId){
-                        return Text(
-                          "권해진 바보",
-                          //myInfo.getNickName(),
-                          style: TextStyle(
-                              fontSize: 28,
-                              fontFamily: 'soojin',
-                              color: Color(0xFF7D5A50)),
-                        );
-                      } else {
-                        return Text(
-                          "삼냥이",
-                          style: TextStyle(
-                              fontSize: 28,
-                              fontFamily: 'soojin',
-                              color: Color(0xFF7D5A50)),
-                        );
-                      }
+                      return Text(
+                        "권해진 바보",
+                        //myInfo.getNickName(),
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontFamily: 'soojin',
+                            color: Color(0xFF7D5A50)),
+                      );
                     })(),
                   ),
                   Container(
@@ -389,83 +416,87 @@ class _mypageState extends State<mypage> {
                   Container(
                     width: 300,
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: TextField(
-                      controller: _introduceEditController,
-                      maxLength: 20,
-                      decoration: InputDecoration(
-                        hintText: '소개(20자 이내로 적어주세요.)',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black54,
+                    child: Row(
+                      children: [
+                        Container(
+                          width:240,
+                          child: Text(
+                            myPageIntro,
+                            style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
                           ),
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ),
-                      style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
-                      onEditingComplete: () async {
-                        _sendMyPageIntro();
-                        FocusScope.of(context).unfocus();  //텍스트 필드 내려갔을때 저장되는거
-                        fetchIntroduceFromServer();
-                        final data = await apiManager.GetMyPageDataIntrod();
-                        setState(() {
-                          myPageDatas = data!;
-                        });
-                      },
+                        //Padding(padding: EdgeInsets.fromLTRB(130, 0, 0, 0)),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                backgroundColor: Colors.transparent,
+                                minimumSize: Size(20, 20)),
+                            onPressed: () {
+                              _showIntroDialog(context, '자기 소개');
+                            },
+                            child: Text('수정', style: TextStyle(color: Colors.black,fontSize: 13, fontFamily: 'soojin'),))
+                      ],
                     ),
+                    // TextField(
+                    //   controller: _introduceEditController,
+                    //   maxLength: 20,
+                    //   decoration: InputDecoration(
+                    //     hintText: '소개',
+                    //     enabledBorder: UnderlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //         color: Colors.black54,
+                    //       ),
+                    //     ),
+                    //     focusedBorder: UnderlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //         color: Colors.black54,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
+                    //   onEditingComplete: () async {
+                    //     _sendMyPageIntro();
+                    //     FocusScope.of(context).unfocus();  //텍스트 필드 내려갔을때 저장되는거
+                    //     fetchIntroduceFromServer();
+                    //     final data = await apiManager.GetMyPageDataIntrod();
+                    //     setState(() {
+                    //       myPageIntro = data!;
+                    //     });
+                    //   },
+                    //
+                    // ),
                   ),
                   Container(
-                    child: ((){
-                      if(apiManager.GetMyId() == userId){
-                        return Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.all(10),
-                              itemCount: myPageDatas.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                  return CustomQuestionContainer(
-                                    vuserId: myPageDatas[index].userId,
-                                    vquestion: myPageDatas[index].title,
-                                    vanswer: myPageDatas[index].content,
-                                  );
-                              },
-                            )
-                        );
-                      }else{
-                        return Expanded(
+                    child: (() {
+                      return Expanded(
                           child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(10),
-                            itemCount: otherPageDatas.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CustomQuestionContainer(
-                                  vuserId: otherPageDatas[index].userId,
-                                  vquestion: otherPageDatas[index].title,
-                                  vanswer: otherPageDatas[index].content,
-                                );
-                              }
-                          ),
-                        );
-                      }
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(10),
+                        itemCount: myPageDatas.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (myPageDatas[index].title != '자기 소개') {
+                            return CustomQuestionContainer(
+                              vuserId: myPageDatas[index].userId,
+                              vquestion: myPageDatas[index].title,
+                              vanswer: myPageDatas[index].content,
+                            );
+                          }
+                        },
+                      ));
                     }()),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: (() {
-                      if(apiManager.GetMyId() == userId){
-                        return IconButton(
-                            onPressed: () {
-                              plusDialog(context);
-                            },
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: Color(0xFF7D5A50),
-                              size: 40,
-                            ));
-                      }
+                      return IconButton(
+                          onPressed: () {
+                            plusDialog(context);
+                          },
+                          icon: Icon(
+                            Icons.add_circle,
+                            color: Color(0xFF7D5A50),
+                            size: 40,
+                          ));
                     })(),
                   ),
                   /*Container(
@@ -513,6 +544,11 @@ class _mypageState extends State<mypage> {
       ),
     );
   }
+}
+
+void IntroDialod(context) {
+  final sizeX = MediaQuery.of(context).size.width;
+  final sizeY = MediaQuery.of(context).size.height;
 }
 
 void singoDialog(context) {
