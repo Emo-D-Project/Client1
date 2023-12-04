@@ -754,20 +754,25 @@ class _customWidget2State extends State<customWidget2> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  message_write(otherUserId: userId),
-                            ),
-                          );
+                          if (userId != 36) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
+                          }
                         },
-                        icon: Image.asset(
+                        icon: userId != 36
+                            ? Image.asset(
                           'images/send/real_send.png',
                           height: 50, // 이미지 높이 조절
                           width: 30, // 이미지 너비 조절
-                        ),
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
+
                     ],
                   ),
                 ),

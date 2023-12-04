@@ -16,6 +16,7 @@ import '../models/Mypage.dart';
 import '../models/Comment.dart';
 import 'package:http_parser/http_parser.dart';
 
+
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
   TokenManager tokenManager = TokenManager().getTokenManager();
@@ -266,6 +267,8 @@ class ApiManager {
 
       List<Message> messages = rawData.map((data) {
         return Message(
+          receiverId: data['receiverId'],
+          senderId: data['senderId'],
           content: data['content'],
           sendtime: DateTime.parse(data['sentAt']),
           isMyMessage: data['myMessage'] == 1, // 내가 보낸 메시지인지 여부 확인
