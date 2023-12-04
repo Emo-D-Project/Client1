@@ -142,7 +142,7 @@ class _calendarState extends State<calendar> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => diaryReplay(
+                                builder: (context) => DiaryReplay(
                                       diary: diary!,
                                     )));
                       }
