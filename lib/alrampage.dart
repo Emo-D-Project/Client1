@@ -340,7 +340,7 @@ class FirstScreen extends StatelessWidget {
 
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
-  late final int otherUserId;
+//  late final int otherUserId;
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
@@ -418,8 +418,6 @@ class _SecondScreenState extends State<SecondScreen> {
       print('Error: $e');
     }
 
-
-
     // 보낸 시간
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
@@ -453,10 +451,9 @@ class _SecondScreenState extends State<SecondScreen> {
                               otherUserId: (chatRooms[index].otherUserId),
                             )),
                   ).then((value) async {
-                    await Future.delayed(Duration(
-                        milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
-                    fetchDataFromServer();
+                    await Future.delayed(Duration(milliseconds: 500)); // 0.5초 대기 (500 milliseconds)
                     setState(() {
+                      fetchDataFromServer();
                       chatRooms[index].isRead = true;
                       print("읽음 : ${chatRooms[index].isRead}");
 
@@ -509,9 +506,8 @@ class _SecondScreenState extends State<SecondScreen> {
                             ],
                           ),
                         ),
-
                         Visibility(
-                          visible: chatRooms[index].isRead,
+                          visible: !chatRooms[index].isRead,
                           child: Container(
                             padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             width: 20,
@@ -520,7 +516,6 @@ class _SecondScreenState extends State<SecondScreen> {
                                 color: Colors.redAccent, size: 10),
                           ),
                         ),
-
                       ],
                     ),
                   ),
