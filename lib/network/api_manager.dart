@@ -206,11 +206,11 @@ class ApiManager {
 
       List<ChatRoom> chatRooms = rawData.map((data) {
         return ChatRoom(
-          id: data['otherUserId'].toString(),
+          otherUserId: data['otherUserId'],
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
-          isRead: data['isRead'] ?? false, // Null이면 false로 설정
+          isRead: data['read'] == true,
         );
       }).toList();
 
@@ -445,7 +445,7 @@ class ApiManager {
 
       return mypagedata;
     } else {
-      throw Exception("Fail to load OtherUser page data from the API 2");
+      throw Exception("Fail to load GetMyPageDataById data from the API 2");
     }
   }
 
@@ -464,7 +464,7 @@ class ApiManager {
     if (response.statusCode == 200) {
       return response.body.toString();
     } else {
-      throw Exception("Fail to load OtherUser page data from the API 3 ");
+      throw Exception("Fail to load GetMyPageDataIntrod data from the API 3 ");
     }
   }
 
@@ -489,33 +489,26 @@ class ApiManager {
 
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
-  Future<List<Mypage>> GetMyPageDataItrodById(int userId) async {
-
+  Future<String> GetMyPageDataItrodById(int userId) async {
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/api/userInfo/description/$userId";
+    String endPoint = "/api/userInfo/description/${userId}";
+
+    // Uri 객체를 사용하여 URL 조립
+    Uri uri = Uri.parse('$baseUrl$endPoint?userId=$userId');
+
+    print("GetMyPageDataItrodById endpoint: ${uri}");
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      uri,
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("OtherUser page data: " + response.body);
-
-      List<Mypage> mypagedata = rawData.map((data) {
-        return Mypage(
-          userId: data['userId'],
-          title: data['title'],
-          content: data['content'],
-        );
-      }).toList();
-
-      return mypagedata;
+      return response.body;
     } else {
-      throw Exception("Fail to load OtherUser page data from the API");
+      throw Exception("Fail to load GetMyPageDataItrodById from the API");
     }
   }
 

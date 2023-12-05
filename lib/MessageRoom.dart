@@ -3,6 +3,7 @@ import 'message_write.dart';
 import 'package:intl/intl.dart';
 import 'models/Message.dart';
 import 'network/api_manager.dart';
+import 'network/api_manager.dart';
 
 class MessageRoom extends StatefulWidget {
   final int otherUserId;
@@ -46,6 +47,7 @@ class _MessageRoomState extends State<MessageRoom> {
       print('Error getting chat list: $error');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +119,6 @@ class _MessageRoomState extends State<MessageRoom> {
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
                                             () {
-
                                               if (messageList[index].receiverId == otherUserId) {
                                               return "보낸 쪽지";
                                             } else {

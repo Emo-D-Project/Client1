@@ -13,6 +13,9 @@ class home extends StatefulWidget {
 DateTime now = DateTime.now();
 
 class _homeState extends State<home> {
+
+  int Myid = 0;
+
   ApiManager apiManager = ApiManager().getApiManager();
   List<Diary> diaries = [];
   String emotionToday = ''; // late 키워드를 사용해 초기화를 뒤로 미룸
@@ -21,7 +24,22 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     fetchDataFromServer();
+    fetchMyIDFromServer();
+
   }
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
+    }
+  }
+
 
   Future<void> fetchDataFromServer() async {
     try {
@@ -35,7 +53,7 @@ class _homeState extends State<home> {
                   diary.date.year == now.year &&
                   diary.date.month == now.month &&
                   diary.date.day == now.day &&
-                  diary.userId == 36,
+                  diary.userId == Myid,
               orElse: () => Diary(
                 imagePath: [],
                 date: DateTime.now(),

@@ -340,6 +340,7 @@ class FirstScreen extends StatelessWidget {
 
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
+//  late final int otherUserId;
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
@@ -349,7 +350,6 @@ class _SecondScreenState extends State<SecondScreen> {
 
   late String message_content = " ";
   late int sender_Id;
-
   late int receiver_Id;
   late DateTime sentAt;
 
@@ -375,13 +375,13 @@ class _SecondScreenState extends State<SecondScreen> {
     }
   }
 
-  // 화면을 갱신하는 메서드
+/*  // 화면을 갱신하는 메서드
   void _updateScreen() {
     // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
     setState(() {
       //myData = '갱신된 값';
     });
-  }
+  }*/
 
   // 서버에서 가져온 가상의 채팅방 목록
   Future<void> GetMessage(String endpoint) async {
@@ -448,14 +448,16 @@ class _SecondScreenState extends State<SecondScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MessageRoom(
-                              otherUserId: int.parse(chatRooms[index].id),
+                              otherUserId: (chatRooms[index].otherUserId),
                             )),
                   ).then((value) async {
-                    // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
-                    // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
-                    await Future.delayed(Duration(
-                        milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
-                    fetchDataFromServer();
+                    await Future.delayed(Duration(milliseconds: 500)); // 0.5초 대기 (500 milliseconds)
+                    setState(() {
+                      fetchDataFromServer();
+                      chatRooms[index].isRead = true;
+                      print("읽음 : ${chatRooms[index].isRead}");
+
+                    });
                   });
                 },
                 child: Container(
@@ -505,7 +507,7 @@ class _SecondScreenState extends State<SecondScreen> {
                           ),
                         ),
                         Visibility(
-                          visible: chatRooms[index].isRead,
+                          visible: !chatRooms[index].isRead,
                           child: Container(
                             padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             width: 20,
