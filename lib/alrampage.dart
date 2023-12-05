@@ -340,7 +340,7 @@ class FirstScreen extends StatelessWidget {
 
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
-  late final int otherUserId;
+//  late final int otherUserId;
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
@@ -457,9 +457,10 @@ class _SecondScreenState extends State<SecondScreen> {
                         milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
                     fetchDataFromServer();
                     setState(() {
-                      chatRooms[index].isRead = true;
-                      print("읽음 : ${chatRooms[index].isRead}");
-
+                      if(chatRooms[index].otherUserId == receiver_Id) {
+                        chatRooms[index].isRead = true;
+                        print("읽음 : ${chatRooms[index].isRead}");
+                      }
                     });
                   });
                 },
@@ -511,7 +512,14 @@ class _SecondScreenState extends State<SecondScreen> {
                         ),
 
                         Visibility(
-                          visible: chatRooms[index].isRead,
+                          visible: !chatRooms[index].isRead && chatRooms[index].otherUserId == receiver_Id,
+                          child: GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                chatRooms[index].isRead = true;
+                                print("읽음 : ${chatRooms[index].isRead}");
+                              });
+                            },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             width: 20,
@@ -520,7 +528,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                 color: Colors.redAccent, size: 10),
                           ),
                         ),
-
+                        ),
                       ],
                     ),
                   ),
