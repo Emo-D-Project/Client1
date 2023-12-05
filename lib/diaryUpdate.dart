@@ -271,7 +271,7 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
                         children: [
                           Container(
                               child: (() {
-                                if (diary!.imagePath.isNotEmpty) {
+                                if (diary!.imagePath!.isNotEmpty) {
                                   return SingleChildScrollView(
                                     child: SizedBox(
                                         width: 200,
@@ -279,14 +279,14 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
                                         child: PageView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount:
-                                          diary!.imagePath.length > 3
+                                          diary!.imagePath!.length > 3
                                               ? 3
-                                              : diary!.imagePath.length,
+                                              : diary!.imagePath?.length,
                                           // 최대 3장까지만 허용
                                           itemBuilder: (context, index) {
                                             return Center(
                                               child: Image.asset(
-                                                  diary!.imagePath[index]),
+                                                  diary!.imagePath![index]),
                                             );
                                           },
                                         )),

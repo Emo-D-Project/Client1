@@ -289,6 +289,7 @@ class _calendarState extends State<calendar> {
           entry.date.month == month &&
           entry.date.day == day,
       orElse: () => Diary(
+        imagePath: [],
           date: DateTime(year, month, day),
           content: '',
           emotion: ''), // 기본 값으로 빈 일기 생성
