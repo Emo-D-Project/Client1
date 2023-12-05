@@ -943,7 +943,7 @@ class ApiManager {
         diaryId: rawData['id']?? 0,
         userId: rawData['user_id']as int ?? 0,
         voice: rawData['audio']?? "",
-        imagePath: List<String>.from(rawData['imagePath'] ?? const []),
+        imagePath: List<String>.from(rawData['images'] ?? const []),
       );
       return diaries;
     } else {
