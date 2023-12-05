@@ -500,7 +500,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                 ? Container(
                                     child: (() {
                                       if (diaries!.imagePath!.isNotEmpty &&
-                                          diaries!.voice.isEmpty) {
+                                          diaries!.audio.isEmpty) {
                                         return customWidget1( //사진만
                                           stitle: diaries!.date,
                                           simagePath: diaries!.emotion,
@@ -509,27 +509,27 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         );
                                       } else if (diaries!
                                               .imagePath!.isEmpty &&
-                                          diaries!.voice.isEmpty) {
+                                          diaries!.audio.isEmpty) {
                                         return customWidget2( //아무것도
                                             stitle: diaries!.date,
                                             simagePath: diaries!.emotion,
                                             scomment: diaries!.content);
                                       } else if (diaries!
                                               .imagePath!.isEmpty &&
-                                          diaries!.voice.isNotEmpty) {
+                                          diaries!.audio.isNotEmpty) {
                                         return customWidget3( //음성 사진
                                           stitle: diaries!.date,
                                           sdiaryImage: diaries!.imagePath!,
                                           simagePath: diaries!.emotion,
                                           scomment: diaries!.content,
-                                          svoice: diaries!.voice,
+                                          svoice: diaries!.audio,
                                         );
                                       } else {
                                         return customWidget4( //음성만
                                             stitle: diaries!.date,
                                             simagePath: diaries!.emotion,
                                             scomment: diaries!.content,
-                                            svoice: diaries!.voice);
+                                            svoice: diaries!.audio);
                                       }
                                     }()),
                                   )
@@ -910,10 +910,10 @@ class _customWidget3State extends State<customWidget3> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: $widget.svoice');
+      print('오디오 재생 시작: ${widget.svoice}');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : $widget.svoice");
+      print("audioPath : ${widget.svoice}");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }
@@ -1206,10 +1206,10 @@ class _customWidget4State extends State<customWidget4> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: $widget.svoice');
+      print('오디오 재생 시작: ${widget.svoice}');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : $widget.svoice");
+      print("audioPath : ${widget.svoice}");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }

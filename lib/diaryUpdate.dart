@@ -95,7 +95,7 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
         await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
       }
 
-      await audioPlayer.setSourceDeviceFile(diary!.voice);
+      await audioPlayer.setSourceDeviceFile(diary!.audio);
       print("duration: $duration" );
       await Future.delayed(Duration(seconds: 2));
       print("after wait duration: $duration" );
@@ -297,7 +297,7 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
                               }())),
                           SizedBox(
                               child: ((){
-                                if(diary!.voice.isNotEmpty){
+                                if(diary!.audio.isNotEmpty){
                                   return Container(
                                     padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                                     child: Column(

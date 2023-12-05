@@ -29,7 +29,7 @@ class _otherMypageState extends State<otherMypage> {
 
   List<Mypage> otherPageDatas = [];
 
-  String otherPageIntro = '소개';
+  String otherPageIntro = ' ';
 
   List<Map<String, dynamic>> mypages = [];
 

@@ -21,7 +21,10 @@ final _introduceEditController = TextEditingController(); //질문에 대한 답
 class _mypageState extends State<mypage> {
   ApiManager apiManager = ApiManager().getApiManager();
 
+
   int userId;
+
+
 
   late String title;
   late String content;
@@ -29,7 +32,7 @@ class _mypageState extends State<mypage> {
 
   List<Mypage> myPageDatas = [];
 
-  String myPageIntro = '소개';
+  String myPageIntro = ' ';
 
   List<Map<String, dynamic>> mypages = [];
 
@@ -53,6 +56,7 @@ class _mypageState extends State<mypage> {
       final intro = await apiManager.GetMyPageDataIntrod();
 
       setState(() {
+
         myPageIntro = intro!;
       });
     } catch (error) {
@@ -546,19 +550,30 @@ class _mypageState extends State<mypage> {
                       children: [
                         Container(
                           width: 240,
-                          child: Text(
-                            myPageIntro,
-                            style:
-                                TextStyle(fontSize: 13, fontFamily: 'soojin'),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start, // 수평 정렬을 start로 설정
+                            children: [
+
+                              Text(
+                                myPageIntro,
+                                style:
+                                    TextStyle(fontSize: 13, fontFamily: 'soojin'),
+                              ),
+                              SizedBox(height: 10,),
+                              Container(
+                                color: Colors.grey,
+                                width: 300, height: 1,
+                              ),
+                            ],
                           ),
                         ),
-                        //Padding(padding: EdgeInsets.fromLTRB(130, 0, 0, 0)),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 elevation: 0.0,
                                 backgroundColor: Colors.transparent,
-                                minimumSize: Size(20, 20)),
-                            onPressed: () {
+                                minimumSize: Size(10, 10)
+                                 ),
+                            onPressed: ()  {
                               _showIntroDialog(context, '자기 소개');
                             },
                             child: Text(
