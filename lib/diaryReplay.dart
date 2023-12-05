@@ -76,7 +76,7 @@ class _writediaryState extends State<DiaryReplay> {
         await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
       }
 
-      await audioPlayer.setSourceDeviceFile(diaries!.voice);
+      await audioPlayer.setSourceDeviceFile(diaries!.audio);
       print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
       print("after wait duration: $duration");
@@ -88,10 +88,10 @@ class _writediaryState extends State<DiaryReplay> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: ${diaries!.voice}');
+      print('오디오 재생 시작: ${diaries!.audio}');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : ${diaries!.voice}");
+      print("audioPath : ${diaries!.audio}");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }
@@ -272,7 +272,7 @@ class _writediaryState extends State<DiaryReplay> {
                               }())),
                               SizedBox(
                                 child: ((){
-                                  if(diaries!.voice.isNotEmpty){
+                                  if(diaries!.audio.isNotEmpty){
                                     return Container(
                                       padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                                       child: Column(
