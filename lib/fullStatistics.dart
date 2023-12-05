@@ -500,7 +500,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                 ? Container(
                                     child: (() {
                                       if (diaries!.imagePath!.isNotEmpty &&
-                                          diaries!.audio.isEmpty) {
+                                          diaries!.audio=="") {
                                         return customWidget1( //사진만
                                           stitle: diaries!.date,
                                           simagePath: diaries!.emotion,
@@ -509,14 +509,14 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         );
                                       } else if (diaries!
                                               .imagePath!.isEmpty &&
-                                          diaries!.audio.isEmpty) {
+                                          diaries!.audio=="") {
                                         return customWidget2( //아무것도
                                             stitle: diaries!.date,
                                             simagePath: diaries!.emotion,
                                             scomment: diaries!.content);
                                       } else if (diaries!
-                                              .imagePath!.isEmpty &&
-                                          diaries!.audio.isNotEmpty) {
+                                              .imagePath!.isNotEmpty &&
+                                          diaries!.audio!="") {
                                         return customWidget3( //음성 사진
                                           stitle: diaries!.date,
                                           sdiaryImage: diaries!.imagePath!,
