@@ -2,6 +2,8 @@ import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
 import 'models/Diary.dart';
 import 'network/api_manager.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
+
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -14,7 +16,7 @@ DateTime now = DateTime.now();
 
 class _homeState extends State<home> {
 
-  int Myid = 0;
+
 
   ApiManager apiManager = ApiManager().getApiManager();
   List<Diary> diaries = [];
@@ -24,21 +26,9 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     fetchDataFromServer();
-    fetchMyIDFromServer();
 
   }
 
-  Future<void> fetchMyIDFromServer() async {
-    try {
-      final myid = await apiManager.GetMyId();
-
-      setState(() {
-        Myid = myid!;
-      });
-    } catch (error) {
-      print('Error getting intro list: $error');
-    }
-  }
 
 
   Future<void> fetchDataFromServer() async {
@@ -53,7 +43,7 @@ class _homeState extends State<home> {
                   diary.date.year == now.year &&
                   diary.date.month == now.month &&
                   diary.date.day == now.day &&
-                  diary.userId == Myid,
+                  diary.userId ==  LoginedUserInfo.loginedUserInfo.id,
               orElse: () => Diary(
                 imagePath: [],
                 date: DateTime.now(),
