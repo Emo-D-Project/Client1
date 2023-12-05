@@ -56,6 +56,7 @@ class _commentState extends State<comment> {
             count++;
           }
         }
+
       });
     } catch (error) {
       print('Error getting Comment list : $error');
@@ -216,8 +217,12 @@ class _commentState extends State<comment> {
                             Visibility(
                               visible: commentList[index].user_id == Myid,
                               child: IconButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   apiManager.RemoveComment(commentList[index].id);
+                                  await Future.delayed(Duration(milliseconds: 500));
+
+                                  fetchDataFromServer();
+
                                   print('댓글 아이디 : ${commentList[index].id}');
                                 },
                                 icon: Image.asset('images/main/trash.png', width: 20, height: 20,),
@@ -277,6 +282,7 @@ class _commentState extends State<comment> {
                         onTap: () async {
                           print('  ${commentList.length}');
                           _sendComment();
+                          fetchDataFromServer();
                           await Future.delayed(Duration(milliseconds: 500));
                           final data = await apiManager.getCommentData(postId);
                           setState(() {

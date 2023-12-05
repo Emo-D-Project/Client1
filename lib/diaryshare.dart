@@ -64,7 +64,6 @@ class _diaryshareState extends State<diaryshare> {
   }
 
   Future<void> fetchDataFromServer() async {
-
     try {
       final data = await apiManager.getDiaryShareData();
       apiManager.getFavoriteCount(30);
@@ -620,6 +619,8 @@ class _customWidget2State extends State<customWidget2> {
   String imagePath = "";
   int diaryId = 36;
 
+  List<Diary> selectedEmotionDiaries = [];
+
 
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
@@ -661,6 +662,53 @@ class _customWidget2State extends State<customWidget2> {
         );
       },
     );
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+      apiManager.getFavoriteCount(30);
+
+      setState(() {
+        diaries = data;
+        for (Diary diary in diaries) {
+          FavoriteCount favoriteCount = new FavoriteCount();
+
+          {
+            bool favoriteColor = false;
+            int favoriteCount = 0;
+          }
+          apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+            favoriteCount.favoriteCount = value;
+          });
+
+          apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+            favoriteCount.favoriteColor = value;
+          });
+
+          apiManager
+              .getCommentData(diary.diaryId)
+              .then((List<Comment> commentList) {
+            favoriteMap.addAll({diary.diaryId: favoriteCount});
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
+
+            commentCount.addAll({diary.diaryId: listLength});
+            // 원하는 작업 수행
+          }).catchError((error) {
+            print('Error getting commentList: $error');
+          });
+        }
+        // formattedDate와 같은 날짜의 일기만 필터링
+        selectedEmotionDiaries = diaries
+            .where((diary) =>
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+            .toList();
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
   }
 
   @override
@@ -792,6 +840,7 @@ class _customWidget2State extends State<customWidget2> {
                   children: [
                     GestureDetector(
                       onTap: () async {
+                        fetchDataFromServer();
                         apiManager.putFavoriteCount(diaryId);
                         print("좋아요 누름 :${diaryId}");
                         try {
@@ -828,9 +877,6 @@ class _customWidget2State extends State<customWidget2> {
                     GestureDetector(
                       onTap: () {
                         plusDialog(context);
-                        Future.delayed(Duration(seconds: 4), () {
-                          print(commentList.length);
-                        });
                       },
                       child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
