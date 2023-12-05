@@ -1,5 +1,6 @@
 import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'help.dart';
 import 'mypage.dart';
@@ -15,27 +16,15 @@ class category extends StatefulWidget {
 
 class _categoryState extends State<category> {
 
-  int Myid = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
   @override
   void initState() {
     super.initState();
-    fetchMyIDFromServer();
   }
 
-  Future<void> fetchMyIDFromServer() async {
-    try {
-      final myid = await apiManager.GetMyId();
 
-      setState(() {
-        Myid = myid!;
-      });
-    } catch (error) {
-      print('Error getting intro list: $error');
-    }
-  }
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery
@@ -116,7 +105,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => mypage(userId: Myid,)));
+                            MaterialPageRoute(builder: (context) => mypage(userId:  LoginedUserInfo.loginedUserInfo.id,)));
                       },
                       child: Row(
                         children: [

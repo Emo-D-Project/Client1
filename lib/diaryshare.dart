@@ -382,32 +382,7 @@ class _customWidget1State extends State<customWidget1> {
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
     print("init state 좋아요 카운트: $favoriteCounts");
 
-    switch (widget.simagePath) {
-      case "angry":
-        imagePath = 'images/emotion/angry.png';
-        break;
-      case "flutter":
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-      case "smile":
-        imagePath = 'images/emotion/smile.gif';
-        break;
-      case "annoying":
-        imagePath = 'images/emotion/annoying.gif';
-        break;
-      case "sad":
-        imagePath = 'images/emotion/sad.gif';
-        break;
-      case "calmness":
-        imagePath = 'images/emotion/calmness.gif';
-        break;
-      case "tired":
-        imagePath = 'images/emotion/tired.gif';
-        break;
-      default:
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-    }
+
   }
 
   Future<void> fetchMyIDFromServer() async {
@@ -659,7 +634,7 @@ class _customWidget2State extends State<customWidget2> {
   int userId = 36;
   String imagePath = "";
   int diaryId = 36;
-  int Myid = 0;
+
 
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
@@ -706,9 +681,7 @@ class _customWidget2State extends State<customWidget2> {
   @override
   void initState() {
     super.initState();
-    print("MyId: ${Myid}");
 
-    fetchMyIDFromServer();
 
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
@@ -717,17 +690,7 @@ class _customWidget2State extends State<customWidget2> {
     print("init state 좋아요 카운트: $favoriteCounts");
   }
 
-  Future<void> fetchMyIDFromServer() async {
-    try {
-      final myid = await apiManager.GetMyId();
 
-      setState(() {
-        Myid = myid!;
-      });
-    } catch (error) {
-      print('Error getting intro list: $error');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -1476,33 +1439,6 @@ class _customwidget4State extends State<customwidget4> {
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
 
-    /*   switch (widget.simagePath) {
-      case "angry":
-        imagePath = 'images/emotion/angry.png';
-        break;
-      case "flutter":
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-      case "smile":
-        imagePath = 'images/emotion/smile.gif';
-        break;
-      case "annoying":
-        imagePath = 'images/emotion/annoying.gif';
-        break;
-      case "sad":
-        imagePath = 'images/emotion/sad.gif';
-        break;
-      case "calmness":
-        imagePath = 'images/emotion/calmness.gif';
-        break;
-      case "tired":
-        imagePath = 'images/emotion/tired.gif';
-        break;
-      default:
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-    }
-*/
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
         isPlaying = state == PlayerState.playing;
