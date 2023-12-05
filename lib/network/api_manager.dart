@@ -206,11 +206,11 @@ class ApiManager {
 
       List<ChatRoom> chatRooms = rawData.map((data) {
         return ChatRoom(
-          id: data['otherUserId'].toString(),
+          otherUserId: data['otherUserId'],
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
-          isRead: data['isRead'] ?? false, // Null이면 false로 설정
+          isRead: data['isRead'] ?? false,
         );
       }).toList();
 
@@ -516,7 +516,6 @@ class ApiManager {
 
   Future<List<Diary>> getDiaryShareData() async {
     String accessToken = tokenManager.getAccessToken();
-
     String endPoint = "/api/diaries/read";
 
     final response = await http.get(
@@ -921,4 +920,36 @@ class ApiManager {
       print('에러 발생: $e');
     }
   }
+
+  Future<Diary> getMyDiaryData(int id) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/diaries/read/${id}";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("my diary data: " + response.body);
+
+      Diary diaries = Diary(
+        date: DateTime.parse(rawData['createdAt']),
+        content: rawData['content'],
+        emotion: rawData['emotion'],
+        diaryId: rawData['id']?? 0,
+        userId: rawData['user_id']as int ?? 0,
+        voice: rawData['audio']?? "",
+        imagePath: List<String>.from(rawData['images'] ?? const []),
+      );
+      return diaries;
+    } else {
+      print("응답 코드: ${response.statusCode}");
+      throw Exception("Fail to load diary data from the API");
+    }
+  }
+
 }

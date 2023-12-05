@@ -173,7 +173,11 @@ class _diaryshareState extends State<diaryshare> {
                       width: 50,
                       height: 50,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      await Future.delayed(Duration(milliseconds: 500), () {
+                        // 이곳에 4초 후에 실행될 코드 작성
+                        print("After 0.5 seconds");
+                      });
                       setState(() {
                         // 해당 이미지에 대한 일기 내용을 찾기
                         List<Diary> diariesWithSelectedEmotion =
@@ -688,9 +692,7 @@ class _customWidget2State extends State<customWidget2> {
 
     print("imagepath = ${imagePath}");
     print("init state 좋아요 카운트: $favoriteCounts");
-
-
-
+    
   }
 
 
@@ -771,7 +773,11 @@ class _customWidget2State extends State<customWidget2> {
                                 ),
                               ))),
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await Future.delayed(Duration(milliseconds: 100), () {
+                            // 이곳에 4초 후에 실행될 코드 작성
+                            print("After 0.1 seconds");
+                          });
                           if (userId != Myid) {
                             Navigator.push(
                               context,
