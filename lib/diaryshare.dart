@@ -684,6 +684,7 @@ class _customWidget2State extends State<customWidget2> {
   @override
   void initState() {
     super.initState();
+    print("MyId: ${Myid}");
 
     fetchMyIDFromServer();
 
@@ -710,6 +711,7 @@ class _customWidget2State extends State<customWidget2> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(milliseconds: 500)); // Add a delay of 0.5 seconds
     print("commentCount: ${commentCount[diaryId]}");
     print("otherUserId: ${userId}");
 

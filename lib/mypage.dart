@@ -61,39 +61,56 @@ class _mypageState extends State<mypage> {
   }
 
   //정보 등록
-  void _sendMyPage() async{
-    String title = tititle;
-    String content = _answerEditController.text;
+  void _sendMyPage() async {
+    try {
+      String title = tititle;
+      String content = _answerEditController.text;
 
-    apiManager.sendMypage(userId, title, content);
+      apiManager.sendMypage(userId, title, content);
 
-    fetchDataFromServer().then((_) {
-      setState(() {
-        _answerEditController.clear();
-      });
+      // Use a separate function to handle the asynchronous operations
+      await _updateMyPage();
+
+    } catch (error) {
+      print('Error sending MyPage: $error');
+    }
+  }
+
+  Future<void> _updateMyPage() async {
+    await Future.delayed(Duration(milliseconds: 500)); // Add a delay of 0.5 seconds
+    await fetchDataFromServer();
+
+    // Use setState outside the async function
+    setState(() {
+      _answerEditController.clear();
       Navigator.of(context).pop();
     });
   }
 
-  //소개 등록 기능
-  void _sendMyPageIntro() async{
+  void _sendMyPageIntro() async {
     try {
       String title = "자기 소개";
       String content = _introduceEditController.text;
 
       apiManager.sendMypageIntroduce(userId, title, content);
 
-
-      fetchIntroduceFromServer().then((_) {
-        setState(() {
-          _introduceEditController.clear();
-        });
-        Navigator.of(context).pop();
-      });
+      // Use a separate function to handle the asynchronous operations
+      await _updateMyPageIntro();
 
     } catch (error) {
       print('Error sending MyPage Intro: $error');
     }
+  }
+
+  Future<void> _updateMyPageIntro() async {
+    await Future.delayed(Duration(milliseconds: 500)); // Add a delay of 0.5 seconds
+    await fetchIntroduceFromServer();
+
+    // Use setState outside the async function
+    setState(() {
+      _introduceEditController.clear();
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -527,10 +544,11 @@ class _mypageState extends State<mypage> {
                     child: Row(
                       children: [
                         Container(
-                          width:240,
+                          width: 240,
                           child: Text(
                             myPageIntro,
-                            style: TextStyle(fontSize: 13, fontFamily: 'soojin'),
+                            style:
+                                TextStyle(fontSize: 13, fontFamily: 'soojin'),
                           ),
                         ),
                         //Padding(padding: EdgeInsets.fromLTRB(130, 0, 0, 0)),
@@ -542,7 +560,13 @@ class _mypageState extends State<mypage> {
                             onPressed: () {
                               _showIntroDialog(context, '자기 소개');
                             },
-                            child: Text('수정', style: TextStyle(color: Colors.black,fontSize: 13, fontFamily: 'soojin'),))
+                            child: Text(
+                              '수정',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontFamily: 'soojin'),
+                            ))
                       ],
                     ),
                   ),
@@ -554,7 +578,6 @@ class _mypageState extends State<mypage> {
                         padding: const EdgeInsets.all(10),
                         itemCount: myPageDatas.length,
                         itemBuilder: (BuildContext context, int index) {
-                          print("myPageData length ${myPageDatas.length}");
                           if (myPageDatas[index].title != '자기 소개') {
                             return CustomQuestionContainer(
                               vuserId: myPageDatas[index].userId,
