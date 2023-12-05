@@ -166,9 +166,7 @@ class _diaryshareState extends State<diaryshare> {
                       height: 50,
                     ),
                     onPressed: () async {
-                      await Future.delayed(Duration(seconds: 5), () {
-                        // 이곳에 4초 후에 실행될 코드 작성
-                        print("After 0.5 seconds");
+                      await Future.delayed(Duration(milliseconds: 500), () {
                       });
                       setState(() {
                         // 해당 이미지에 대한 일기 내용을 찾기
@@ -346,7 +344,6 @@ class customWidget1 extends StatefulWidget {
 
 class _customWidget1State extends State<customWidget1> {
   late bool sfavoritColor; // 추가된 부분
-
   String imagePath = "";
   int userId = 36;
   int diaryId = 36;
@@ -1293,6 +1290,7 @@ class customwidget4 extends StatefulWidget {
 }
 
 class _customwidget4State extends State<customwidget4> {
+  String imagePath = "";
   int favoriteCounts = 0;
   bool sfavoritColor = false;
   int userId = -1;
@@ -1302,8 +1300,8 @@ class _customwidget4State extends State<customwidget4> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customwidget4State(int otherUserId, int diaryId) {
-    this.otherUserId = otherUserId;
-    this.userId = diaryId;
+    this.userId = otherUserId;
+    this.diaryId = diaryId;
   }
 
   void plusDialog(BuildContext context) async {
@@ -1332,7 +1330,6 @@ class _customwidget4State extends State<customwidget4> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  String imagePath = "";
 
   @override
   void initState() {
@@ -1488,6 +1485,7 @@ class _customwidget4State extends State<customwidget4> {
                     ],
                   ),
                 ),
+                //이미지
                 SingleChildScrollView(
                   child: Container(
                     width: 200,

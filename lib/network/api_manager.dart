@@ -535,7 +535,7 @@ class ApiManager {
           userId: data['user_id'] as int ?? 0,
           favoriteCount: data['empathy'] as int ?? 0,
           audio: data["audio"] ?? "",
-          imagePath: List<String>.from(data['images'].where((element) => element != null) ?? const []),
+          imagePath: List<String>.from(data['images']?.where((element) => element != null) ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
           diaryId: data['id'] ?? 0,
         );
