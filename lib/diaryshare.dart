@@ -16,7 +16,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
 import 'package:capston1/otherMypage.dart';
 
-
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
   'images/emotion/calmness.gif',
@@ -27,8 +26,6 @@ final List<String> imagePaths = [
   'images/emotion/tired.gif',
   'images/emotion/sad.gif',
 ];
-
-//late final int postId;
 
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
@@ -41,9 +38,7 @@ class diaryshare extends StatefulWidget {
 }
 
 List<Diary> diaries = [];
-
 Map<int, int> commentCount = {};
-
 Map<int, FavoriteCount> favoriteMap = {};
 
 class FavoriteCount {
@@ -57,6 +52,7 @@ class _diaryshareState extends State<diaryshare> {
   List<Diary> selectedEmotionDiaries = [];
   int favoriteCounts = 0;
   String selectedValue = '최신순';
+  DateTime selectedDate = DateTime.now();
 
   int Myid = 0;
 
@@ -102,6 +98,11 @@ class _diaryshareState extends State<diaryshare> {
             print('Error getting commentList: $error');
           });
         }
+        // formattedDate와 같은 날짜의 일기만 필터링
+        selectedEmotionDiaries = diaries
+            .where((diary) =>
+                DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+            .toList();
       });
     } catch (error) {
       // 에러 제어하는 부분
@@ -117,7 +118,7 @@ class _diaryshareState extends State<diaryshare> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-               margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+            margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
             child: Text(
               formattedDate,
               style: TextStyle(
@@ -180,12 +181,12 @@ class _diaryshareState extends State<diaryshare> {
                       });
                       setState(() {
                         // 해당 이미지에 대한 일기 내용을 찾기
-                        List<Diary> diariesWithSelectedEmotion =
-                        diaries.where((diary) => diary.emotion == emotion).toList();
+                        List<Diary> diariesWithSelectedEmotion = diaries
+                            .where((diary) => diary.emotion == emotion)
+                            .toList();
 
                         selectedImageEmotion = emotion;
                         selectedEmotionDiaries = diariesWithSelectedEmotion;
-
                       });
                     },
                   ),
@@ -199,11 +200,14 @@ class _diaryshareState extends State<diaryshare> {
               padding: const EdgeInsets.all(10),
               itemCount: selectedEmotionDiaries.length,
               itemBuilder: (BuildContext context, int index) {
-
-                print("selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
+                print(
+                    "selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
                 selectedEmotionDiaries.forEach((element) {
                   print("selected diaries emotion: ${element.emotion}");
                 });
+
+                DateTime formattedDateTime = selectedEmotionDiaries[index].date;
+
                 String emotionImagePath;
 
                 switch (selectedEmotionDiaries[index].emotion) {
@@ -232,9 +236,11 @@ class _diaryshareState extends State<diaryshare> {
                     emotionImagePath = 'images/emotion/flutter.gif';
                     break;
                 }
-
-
-                if (selectedImageEmotion == selectedEmotionDiaries[index].emotion) {
+                if (selectedImageEmotion ==
+                        selectedEmotionDiaries[index].emotion &&
+                    formattedDateTime.year == DateTime.now().year &&
+                    formattedDateTime.month == DateTime.now().month &&
+                    formattedDateTime.day == DateTime.now().day) {
                   return SizedBox(
                     child: (() {
                       if (selectedEmotionDiaries[index].imagePath.isNotEmpty &&
@@ -243,47 +249,65 @@ class _diaryshareState extends State<diaryshare> {
                           simagePath: selectedEmotionDiaries[index].emotion,
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
-                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
-                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          sfavoritColor:
+                              selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount:
+                              selectedEmotionDiaries[index].favoriteCount,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
-                          scommentCount: selectedEmotionDiaries[index].scommentCount,
+                          scommentCount:
+                              selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (selectedEmotionDiaries[index].imagePath.isEmpty &&
+                      } else if (selectedEmotionDiaries[index]
+                              .imagePath
+                              .isEmpty &&
                           selectedEmotionDiaries[index].voice == "") {
                         return customWidget2(
                           scomment: selectedEmotionDiaries[index].content,
-                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
-                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          sfavoritColor:
+                              selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount:
+                              selectedEmotionDiaries[index].favoriteCount,
                           simagePath: emotionImagePath,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
-                          scommentCount: selectedEmotionDiaries[index].scommentCount,
+                          scommentCount:
+                              selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (selectedEmotionDiaries[index].imagePath.isEmpty &&
+                      } else if (selectedEmotionDiaries[index]
+                              .imagePath
+                              .isEmpty &&
                           selectedEmotionDiaries[index].voice != "") {
                         return customwidget3(
                           scomment: selectedEmotionDiaries[index].content,
-                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
-                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          sfavoritColor:
+                              selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount:
+                              selectedEmotionDiaries[index].favoriteCount,
                           simagePath: selectedEmotionDiaries[index].emotion,
                           svoice: selectedEmotionDiaries[index].voice,
                           otherUserId: selectedEmotionDiaries[index].userId,
-                          diaryId: selectedEmotionDiaries[index].diaryId, //여기 문제있나요?
-                          scommentCount: selectedEmotionDiaries[index].scommentCount,
+                          diaryId: selectedEmotionDiaries[index].diaryId,
+                          scommentCount:
+                              selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (selectedEmotionDiaries[index].imagePath.isNotEmpty &&
+                      } else if (selectedEmotionDiaries[index]
+                              .imagePath
+                              .isNotEmpty &&
                           selectedEmotionDiaries[index].voice != "") {
                         return customwidget4(
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
-                          sfavoritColor: selectedEmotionDiaries[index].favoriteColor,
-                          sfavoritCount: selectedEmotionDiaries[index].favoriteCount,
+                          sfavoritColor:
+                              selectedEmotionDiaries[index].favoriteColor,
+                          sfavoritCount:
+                              selectedEmotionDiaries[index].favoriteCount,
                           simagePath: selectedEmotionDiaries[index].emotion,
                           svoice: selectedEmotionDiaries[index].voice,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
-                          scommentCount: selectedEmotionDiaries[index].scommentCount,
+                          scommentCount:
+                              selectedEmotionDiaries[index].scommentCount,
                         );
                       }
                     })(),
@@ -312,7 +336,6 @@ class customWidget1 extends StatefulWidget {
   final int diaryId;
   final int scommentCount;
 
-
   const customWidget1({
     super.key,
     required this.simagePath,
@@ -334,7 +357,6 @@ class _customWidget1State extends State<customWidget1> {
   late bool sfavoritColor; // 추가된 부분
 
   String imagePath = "";
-
   int userId = 36;
   int diaryId = 36;
   int favoriteCounts = 0;
@@ -417,6 +439,7 @@ class _customWidget1State extends State<customWidget1> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     print("commentCount: ${commentCount[diaryId]}");
@@ -483,10 +506,10 @@ class _customWidget1State extends State<customWidget1> {
                         },
                         icon: userId != Myid
                             ? Image.asset(
-                          'images/send/real_send.png',
-                          height: 50, // 이미지 높이 조절
-                          width: 30, // 이미지 너비 조절
-                        )
+                                'images/send/real_send.png',
+                                height: 50, // 이미지 높이 조절
+                                width: 30, // 이미지 너비 조절
+                              )
                             : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
@@ -535,65 +558,64 @@ class _customWidget1State extends State<customWidget1> {
 
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            await apiManager.putFavoriteCount(diaryId);
-                            print("좋아요 누름 :${diaryId}");
-                            try {
-
-                              setState(() {
-                                if (sfavoritColor) {
-                                  favoriteCounts = favoriteCounts -1;
-                                } else {
-                                  favoriteCounts = favoriteCounts +1;
-                                }
-                                sfavoritColor = !sfavoritColor;
-                              });
-                            } catch (error) {
-                              print('Error updating favorite count: $error');
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        await apiManager.putFavoriteCount(diaryId);
+                        print("좋아요 누름 :${diaryId}");
+                        try {
+                          setState(() {
+                            if (sfavoritColor) {
+                              favoriteCounts = favoriteCounts - 1;
+                            } else {
+                              favoriteCounts = favoriteCounts + 1;
                             }
-                          },
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${favoriteCounts}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                            sfavoritColor = !sfavoritColor;
+                          });
+                        } catch (error) {
+                          print('Error updating favorite count: $error');
+                        }
+                      },
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                            Future.delayed(Duration(seconds: 4), () {
-                              print(commentList.length);
-                            });
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        Text(
-                          '${commentCount[diaryId]}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                    Text(
+                      '${favoriteCounts}',
+                      style: TextStyle(fontSize: 11),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                        Future.delayed(Duration(seconds: 4), () {
+                          print(commentList.length);
+                        });
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
+                    ),
+                    Text(
+                      '${commentCount[diaryId]}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
@@ -635,9 +657,7 @@ class _customWidget2State extends State<customWidget2> {
   int userId = 36;
   String imagePath = "";
   int diaryId = 36;
-
   int Myid = 0;
-
 
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
@@ -651,9 +671,9 @@ class _customWidget2State extends State<customWidget2> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget2State(
-      int otherUserId,
-      int diaryId,
-      String imagePath,
+    int otherUserId,
+    int diaryId,
+    String imagePath,
   ) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
@@ -692,9 +712,7 @@ class _customWidget2State extends State<customWidget2> {
 
     print("imagepath = ${imagePath}");
     print("init state 좋아요 카운트: $favoriteCounts");
-    
   }
-
 
   Future<void> fetchMyIDFromServer() async {
     try {
@@ -739,23 +757,23 @@ class _customWidget2State extends State<customWidget2> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () {
-                                  if(userId != Myid){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => otherMypage(
-                                        userId: userId,
-                                      ),
-                                    ),
-                                  );}
-                                  else{
+                                  if (userId != Myid) {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => mypage(
-                                            userId: userId,
-                                          ),
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => otherMypage(
+                                          userId: userId,
                                         ),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => mypage(
+                                          userId: userId,
+                                        ),
+                                      ),
                                     );
                                   }
                                   print('감정 탭하기');
@@ -790,13 +808,12 @@ class _customWidget2State extends State<customWidget2> {
                         },
                         icon: userId != Myid
                             ? Image.asset(
-                          'images/send/real_send.png',
-                          height: 50, // 이미지 높이 조절
-                          width: 30, // 이미지 너비 조절
-                        )
+                                'images/send/real_send.png',
+                                height: 50, // 이미지 높이 조절
+                                width: 30, // 이미지 너비 조절
+                              )
                             : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
-
                     ],
                   ),
                 ),
@@ -907,13 +924,14 @@ class customwidget3 extends StatefulWidget {
   });
 
   @override
-  State<customwidget3> createState() => _customwidget3State(otherUserId,diaryId);
+  State<customwidget3> createState() =>
+      _customwidget3State(otherUserId, diaryId);
 }
 
 class _customwidget3State extends State<customwidget3> {
   final List<Comment> comments = []; // 댓글을 관리하는 리스트
 
-  int favoriteCounts=0; // 추가된 부분
+  int favoriteCounts = 0; // 추가된 부분
   int otherUserId = 36;
   bool sfavoritColor = false;
   int userId = -1;
@@ -922,13 +940,12 @@ class _customwidget3State extends State<customwidget3> {
 
   int Myid = 0;
 
-
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customwidget3State(int otherUserId,int diaryId) {
-    this.userId = otherUserId; this.diaryId =diaryId ;
+  _customwidget3State(int otherUserId, int diaryId) {
+    this.userId = otherUserId;
+    this.diaryId = diaryId;
   }
-
 
   void plusDialog(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
@@ -951,18 +968,16 @@ class _customwidget3State extends State<customwidget3> {
 
   final recorder = sound.FlutterSoundRecorder();
   bool isRecording = false; //녹음 상태
-  String audioPath = '';  //녹음중단 시 경로 받아올 변수
-  String playAudioPath = '';  //저장할때 받아올 변수 , 재생 시 필요
-
+  String audioPath = ''; //녹음중단 시 경로 받아올 변수
+  String playAudioPath = ''; //저장할때 받아올 변수 , 재생 시 필요
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+
   //String imagePath = "";
-
-
 
   Future<void> fetchMyIDFromServer() async {
     try {
@@ -986,39 +1001,11 @@ class _customwidget3State extends State<customwidget3> {
 
     print("init state 좋아요 카운트: $favoriteCounts");
 
-
     playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
-
     setAudio();
 
-    switch (widget.simagePath) {
-      case "angry":
-        imagePath = 'images/emotion/angry.png';
-        break;
-      case "flutter":
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-      case "smile":
-        imagePath = 'images/emotion/smile.gif';
-        break;
-      case "annoying":
-        imagePath = 'images/emotion/annoying.gif';
-        break;
-      case "sad":
-        imagePath = 'images/emotion/sad.gif';
-        break;
-      case "calmness":
-        imagePath = 'images/emotion/calmness.gif';
-        break;
-      case "tired":
-        imagePath = 'images/emotion/tired.gif';
-        break;
-      default:
-        imagePath = 'images/emotion/flutter.gif';
-        break;
-    }
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -1051,7 +1038,6 @@ class _customwidget3State extends State<customwidget3> {
     super.dispose();
   }
 
-
   Future setAudio() async {
     String url = ' ';
     audioPlayer.setReleaseMode(ReleaseMode.loop);
@@ -1065,9 +1051,9 @@ class _customwidget3State extends State<customwidget3> {
       }
 
       await audioPlayer.setSourceDeviceFile(playAudioPath);
-      print("duration: $duration" );
+      print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
-      print("after wait duration: $duration" );
+      print("after wait duration: $duration");
 
       setState(() {
         duration = duration;
@@ -1108,7 +1094,7 @@ class _customwidget3State extends State<customwidget3> {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final newPath =
-      p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
       final newFile = File(p.join(
           newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
       if (!(await newFile.parent.exists())) {
@@ -1138,7 +1124,6 @@ class _customwidget3State extends State<customwidget3> {
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
     print("savedFilePath: $savedFilePath");
-
   }
 
   String formatTime(Duration duration) {
@@ -1219,10 +1204,10 @@ class _customwidget3State extends State<customwidget3> {
                         },
                         icon: userId != Myid
                             ? Image.asset(
-                          'images/send/real_send.png',
-                          height: 50, // 이미지 높이 조절
-                          width: 30, // 이미지 너비 조절
-                        )
+                                'images/send/real_send.png',
+                                height: 50, // 이미지 높이 조절
+                                width: 30, // 이미지 너비 조절
+                              )
                             : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
@@ -1252,11 +1237,9 @@ class _customwidget3State extends State<customwidget3> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               formatTime(position),
@@ -1267,25 +1250,25 @@ class _customwidget3State extends State<customwidget3> {
                               radius: 15,
                               backgroundColor: Colors.transparent,
                               child: IconButton(
-                                padding: EdgeInsets.only(
-                                    bottom: 50),
+                                padding: EdgeInsets.only(bottom: 50),
                                 icon: Icon(
-                                  isPlaying ? Icons.pause : Icons
-                                      .play_arrow,
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
                                   color: Colors.brown,
                                 ),
                                 iconSize: 25,
                                 onPressed: () async {
                                   print("isplaying 전 : $isPlaying");
 
-                                  if (isPlaying) {  //재생중이면
+                                  if (isPlaying) {
+                                    //재생중이면
                                     await audioPlayer.pause(); //멈춤고
                                     setState(() {
                                       isPlaying = false; //상태변경하기..?
                                     });
-                                  } else { //멈춘 상태였으면
+                                  } else {
+                                    //멈춘 상태였으면
                                     await playAudio();
-                                    await audioPlayer.resume();// 녹음된 오디오 재생
+                                    await audioPlayer.resume(); // 녹음된 오디오 재생
                                   }
                                   print("isplaying 후 : $isPlaying");
                                 },
@@ -1322,65 +1305,65 @@ class _customwidget3State extends State<customwidget3> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            apiManager.putFavoriteCount(diaryId);
-                            print("좋아요 누름 :${diaryId}");
-                            try {
-                              setState(() {
-                                if (sfavoritColor) {
-                                  favoriteCounts = favoriteCounts - 1;
-                                } else {
-                                  favoriteCounts = favoriteCounts + 1;
-                                }
-                                sfavoritColor = !sfavoritColor;
-                              });
-                            } catch (error) {
-                              print('Error updating favorite count: $error');
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        apiManager.putFavoriteCount(diaryId);
+                        print("좋아요 누름 :${diaryId}");
+                        try {
+                          setState(() {
+                            if (sfavoritColor) {
+                              favoriteCounts = favoriteCounts - 1;
+                            } else {
+                              favoriteCounts = favoriteCounts + 1;
                             }
-                          },
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${favoriteCounts}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                            sfavoritColor = !sfavoritColor;
+                          });
+                        } catch (error) {
+                          print('Error updating favorite count: $error');
+                        }
+                      },
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '${favoriteCounts}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                            Future.delayed(Duration(seconds: 4), () {
-                              print(commentList.length);
-                            });
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        Text(
-                          '${commentCount[diaryId]}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                        Future.delayed(Duration(seconds: 4), () {
+                          print(commentList.length);
+                        });
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
-                  ),
-                ],
-              )),
+                    Text(
+                      '${commentCount[diaryId]}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
@@ -1413,11 +1396,12 @@ class customwidget4 extends StatefulWidget {
   });
 
   @override
-  State<customwidget4> createState() => _customwidget4State(otherUserId,diaryId);
+  State<customwidget4> createState() =>
+      _customwidget4State(otherUserId, diaryId);
 }
 
 class _customwidget4State extends State<customwidget4> {
-  int favoriteCounts=0;
+  int favoriteCounts = 0;
   bool sfavoritColor = false;
   int userId = -1;
   int otherUserId = 36;
@@ -1427,10 +1411,10 @@ class _customwidget4State extends State<customwidget4> {
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customwidget4State(int otherUserId,int diaryId) {
-    this.otherUserId = otherUserId; this.userId=diaryId;
+  _customwidget4State(int otherUserId, int diaryId) {
+    this.otherUserId = otherUserId;
+    this.userId = diaryId;
   }
-
 
   void plusDialog(BuildContext context) async {
     final sizeY = MediaQuery.of(context).size.height;
@@ -1455,9 +1439,8 @@ class _customwidget4State extends State<customwidget4> {
 
   final recorder = sound.FlutterSoundRecorder();
   bool isRecording = false; //녹음 상태
-  String audioPath = '';  //녹음중단 시 경로 받아올 변수
-  String playAudioPath = '';  //저장할때 받아올 변수 , 재생 시 필요
-
+  String audioPath = ''; //녹음중단 시 경로 받아올 변수
+  String playAudioPath = ''; //저장할때 받아올 변수 , 재생 시 필요
 
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
@@ -1465,7 +1448,6 @@ class _customwidget4State extends State<customwidget4> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
   String imagePath = "";
-
 
   Future<void> fetchMyIDFromServer() async {
     try {
@@ -1485,7 +1467,6 @@ class _customwidget4State extends State<customwidget4> {
     fetchMyIDFromServer();
     setAudio();
 
-
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
 
@@ -1494,10 +1475,8 @@ class _customwidget4State extends State<customwidget4> {
     playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
-   
-    
 
-    switch (widget.simagePath) {
+    /*   switch (widget.simagePath) {
       case "angry":
         imagePath = 'images/emotion/angry.png';
         break;
@@ -1523,7 +1502,7 @@ class _customwidget4State extends State<customwidget4> {
         imagePath = 'images/emotion/flutter.gif';
         break;
     }
-
+*/
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
         isPlaying = state == PlayerState.playing;
@@ -1554,7 +1533,6 @@ class _customwidget4State extends State<customwidget4> {
     super.dispose();
   }
 
-
   Future setAudio() async {
     String url = ' ';
     audioPlayer.setReleaseMode(ReleaseMode.loop);
@@ -1568,9 +1546,9 @@ class _customwidget4State extends State<customwidget4> {
       }
 
       await audioPlayer.setSourceDeviceFile(playAudioPath);
-      print("duration: $duration" );
+      print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
-      print("after wait duration: $duration" );
+      print("after wait duration: $duration");
 
       setState(() {
         duration = duration;
@@ -1611,7 +1589,7 @@ class _customwidget4State extends State<customwidget4> {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final newPath =
-      p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
       final newFile = File(p.join(
           newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
       if (!(await newFile.parent.exists())) {
@@ -1641,7 +1619,6 @@ class _customwidget4State extends State<customwidget4> {
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
     print("savedFilePath: $savedFilePath");
-
   }
 
   String formatTime(Duration duration) {
@@ -1658,7 +1635,6 @@ class _customwidget4State extends State<customwidget4> {
 
   @override
   Widget build(BuildContext context) {
-
     print("commentCount: ${commentCount[diaryId]}");
 
     print("otherUserId: ${userId}");
@@ -1682,7 +1658,6 @@ class _customwidget4State extends State<customwidget4> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       Expanded(
                           child: Align(
                               alignment: Alignment.center,
@@ -1724,10 +1699,10 @@ class _customwidget4State extends State<customwidget4> {
                         },
                         icon: userId != Myid
                             ? Image.asset(
-                          'images/send/real_send.png',
-                          height: 50, // 이미지 높이 조절
-                          width: 30, // 이미지 너비 조절
-                        )
+                                'images/send/real_send.png',
+                                height: 50, // 이미지 높이 조절
+                                width: 30, // 이미지 너비 조절
+                              )
                             : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
@@ -1776,11 +1751,9 @@ class _customwidget4State extends State<customwidget4> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               formatTime(position),
@@ -1791,25 +1764,25 @@ class _customwidget4State extends State<customwidget4> {
                               radius: 15,
                               backgroundColor: Colors.transparent,
                               child: IconButton(
-                                padding: EdgeInsets.only(
-                                    bottom: 50),
+                                padding: EdgeInsets.only(bottom: 50),
                                 icon: Icon(
-                                  isPlaying ? Icons.pause : Icons
-                                      .play_arrow,
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
                                   color: Colors.brown,
                                 ),
                                 iconSize: 25,
                                 onPressed: () async {
                                   print("isplaying 전 : $isPlaying");
 
-                                  if (isPlaying) {  //재생중이면
+                                  if (isPlaying) {
+                                    //재생중이면
                                     await audioPlayer.pause(); //멈춤고
                                     setState(() {
                                       isPlaying = false; //상태변경하기..?
                                     });
-                                  } else { //멈춘 상태였으면
+                                  } else {
+                                    //멈춘 상태였으면
                                     await playAudio();
-                                    await audioPlayer.resume();// 녹음된 오디오 재생
+                                    await audioPlayer.resume(); // 녹음된 오디오 재생
                                   }
                                   print("isplaying 후 : $isPlaying");
                                 },
@@ -1846,65 +1819,65 @@ class _customwidget4State extends State<customwidget4> {
           //좋아요,댓글
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            apiManager.putFavoriteCount(diaryId);
-                            print("좋아요 누름 :${diaryId}");
-                            try {
-                              setState(() {
-                                if (sfavoritColor) {
-                                  favoriteCounts = favoriteCounts - 1;
-                                } else {
-                                  favoriteCounts = favoriteCounts + 1;
-                                }
-                                sfavoritColor = !sfavoritColor;
-                              });
-                            } catch (error) {
-                              print('Error updating favorite count: $error');
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        apiManager.putFavoriteCount(diaryId);
+                        print("좋아요 누름 :${diaryId}");
+                        try {
+                          setState(() {
+                            if (sfavoritColor) {
+                              favoriteCounts = favoriteCounts - 1;
+                            } else {
+                              favoriteCounts = favoriteCounts + 1;
                             }
-                          },
-                          child: Icon(
-                            Icons.favorite,
-                            color: sfavoritColor ? Colors.red : Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          '${favoriteCounts}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+                            sfavoritColor = !sfavoritColor;
+                          });
+                        } catch (error) {
+                          print('Error updating favorite count: $error');
+                        }
+                      },
+                      child: Icon(
+                        Icons.favorite,
+                        color: sfavoritColor ? Colors.red : Colors.grey,
+                      ),
                     ),
-                  ),
+                    Text(
+                      '${favoriteCounts}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
 
-                  //댓글
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                            Future.delayed(Duration(seconds: 4), () {
-                              print(commentList.length);
-                            });
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                        Text(
-                          '${commentCount[diaryId]}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ],
+              //댓글
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        plusDialog(context);
+                        Future.delayed(Duration(seconds: 4), () {
+                          print(commentList.length);
+                        });
+                      },
+                      child: Icon(Icons.chat_outlined, color: Colors.grey),
                     ),
-                  ),
-                ],
-              )),
+                    Text(
+                      '${commentCount[diaryId]}',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );

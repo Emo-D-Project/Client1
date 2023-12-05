@@ -277,9 +277,7 @@ class _commentState extends State<comment> {
                         onTap: () async {
                           print('  ${commentList.length}');
                           _sendComment();
-
-                          await Future.delayed(Duration(milliseconds: 100));
-
+                          await Future.delayed(Duration(milliseconds: 500));
                           final data = await apiManager.getCommentData(postId);
                           setState(() {
                             commentList = data!;
