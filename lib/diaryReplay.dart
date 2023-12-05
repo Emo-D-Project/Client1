@@ -225,9 +225,46 @@ class _writediaryState extends State<DiaryReplay> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {
-                              apiManager.RemoveDiary(diaries!.diaryId);
-                              print('다이어리 아이디 : ${diaries!.diaryId}');
+                            onPressed: () async {
+                              return showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) =>
+                                    AlertDialog(
+                                      title: Text(' '),
+                                      content: SizedBox(
+                                          height: sizeY * 0.05,
+                                          child: Center(child: Text(
+                                            "정말 삭제 하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),))
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                elevation: 0.0,
+                                                backgroundColor: Color(0x4D968C83),
+                                                minimumSize: Size(150, 30)
+                                            ),
+                                            onPressed: () => Navigator.of(context).pop(),
+                                            child: Text('취소', style: TextStyle(
+                                                color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                elevation: 0.0,
+                                                backgroundColor: Color(0xFF7D5A50),
+                                                minimumSize: Size(150, 30)
+                                            ),
+                                            onPressed: () async {
+                                              apiManager.RemoveDiary(diaries!.diaryId);
+                                              print('다이어리 아이디 : ${diaries!.diaryId}');
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+
+                                            },
+                                            child: Text('확인', style: TextStyle(
+                                                color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+                                      ],
+                                    ),
+                              );
                             },
                             icon: Image.asset(
                               'images/main/trash.png',

@@ -218,12 +218,47 @@ class _commentState extends State<comment> {
                               visible: commentList[index].user_id == Myid,
                               child: IconButton(
                                 onPressed: () async {
-                                  apiManager.RemoveComment(commentList[index].id);
-                                  await Future.delayed(Duration(milliseconds: 500));
+                                  return showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: Text(' '),
+                                          content: SizedBox(
+                                              height: sizeY * 0.05,
+                                              child: Center(child: Text(
+                                                "정말 삭제 하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),))
+                                          ),
+                                          actions: [
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    elevation: 0.0,
+                                                    backgroundColor: Color(0x4D968C83),
+                                                    minimumSize: Size(150, 30)
+                                                ),
+                                                onPressed: () => Navigator.of(context).pop(),
+                                                child: Text('취소', style: TextStyle(
+                                                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    elevation: 0.0,
+                                                    backgroundColor: Color(0xFF7D5A50),
+                                                    minimumSize: Size(150, 30)
+                                                ),
+                                                onPressed: () async {
+                                                  apiManager.RemoveComment(commentList[index].id);
+                                                  await Future.delayed(Duration(milliseconds: 500));
 
-                                  fetchDataFromServer();
+                                                  fetchDataFromServer();
+                                                  Navigator.of(context).pop();
 
-                                  print('댓글 아이디 : ${commentList[index].id}');
+                                                  print('댓글 아이디 : ${commentList[index].id}');
+                                                },
+                                                child: Text('확인', style: TextStyle(
+                                                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+                                          ],
+                                        ),
+                                  );
                                 },
                                 icon: Image.asset('images/main/trash.png', width: 20, height: 20,),
                               ),
