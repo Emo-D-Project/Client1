@@ -55,7 +55,7 @@ class _diaryshareState extends State<diaryshare> {
   String selectedValue = '최신순';
   DateTime selectedDate = DateTime.now();
 
-  int Myid = 0;
+
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _diaryshareState extends State<diaryshare> {
       apiManager.getFavoriteCount(30);
 
       setState(() {
-        diaries = data!;
+        diaries = data;
         for (Diary diary in diaries) {
           FavoriteCount favoriteCount = new FavoriteCount();
 
@@ -166,9 +166,6 @@ class _diaryshareState extends State<diaryshare> {
                     emotion = 'flutter';
                     break;
                 }
-                // 해당 이미지에 대한 일기 내용을 찾기
-                List<Diary> diariesWithSelectedEmotion =
-                    diaries.where((diary) => diary.emotion == emotion).toList();
                 return Padding(
                   padding: EdgeInsets.all(3),
                   child: IconButton(
@@ -247,7 +244,7 @@ class _diaryshareState extends State<diaryshare> {
                   return SizedBox(
                     child: (() {
                       if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
-                          selectedEmotionDiaries[index].voice == "") {
+                          selectedEmotionDiaries[index].voice.isEmpty) {
                         return customWidget1(
                           simagePath: selectedEmotionDiaries[index].emotion,
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
@@ -262,9 +259,9 @@ class _diaryshareState extends State<diaryshare> {
                               selectedEmotionDiaries[index].scommentCount,
                         );
 
-                      } else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
-
-                          selectedEmotionDiaries[index].voice == "") {
+                      }
+                      else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
+                          selectedEmotionDiaries[index].voice.isEmpty) {
                         return customWidget2(
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
@@ -278,9 +275,9 @@ class _diaryshareState extends State<diaryshare> {
                               selectedEmotionDiaries[index].scommentCount,
                         );
 
-                      } else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
-
-                          selectedEmotionDiaries[index].voice != "") {
+                      }
+                      else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
+                          selectedEmotionDiaries[index].voice.isNotEmpty) {
                         return customwidget3(
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
@@ -295,9 +292,9 @@ class _diaryshareState extends State<diaryshare> {
                               selectedEmotionDiaries[index].scommentCount,
                         );
 
-                      } else if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
-
-                          selectedEmotionDiaries[index].voice != "") {
+                      }
+                      else if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
+                          selectedEmotionDiaries[index].voice.isNotEmpty) {
                         return customwidget4(
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
@@ -365,7 +362,7 @@ class _customWidget1State extends State<customWidget1> {
   int favoriteCounts = 0;
   final List<Comment> comments = [];
 
-  int Myid = 0;
+
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -376,25 +373,12 @@ class _customWidget1State extends State<customWidget1> {
 
   void initState() {
     super.initState();
-    fetchMyIDFromServer();
 
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
     print("init state 좋아요 카운트: $favoriteCounts");
 
 
-  }
-
-  Future<void> fetchMyIDFromServer() async {
-    try {
-      final myid = await apiManager.GetMyId();
-
-      setState(() {
-        Myid = myid!;
-      });
-    } catch (error) {
-      print('Error getting intro list: $error');
-    }
   }
 
   void plusDialog(BuildContext context) async {
@@ -496,25 +480,26 @@ class _customWidget1State extends State<customWidget1> {
                 //이미지
                 SingleChildScrollView(
                   child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage!.length > 3
-                              ? 3
-                              : widget.sdiaryImage!.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            return Container(
-                              child: Center(
-                                child: Image.asset(widget.sdiaryImage![index]),
-                              ),
-                            );
-                          },
-                        ),
-                      )),
+                    width: 200,
+                    height: 150, // 이미지 높이 조절
+                    child: Container(
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.sdiaryImage!.length > 3
+                            ? 3
+                            : widget.sdiaryImage?.length, // 최대 3장까지만 허용
+                        itemBuilder: (context, index) {
+                          print('일기 사진 : ${widget.sdiaryImage?[index]}');
+                          return Container(
+                            child: Center(
+                              child: Image.network(widget.sdiaryImage![index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-
                 //일기 내용
                 Container(
                     width: 380,
@@ -902,7 +887,6 @@ class _customwidget3State extends State<customwidget3> {
   String imagePath = "";
   int diaryId = 0;
 
-  int Myid = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -930,35 +914,16 @@ class _customwidget3State extends State<customwidget3> {
     );
   }
 
-  final recorder = sound.FlutterSoundRecorder();
-  bool isRecording = false; //녹음 상태
-  String audioPath = ''; //녹음중단 시 경로 받아올 변수
-  String playAudioPath = ''; //저장할때 받아올 변수 , 재생 시 필요
-
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
-  //String imagePath = "";
-
-  Future<void> fetchMyIDFromServer() async {
-    try {
-      final myid = await apiManager.GetMyId();
-
-      setState(() {
-        Myid = myid!;
-      });
-    } catch (error) {
-      print('Error getting intro list: $error');
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    fetchMyIDFromServer();
 
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
@@ -966,9 +931,6 @@ class _customwidget3State extends State<customwidget3> {
     print("init state 좋아요 카운트: $favoriteCounts");
 
     playAudio();
-    //마이크 권한 요청, 녹음 초기화
-    initRecorder();
-    setAudio();
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -996,15 +958,8 @@ class _customwidget3State extends State<customwidget3> {
 
   @override
   void dispose() {
-    recorder.closeRecorder();
     audioPlayer.dispose();
     super.dispose();
-  }
-
-  Future setAudio() async {
-    String url = ' ';
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.setSourceUrl(url);
   }
 
   Future<void> playAudio() async {
@@ -1013,7 +968,7 @@ class _customwidget3State extends State<customwidget3> {
         await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
       }
 
-      await audioPlayer.setSourceDeviceFile(playAudioPath);
+      await audioPlayer.setSourceDeviceFile(widget.svoice);
       print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
       print("after wait duration: $duration");
@@ -1025,68 +980,12 @@ class _customwidget3State extends State<customwidget3> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: $playAudioPath');
+      print('오디오 재생 시작: $widget.svoice');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : $playAudioPath");
+      print("audioPath : $widget.svoice");
       print("오디오 재생 중 오류 발생 : $e");
     }
-  }
-
-  Future initRecorder() async {
-    final status = await Permission.microphone.request();
-
-    if (status != PermissionStatus.granted) {
-      throw 'Microphone permission not granted';
-    }
-
-    await recorder.openRecorder();
-
-    isRecording = true;
-    recorder.setSubscriptionDuration(
-      const Duration(milliseconds: 500),
-    );
-  }
-
-  //저장함수
-  Future<String> saveRecordingLocally() async {
-    if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
-
-    final audioFile = File(audioPath);
-    if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final newPath =
-          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
-      final newFile = File(p.join(
-          newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
-      if (!(await newFile.parent.exists())) {
-        await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
-      }
-
-      await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
-
-      print('Complete Saving recording: ${newFile.path}');
-      playAudioPath = newFile.path;
-
-      return newFile.path; // 새로운 파일의 경로 반환
-    } catch (e) {
-      print('Error saving recording: $e');
-      return ''; // 오류 발생 시 빈 문자열 반환
-    }
-  }
-
-  // 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
-  Future<void> stop() async {
-    final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
-    audioPath = path!;
-
-    setState(() {
-      isRecording = false;
-    });
-
-    final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
-    print("savedFilePath: $savedFilePath");
   }
 
   String formatTime(Duration duration) {
@@ -1155,7 +1054,7 @@ class _customwidget3State extends State<customwidget3> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          if (userId != Myid) {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -1165,7 +1064,7 @@ class _customwidget3State extends State<customwidget3> {
                             );
                           }
                         },
-                        icon: userId != Myid
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
                                 'images/send/real_send.png',
                                 height: 50, // 이미지 높이 조절
@@ -1370,7 +1269,6 @@ class _customwidget4State extends State<customwidget4> {
   int otherUserId = 36;
   int diaryId = 0;
 
-  int Myid = 0;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -1400,11 +1298,6 @@ class _customwidget4State extends State<customwidget4> {
     );
   }
 
-  final recorder = sound.FlutterSoundRecorder();
-  bool isRecording = false; //녹음 상태
-  String audioPath = ''; //녹음중단 시 경로 받아올 변수
-  String playAudioPath = ''; //저장할때 받아올 변수 , 재생 시 필요
-
   //재생에 필요한 것들
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -1412,23 +1305,9 @@ class _customwidget4State extends State<customwidget4> {
   Duration position = Duration.zero;
   String imagePath = "";
 
-  Future<void> fetchMyIDFromServer() async {
-    try {
-      final myid = await apiManager.GetMyId();
-
-      setState(() {
-        Myid = myid!;
-      });
-    } catch (error) {
-      print('Error getting intro list: $error');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    fetchMyIDFromServer();
-    setAudio();
 
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
@@ -1437,7 +1316,6 @@ class _customwidget4State extends State<customwidget4> {
 
     playAudio();
     //마이크 권한 요청, 녹음 초기화
-    initRecorder();
 
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -1464,15 +1342,8 @@ class _customwidget4State extends State<customwidget4> {
 
   @override
   void dispose() {
-    recorder.closeRecorder();
     audioPlayer.dispose();
     super.dispose();
-  }
-
-  Future setAudio() async {
-    String url = ' ';
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.setSourceUrl(url);
   }
 
   Future<void> playAudio() async {
@@ -1481,7 +1352,7 @@ class _customwidget4State extends State<customwidget4> {
         await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
       }
 
-      await audioPlayer.setSourceDeviceFile(playAudioPath);
+      await audioPlayer.setSourceDeviceFile(widget.svoice);
       print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
       print("after wait duration: $duration");
@@ -1493,68 +1364,12 @@ class _customwidget4State extends State<customwidget4> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: $playAudioPath');
+      print('오디오 재생 시작: $widget.svoice');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : $playAudioPath");
+      print("audioPath : $widget.svoice");
       print("오디오 재생 중 오류 발생 : $e");
     }
-  }
-
-  Future initRecorder() async {
-    final status = await Permission.microphone.request();
-
-    if (status != PermissionStatus.granted) {
-      throw 'Microphone permission not granted';
-    }
-
-    await recorder.openRecorder();
-
-    isRecording = true;
-    recorder.setSubscriptionDuration(
-      const Duration(milliseconds: 500),
-    );
-  }
-
-  //저장함수
-  Future<String> saveRecordingLocally() async {
-    if (audioPath.isEmpty) return ''; // 녹음된 오디오 경로가 비어있으면 빈 문자열 반환
-
-    final audioFile = File(audioPath);
-    if (!audioFile.existsSync()) return ''; // 파일이 존재하지 않으면 빈 문자열 반환
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final newPath =
-          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
-      final newFile = File(p.join(
-          newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
-      if (!(await newFile.parent.exists())) {
-        await newFile.parent.create(recursive: true); // recordings 디렉터리가 없으면 생성
-      }
-
-      await audioFile.copy(newFile.path); // 기존 파일을 새로운 위치로 복사
-
-      print('Complete Saving recording: ${newFile.path}');
-      playAudioPath = newFile.path;
-
-      return newFile.path; // 새로운 파일의 경로 반환
-    } catch (e) {
-      print('Error saving recording: $e');
-      return ''; // 오류 발생 시 빈 문자열 반환
-    }
-  }
-
-  // 녹음 중지 & 녹음된 파일의 경로를 가져옴 및 저장
-  Future<void> stop() async {
-    final path = await recorder.stopRecorder(); // 녹음 중지하고, 녹음된 오디오 파일의 경로를 얻음
-    audioPath = path!;
-
-    setState(() {
-      isRecording = false;
-    });
-
-    final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
-    print("savedFilePath: $savedFilePath");
   }
 
   String formatTime(Duration duration) {
@@ -1623,7 +1438,7 @@ class _customwidget4State extends State<customwidget4> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          if (userId != Myid) {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -1633,7 +1448,7 @@ class _customwidget4State extends State<customwidget4> {
                             );
                           }
                         },
-                        icon: userId != Myid
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
                                 'images/send/real_send.png',
                                 height: 50, // 이미지 높이 조절
@@ -1646,23 +1461,25 @@ class _customwidget4State extends State<customwidget4> {
                 ),
                 SingleChildScrollView(
                   child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage!.length > 3
-                              ? 3
-                              : widget.sdiaryImage!.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            return Container(
-                              child: Center(
-                                child: Image.asset(widget.sdiaryImage![index]),
-                              ),
-                            );
-                          },
-                        ),
-                      )),
+                    width: 200,
+                    height: 150, // 이미지 높이 조절
+                    child: Container(
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.sdiaryImage!.length > 3
+                            ? 3
+                            : widget.sdiaryImage?.length, // 최대 3장까지만 허용
+                        itemBuilder: (context, index) {
+                          print('일기 사진 : ${widget.sdiaryImage?[index]}');
+                          return Container(
+                            child: Center(
+                              child: Image.network(widget.sdiaryImage![index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
