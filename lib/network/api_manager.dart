@@ -206,11 +206,11 @@ class ApiManager {
 
       List<ChatRoom> chatRooms = rawData.map((data) {
         return ChatRoom(
-          id: data['otherUserId'].toString(),
+          otherUserId: data['otherUserId'],
           name: data['name'],
           lastMessage: data['lastMessage'],
           lastMessageSentAt: DateTime.parse(data['lastMessageSentAt']),
-          isRead: data['isRead'] ?? false, // Null이면 false로 설정
+          isRead: data['isRead'] ?? false,
         );
       }).toList();
 
