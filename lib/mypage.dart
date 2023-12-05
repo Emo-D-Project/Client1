@@ -116,6 +116,7 @@ class _mypageState extends State<mypage> {
   @override
   void initState() {
     super.initState();
+
     fetchDataFromServer();
     fetchIntroduceFromServer();
   }
@@ -481,7 +482,7 @@ class _mypageState extends State<mypage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     final SizeX = MediaQuery.of(context).size.width;
     final SizeY = MediaQuery.of(context).size.height;
 

@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:io';
 import 'package:capston1/mypage.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/network/api_manager.dart';
@@ -63,13 +64,13 @@ class _diaryshareState extends State<diaryshare> {
   }
 
   Future<void> fetchDataFromServer() async {
+
     try {
       final data = await apiManager.getDiaryShareData();
       apiManager.getFavoriteCount(30);
 
       setState(() {
         diaries = data!;
-
         for (Diary diary in diaries) {
           FavoriteCount favoriteCount = new FavoriteCount();
 
@@ -112,6 +113,8 @@ class _diaryshareState extends State<diaryshare> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(microseconds: 5000));
+
     return Container(
       color: Color(0xFFF8F5EB),
       child: Column(
@@ -175,7 +178,7 @@ class _diaryshareState extends State<diaryshare> {
                       height: 50,
                     ),
                     onPressed: () async {
-                      await Future.delayed(Duration(milliseconds: 500), () {
+                      await Future.delayed(Duration(seconds: 1), () {
                         // 이곳에 4초 후에 실행될 코드 작성
                         print("After 0.5 seconds");
                       });
@@ -494,7 +497,7 @@ class _customWidget1State extends State<customWidget1> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          if (userId != Myid) {
+                          if (userId !=  LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -504,7 +507,7 @@ class _customWidget1State extends State<customWidget1> {
                             );
                           }
                         },
-                        icon: userId != Myid
+                        icon: userId !=  LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
                                 'images/send/real_send.png',
                                 height: 50, // 이미지 높이 조절
@@ -623,7 +626,6 @@ class _customWidget1State extends State<customWidget1> {
 }
 
 //글만 있는 거
-
 class customWidget2 extends StatefulWidget {
   final String simagePath;
   final String scomment;
@@ -729,7 +731,7 @@ class _customWidget2State extends State<customWidget2> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 500)); // Add a delay of 0.5 seconds
+    Future.delayed(Duration(microseconds: 500)); // Add a delay of 0.5 seconds
     print("commentCount: ${commentCount[diaryId]}");
     print("otherUserId: ${userId}");
 
@@ -759,7 +761,7 @@ class _customWidget2State extends State<customWidget2> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () {
-                                  if (userId != Myid) {
+                                  if (userId !=  LoginedUserInfo.loginedUserInfo.id) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -794,11 +796,8 @@ class _customWidget2State extends State<customWidget2> {
                               ))),
                       IconButton(
                         onPressed: () async {
-                          await Future.delayed(Duration(milliseconds: 100), () {
-                            // 이곳에 4초 후에 실행될 코드 작성
-                            print("After 0.1 seconds");
-                          });
-                          if (userId != Myid) {
+
+                          if (userId !=  LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -808,13 +807,13 @@ class _customWidget2State extends State<customWidget2> {
                             );
                           }
                         },
-                        icon: userId != Myid
+                        icon: userId !=  LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
                                 'images/send/real_send.png',
                                 height: 50, // 이미지 높이 조절
                                 width: 30, // 이미지 너비 조절
                               )
-                            : Container(), // userId가 36이면 빈 컨테이너 반환
+                            : Container(),
                       ),
                     ],
                   ),
@@ -1007,7 +1006,6 @@ class _customwidget3State extends State<customwidget3> {
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
     setAudio();
-
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
