@@ -3,6 +3,7 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path/path.dart' as p;
+
+import 'models/Diary.dart';
 
 final String now = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -23,6 +26,7 @@ class writediary extends StatefulWidget {
   State<writediary> createState() => _writediaryState();
 }
 
+DateTime nows = DateTime.now();
 
 class _writediaryState extends State<writediary> {
   final ImagePicker _picker = ImagePicker(); //이미지 선택 시 필요
@@ -51,6 +55,9 @@ class _writediaryState extends State<writediary> {
   bool isPlaying = false; //현재 재생중인지
 
   Duration position = Duration.zero; //진행중인 시간
+
+  List<Diary> diaries = [];
+  String emotionToday = ''; // late 키워드를 사용해 초기화를 뒤로 미룸
 
   @override
   void initState() {
@@ -104,6 +111,33 @@ class _writediaryState extends State<writediary> {
     }
   }
 
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+
+      setState(() {
+        diaries = data; // fetchDataFromServer()가 완료된 후에 감정을 설정함
+        emotionToday = diaries
+            .firstWhere(
+              (diary) =>
+          diary.date.year == nows.year &&
+              diary.date.month == nows.month &&
+              diary.date.day == nows.day &&
+              diary.userId ==  LoginedUserInfo.loginedUserInfo.id,
+          orElse: () => Diary(
+            imagePath: [],
+            date: DateTime.now(),
+            content: '',
+            emotion: 'calmness', // 기본 감정 설정
+          ),
+        ).emotion;
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
   Future<void> PostWriteDiary(String endpoint) async {
     ApiManager apiManager = ApiManager().getApiManager();
 
@@ -120,6 +154,8 @@ class _writediaryState extends State<writediary> {
       print(postData);
 
       await apiManager.sendPostDiary(postData, diaryImage, audioPath);
+
+      fetchDataFromServer();
 
       //final postImage = {'imageFile' : diaryImage ?? 'default_image_path'};
       //final postAudio = {'audioFile': audioPath ?? 'default_audio_path'};
@@ -308,11 +344,12 @@ class _writediaryState extends State<writediary> {
         ),
         actions: [
           IconButton(
-            onPressed: () async{
+            onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               PostWriteDiary("/api/diaries/create");
-              await Future.delayed(Duration(milliseconds: 500)); //
+              fetchDataFromServer();
+
             },
             icon: Image.asset(
               "images/send/upload.png",
