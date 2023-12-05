@@ -117,7 +117,6 @@ class _MessageRoomState extends State<MessageRoom> {
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
                                             () {
-
                                               if (messageList[index].receiverId == otherUserId) {
                                               return "보낸 쪽지";
                                             } else {
