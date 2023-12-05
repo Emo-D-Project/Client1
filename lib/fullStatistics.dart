@@ -50,6 +50,7 @@ class _fullStatisticsState extends State<fullStatistics> {
 
       setState(() {
         diaries = data;
+
       });
       print("diaries: $diaries");
     } catch (error) {
@@ -498,27 +499,27 @@ class _fullStatisticsState extends State<fullStatistics> {
                             child: diaries != null
                                 ? Container(
                                     child: (() {
-                                      if (diaries!.imagePath.isNotEmpty &&
+                                      if (diaries!.imagePath!.isNotEmpty &&
                                           diaries!.voice.isEmpty) {
                                         return customWidget1( //사진만
                                           stitle: diaries!.date,
                                           simagePath: diaries!.emotion,
-                                          sdiaryImage: diaries!.imagePath,
+                                          sdiaryImage: diaries!.imagePath!,
                                           scomment: diaries!.content,
                                         );
                                       } else if (diaries!
-                                              .imagePath.isEmpty &&
+                                              .imagePath!.isEmpty &&
                                           diaries!.voice.isEmpty) {
                                         return customWidget2( //아무것도
                                             stitle: diaries!.date,
                                             simagePath: diaries!.emotion,
                                             scomment: diaries!.content);
                                       } else if (diaries!
-                                              .imagePath.isEmpty &&
+                                              .imagePath!.isEmpty &&
                                           diaries!.voice.isNotEmpty) {
                                         return customWidget3( //음성 사진
                                           stitle: diaries!.date,
-                                          sdiaryImage: diaries!.imagePath,
+                                          sdiaryImage: diaries!.imagePath!,
                                           simagePath: diaries!.emotion,
                                           scomment: diaries!.content,
                                           svoice: diaries!.voice,
@@ -678,46 +679,27 @@ class _customWidget1State extends State<customWidget1> {
                 ),
                 SingleChildScrollView(
                   child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage.length > 3
-                              ? 3
-                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            return Container(
-                              child: Center(
-                                child: Image.asset(widget.sdiaryImage[index]),
-                              ),
-                            );
-                          },
-                        ),
-                      )),
+                    width: 200,
+                    height: 150, // 이미지 높이 조절
+                    child: Container(
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.sdiaryImage.length > 3
+                            ? 3
+                            : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                        itemBuilder: (context, index) {
+                          print('일기 사진 : ${widget.sdiaryImage[index]}');
+                          return Container(
+                            child: Center(
+                              child: Image.network(widget.sdiaryImage[index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
                 //이미지
-                SingleChildScrollView(
-                  child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          //listview로 하면 한장씩 안넘어가서 페이지뷰함
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage.length > 3
-                              ? 3
-                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            return Container(
-                              child: Center(
-                                child: Image.asset(widget.sdiaryImage[index]),
-                              ),
-                            );
-                          },
-                        ),
-                      )),
-                ),
                 //텍스트
                 Container(
                     width: 380,
@@ -832,17 +814,6 @@ class _customWidget2State extends State<customWidget2> {
                       fontFamily: "soojin",
                       fontSize: 20,
                       color: Colors.brown,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 35,
-                  height: 55,
-                  //  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(widget.simagePath),
-                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
@@ -1038,35 +1009,27 @@ class _customWidget3State extends State<customWidget3> {
                 ),
                 SingleChildScrollView(
                   child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage.length > 3
-                              ? 3
-                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            return Container(
-                              child: Center(
-                                child: Image.asset(widget.sdiaryImage[index]),
-                              ),
-                            );
-                          },
-                        ),
-                      )),
-                ),
-                //이미지
-                Container(
-                  width: 35,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(widget.simagePath),
-                      fit: BoxFit.contain,
+                    width: 200,
+                    height: 150, // 이미지 높이 조절
+                    child: Container(
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.sdiaryImage.length > 3
+                            ? 3
+                            : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                        itemBuilder: (context, index) {
+                          print('일기 사진 : ${widget.sdiaryImage[index]}');
+                          return Container(
+                            child: Center(
+                              child: Image.network(widget.sdiaryImage[index]),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
+
                 //녹음
                 Container(
                   padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
@@ -1282,46 +1245,60 @@ class _customWidget4State extends State<customWidget4> {
                   child: (() {
                     switch (widget.simagePath) {
                       case 'smile':
-                        return Image.asset(
-                          'images/emotion/smile.gif',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/smile.gif',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                       case 'flutter':
-                        return Image.asset(
-                          'images/emotion/flutter.gif',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/flutter.gif',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                       case 'angry':
-                        return Image.asset(
-                          'images/emotion/angry.png',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/angry.png',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                       case 'annoying':
-                        return Image.asset(
-                          'images/emotion/annoying.gif',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/annoying.gif',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                       case 'tired':
-                        return Image.asset(
-                          'images/emotion/tired.gif',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/tired.gif',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                       case 'sad':
-                        return Image.asset(
-                          'images/emotion/sad.gif',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/sad.gif',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                       case 'calmness':
-                        return Image.asset(
-                          'images/emotion/calmness.gif',
-                          height: 45,
-                          width: 45,
+                        return Container(
+                          child: Image.asset(
+                            'images/emotion/calmness.gif',
+                            height: 45,
+                            width: 45,
+                          ),
                         );
                     }
                   })(),
@@ -1336,16 +1313,6 @@ class _customWidget4State extends State<customWidget4> {
                       fontFamily: "soojin",
                       fontSize: 20,
                       color: Colors.brown,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 35,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(widget.simagePath),
-                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

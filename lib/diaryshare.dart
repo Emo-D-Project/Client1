@@ -243,7 +243,7 @@ class _diaryshareState extends State<diaryshare> {
                     formattedDateTime.day == DateTime.now().day) {
                   return SizedBox(
                     child: (() {
-                      if (selectedEmotionDiaries[index].imagePath.isNotEmpty &&
+                      if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
                           selectedEmotionDiaries[index].voice == "") {
                         return customWidget1(
                           simagePath: selectedEmotionDiaries[index].emotion,
@@ -258,9 +258,9 @@ class _diaryshareState extends State<diaryshare> {
                           scommentCount:
                               selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (selectedEmotionDiaries[index]
-                              .imagePath
-                              .isEmpty &&
+
+                      } else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
+
                           selectedEmotionDiaries[index].voice == "") {
                         return customWidget2(
                           scomment: selectedEmotionDiaries[index].content,
@@ -274,9 +274,9 @@ class _diaryshareState extends State<diaryshare> {
                           scommentCount:
                               selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (selectedEmotionDiaries[index]
-                              .imagePath
-                              .isEmpty &&
+
+                      } else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
+
                           selectedEmotionDiaries[index].voice != "") {
                         return customwidget3(
                           scomment: selectedEmotionDiaries[index].content,
@@ -291,9 +291,9 @@ class _diaryshareState extends State<diaryshare> {
                           scommentCount:
                               selectedEmotionDiaries[index].scommentCount,
                         );
-                      } else if (selectedEmotionDiaries[index]
-                              .imagePath
-                              .isNotEmpty &&
+
+                      } else if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
+
                           selectedEmotionDiaries[index].voice != "") {
                         return customwidget4(
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
@@ -328,7 +328,7 @@ class _diaryshareState extends State<diaryshare> {
 // 일기 버전 1 - 텍스트 + 사진
 class customWidget1 extends StatefulWidget {
   final String simagePath;
-  final List<String> sdiaryImage;
+  final List<String>? sdiaryImage;
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
@@ -523,13 +523,13 @@ class _customWidget1State extends State<customWidget1> {
                       child: Container(
                         child: PageView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage.length > 3
+                          itemCount: widget.sdiaryImage!.length > 3
                               ? 3
-                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                              : widget.sdiaryImage!.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
-                                child: Image.asset(widget.sdiaryImage[index]),
+                                child: Image.asset(widget.sdiaryImage![index]),
                               ),
                             );
                           },
@@ -1374,7 +1374,7 @@ class _customwidget3State extends State<customwidget3> {
 
 // 일기 버전4 - 텍스트 + 음성 + 사진
 class customwidget4 extends StatefulWidget {
-  final List<String> sdiaryImage; // 다이어리 안에 이미지
+  final List<String>? sdiaryImage; // 다이어리 안에 이미지
   final String simagePath; // 감정 이모지 사진
   final String scomment; // 일기 내용
   final int sfavoritCount; // 좋아요 수
@@ -1717,13 +1717,13 @@ class _customwidget4State extends State<customwidget4> {
                       child: Container(
                         child: PageView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage.length > 3
+                          itemCount: widget.sdiaryImage!.length > 3
                               ? 3
-                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                              : widget.sdiaryImage!.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
-                                child: Image.asset(widget.sdiaryImage[index]),
+                                child: Image.asset(widget.sdiaryImage![index]),
                               ),
                             );
                           },

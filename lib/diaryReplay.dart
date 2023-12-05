@@ -18,12 +18,12 @@ class DiaryReplay extends StatefulWidget {
 List<Diary> diaries = [];
 
 class _writediaryState extends State<DiaryReplay> {
-  Diary? diary;
+  Diary? diaries;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
   _writediaryState(Diary diary) {
-    this.diary = diary;
+    diaries = diary;
   }
 
   //재생에 필요한 것들
@@ -76,7 +76,7 @@ class _writediaryState extends State<DiaryReplay> {
         await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
       }
 
-      await audioPlayer.setSourceDeviceFile(diary!.voice);
+      await audioPlayer.setSourceDeviceFile(diaries!.voice);
       print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
       print("after wait duration: $duration");
@@ -88,10 +88,10 @@ class _writediaryState extends State<DiaryReplay> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: ${diary!.voice}');
+      print('오디오 재생 시작: ${diaries!.voice}');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : ${diary!.voice}");
+      print("audioPath : ${diaries!.voice}");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }
@@ -112,7 +112,7 @@ class _writediaryState extends State<DiaryReplay> {
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
-    print("imagepath: ${diary?.imagePath}");
+    print("imagepath: ${diaries?.imagePath}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -121,7 +121,7 @@ class _writediaryState extends State<DiaryReplay> {
         backgroundColor: Color(0xFFF8F5EB),
         title: Container(
           child: (() {
-            switch (diary?.emotion) {
+            switch (diaries?.emotion) {
               case 'smile':
                 return Image.asset(
                   'images/emotion/smile.gif',
@@ -201,7 +201,7 @@ class _writediaryState extends State<DiaryReplay> {
                             width: 30,
                           ),
                           Text(
-                            '${diary?.date.year}년 ${diary?.date.month}월 ${diary?.date.day}일',
+                            '${diaries?.date.year}년 ${diaries?.date.month}월 ${diaries?.date.day}일',
                             style: TextStyle(
                               fontFamily: 'soojin',
                               fontSize: 20,
@@ -212,11 +212,11 @@ class _writediaryState extends State<DiaryReplay> {
                           ),
                           IconButton(
                             onPressed: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => diaryUpdate(
-                                    //             diary: diary)));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DiaryUpdate(
+                                                diary: diaries!)));
                             },
                             icon: Image.asset(
                               'images/main/pencil.png',
@@ -226,8 +226,8 @@ class _writediaryState extends State<DiaryReplay> {
                           ),
                           IconButton(
                             onPressed: () {
-                              apiManager.RemoveDiary(diary!.diaryId);
-                              print('다이어리 아이디 : ${diary!.diaryId}');
+                              apiManager.RemoveDiary(diaries!.diaryId);
+                              print('다이어리 아이디 : ${diaries!.diaryId}');
                             },
                             icon: Image.asset(
                               'images/main/trash.png',
@@ -243,25 +243,28 @@ class _writediaryState extends State<DiaryReplay> {
                             children: [
                               Container(
                                   child: (() {
-                                if (diary!.imagePath.isNotEmpty) {
+                                if (diaries!.imagePath!.isNotEmpty) {
                                   return SingleChildScrollView(
-                                    child: SizedBox(
-                                        width: 200,
-                                        height: 150, // 이미지 높이 조절
+                                    child: Container(
+                                      width: 200,
+                                      height: 150, // 이미지 높이 조절
+                                      child: Container(
                                         child: PageView.builder(
                                           scrollDirection: Axis.horizontal,
-                                          itemCount:
-                                              diary!.imagePath.length > 3
-                                                  ? 3
-                                                  : diary!.imagePath.length,
-                                          // 최대 3장까지만 허용
+                                          itemCount: (diaries!.imagePath!.length > 3)
+                                              ? 3
+                                              : diaries?.imagePath?.length, // 최대 3장까지만 허용
                                           itemBuilder: (context, index) {
-                                            return Center(
-                                              child: Image.asset(
-                                                  diary!.imagePath[index]),
+                                            print('일기 사진 : ${diaries!.imagePath?[index]}');
+                                            return Container(
+                                              child: Center(
+                                                child: Image.network(diaries!.imagePath![index]),
+                                              ),
                                             );
                                           },
-                                        )),
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 }
                                 else{return Container();}
@@ -269,7 +272,7 @@ class _writediaryState extends State<DiaryReplay> {
                               }())),
                               SizedBox(
                                 child: ((){
-                                  if(diary!.voice.isNotEmpty){
+                                  if(diaries!.voice.isNotEmpty){
                                     return Container(
                                       padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                                       child: Column(
@@ -366,7 +369,7 @@ class _writediaryState extends State<DiaryReplay> {
                                   child: Column(
                                     children: [
                                       Text(
-                                        diary!.content,
+                                        diaries!.content,
                                         style: TextStyle(
                                             fontFamily: 'soojin', fontSize: 17),
                                         textAlign: TextAlign.center,

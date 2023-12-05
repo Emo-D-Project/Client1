@@ -237,10 +237,15 @@ class ApiManager {
 
       List<Diary> diaries = rawData.map((data) {
         return Diary(
-          date: DateTime.parse(data['createdAt']),
           content: data['content'],
+          date: DateTime.parse(data['createdAt']),
           emotion: data['emotion'],
-          diaryId: data['id'],
+          userId: data['user_id'] as int ?? 0,
+          favoriteCount: data['empathy'] as int ?? 0,
+          voice: data["voice"] ?? "",
+          imagePath: List<String>.from(data['images'].where((element) => element != null) ?? const []),
+          favoriteColor: data['favoriteColor'] ?? false,
+          diaryId: data['id'] ?? 0,
         );
       }).toList();
 
@@ -859,7 +864,9 @@ class ApiManager {
 
     var audioFile = audio; // 오디오 파일
 
-    request.fields['requestData'] = jsonEncode(requestData['request']);
+    final jsonData = jsonEncode(requestData['request']);
+    final jsonPart = http.MultipartFile.fromString("request", jsonData, filename: 'data.json', contentType: MediaType('application', 'json'));
+    request.files.add(jsonPart);
     request.headers['Authorization'] = 'Bearer $accessToken';
 
     // 오디오 파일을 추가
@@ -927,6 +934,7 @@ class ApiManager {
 
     if (response.statusCode == 200) {
       dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("rawData : $rawData");
       print("my diary data: " + response.body);
 
       Diary diaries = Diary(
@@ -935,8 +943,8 @@ class ApiManager {
         emotion: rawData['emotion'],
         diaryId: rawData['id']?? 0,
         userId: rawData['user_id']as int ?? 0,
-        voice: rawData['audio']?? "",
-        imagePath: List<String>.from(rawData['images'] ?? const []),
+        voice: rawData['audio'] ?? "",
+        imagePath: List<String>.from(rawData['images'].where((element) => element != null) ?? const []),
       );
       return diaries;
     } else {

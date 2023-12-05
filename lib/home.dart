@@ -55,6 +55,7 @@ class _homeState extends State<home> {
                   diary.date.day == now.day &&
                   diary.userId == Myid,
               orElse: () => Diary(
+                imagePath: [],
                 date: DateTime.now(),
                 content: '',
                 emotion: 'calmness', // 기본 감정 설정
