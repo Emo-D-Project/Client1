@@ -242,7 +242,7 @@ class ApiManager {
           emotion: data['emotion'],
           userId: data['user_id'] as int ?? 0,
           favoriteCount: data['empathy'] as int ?? 0,
-          voice: data["voice"] ?? "",
+          audio: data["voice"] ?? "",
           imagePath: List<String>.from(data['images'].where((element) => element != null) ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
           diaryId: data['id'] ?? 0,
@@ -534,7 +534,7 @@ class ApiManager {
           emotion: data['emotion'],
           userId: data['user_id'] as int ?? 0,
           favoriteCount: data['empathy'] as int ?? 0,
-          voice: data["voice"] ?? "",
+          audio: data["audio"] ?? "",
           imagePath: List<String>.from(data['images'].where((element) => element != null) ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
           diaryId: data['id'] ?? 0,
@@ -943,7 +943,7 @@ class ApiManager {
         emotion: rawData['emotion'],
         diaryId: rawData['id']?? 0,
         userId: rawData['user_id']as int ?? 0,
-        voice: rawData['audio'] ?? "",
+        audio: rawData['audio'] ?? "",
         imagePath: List<String>.from(rawData['images'].where((element) => element != null) ?? const []),
       );
       return diaries;

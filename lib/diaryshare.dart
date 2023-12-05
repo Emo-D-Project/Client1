@@ -1,20 +1,14 @@
 import 'dart:core';
-import 'dart:io';
 import 'package:capston1/mypage.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/network/api_manager.dart';
-import 'package:path_provider/path_provider.dart';
 import 'comment.dart';
 import 'message_write.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
 import 'models/Diary.dart';
-import 'package:flutter_sound/flutter_sound.dart' as sound;
-import 'package:capston1/models/Comment.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:path/path.dart' as p;
 import 'package:capston1/otherMypage.dart';
 
 //맨 위 상단 감정 7개
@@ -55,8 +49,6 @@ class _diaryshareState extends State<diaryshare> {
   String selectedValue = '최신순';
   DateTime selectedDate = DateTime.now();
 
-
-
   @override
   void initState() {
     super.initState();
@@ -64,7 +56,6 @@ class _diaryshareState extends State<diaryshare> {
   }
 
   Future<void> fetchDataFromServer() async {
-
     try {
       final data = await apiManager.getDiaryShareData();
       apiManager.getFavoriteCount(30);
@@ -175,7 +166,7 @@ class _diaryshareState extends State<diaryshare> {
                       height: 50,
                     ),
                     onPressed: () async {
-                      await Future.delayed(Duration(seconds: 1), () {
+                      await Future.delayed(Duration(seconds: 5), () {
                         // 이곳에 4초 후에 실행될 코드 작성
                         print("After 0.5 seconds");
                       });
@@ -200,6 +191,7 @@ class _diaryshareState extends State<diaryshare> {
               padding: const EdgeInsets.all(10),
               itemCount: selectedEmotionDiaries.length,
               itemBuilder: (BuildContext context, int index) {
+
                 print(
                     "selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
                 selectedEmotionDiaries.forEach((element) {
@@ -207,7 +199,6 @@ class _diaryshareState extends State<diaryshare> {
                 });
 
                 DateTime formattedDateTime = selectedEmotionDiaries[index].date;
-
                 String emotionImagePath;
 
                 switch (selectedEmotionDiaries[index].emotion) {
@@ -244,9 +235,9 @@ class _diaryshareState extends State<diaryshare> {
                   return SizedBox(
                     child: (() {
                       if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
-                          selectedEmotionDiaries[index].voice.isEmpty) {
+                          selectedEmotionDiaries[index].audio=="") {
                         return customWidget1(
-                          simagePath: selectedEmotionDiaries[index].emotion,
+                          simagePath: emotionImagePath,
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
@@ -258,10 +249,10 @@ class _diaryshareState extends State<diaryshare> {
                           scommentCount:
                               selectedEmotionDiaries[index].scommentCount,
                         );
-
-                      }
-                      else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
-                          selectedEmotionDiaries[index].voice.isEmpty) {
+                      } else if (selectedEmotionDiaries[index]
+                              .imagePath!
+                              .isEmpty &&
+                          selectedEmotionDiaries[index].audio=="") {
                         return customWidget2(
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
@@ -274,27 +265,27 @@ class _diaryshareState extends State<diaryshare> {
                           scommentCount:
                               selectedEmotionDiaries[index].scommentCount,
                         );
-
-                      }
-                      else if (selectedEmotionDiaries[index].imagePath!.isEmpty &&
-                          selectedEmotionDiaries[index].voice.isNotEmpty) {
+                      } else if (selectedEmotionDiaries[index]
+                              .imagePath!
+                              .isEmpty &&
+                          selectedEmotionDiaries[index].audio!="") {
                         return customwidget3(
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
                               selectedEmotionDiaries[index].favoriteColor,
                           sfavoritCount:
                               selectedEmotionDiaries[index].favoriteCount,
-                          simagePath: selectedEmotionDiaries[index].emotion,
-                          svoice: selectedEmotionDiaries[index].voice,
+                          simagePath: emotionImagePath,
+                          svoice: selectedEmotionDiaries[index].audio,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
                           scommentCount:
                               selectedEmotionDiaries[index].scommentCount,
                         );
-
-                      }
-                      else if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
-                          selectedEmotionDiaries[index].voice.isNotEmpty) {
+                      } else if (selectedEmotionDiaries[index]
+                              .imagePath!
+                              .isNotEmpty &&
+                          selectedEmotionDiaries[index].audio!="") {
                         return customwidget4(
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
@@ -302,8 +293,8 @@ class _diaryshareState extends State<diaryshare> {
                               selectedEmotionDiaries[index].favoriteColor,
                           sfavoritCount:
                               selectedEmotionDiaries[index].favoriteCount,
-                          simagePath: selectedEmotionDiaries[index].emotion,
-                          svoice: selectedEmotionDiaries[index].voice,
+                          simagePath: emotionImagePath,
+                          svoice: selectedEmotionDiaries[index].audio,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
                           scommentCount:
@@ -362,8 +353,6 @@ class _customWidget1State extends State<customWidget1> {
   int favoriteCounts = 0;
   final List<Comment> comments = [];
 
-
-
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget1State(int otherUserId, int diaryId) {
@@ -377,8 +366,6 @@ class _customWidget1State extends State<customWidget1> {
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
     print("init state 좋아요 카운트: $favoriteCounts");
-
-
   }
 
   void plusDialog(BuildContext context) async {
@@ -404,9 +391,8 @@ class _customWidget1State extends State<customWidget1> {
 
   @override
   Widget build(BuildContext context) {
-    print("commentCount: ${commentCount[diaryId]}");
-
-    print("otherUserId: ${userId}");
+    print("commentCount1: ${commentCount[diaryId]}");
+    print("otherUserId1: ${userId}");
 
     return SingleChildScrollView(
       child: Column(
@@ -448,7 +434,7 @@ class _customWidget1State extends State<customWidget1> {
                                   margin: EdgeInsets.only(left: 50),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(imagePath),
+                                      image: AssetImage(widget.simagePath),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -456,7 +442,7 @@ class _customWidget1State extends State<customWidget1> {
                               ))),
                       IconButton(
                         onPressed: () {
-                          if (userId !=  LoginedUserInfo.loginedUserInfo.id) {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -466,7 +452,7 @@ class _customWidget1State extends State<customWidget1> {
                             );
                           }
                         },
-                        icon: userId !=  LoginedUserInfo.loginedUserInfo.id
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
                                 'images/send/real_send.png',
                                 height: 50, // 이미지 높이 조절
@@ -620,7 +606,6 @@ class _customWidget2State extends State<customWidget2> {
   String imagePath = "";
   int diaryId = 36;
 
-
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
 
@@ -667,7 +652,6 @@ class _customWidget2State extends State<customWidget2> {
   void initState() {
     super.initState();
 
-
     favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
     sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
 
@@ -675,13 +659,11 @@ class _customWidget2State extends State<customWidget2> {
     print("init state 좋아요 카운트: $favoriteCounts");
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(microseconds: 500)); // Add a delay of 0.5 seconds
-    print("commentCount: ${commentCount[diaryId]}");
-    print("otherUserId: ${userId}");
+    print("commentCount2: ${commentCount[diaryId]}");
+    print("otherUserId2: ${userId}");
 
     print("실행되는 감정 path: ${imagePath}");
 
@@ -709,7 +691,8 @@ class _customWidget2State extends State<customWidget2> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () {
-                                  if (userId !=  LoginedUserInfo.loginedUserInfo.id) {
+                                  if (userId !=
+                                      LoginedUserInfo.loginedUserInfo.id) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -744,8 +727,7 @@ class _customWidget2State extends State<customWidget2> {
                               ))),
                       IconButton(
                         onPressed: () async {
-
-                          if (userId !=  LoginedUserInfo.loginedUserInfo.id) {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -755,7 +737,7 @@ class _customWidget2State extends State<customWidget2> {
                             );
                           }
                         },
-                        icon: userId !=  LoginedUserInfo.loginedUserInfo.id
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
                                 'images/send/real_send.png',
                                 height: 50, // 이미지 높이 조절
@@ -887,7 +869,6 @@ class _customwidget3State extends State<customwidget3> {
   String imagePath = "";
   int diaryId = 0;
 
-
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customwidget3State(int otherUserId, int diaryId) {
@@ -919,7 +900,6 @@ class _customwidget3State extends State<customwidget3> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-
 
   @override
   void initState() {
@@ -980,10 +960,10 @@ class _customwidget3State extends State<customwidget3> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: $widget.svoice');
+      print('오디오 재생 시작: ${widget.svoice}');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : $widget.svoice");
+      print("audioPath : ${widget.svoice}");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }
@@ -1002,9 +982,9 @@ class _customwidget3State extends State<customwidget3> {
 
   @override
   Widget build(BuildContext context) {
-    print("commentCount: ${commentCount[diaryId]}");
+    print("commentCount3: ${commentCount[diaryId]}");
 
-    print("otherUserId: ${userId}");
+    print("otherUserId3: ${userId}");
 
     return SingleChildScrollView(
       child: Column(
@@ -1046,7 +1026,7 @@ class _customwidget3State extends State<customwidget3> {
                                   margin: EdgeInsets.only(left: 50),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(imagePath),
+                                      image: AssetImage(widget.simagePath),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -1269,7 +1249,6 @@ class _customwidget4State extends State<customwidget4> {
   int otherUserId = 36;
   int diaryId = 0;
 
-
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customwidget4State(int otherUserId, int diaryId) {
@@ -1364,10 +1343,10 @@ class _customwidget4State extends State<customwidget4> {
 
       audioPlayer.play;
 
-      print('오디오 재생 시작: $widget.svoice');
+      print('오디오 재생 시작: ${widget.svoice}');
       print("duration: $duration");
     } catch (e) {
-      print("audioPath : $widget.svoice");
+      print("audioPath : ${widget.svoice}");
       print("오디오 재생 중 오류 발생 : $e");
     }
   }
@@ -1386,9 +1365,9 @@ class _customwidget4State extends State<customwidget4> {
 
   @override
   Widget build(BuildContext context) {
-    print("commentCount: ${commentCount[diaryId]}");
+    print("commentCount4: ${commentCount[diaryId]}");
 
-    print("otherUserId: ${userId}");
+    print("otherUserId4: ${userId}");
 
     return SingleChildScrollView(
       child: Column(
@@ -1430,7 +1409,7 @@ class _customwidget4State extends State<customwidget4> {
                                   margin: EdgeInsets.only(left: 50),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(imagePath),
+                                      image: AssetImage(widget.simagePath),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
