@@ -7,14 +7,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'network/api_manager.dart';
 import 'models/TotalData.dart';
 
-final String imagepath = 'images/emotion/smile.gif';
-final List<String> diaryimage = [
-  'images/send/sj1.jpg',
-  'images/send/sj3.jpg',
-  'images/send/sj2.jpg',
-  'images/send/sj1.jpg'
-];
-
 class fullStatistics extends StatefulWidget {
   const fullStatistics({super.key});
 
@@ -43,6 +35,9 @@ class _fullStatisticsState extends State<fullStatistics> {
         totalDatas = data;
         diaryID = totalDatas!.mostViewed;
       });
+
+      // fetchDataFromServer()가 완료된 후 fetchDataFromServerDiary() 호출
+      await fetchDataFromServerDiary();
     } catch (error) {
       // 오류 처리
       print('Error getting TS list: $error');
@@ -56,6 +51,7 @@ class _fullStatisticsState extends State<fullStatistics> {
       setState(() {
         diaries = data;
       });
+      print("diaries: $diaries");
     } catch (error) {
       // 에러 처리
       print('Error getting share diaries list: $error');
@@ -305,8 +301,8 @@ class _fullStatisticsState extends State<fullStatistics> {
                                         ),
                                         children: [
                                           TextSpan(
-                                              text: diaries != null
-                                                  ? diaryID.toString()
+                                              text: totalDatas != null
+                                                  ? '${totalDatas!.nums}'
                                                   : ""),
                                           TextSpan(text: '개'),
                                         ]))),
@@ -504,23 +500,23 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     child: (() {
                                       if (diaries!.imagePath.isNotEmpty &&
                                           diaries!.voice.isEmpty) {
-                                        return customWidget1(
+                                        return customWidget1( //사진만
                                           stitle: diaries!.date,
                                           simagePath: diaries!.emotion,
                                           sdiaryImage: diaries!.imagePath,
                                           scomment: diaries!.content,
                                         );
                                       } else if (diaries!
-                                              .imagePath.isNotEmpty &&
+                                              .imagePath.isEmpty &&
                                           diaries!.voice.isEmpty) {
-                                        return customWidget2(
+                                        return customWidget2( //아무것도
                                             stitle: diaries!.date,
                                             simagePath: diaries!.emotion,
                                             scomment: diaries!.content);
                                       } else if (diaries!
-                                              .imagePath.isNotEmpty &&
-                                          diaries!.voice.isEmpty) {
-                                        return customWidget3(
+                                              .imagePath.isEmpty &&
+                                          diaries!.voice.isNotEmpty) {
+                                        return customWidget3( //음성 사진
                                           stitle: diaries!.date,
                                           sdiaryImage: diaries!.imagePath,
                                           simagePath: diaries!.emotion,
@@ -528,7 +524,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                           svoice: diaries!.voice,
                                         );
                                       } else {
-                                        return customWidget4(
+                                        return customWidget4( //음성만
                                             stitle: diaries!.date,
                                             simagePath: diaries!.emotion,
                                             scomment: diaries!.content,
@@ -619,6 +615,54 @@ class _customWidget1State extends State<customWidget1> {
             ),
             child: Column(
               children: [
+                Container(
+                  child: (() {
+                    switch (widget.simagePath) {
+                      case 'smile':
+                        return Image.asset(
+                          'images/emotion/smile.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'flutter':
+                        return Image.asset(
+                          'images/emotion/flutter.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'angry':
+                        return Image.asset(
+                          'images/emotion/angry.png',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'annoying':
+                        return Image.asset(
+                          'images/emotion/annoying.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'tired':
+                        return Image.asset(
+                          'images/emotion/tired.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'sad':
+                        return Image.asset(
+                          'images/emotion/sad.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'calmness':
+                        return Image.asset(
+                          'images/emotion/calmness.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                    }
+                  })(),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -632,16 +676,25 @@ class _customWidget1State extends State<customWidget1> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 35,
-                  height: 55,
-                  //  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(widget.simagePath),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                SingleChildScrollView(
+                  child: Container(
+                      width: 200,
+                      height: 150, // 이미지 높이 조절
+                      child: Container(
+                        child: PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.sdiaryImage.length > 3
+                              ? 3
+                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Center(
+                                child: Image.asset(widget.sdiaryImage[index]),
+                              ),
+                            );
+                          },
+                        ),
+                      )),
                 ),
                 //이미지
                 SingleChildScrollView(
@@ -652,13 +705,13 @@ class _customWidget1State extends State<customWidget1> {
                         child: PageView.builder(
                           //listview로 하면 한장씩 안넘어가서 페이지뷰함
                           scrollDirection: Axis.horizontal,
-                          itemCount: diaryimage.length > 3
+                          itemCount: widget.sdiaryImage.length > 3
                               ? 3
-                              : diaryimage.length, // 최대 3장까지만 허용
+                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
                           itemBuilder: (context, index) {
                             return Container(
                               child: Center(
-                                child: Image.asset(diaryimage[index]),
+                                child: Image.asset(widget.sdiaryImage[index]),
                               ),
                             );
                           },
@@ -721,6 +774,54 @@ class _customWidget2State extends State<customWidget2> {
             ),
             child: Column(
               children: [
+                Container(
+                  child: (() {
+                    switch (widget.simagePath) {
+                      case 'smile':
+                        return Image.asset(
+                          'images/emotion/smile.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'flutter':
+                        return Image.asset(
+                          'images/emotion/flutter.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'angry':
+                        return Image.asset(
+                          'images/emotion/angry.png',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'annoying':
+                        return Image.asset(
+                          'images/emotion/annoying.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'tired':
+                        return Image.asset(
+                          'images/emotion/tired.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'sad':
+                        return Image.asset(
+                          'images/emotion/sad.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'calmness':
+                        return Image.asset(
+                          'images/emotion/calmness.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                    }
+                  })(),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -799,7 +900,7 @@ class _customWidget3State extends State<customWidget3> {
   @override
   void initState() {
     super.initState();
-    setAudio();
+    playAudio();
 
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -820,10 +921,30 @@ class _customWidget3State extends State<customWidget3> {
     });
   }
 
-  Future setAudio() async {
-    String url = ' ';
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.setSourceUrl(url);
+  Future<void> playAudio() async {
+    try {
+      if (isPlaying == PlayerState.playing) {
+        await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
+      }
+
+      await audioPlayer.setSourceDeviceFile(widget.svoice);
+      print("duration: $duration" );
+      await Future.delayed(Duration(seconds: 2));
+      print("after wait duration: $duration" );
+
+      setState(() {
+        duration = duration;
+        isPlaying = true;
+      });
+
+      audioPlayer.play;
+
+      print('오디오 재생 시작: $widget.svoice');
+      print("duration: $duration");
+    } catch (e) {
+      print("audioPath : $widget.svoice");
+      print("오디오 재생 중 오류 발생 : $e");
+    }
   }
 
   String formatTime(Duration duration) {
@@ -854,6 +975,54 @@ class _customWidget3State extends State<customWidget3> {
             ),
             child: Column(
               children: [
+                Container(
+                  child: (() {
+                    switch (widget.simagePath) {
+                      case 'smile':
+                        return Image.asset(
+                          'images/emotion/smile.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'flutter':
+                        return Image.asset(
+                          'images/emotion/flutter.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'angry':
+                        return Image.asset(
+                          'images/emotion/angry.png',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'annoying':
+                        return Image.asset(
+                          'images/emotion/annoying.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'tired':
+                        return Image.asset(
+                          'images/emotion/tired.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'sad':
+                        return Image.asset(
+                          'images/emotion/sad.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'calmness':
+                        return Image.asset(
+                          'images/emotion/calmness.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                    }
+                  })(),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -867,10 +1036,30 @@ class _customWidget3State extends State<customWidget3> {
                     ),
                   ),
                 ),
+                SingleChildScrollView(
+                  child: Container(
+                      width: 200,
+                      height: 150, // 이미지 높이 조절
+                      child: Container(
+                        child: PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.sdiaryImage.length > 3
+                              ? 3
+                              : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Center(
+                                child: Image.asset(widget.sdiaryImage[index]),
+                              ),
+                            );
+                          },
+                        ),
+                      )),
+                ),
+                //이미지
                 Container(
                   width: 35,
                   height: 55,
-                  //  padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(widget.simagePath),
@@ -878,85 +1067,73 @@ class _customWidget3State extends State<customWidget3> {
                     ),
                   ),
                 ),
-                //이미지
-                SingleChildScrollView(
-                  child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          //listview로 하면 한장씩 안넘어가서 페이지뷰함
-                          scrollDirection: Axis.horizontal,
-                          itemCount: diaryimage.length > 3
-                              ? 3
-                              : diaryimage.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            return Container(
-                              child: Center(
-                                child: Image.asset(diaryimage[index]),
-                              ),
-                            );
-                          },
-                        ),
-                      )),
-                ),
                 //녹음
                 Container(
                   padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                   child: Column(
                     children: [
-                      Slider(
-                        min: 0,
-                        max: duration.inSeconds.toDouble(),
-                        value: position.inSeconds.toDouble(),
-                        onChanged: (value) async {
-                          final position = Duration(seconds: value.toInt());
-                          await audioPlayer.seek(position);
-                          await audioPlayer.resume();
-                        },
-                        activeColor: Color(0xFFF8F5EB),
+                      SliderTheme(
+                        data: SliderThemeData(
+                          inactiveTrackColor: Color(0xFFF8F5EB),
+                        ),
+                        child: Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value: position.inSeconds.toDouble(),
+                          onChanged: (value) async {
+                            setState(() {
+                              position = Duration(seconds: value.toInt());
+                            });
+                            await audioPlayer.seek(position);
+                            //await audioPlayer.resume();
+                          },
+                          activeColor: Color(0xFF968C83),
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceBetween,
                           children: [
                             Text(
-                              formatTime(position), // 진행중인 시간
-                              style: TextStyle(
-                                  color:
-                                      Colors.brown), // Set text color to black
+                              formatTime(position),
+                              style: TextStyle(color: Colors.brown),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 20),
                             CircleAvatar(
                               radius: 15,
                               backgroundColor: Colors.transparent,
                               child: IconButton(
-                                padding: EdgeInsets.only(bottom: 50),
+                                padding: EdgeInsets.only(
+                                    bottom: 50),
                                 icon: Icon(
-                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  isPlaying ? Icons.pause : Icons
+                                      .play_arrow,
                                   color: Colors.brown,
                                 ),
                                 iconSize: 25,
                                 onPressed: () async {
-                                  if (isPlaying) {
-                                    await audioPlayer.pause();
-                                  } else {
-                                    await audioPlayer.resume();
+                                  print("isplaying 전 : $isPlaying");
+
+                                  if (isPlaying) {  //재생중이면
+                                    await audioPlayer.pause(); //멈춤고
+                                    setState(() {
+                                      isPlaying = false; //상태변경하기..?
+                                    });
+                                  } else { //멈춘 상태였으면
+                                    await playAudio();
+                                    await audioPlayer.resume();// 녹음된 오디오 재생
                                   }
+                                  print("isplaying 후 : $isPlaying");
                                 },
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 20),
                             Text(
-                              formatTime(duration), //총 시간
-                              style: TextStyle(
-                                color: Colors.brown,
-                              ), // Set text color to black
+                              formatTime(duration),
+                              style: TextStyle(color: Colors.brown),
                             ),
                           ],
                         ),
@@ -1007,53 +1184,83 @@ class customWidget4 extends StatefulWidget {
 }
 
 class _customWidget4State extends State<customWidget4> {
-  //재생에 필요한 것들
-  final audioPlayer = AudioPlayer();
-  bool isPlaying = false;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
+  final AudioPlayer audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
+  bool isPlaying = false; //현재 재생중인지
+  Duration duration = Duration.zero; //총 시간
+  Duration position = Duration.zero; //진행중인 시간
 
   @override
   void initState() {
-    super.initState();
-    setAudio();
 
+    super.initState();
+    playAudio();
+
+    //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
-        isPlaying = state == (PlayerState.playing);
+        isPlaying = state == PlayerState.playing;
       });
+      print("헨들러 isplaying : $isPlaying");
     });
 
+    //재생 파일의 전체 길이를 감지하는 이벤트 핸들러
     audioPlayer.onDurationChanged.listen((newDuration) {
       setState(() {
         duration = newDuration;
       });
     });
 
+    //재생 중인 파일의 현재 위치를 감지하는 이벤트 핸들러
     audioPlayer.onPositionChanged.listen((newPosition) {
       setState(() {
         position = newPosition;
       });
+      print('Current position: $position');
     });
   }
 
-  Future setAudio() async {
-    String url = ' ';
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.setSourceUrl(url);
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> playAudio() async {
+    try {
+      if (isPlaying == PlayerState.playing) {
+        await audioPlayer.stop(); // 이미 재생 중인 경우 정지시킵니다.
+      }
+
+      await audioPlayer.setSourceDeviceFile(widget.svoice);
+      print("duration: $duration" );
+      await Future.delayed(Duration(seconds: 2));
+      print("after wait duration: $duration" );
+
+      setState(() {
+        duration = duration;
+        isPlaying = true;
+      });
+
+      audioPlayer.play;
+
+      print('오디오 재생 시작: $widget.svoice');
+      print("duration: $duration");
+    } catch (e) {
+      print("audioPath : $widget.svoice");
+      print("오디오 재생 중 오류 발생 : $e");
+    }
   }
 
   String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inMinutes.remainder(60));
+    print("formatTime duration: $duration");
 
-    return [
-      if (duration.inHours > 0) hours,
-      minutes,
-      seconds,
-    ].join(':');
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+
+    String result = '$minutes:${seconds.toString().padLeft(2, '0')}';
+
+    print("formatTime result: $result");
+    return result;
   }
 
   @override
@@ -1071,6 +1278,54 @@ class _customWidget4State extends State<customWidget4> {
             ),
             child: Column(
               children: [
+                Container(
+                  child: (() {
+                    switch (widget.simagePath) {
+                      case 'smile':
+                        return Image.asset(
+                          'images/emotion/smile.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'flutter':
+                        return Image.asset(
+                          'images/emotion/flutter.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'angry':
+                        return Image.asset(
+                          'images/emotion/angry.png',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'annoying':
+                        return Image.asset(
+                          'images/emotion/annoying.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'tired':
+                        return Image.asset(
+                          'images/emotion/tired.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'sad':
+                        return Image.asset(
+                          'images/emotion/sad.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                      case 'calmness':
+                        return Image.asset(
+                          'images/emotion/calmness.gif',
+                          height: 45,
+                          width: 45,
+                        );
+                    }
+                  })(),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -1099,58 +1354,68 @@ class _customWidget4State extends State<customWidget4> {
                   padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                   child: Column(
                     children: [
-                      Slider(
-                        min: 0,
-                        max: duration.inSeconds.toDouble(),
-                        value: position.inSeconds.toDouble(),
-                        onChanged: (value) async {
-                          final position = Duration(seconds: value.toInt());
-                          await audioPlayer.seek(position);
-                          await audioPlayer.resume();
-                        },
-                        activeColor: Color(0xFFF8F5EB),
+                      SliderTheme(
+                        data: SliderThemeData(
+                          inactiveTrackColor: Color(0xFFF8F5EB),
+                        ),
+                        child: Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value: position.inSeconds.toDouble(),
+                          onChanged: (value) async {
+                            setState(() {
+                              position = Duration(seconds: value.toInt());
+                            });
+                            await audioPlayer.seek(position);
+                            //await audioPlayer.resume();
+                          },
+                          activeColor: Color(0xFF968C83),
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceBetween,
                           children: [
                             Text(
-                              formatTime(position), // 진행중인 시간
-                              style: TextStyle(
-                                  color:
-                                      Colors.brown), // Set text color to black
+                              formatTime(position),
+                              style: TextStyle(color: Colors.brown),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 20),
                             CircleAvatar(
                               radius: 15,
                               backgroundColor: Colors.transparent,
                               child: IconButton(
-                                padding: EdgeInsets.only(bottom: 50),
+                                padding: EdgeInsets.only(
+                                    bottom: 50),
                                 icon: Icon(
-                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  isPlaying ? Icons.pause : Icons
+                                      .play_arrow,
                                   color: Colors.brown,
                                 ),
                                 iconSize: 25,
                                 onPressed: () async {
-                                  if (isPlaying) {
-                                    await audioPlayer.pause();
-                                  } else {
-                                    await audioPlayer.resume();
+                                  print("isplaying 전 : $isPlaying");
+
+                                  if (isPlaying) {  //재생중이면
+                                    await audioPlayer.pause(); //멈춤고
+                                    setState(() {
+                                      isPlaying = false; //상태변경하기..?
+                                    });
+                                  } else { //멈춘 상태였으면
+                                    await playAudio();
+                                    await audioPlayer.resume();// 녹음된 오디오 재생
                                   }
+                                  print("isplaying 후 : $isPlaying");
                                 },
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 20),
                             Text(
-                              formatTime(duration), //총 시간
-                              style: TextStyle(
-                                color: Colors.brown,
-                              ), // Set text color to black
+                              formatTime(duration),
+                              style: TextStyle(color: Colors.brown),
                             ),
                           ],
                         ),
