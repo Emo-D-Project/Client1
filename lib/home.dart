@@ -15,9 +15,6 @@ class home extends StatefulWidget {
 DateTime now = DateTime.now();
 
 class _homeState extends State<home> {
-
-
-
   ApiManager apiManager = ApiManager().getApiManager();
   List<Diary> diaries = [];
   String emotionToday = ''; // late 키워드를 사용해 초기화를 뒤로 미룸
@@ -26,10 +23,7 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     fetchDataFromServer();
-
   }
-
-
 
   Future<void> fetchDataFromServer() async {
     try {

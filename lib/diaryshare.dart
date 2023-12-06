@@ -81,10 +81,15 @@ class _diaryshareState extends State<diaryshare> {
               .getCommentData(diary.diaryId)
               .then((List<Comment> commentList) {
             favoriteMap.addAll({diary.diaryId: favoriteCount});
+
             // commentList의 길이에 접근
             int listLength = commentList.length;
+            if(commentCount.containsKey(diary.diaryId)){
+              commentCount[diary.diaryId] = listLength;
+            }else{
+              commentCount.addAll({diary.diaryId: listLength});
+            }
 
-            commentCount.addAll({diary.diaryId: listLength});
             // 원하는 작업 수행
           }).catchError((error) {
             print('Error getting commentList: $error');
@@ -313,10 +318,10 @@ class _diaryshareState extends State<diaryshare> {
   }
 }
 
-// 일기 버전 1 - 텍스트 + 사진
-class customWidget1 extends StatefulWidget {
+
+//글만 있는 거
+class customWidget2 extends StatefulWidget {
   final String simagePath;
-  final List<String>? sdiaryImage;
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
@@ -324,10 +329,9 @@ class customWidget1 extends StatefulWidget {
   final int diaryId;
   final int scommentCount;
 
-  const customWidget1({
+  const customWidget2({
     super.key,
     required this.simagePath,
-    required this.sdiaryImage,
     required this.scomment,
     required this.sfavoritColor,
     required this.sfavoritCount,
@@ -337,35 +341,46 @@ class customWidget1 extends StatefulWidget {
   });
 
   @override
-  State<customWidget1> createState() =>
-      _customWidget1State(otherUserId, diaryId);
+  State<customWidget2> createState() => _customWidget2State(
+    otherUserId,
+    diaryId,
+    simagePath,
+  );
 }
 
-class _customWidget1State extends State<customWidget1> {
-  late bool sfavoritColor; // 추가된 부분
-  String imagePath = "";
+class _customWidget2State extends State<customWidget2> {
+  bool sfavoritColor = false;
   int userId = 36;
+  String imagePath = "";
   int diaryId = 36;
+
+  List<Diary> selectedEmotionDiaries = [];
+
+  //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
-  final List<Comment> comments = [];
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    print("setState 호출됨 위젯2");
+  }
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customWidget1State(int otherUserId, int diaryId) {
+  _customWidget2State(
+      int otherUserId,
+      int diaryId,
+      String imagePath,
+      ) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
-  }
-
-  void initState() {
-    super.initState();
-
-    favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
-    sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
-    print("init state 좋아요 카운트: $favoriteCounts");
+    this.imagePath = imagePath;
   }
 
   void plusDialog(BuildContext context) async {
     final sizeY = MediaQuery.of(context).size.height;
+
+    // showModalBottomSheet의 반환값을 받음
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -382,13 +397,84 @@ class _customWidget1State extends State<customWidget1> {
           ),
         );
       },
-    );
+    ).then((result) {
+      setState(() {
+        fetchDataFromServer();
+        print("plusDialog 종료 실행");
+        Future.delayed(Duration(seconds: 1));
+
+        });
+
+    });
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+
+      setState(() {
+        diaries = data;
+        for (Diary diary in diaries) {
+          FavoriteCount favoriteCount = new FavoriteCount();
+
+          {
+            bool favoriteColor = false;
+            int favoriteCount = 0;
+          }
+          apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+            favoriteCount.favoriteCount = value;
+          });
+
+          apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+            favoriteCount.favoriteColor = value;
+          });
+
+          apiManager
+              .getCommentData(diary.diaryId)
+              .then((List<Comment> commentList) {
+            favoriteMap.addAll({diary.diaryId: favoriteCount});
+            print("widget2 commentlist 길이 접근: ${commentList.length}");
+
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
+
+            commentCount.addAll({diary.diaryId: listLength});
+            // 원하는 작업 수행
+          }).catchError((error) {
+            print('Error getting commentList: $error');
+          });
+        }
+        // formattedDate와 같은 날짜의 일기만 필터링
+        selectedEmotionDiaries = diaries
+            .where((diary) =>
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+            .toList();
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
+    sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
+
+    print("imagepath = ${imagePath}");
+    print("init state 좋아요 카운트: $favoriteCounts");
   }
 
   @override
   Widget build(BuildContext context) {
-    print("commentCount1: ${commentCount[diaryId]}");
-    print("otherUserId1: ${userId}");
+    Future.delayed(Duration(microseconds: 500)); // Add a delay of 0.5 seconds
+    print("commentCount2: ${commentCount[diaryId]}");
+    print("otherUserId2: ${userId}");
+
+    print("실행되는 감정 path: ${imagePath}");
+    print("빌드될 댓글의 길이: ${commentList.length} 표시될 댓글 길이${commentCount[diaryId]}");
 
     return SingleChildScrollView(
       child: Column(
@@ -414,14 +500,26 @@ class _customWidget1State extends State<customWidget1> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => otherMypage(
-                                        userId: userId,
+                                  if (userId !=
+                                      LoginedUserInfo.loginedUserInfo.id) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => otherMypage(
+                                          userId: userId,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => mypage(
+                                          userId: userId,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                   print('감정 탭하기');
                                 },
                                 child: Container(
@@ -437,7 +535,7 @@ class _customWidget1State extends State<customWidget1> {
                                 ),
                               ))),
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (userId != LoginedUserInfo.loginedUserInfo.id) {
                             Navigator.push(
                               context,
@@ -450,42 +548,18 @@ class _customWidget1State extends State<customWidget1> {
                         },
                         icon: userId != LoginedUserInfo.loginedUserInfo.id
                             ? Image.asset(
-                                'images/send/real_send.png',
-                                height: 50, // 이미지 높이 조절
-                                width: 30, // 이미지 너비 조절
-                              )
-                            : Container(), // userId가 36이면 빈 컨테이너 반환
+                          'images/send/real_send.png',
+                          height: 50, // 이미지 높이 조절
+                          width: 30, // 이미지 너비 조절
+                        )
+                            : Container(),
                       ),
                     ],
                   ),
                 ),
-                //이미지
-                SingleChildScrollView(
-                  child: Container(
-                    width: 200,
-                    height: 150, // 이미지 높이 조절
-                    child: Container(
-                      child: PageView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: widget.sdiaryImage!.length > 3
-                            ? 3
-                            : widget.sdiaryImage?.length, // 최대 3장까지만 허용
-                        itemBuilder: (context, index) {
-                          print('일기 사진 : ${widget.sdiaryImage?[index]}');
-                          return Container(
-                            child: Center(
-                              child: Image.network(widget.sdiaryImage![index]),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                //일기 내용
                 Container(
                     width: 380,
-                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
+                    padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
                     color: Colors.white54,
                     child: Column(
                       children: [
@@ -499,79 +573,79 @@ class _customWidget1State extends State<customWidget1> {
               ],
             ),
           ),
-          //좋아요,댓글
-
           Container(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await apiManager.putFavoriteCount(diaryId);
-                        print("좋아요 누름 :${diaryId}");
-                        try {
-                          setState(() {
-                            if (sfavoritColor) {
-                              favoriteCounts = favoriteCounts - 1;
-                            } else {
-                              favoriteCounts = favoriteCounts + 1;
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            fetchDataFromServer();
+                            apiManager.putFavoriteCount(diaryId);
+                            print("좋아요 누름 :${diaryId}");
+                            try {
+                              setState(() {
+                                if (sfavoritColor) {
+                                  favoriteCounts = favoriteCounts - 1;
+                                } else {
+                                  favoriteCounts = favoriteCounts + 1;
+                                }
+                                sfavoritColor = !sfavoritColor;
+                              });
+                            } catch (error) {
+                              print('Error updating favorite count: $error');
                             }
-                            sfavoritColor = !sfavoritColor;
-                          });
-                        } catch (error) {
-                          print('Error updating favorite count: $error');
-                        }
-                      },
-                      child: Icon(
-                        Icons.favorite,
-                        color: sfavoritColor ? Colors.red : Colors.grey,
-                      ),
+                          },
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${favoriteCounts}',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${favoriteCounts}',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                  ],
-                ),
-              ),
-              //댓글
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        plusDialog(context);
-                        Future.delayed(Duration(seconds: 4), () {
-                          print(commentList.length);
-                        });
-                      },
-                      child: Icon(Icons.chat_outlined, color: Colors.grey),
-                    ),
-                    Text(
-                      '${commentCount[diaryId]}',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
 
+                  //댓글
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            plusDialog(context);
+                          },
+                          child: Icon(Icons.chat_outlined, color: Colors.grey),
+                        ),
+                        Text(
+                          '${commentList.length}',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
 
-            ],
-          )),
+                
+                  ),
+                ],
+              )),
+
         ],
       ),
     );
   }
 }
 
-//글만 있는 거
-class customWidget2 extends StatefulWidget {
+
+// 일기 버전 1 - 텍스트 + 사진
+class customWidget1 extends StatefulWidget {
   final String simagePath;
+  final List<String>? sdiaryImage;
   final String scomment;
   final int sfavoritCount;
   final bool sfavoritColor;
@@ -581,9 +655,10 @@ class customWidget2 extends StatefulWidget {
   final bool sshare;
   final bool scomm;
 
-  const customWidget2({
+  const customWidget1({
     super.key,
     required this.simagePath,
+    required this.sdiaryImage,
     required this.scomment,
     required this.sfavoritColor,
     required this.sfavoritCount,
@@ -595,49 +670,38 @@ class customWidget2 extends StatefulWidget {
   });
 
   @override
-  State<customWidget2> createState() => _customWidget2State(
-        otherUserId,
-        diaryId,
-        scomm,
-        sshare,
-        simagePath,
-      );
+
+
+  State<customWidget1> createState() =>
+      _customWidget1State(otherUserId, diaryId);
 }
 
-class _customWidget2State extends State<customWidget2> {
-  bool sfavoritColor = false;
-  int userId = 36;
+
+
+
+class _customWidget1State extends State<customWidget1> {
+  late bool sfavoritColor; // 추가된 부분
   String imagePath = "";
+  int userId = 36;
   int diaryId = 36;
-  bool scomm = true;
-  bool sshare = true;
-
-  List<Diary> selectedEmotionDiaries = [];
-
-  //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
-
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(fn);
-    print("setState 호출됨 위젯2");
-  }
+  final List<Comment> comments = [];
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customWidget2State(
 
-    int otherUserId,
-    int diaryId,
-    bool scomm,
-    bool sshare,
-    String imagePath,
-  ) {
+  _customWidget1State(int otherUserId, int diaryId) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
-    this.imagePath = imagePath;
-    this.scomm = scomm;
-    this.sshare = sshare;
+  }
+
+  void initState() {
+    super.initState();
+
+    favoriteCounts = favoriteMap[diaryId]!.favoriteCount;
+    sfavoritColor = favoriteMap[diaryId]!.favoriteColor;
+    print("init state 좋아요 카운트: $favoriteCounts");
+
   }
 
   void plusDialog(BuildContext context) async {
@@ -778,6 +842,7 @@ class _customWidget2State extends State<customWidget2> {
                                         image: AssetImage(widget.simagePath),
                                         fit: BoxFit.contain,
                                       ),
+
                                     ),
                                   ),
                                 ))),
@@ -790,6 +855,7 @@ class _customWidget2State extends State<customWidget2> {
                                   builder: (context) =>
                                       message_write(otherUserId: userId),
                                 ),
+
                               );
                             }
                           },
@@ -802,6 +868,7 @@ class _customWidget2State extends State<customWidget2> {
                               : Container(),
                         ),
                       ],
+
                     ),
                   ),
                   Container(
@@ -857,6 +924,7 @@ class _customWidget2State extends State<customWidget2> {
                           ),
                         ],
                       ),
+
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 0, 20, 0),

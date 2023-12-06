@@ -28,7 +28,7 @@ class _writediaryState extends State<DiaryReplay> {
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
-
+    print("일기 정보 : ${diaries?.audio}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -113,13 +113,15 @@ class _writediaryState extends State<DiaryReplay> {
                                   scomment: diaries!.content,
                                   diaryId: diaries!.diaryId,
                                 );
-                              } else if (diaries!.imagePath!.isEmpty &&
+                              }
+                              else if (diaries!.imagePath!.isEmpty &&
                                   diaries!.audio == "") {
                                 return customWidget2(
                                     diaryId: diaries!.diaryId,
                                     sdate: diaries!.date,
                                     scomment: diaries!.content);
-                              } else if (diaries!.imagePath!.isEmpty &&
+                              }
+                              else if (diaries!.imagePath!.isEmpty &&
                                   diaries!.audio != "") {
                                 return customWidget3(
                                   sdate: diaries!.date,
@@ -127,7 +129,9 @@ class _writediaryState extends State<DiaryReplay> {
                                   svoice: diaries!.audio,
                                   diaryId: diaries!.diaryId,
                                 );
-                              } else {
+                              }
+                              else if (diaries!.imagePath!.isNotEmpty &&
+                                  diaries!.audio != ""){
                                 return customWidget4(
                                   sdate: diaries!.date,
                                   diaryId: diaries!.diaryId,
@@ -204,7 +208,7 @@ class _customWidget1State extends State<customWidget1> {
                             fontSize: 20,
                           ),
                         ),
-                        SizedBox(width: 90),
+                        SizedBox(width: 70),
                         IconButton(
                           onPressed: () {
                             // Navigator.push(
@@ -214,19 +218,66 @@ class _customWidget1State extends State<customWidget1> {
                           },
                           icon: Image.asset(
                             'images/main/pencil.png',
-                            width: 30,
-                            height: 30,
+                            width: 25,
+                            height: 25,
                           ),
                         ),
                         IconButton(
-                          onPressed: () {
-                            apiManager.RemoveDiary(diaryId);
-                            print('다이어리 아이디 : ${diaryId}');
+                          onPressed: () async {
+                            return showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) =>
+                                  AlertDialog(
+                                    title: Text(' '),
+                                    content: SizedBox(
+                                        height: sizeY * 0.05,
+                                        child: Center(child: Text(
+                                          "정말 삭제 하시겠습니까?", style: TextStyle(
+                                            fontFamily: 'soojin'),))
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: Color(
+                                                  0x4D968C83),
+                                              minimumSize: Size(150, 30)
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: Text('취소', style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontFamily: 'soojin'))),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: Color(
+                                                  0xFF7D5A50),
+                                              minimumSize: Size(150, 30)
+                                          ),
+                                          onPressed: () async {
+                                            apiManager.RemoveDiary(
+                                                widget.diaryId);
+                                            print('다이어리 아이디 : ${widget.diaryId}');
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyApp()));
+                                          },
+                                          child: Text('확인', style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontFamily: 'soojin'))),
+                                    ],
+                                  ),
+                            );
                           },
                           icon: Image.asset(
                             'images/main/trash.png',
-                            width: 30,
-                            height: 30,
+                            width: 25,
+                            height: 25,
                           ),
                         ),
                       ],
@@ -342,25 +393,72 @@ class _customWidget2State extends State<customWidget2> {
                             ),
                           ),
                           SizedBox(
-                            width: 90,
+                            width: 70,
                           ),
                           IconButton(
                             onPressed: () {},
                             icon: Image.asset(
                               'images/main/pencil.png',
-                              width: 30,
-                              height: 30,
+                              width: 25,
+                              height: 25,
                             ),
                           ),
                           IconButton(
-                            onPressed: () {
-                              apiManager.RemoveDiary(diaryId);
-                              print('다이어리 아이디 : ${diaryId}');
+                            onPressed: () async {
+                              return showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) =>
+                                    AlertDialog(
+                                      title: Text(' '),
+                                      content: SizedBox(
+                                          height: sizeY * 0.05,
+                                          child: Center(child: Text(
+                                            "정말 삭제 하시겠습니까?", style: TextStyle(
+                                              fontFamily: 'soojin'),))
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                elevation: 0.0,
+                                                backgroundColor: Color(
+                                                    0x4D968C83),
+                                                minimumSize: Size(150, 30)
+                                            ),
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            child: Text('취소', style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontFamily: 'soojin'))),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                elevation: 0.0,
+                                                backgroundColor: Color(
+                                                    0xFF7D5A50),
+                                                minimumSize: Size(150, 30)
+                                            ),
+                                            onPressed: () async {
+                                              apiManager.RemoveDiary(
+                                                  widget.diaryId);
+                                              print('다이어리 아이디 : ${widget.diaryId}');
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MyApp()));
+                                            },
+                                            child: Text('확인', style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontFamily: 'soojin'))),
+                                      ],
+                                    ),
+                              );
                             },
                             icon: Image.asset(
                               'images/main/trash.png',
-                              width: 30,
-                              height: 30,
+                              width: 25,
+                              height: 25,
                             ),
                           ),
                         ]),
@@ -532,7 +630,7 @@ class _customWidget3State extends State<customWidget3> {
                       ),
                     ),
                     SizedBox(
-                      width: 90,
+                      width: 70,
                     ),
                     IconButton(
                       onPressed: () {
@@ -545,19 +643,66 @@ class _customWidget3State extends State<customWidget3> {
                       },
                       icon: Image.asset(
                         'images/main/pencil.png',
-                        width: 30,
-                        height: 30,
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        apiManager.RemoveDiary(diaryId);
-                        print('다이어리 아이디 : ${diaryId}');
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
                       },
                       icon: Image.asset(
                         'images/main/trash.png',
-                        width: 30,
-                        height: 30,
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                   ]),
@@ -703,13 +848,11 @@ class _customWidget4State extends State<customWidget4> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  String imagePath = "";
-
-  //String? playAudioPath = diary?.voice; //저장할때 받아올 변수 , 재생 시 필요
 
   @override
   void initState() {
     super.initState();
+
     playAudio();
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
@@ -813,7 +956,7 @@ class _customWidget4State extends State<customWidget4> {
                         ),
                       ),
                       SizedBox(
-                        width: 90,
+                        width: 70,
                       ),
                       IconButton(
                         onPressed: () {
@@ -826,19 +969,66 @@ class _customWidget4State extends State<customWidget4> {
                         },
                         icon: Image.asset(
                           'images/main/pencil.png',
-                          width: 30,
-                          height: 30,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
-                          apiManager.RemoveDiary(diaryId);
-                          print('다이어리 아이디 : ${diaryId}');
+                        onPressed: () async {
+                          return showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) =>
+                                AlertDialog(
+                                  title: Text(' '),
+                                  content: SizedBox(
+                                      height: sizeY * 0.05,
+                                      child: Center(child: Text(
+                                        "정말 삭제 하시겠습니까?", style: TextStyle(
+                                          fontFamily: 'soojin'),))
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: Color(
+                                                0x4D968C83),
+                                            minimumSize: Size(150, 30)
+                                        ),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: Text('취소', style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontFamily: 'soojin'))),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: Color(
+                                                0xFF7D5A50),
+                                            minimumSize: Size(150, 30)
+                                        ),
+                                        onPressed: () async {
+                                          apiManager.RemoveDiary(
+                                              widget.diaryId);
+                                          print('다이어리 아이디 : ${widget.diaryId}');
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyApp()));
+                                        },
+                                        child: Text('확인', style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontFamily: 'soojin'))),
+                                  ],
+                                ),
+                          );
                         },
                         icon: Image.asset(
                           'images/main/trash.png',
-                          width: 30,
-                          height: 30,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                     ]
