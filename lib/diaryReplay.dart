@@ -569,67 +569,74 @@ class _customWidget3State extends State<customWidget3> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SliderTheme(
-                            data: SliderThemeData(
-                              inactiveTrackColor: Color(0xFFF8F5EB),
-                            ),
-                            child: Slider(
-                              min: 0,
-                              max: duration.inSeconds.toDouble(),
-                              value: position.inSeconds.toDouble(),
-                              onChanged: (value) async {
-                                setState(() {
-                                  position = Duration(seconds: value.toInt());
-                                });
-                                await audioPlayer.seek(position);
-                                //await audioPlayer.resume();
-                              },
-                              activeColor: Color(0xFF968C83),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Container(
+                            padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                            child: Column(
                               children: [
-                                Text(
-                                  formatTime(position),
-                                  style: TextStyle(color: Colors.brown),
-                                ),
-                                SizedBox(width: 20),
-                                CircleAvatar(
-                                  radius: 15,
-                                  backgroundColor: Colors.transparent,
-                                  child: IconButton(
-                                    padding: EdgeInsets.only(bottom: 50),
-                                    icon: Icon(
-                                      isPlaying ? Icons.pause : Icons.play_arrow,
-                                      color: Colors.brown,
-                                    ),
-                                    iconSize: 25,
-                                    onPressed: () async {
-                                      print("isplaying 전 : $isPlaying");
-
-                                      if (isPlaying) {
-                                        //재생중이면
-                                        await audioPlayer.pause(); //멈춤
-                                        setState(() {
-                                          isPlaying = false; //상태변경
-                                        });
-                                      } else {
-                                        //멈춘 상태였으면
-                                        await playAudio();
-                                        await audioPlayer.resume(); // 녹음된 오디오 재생
-                                      }
-                                      print("isplaying 후 : $isPlaying");
+                                SliderTheme(
+                                  data: SliderThemeData(
+                                    inactiveTrackColor: Color(0xFFF8F5EB),
+                                  ),
+                                  child: Slider(
+                                    min: 0,
+                                    max: duration.inSeconds.toDouble(),
+                                    value: position.inSeconds.toDouble(),
+                                    onChanged: (value) async {
+                                      setState(() {
+                                        position = Duration(seconds: value.toInt());
+                                      });
+                                      await audioPlayer.seek(position);
+                                      //await audioPlayer.resume();
                                     },
+                                    activeColor: Color(0xFF968C83),
                                   ),
                                 ),
-                                SizedBox(width: 20),
-                                Text(
-                                  formatTime(duration),
-                                  style: TextStyle(color: Colors.brown),
-                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        formatTime(position),
+                                        style: TextStyle(color: Colors.brown),
+                                      ),
+                                      SizedBox(width: 20),
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.transparent,
+                                        child: IconButton(
+                                          padding: EdgeInsets.only(bottom: 50),
+                                          icon: Icon(
+                                            isPlaying ? Icons.pause : Icons.play_arrow,
+                                            color: Colors.brown,
+                                          ),
+                                          iconSize: 25,
+                                          onPressed: () async {
+                                            print("isplaying 전 : $isPlaying");
+
+                                            if (isPlaying) {
+                                              //재생중이면
+                                              await audioPlayer.pause(); //멈춤고
+                                              setState(() {
+                                                isPlaying = false; //상태변경하기..?
+                                              });
+                                            } else {
+                                              //멈춘 상태였으면
+                                              await playAudio();
+                                              await audioPlayer.resume(); // 녹음된 오디오 재생
+                                            }
+                                            print("isplaying 후 : $isPlaying");
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        formatTime(duration),
+                                        style: TextStyle(color: Colors.brown),
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -869,73 +876,76 @@ class _customWidget4State extends State<customWidget4> {
                             SizedBox(
                               height: 10,
                             ),
-                            Column(
-                              children: [
-                                SliderTheme(
-                                  data: SliderThemeData(
-                                    inactiveTrackColor: Color(0xFFF8F5EB),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                              child: Column(
+                                children: [
+                                  SliderTheme(
+                                    data: SliderThemeData(
+                                      inactiveTrackColor: Color(0xFFF8F5EB),
+                                    ),
+                                    child: Slider(
+                                      min: 0,
+                                      max: duration.inSeconds.toDouble(),
+                                      value: position.inSeconds.toDouble(),
+                                      onChanged: (value) async {
+                                        setState(() {
+                                          position = Duration(seconds: value.toInt());
+                                        });
+                                        await audioPlayer.seek(position);
+                                        //await audioPlayer.resume();
+                                      },
+                                      activeColor: Color(0xFF968C83),
+                                    ),
                                   ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: duration.inSeconds.toDouble(),
-                                    value: position.inSeconds.toDouble(),
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        position = Duration(seconds: value.toInt());
-                                      });
-                                      await audioPlayer.seek(position);
-                                      //await audioPlayer.resume();
-                                    },
-                                    activeColor: Color(0xFF968C83),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        formatTime(position),
-                                        style: TextStyle(color: Colors.brown),
-                                      ),
-                                      SizedBox(width: 20),
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: Colors.transparent,
-                                        child: IconButton(
-                                          padding: EdgeInsets.only(bottom: 50),
-                                          icon: Icon(
-                                            isPlaying ? Icons.pause : Icons.play_arrow,
-                                            color: Colors.brown,
-                                          ),
-                                          iconSize: 25,
-                                          onPressed: () async {
-                                            print("isplaying 전 : $isPlaying");
-
-                                            if (isPlaying) {
-                                              //재생중이면
-                                              await audioPlayer.pause(); //멈춤
-                                              setState(() {
-                                                isPlaying = false; //상태변경
-                                              });
-                                            } else {
-                                              //멈춘 상태였으면
-                                              await playAudio();
-                                              await audioPlayer.resume(); // 녹음된 오디오 재생
-                                            }
-                                            print("isplaying 후 : $isPlaying");
-                                          },
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          formatTime(position),
+                                          style: TextStyle(color: Colors.brown),
                                         ),
-                                      ),
-                                      SizedBox(width: 20),
-                                      Text(
-                                        formatTime(duration),
-                                        style: TextStyle(color: Colors.brown),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                        SizedBox(width: 20),
+                                        CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: Colors.transparent,
+                                          child: IconButton(
+                                            padding: EdgeInsets.only(bottom: 50),
+                                            icon: Icon(
+                                              isPlaying ? Icons.pause : Icons.play_arrow,
+                                              color: Colors.brown,
+                                            ),
+                                            iconSize: 25,
+                                            onPressed: () async {
+                                              print("isplaying 전 : $isPlaying");
+
+                                              if (isPlaying) {
+                                                //재생중이면
+                                                await audioPlayer.pause(); //멈춤고
+                                                setState(() {
+                                                  isPlaying = false; //상태변경하기..?
+                                                });
+                                              } else {
+                                                //멈춘 상태였으면
+                                                await playAudio();
+                                                await audioPlayer.resume(); // 녹음된 오디오 재생
+                                              }
+                                              print("isplaying 후 : $isPlaying");
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        Text(
+                                          formatTime(duration),
+                                          style: TextStyle(color: Colors.brown),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 10,
