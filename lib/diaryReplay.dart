@@ -28,7 +28,7 @@ class _writediaryState extends State<DiaryReplay> {
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
-
+    print("일기 정보 : ${diaries?.audio}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -113,13 +113,15 @@ class _writediaryState extends State<DiaryReplay> {
                                   scomment: diaries!.content,
                                   diaryId: diaries!.diaryId,
                                 );
-                              } else if (diaries!.imagePath!.isEmpty &&
+                              }
+                              else if (diaries!.imagePath!.isEmpty &&
                                   diaries!.audio == "") {
                                 return customWidget2(
                                     diaryId: diaries!.diaryId,
                                     sdate: diaries!.date,
                                     scomment: diaries!.content);
-                              } else if (diaries!.imagePath!.isEmpty &&
+                              }
+                              else if (diaries!.imagePath!.isEmpty &&
                                   diaries!.audio != "") {
                                 return customWidget3(
                                   sdate: diaries!.date,
@@ -127,7 +129,9 @@ class _writediaryState extends State<DiaryReplay> {
                                   svoice: diaries!.audio,
                                   diaryId: diaries!.diaryId,
                                 );
-                              } else {
+                              }
+                              else if (diaries!.imagePath!.isNotEmpty &&
+                                  diaries!.audio != ""){
                                 return customWidget4(
                                   sdate: diaries!.date,
                                   diaryId: diaries!.diaryId,
@@ -176,6 +180,7 @@ class _customWidget1State extends State<customWidget1> {
 
   @override
   Widget build(BuildContext context) {
+    print("위젯 1입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -312,6 +317,7 @@ class _customWidget2State extends State<customWidget2> {
 
   @override
   Widget build(BuildContext context) {
+    print("위젯 2입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -503,6 +509,7 @@ class _customWidget3State extends State<customWidget3> {
 
   @override
   Widget build(BuildContext context) {
+    print("위젯 3입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -703,13 +710,11 @@ class _customWidget4State extends State<customWidget4> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  String imagePath = "";
-
-  //String? playAudioPath = diary?.voice; //저장할때 받아올 변수 , 재생 시 필요
 
   @override
   void initState() {
     super.initState();
+
     playAudio();
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
@@ -782,6 +787,7 @@ class _customWidget4State extends State<customWidget4> {
 
   @override
   Widget build(BuildContext context) {
+    print("위젯 4입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
