@@ -1,9 +1,11 @@
 import 'package:capston1/alramsetting.dart';
 import 'package:capston1/main.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'help.dart';
 import 'mypage.dart';
 import 'opinion.dart';
+import 'network/api_manager.dart';
 
 class category extends StatefulWidget {
   const category({super.key});
@@ -13,6 +15,15 @@ class category extends StatefulWidget {
 }
 
 class _categoryState extends State<category> {
+
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +105,7 @@ class _categoryState extends State<category> {
                       ),
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => mypage(userId: 36,))); // 수정 필요
+                            MaterialPageRoute(builder: (context) => mypage(userId:  LoginedUserInfo.loginedUserInfo.id,)));
                       },
                       child: Row(
                         children: [
@@ -283,6 +294,8 @@ class _categoryState extends State<category> {
     );
   }
 }
+
+
 
 Future<dynamic> _showLogoutDialog(BuildContext context) {
   final sizeY = MediaQuery

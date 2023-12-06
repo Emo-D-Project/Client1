@@ -3,6 +3,7 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_sound/flutter_sound.dart' as sound;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path/path.dart' as p;
+
+import 'models/Diary.dart';
 
 final String now = DateTime.now().toString();
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
@@ -23,6 +26,7 @@ class writediary extends StatefulWidget {
   State<writediary> createState() => _writediaryState();
 }
 
+DateTime nows = DateTime.now();
 
 class _writediaryState extends State<writediary> {
   final ImagePicker _picker = ImagePicker(); //이미지 선택 시 필요
@@ -51,6 +55,9 @@ class _writediaryState extends State<writediary> {
   bool isPlaying = false; //현재 재생중인지
 
   Duration position = Duration.zero; //진행중인 시간
+
+  List<Diary> diaries = [];
+  String emotionToday = ''; // late 키워드를 사용해 초기화를 뒤로 미룸
 
   @override
   void initState() {
@@ -92,23 +99,6 @@ class _writediaryState extends State<writediary> {
     super.dispose();
   }
 
-  // Future<void> playAudio() async {
-  //   try {
-  //     if (await soundPlayer.isStopped) {
-  //       await soundPlayer.startPlayer(fromURI: playAudioPath);
-  //       setState(() {
-  //         isPlaying = true;
-  //       });
-  //       print('오디오 재생 시작: $playAudioPath');
-  //     } else {
-  //       print('오디오가 이미 재생 중입니다.');
-  //     }
-  //   } catch (e) {
-  //     print("audioPath : $playAudioPath");
-  //     print("오디오 재생 중 오류 발생 : $e");
-  //   }
-  // }
-
   Future<void> GetWriteDiary(String endpoint) async {
     try {
       final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
@@ -118,6 +108,33 @@ class _writediaryState extends State<writediary> {
       //title = response['title'];
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+
+      setState(() {
+        diaries = data; // fetchDataFromServer()가 완료된 후에 감정을 설정함
+        emotionToday = diaries
+            .firstWhere(
+              (diary) =>
+          diary.date.year == nows.year &&
+              diary.date.month == nows.month &&
+              diary.date.day == nows.day &&
+              diary.userId ==  LoginedUserInfo.loginedUserInfo.id,
+          orElse: () => Diary(
+            imagePath: [],
+            date: DateTime.now(),
+            content: '',
+            emotion: 'calmness', // 기본 감정 설정
+          ),
+        ).emotion;
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
     }
   }
 
@@ -132,14 +149,20 @@ class _writediaryState extends State<writediary> {
         'is_comm': _isChecked,
       };
 
-      print("write diary의 audioPath, diaryImage: $audioPath || $diaryImage");
-      apiManager.sendPostDiary(postData, diaryImage, audioPath);
-
-      final postAudio = {'audioFile' : audioPath};
-
+      print("diaryImage : $diaryImage");
+      print("write diary의 audioPath: $audioPath");
       print(postData);
+
+      await apiManager.sendPostDiary(postData, diaryImage, audioPath);
+
+      fetchDataFromServer();
+
+      //final postImage = {'imageFile' : diaryImage ?? 'default_image_path'};
+      //final postAudio = {'audioFile': audioPath ?? 'default_audio_path'};
     } catch (e) {
-      print('Error: $e');
+      // apiManager.sendPostDiary에서 발생한 오류 처리
+      print('Error sending post diary: $e');
+      // 에러를 더 자세히 처리하거나 사용자에게 알릴 수 있습니다.
     }
   }
 
@@ -232,59 +255,6 @@ class _writediaryState extends State<writediary> {
 
   }
 
-  //파일 서버에 보내기
-  //run(audioFile as String);
-
-  // Future<String> run(String audioUrl) async {
-  //   String openApiURL = " ";
-  //   String accessKey = " "; // 발급받은 API Key
-  //   String languageCode = "korean"; // 언어 코드
-  //   String audioFilePath = audioUrl; // 녹음된 음성 파일 경로
-  //   String audioContents;
-  //   var gson = JsonCodec();
-  //
-  //   Map<String, dynamic> request = {
-  //     'argument': {'language_code': languageCode},
-  //   };
-  //
-  //   try {
-  //     var file = File(audioFilePath);
-  //     var audioBytes = await file.readAsBytes();
-  //     audioContents = base64.encode(audioBytes);
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  //
-  //  // request['argument']['audio'] = audioContents;
-  //
-  //   var url = Uri.parse(openApiURL);
-  //   var responseCode;
-  //   var responseBody;
-  //
-  //   try {
-  //     var request = await HttpClient().postUrl(url);
-  //     request.headers.set('Content-Type', 'application/json; charset=UTF-8');
-  //     request.headers.set('Authorization', accessKey);
-  //
-  //     request.write(json.encode(request));
-  //     var response = await request.close();
-  //
-  //     responseCode = response.statusCode;
-  //     var contents = await utf8.decodeStream(response);
-  //     responseBody = contents;
-  //
-  //     print('[responseCode] $responseCode');
-  //     print('[responseBody]');
-  //     print(responseBody);
-  //
-  //     return 'responseBody: $responseBody';
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  //
-  //   return '';
-  // }
-
   String formatTime(Duration duration) {
     print("formatTime duration: $duration");
 
@@ -296,8 +266,6 @@ class _writediaryState extends State<writediary> {
     print("formatTime result: $result");
     return result;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -380,6 +348,8 @@ class _writediaryState extends State<writediary> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               PostWriteDiary("/api/diaries/create");
+              fetchDataFromServer();
+
             },
             icon: Image.asset(
               "images/send/upload.png",

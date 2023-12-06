@@ -1,6 +1,4 @@
-import 'package:capston1/models/Diary.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/models/Comment.dart';
 
@@ -11,7 +9,10 @@ List<Comment> commentList = [];
 class comment extends StatefulWidget {
   final int postId;
 
-  const comment({super.key, required this.postId});
+  const comment({
+    super.key,
+    required this.postId,
+  });
 
   @override
   State<comment> createState() => _commentState(postId);
@@ -23,6 +24,9 @@ class _commentState extends State<comment> {
 
   late int postId;
   late String comment;
+  int id = 0;
+
+  int Myid = 0;
 
   final Map<int, List<int>> userTitle = {};
   final Map<int, List<Comment>> commentCount = {};
@@ -35,10 +39,10 @@ class _commentState extends State<comment> {
   void initState() {
     super.initState();
     fetchDataFromServer();
+    fetchMyIDFromServer();
   }
 
-  // 다이어리 아이디랑 페이보릿 카운트
-
+  // 다이어리 아이디 카운트
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getCommentData(postId);
@@ -52,9 +56,22 @@ class _commentState extends State<comment> {
             count++;
           }
         }
+
       });
     } catch (error) {
       print('Error getting Comment list : $error');
+    }
+  }
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
     }
   }
 
@@ -72,6 +89,14 @@ class _commentState extends State<comment> {
       final value = response['comment'];
       print('comment: $value');
       comment = value;
+    } catch (e) {
+      print('Error: $e');
+    }
+    try {
+      final response = await apiManager.Get(endpoint);
+      final value = response['id'];
+      print('id: $value');
+      id = value;
     } catch (e) {
       print('Error: $e');
     }
@@ -151,36 +176,91 @@ class _commentState extends State<comment> {
                         ),
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                      child: Text(
+                                        '삼냥이 ${catCount[commentList[index].user_id]}',
+                                        //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF7D5A50),
+                                          fontFamily: 'soojin',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 Container(
+                                  width: 300,
                                   padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                   child: Text(
-                                    '삼냥이 ${catCount[commentList[index].user_id]}',
-                                    //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
+                                    commentList[index].content,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF7D5A50),
                                       fontFamily: 'soojin',
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                              child: Text(
-                                commentList[index].content,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: 'soojin',
-                                ),
+                            //Padding(padding: EdgeInsets.fromLTRB(200, 0, 0, 0),),
+                            Visibility(
+                              visible: commentList[index].user_id == Myid,
+                              child: IconButton(
+                                onPressed: () async {
+                                  return showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: Text(' '),
+                                          content: SizedBox(
+                                              height: sizeY * 0.05,
+                                              child: Center(child: Text(
+                                                "정말 삭제 하시겠습니까?", style: TextStyle(fontFamily: 'soojin'),))
+                                          ),
+                                          actions: [
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    elevation: 0.0,
+                                                    backgroundColor: Color(0x4D968C83),
+                                                    minimumSize: Size(150, 30)
+                                                ),
+                                                onPressed: () => Navigator.of(context).pop(),
+                                                child: Text('취소', style: TextStyle(
+                                                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    elevation: 0.0,
+                                                    backgroundColor: Color(0xFF7D5A50),
+                                                    minimumSize: Size(150, 30)
+                                                ),
+                                                onPressed: () async {
+                                                  apiManager.RemoveComment(commentList[index].id);
+                                                  await Future.delayed(Duration(milliseconds: 500));
+
+                                                  fetchDataFromServer();
+                                                  Navigator.of(context).pop();
+
+                                                  print('댓글 아이디 : ${commentList[index].id}');
+                                                },
+                                                child: Text('확인', style: TextStyle(
+                                                    color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),
+                                          ],
+                                        ),
+                                  );
+                                },
+                                icon: Image.asset('images/main/trash.png', width: 20, height: 20,),
                               ),
                             ),
                           ],
@@ -237,9 +317,8 @@ class _commentState extends State<comment> {
                         onTap: () async {
                           print('  ${commentList.length}');
                           _sendComment();
-
-                          await Future.delayed(Duration(milliseconds: 100));
-
+                          fetchDataFromServer();
+                          await Future.delayed(Duration(milliseconds: 500));
                           final data = await apiManager.getCommentData(postId);
                           setState(() {
                             commentList = data!;

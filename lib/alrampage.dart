@@ -3,6 +3,7 @@ import 'package:capston1/MessageRoom.dart';
 import 'package:flutter/material.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
+import 'package:capston1/otherMypage.dart';
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -340,6 +341,7 @@ class FirstScreen extends StatelessWidget {
 
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
+//  late final int otherUserId;
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
@@ -349,7 +351,6 @@ class _SecondScreenState extends State<SecondScreen> {
 
   late String message_content = " ";
   late int sender_Id;
-
   late int receiver_Id;
   late DateTime sentAt;
 
@@ -375,13 +376,13 @@ class _SecondScreenState extends State<SecondScreen> {
     }
   }
 
-  // 화면을 갱신하는 메서드
+/*  // 화면을 갱신하는 메서드
   void _updateScreen() {
     // setState()를 호출하여 상태를 변경하고 화면을 다시 그림
     setState(() {
       //myData = '갱신된 값';
     });
-  }
+  }*/
 
   // 서버에서 가져온 가상의 채팅방 목록
   Future<void> GetMessage(String endpoint) async {
@@ -448,29 +449,41 @@ class _SecondScreenState extends State<SecondScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MessageRoom(
-                              otherUserId: int.parse(chatRooms[index].id),
+                              otherUserId: (chatRooms[index].otherUserId),
                             )),
                   ).then((value) async {
-                    // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
-                    // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
-                    await Future.delayed(Duration(
-                        milliseconds: 100)); // 0.5초 대기 (500 milliseconds)
-                    fetchDataFromServer();
+                    await Future.delayed(Duration(milliseconds: 500)); // 0.5초 대기 (500 milliseconds)
+                    setState(() {
+                      fetchDataFromServer();
+                      chatRooms[index].isRead = true;
+                      print("읽음 : ${chatRooms[index].isRead}");
+
+                    });
                   });
                 },
-                child: Container(
-                  width: sizeX * 0.9,
+
                   child: Container(
                     width: double.infinity,
                     child: Row(
                       children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                          child: Image.asset(
-                            "images/send/cat_real_image.png",
-                            fit: BoxFit.contain,
+                        IconButton(
+                          iconSize: 43,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => otherMypage(
+                                  userId: (chatRooms[index].otherUserId),
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Container(
+                            padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                            child: Image.asset(
+                              "images/send/cat_real_image.png",
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                         Expanded(
@@ -484,7 +497,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                   "삼냥이",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.brown,
                                   ),
@@ -517,7 +530,6 @@ class _SecondScreenState extends State<SecondScreen> {
                       ],
                     ),
                   ),
-                ),
               );
             },
             separatorBuilder: (BuildContext context, int index) => Divider(
