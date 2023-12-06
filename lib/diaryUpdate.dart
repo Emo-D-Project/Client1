@@ -236,7 +236,7 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
                         ),
                       ),
                       SizedBox(
-                        width: 110,
+                        width: 70,
                       ),
                       IconButton(
                         onPressed: () {
@@ -248,19 +248,66 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
                         },
                         icon: Image.asset(
                           'images/main/pencil.png',
-                          width: 30,
-                          height: 30,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
-                          apiManager.RemoveDiary(diary!.diaryId);
-                          print('다이어리 아이디 : ${diary!.diaryId}');
+                        onPressed: () async {
+                          return showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) =>
+                                AlertDialog(
+                                  title: Text(' '),
+                                  content: SizedBox(
+                                      height: sizeY * 0.05,
+                                      child: Center(child: Text(
+                                        "정말 삭제 하시겠습니까?", style: TextStyle(
+                                          fontFamily: 'soojin'),))
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: Color(
+                                                0x4D968C83),
+                                            minimumSize: Size(150, 30)
+                                        ),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: Text('취소', style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontFamily: 'soojin'))),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: Color(
+                                                0xFF7D5A50),
+                                            minimumSize: Size(150, 30)
+                                        ),
+                                        onPressed: () async {
+                                          apiManager.RemoveDiary(
+                                              diary!.diaryId);
+                                          print('다이어리 아이디 : ${diary!.diaryId}');
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyApp()));
+                                        },
+                                        child: Text('확인', style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontFamily: 'soojin'))),
+                                  ],
+                                ),
+                          );
                         },
                         icon: Image.asset(
                           'images/main/trash.png',
-                          width: 30,
-                          height: 30,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                     ]),
