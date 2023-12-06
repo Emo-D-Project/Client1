@@ -180,7 +180,7 @@ class ApiManager {
 
     if (response.statusCode == 200) {
       // 통신 성공 시
-      print("getCalendarData에서 서버로부터 받아온 데이터의 body : " + response.body);
+      print("getCalendarData에서 서버로부터 받아온 데이터의 body : ${response.body}");
 
       Map<DateTime, String> output =
       convertToDateTimeMap(json.decode(response.body));
