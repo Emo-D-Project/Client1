@@ -3,6 +3,7 @@ import 'package:capston1/MessageRoom.dart';
 import 'package:flutter/material.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
+import 'package:capston1/otherMypage.dart';
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -460,19 +461,29 @@ class _SecondScreenState extends State<SecondScreen> {
                     });
                   });
                 },
-                child: Container(
-                  width: sizeX * 0.9,
+
                   child: Container(
                     width: double.infinity,
                     child: Row(
                       children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                          child: Image.asset(
-                            "images/send/cat_real_image.png",
-                            fit: BoxFit.contain,
+                        IconButton(
+                          iconSize: 43,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => otherMypage(
+                                  userId: (chatRooms[index].otherUserId),
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Container(
+                            padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                            child: Image.asset(
+                              "images/send/cat_real_image.png",
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                         Expanded(
@@ -486,7 +497,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                   "삼냥이",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.brown,
                                   ),
@@ -519,7 +530,6 @@ class _SecondScreenState extends State<SecondScreen> {
                       ],
                     ),
                   ),
-                ),
               );
             },
             separatorBuilder: (BuildContext context, int index) => Divider(
