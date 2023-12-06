@@ -193,7 +193,6 @@ class _diaryshareState extends State<diaryshare> {
                 selectedEmotionDiaries.forEach((element) {
                   print("selected diaries emotion: ${element.emotion}");
                 });
-
                 DateTime formattedDateTime = selectedEmotionDiaries[index].date;
                 String emotionImagePath;
 
