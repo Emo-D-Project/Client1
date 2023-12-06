@@ -9,7 +9,8 @@ class Diary {
   int userId;
   int diaryId;
   int scommentCount;
-
+  bool is_share;
+  bool is_comm;
 
 
   Diary({
@@ -17,6 +18,8 @@ class Diary {
     required this.content,
     required this.emotion,
     required this.imagePath,
+    required this.is_comm,
+    required this.is_share,
     this.diaryId = 0,
     this.audio = "",
     this.favoriteCount = 0,

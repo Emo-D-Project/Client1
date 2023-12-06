@@ -39,6 +39,8 @@ class _homeState extends State<home> {
                   diary.date.day == now.day &&
                   diary.userId ==  LoginedUserInfo.loginedUserInfo.id,
               orElse: () => Diary(
+                is_share: true,
+                is_comm: true,
                 imagePath: [],
                 date: DateTime.now(),
                 content: '',

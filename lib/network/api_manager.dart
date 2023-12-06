@@ -247,6 +247,8 @@ class ApiManager {
           imagePath: List<String>.from(data['images'].where((element) => element != null) ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
           diaryId: data['id'] ?? 0,
+          is_comm: data['is_comm'] ?? true,
+          is_share: data['is_share'] ?? true,
         );
       }).toList();
 
@@ -539,6 +541,8 @@ class ApiManager {
           imagePath: List<String>.from(data['images']?.where((element) => element != null) ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
           diaryId: data['id'] ?? 0,
+          is_comm: data['is_comm'] ?? true,
+          is_share: data['is_share'] ?? true,
         );
       }).toList();
 
@@ -946,6 +950,8 @@ class ApiManager {
         userId: rawData['user_id']as int ?? 0,
         audio: rawData['audio'] ?? "",
         imagePath: List<String>.from(rawData['images'].where((element) => element != null) ?? const []),
+        is_share: rawData['is_share'] ?? true,
+        is_comm: rawData['is_comm'] ?? true,
       );
       return diaries;
     } else {

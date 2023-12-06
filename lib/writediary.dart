@@ -99,18 +99,6 @@ class _writediaryState extends State<writediary> {
     super.dispose();
   }
 
-  Future<void> GetWriteDiary(String endpoint) async {
-    try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-      // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-      //title = response['title'];
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getDiaryShareData();
@@ -125,6 +113,8 @@ class _writediaryState extends State<writediary> {
               diary.date.day == nows.day &&
               diary.userId ==  LoginedUserInfo.loginedUserInfo.id,
           orElse: () => Diary(
+            is_comm: true,
+            is_share: true,
             imagePath: [],
             date: DateTime.now(),
             content: '',
@@ -349,7 +339,6 @@ class _writediaryState extends State<writediary> {
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               PostWriteDiary("/api/diaries/create");
               fetchDataFromServer();
-
             },
             icon: Image.asset(
               "images/send/upload.png",
