@@ -20,7 +20,7 @@ String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 class writediary extends StatefulWidget {
   const writediary({super.key, required this.emotion});
 
-  final String emotion;  //감정 선택해서 넘어온 값
+  final String emotion; //감정 선택해서 넘어온 값
 
   @override
   State<writediary> createState() => _writediaryState();
@@ -41,14 +41,13 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
-
   final _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
   bool isRecording = false; //녹음 상태
-  String audioPath = '';  //녹음중단 시 경로 받아올 변수
-  String playAudioPath = '';  //저장할때 받아올 변수 , 재생 시 필요
+  String audioPath = ''; //녹음중단 시 경로 받아올 변수
+  String playAudioPath = ''; //저장할때 받아올 변수 , 재생 시 필요
 
   //재생에 필요한 것들
   final AudioPlayer audioPlayer = AudioPlayer(); //오디오 파일을 재생하는 기능 제공
@@ -61,12 +60,10 @@ class _writediaryState extends State<writediary> {
 
   @override
   void initState() {
-
     super.initState();
     playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
-
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -163,9 +160,9 @@ class _writediaryState extends State<writediary> {
       }
 
       await audioPlayer.setSourceDeviceFile(playAudioPath);
-      print("duration: $duration" );
+      print("duration: $duration");
       await Future.delayed(Duration(seconds: 2));
-      print("after wait duration: $duration" );
+      print("after wait duration: $duration");
 
       setState(() {
         duration = duration;
@@ -212,7 +209,7 @@ class _writediaryState extends State<writediary> {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final newPath =
-      p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
+          p.join(directory.path, 'recordings'); // recordings 디렉터리 생성
       final newFile = File(p.join(
           newPath, 'audio.mp3')); // 여기서 'audio.mp3'는 파일명을 나타냅니다. 필요에 따라 변경 가능
       if (!(await newFile.parent.exists())) {
@@ -242,7 +239,6 @@ class _writediaryState extends State<writediary> {
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
     print("savedFilePath: $savedFilePath");
-
   }
 
   String formatTime(Duration duration) {
@@ -259,14 +255,8 @@ class _writediaryState extends State<writediary> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeX = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final sizeY = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final sizeX = MediaQuery.of(context).size.width;
+    final sizeY = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -396,12 +386,11 @@ class _writediaryState extends State<writediary> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius.circular(5),
+                                                  BorderRadius.circular(5),
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
                                                 image: FileImage(
-                                                  File(diaryImage[index]!
-                                                      .path),
+                                                  File(diaryImage[index]!.path),
                                                 ),
                                               )),
                                         ),
@@ -423,7 +412,8 @@ class _writediaryState extends State<writediary> {
                                       value: position.inSeconds.toDouble(),
                                       onChanged: (value) async {
                                         setState(() {
-                                          position = Duration(seconds: value.toInt());
+                                          position =
+                                              Duration(seconds: value.toInt());
                                         });
                                         await audioPlayer.seek(position);
                                         //await audioPlayer.resume();
@@ -435,8 +425,8 @@ class _writediaryState extends State<writediary> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           formatTime(position),
@@ -447,25 +437,29 @@ class _writediaryState extends State<writediary> {
                                           radius: 15,
                                           backgroundColor: Colors.transparent,
                                           child: IconButton(
-                                            padding: EdgeInsets.only(
-                                                bottom: 50),
+                                            padding:
+                                                EdgeInsets.only(bottom: 50),
                                             icon: Icon(
-                                              isPlaying ? Icons.pause : Icons
-                                                  .play_arrow,
+                                              isPlaying
+                                                  ? Icons.pause
+                                                  : Icons.play_arrow,
                                               color: Colors.brown,
                                             ),
                                             iconSize: 25,
                                             onPressed: () async {
                                               print("isplaying 전 : $isPlaying");
 
-                                              if (isPlaying) {  //재생중이면
+                                              if (isPlaying) {
+                                                //재생중이면
                                                 await audioPlayer.pause(); //멈춤고
                                                 setState(() {
                                                   isPlaying = false; //상태변경하기..?
                                                 });
-                                              } else { //멈춘 상태였으면
+                                              } else {
+                                                //멈춘 상태였으면
                                                 await playAudio();
-                                                await audioPlayer.resume();// 녹음된 오디오 재생
+                                                await audioPlayer
+                                                    .resume(); // 녹음된 오디오 재생
                                               }
                                               print("isplaying 후 : $isPlaying");
                                             },
@@ -483,24 +477,28 @@ class _writediaryState extends State<writediary> {
                               ),
                             ),
                             //음성
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: TextField(
-                                style: TextStyle(fontFamily: 'soojin'),
-                                controller: _contentEditController,
-                                maxLines: 10,
-                                decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 1.0,
-                                        ))),
+                            SingleChildScrollView(
+                              reverse: true,  // 키보드에 맞춰서 올라가도록 설정
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                child: TextField(
+                                  style: TextStyle(fontFamily: 'soojin'),
+                                  controller: _contentEditController,
+                                  maxLines: 10,
+                                  decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1.0,
+                                  ))),
+                                ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ), //일기 내용
+
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 3, 0),
                       child: Row(
@@ -510,7 +508,7 @@ class _writediaryState extends State<writediary> {
                             child: IconButton(
                               onPressed: () async {
                                 final List<XFile> image =
-                                await _picker.pickMultiImage();
+                                    await _picker.pickMultiImage();
                                 setState(() {
                                   diaryImage.addAll(image);
                                 });
