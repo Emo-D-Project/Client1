@@ -200,49 +200,51 @@ class _customWidget1State extends State<customWidget1> {
               margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Row(
                 children: [
-
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Row(
-                      children: [
-                        SizedBox(width: 30),
-                        Text(
-                          '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                          style: TextStyle(
-                            fontFamily: 'soojin',
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(width: 70),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DiaryUpdate(diaryId : diaryId)),
-                            );
-                          },
-                          icon: Image.asset(
-                            'images/main/pencil.png',
-                            width: 25,
-                            height: 25,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            return showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
-                                    title: Text(' '),
-                                    content: SizedBox(
-                                        height: sizeY * 0.05,
-                                        child: Center(child: Text(
-                                          "정말 삭제 하시겠습니까?", style: TextStyle(
-                                            fontFamily: 'soojin'),))
-
+                  SizedBox(width: 30),
+                  Text(
+                    '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                    style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 20,
+                    ),
+                  ),
+                  SizedBox(width: 70),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DiaryUpdate(diaryId : diaryId)),
+                      );
+                    },
+                    icon: Image.asset(
+                      'images/main/pencil.png',
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      return showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) =>
+                            AlertDialog(
+                              title: Text(' '),
+                              content: SizedBox(
+                                  height: sizeY * 0.05,
+                                  child: Center(child: Text(
+                                    "정말 삭제 하시겠습니까?", style: TextStyle(
+                                      fontFamily: 'soojin'),))
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0.0,
+                                        backgroundColor: Color(
+                                            0x4D968C83),
+                                        minimumSize: Size(150, 30)
                                     ),
                                     onPressed: () =>
                                         Navigator.of(context).pop(),
@@ -391,98 +393,38 @@ class _customWidget2State extends State<customWidget2> {
                     fontFamily: 'soojin',
                     fontSize: 20,
                   ),
-
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(children: [
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(
-                            '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                            style: TextStyle(
-                              fontFamily: 'soojin',
-                              fontSize: 20,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 70,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DiaryUpdate(diaryId : diaryId)),
-                              );
-                            },
-                            icon: Image.asset(
-                              'images/main/pencil.png',
-                              width: 25,
-                              height: 25,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              return showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
-                                      title: Text(' '),
-                                      content: SizedBox(
-                                          height: sizeY * 0.05,
-                                          child: Center(child: Text(
-                                            "정말 삭제 하시겠습니까?", style: TextStyle(
-                                              fontFamily: 'soojin'),))
-                                      ),
-                                      actions: [
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                backgroundColor: Color(
-                                                    0x4D968C83),
-                                                minimumSize: Size(150, 30)
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: Text('취소', style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontFamily: 'soojin'))),
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                backgroundColor: Color(
-                                                    0xFF7D5A50),
-                                                minimumSize: Size(150, 30)
-                                            ),
-                                            onPressed: () async {
-                                              apiManager.RemoveDiary(
-                                                  widget.diaryId);
-                                              print('다이어리 아이디 : ${widget.diaryId}');
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MyApp()));
-                                            },
-                                            child: Text('확인', style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontFamily: 'soojin'))),
-                                      ],
-                                    ),
-                              );
-                            },
-                            icon: Image.asset(
-                              'images/main/trash.png',
-                              width: 25,
-                              height: 25,
+                ),
+                SizedBox(
+                  width: 70,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DiaryUpdate(diaryId : diaryId)),
+                    );
+                  },
+                  icon: Image.asset(
+                    'images/main/pencil.png',
+                    width: 25,
+                    height: 25,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    return showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) =>
+                          AlertDialog(
+                            title: Text(' '),
+                            content: SizedBox(
+                                height: sizeY * 0.05,
+                                child: Center(child: Text(
+                                  "정말 삭제 하시겠습니까?", style: TextStyle(
+                                    fontFamily: 'soojin'),))
                             ),
                             actions: [
                               ElevatedButton(
@@ -672,63 +614,69 @@ class _customWidget3State extends State<customWidget3> {
     final sizeY = MediaQuery.of(context).size.height;
 
     return Container(
-
-            width: sizeX * 0.9,
-            height: sizeY * 0.8,
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Row(children: [
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                      style: TextStyle(
-                        fontFamily: 'soojin',
-                        fontSize: 20,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 70,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  DiaryUpdate(diaryId : diaryId)),
-                        );
-                      },
-                      icon: Image.asset(
-                        'images/main/pencil.png',
-                        width: 25,
-                        height: 25,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        return showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) =>
-                              AlertDialog(
-                                title: Text(' '),
-                                content: SizedBox(
-                                    height: sizeY * 0.05,
-                                    child: Center(child: Text(
-                                      "정말 삭제 하시겠습니까?", style: TextStyle(
-                                        fontFamily: 'soojin'),))
-
+      width: sizeX * 0.9,
+      height: sizeY * 0.8,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(children: [
+              SizedBox(
+                width: 30,
+              ),
+              Text(
+                '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                style: TextStyle(
+                  fontFamily: 'soojin',
+                  fontSize: 20,
+                ),
+              ),
+              SizedBox(
+                width: 70,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DiaryUpdate(diaryId : diaryId)),
+                  );
+                },
+                icon: Image.asset(
+                  'images/main/pencil.png',
+                  width: 25,
+                  height: 25,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  return showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) =>
+                        AlertDialog(
+                          title: Text(' '),
+                          content: SizedBox(
+                              height: sizeY * 0.05,
+                              child: Center(child: Text(
+                                "정말 삭제 하시겠습니까?", style: TextStyle(
+                                  fontFamily: 'soojin'),))
+                          ),
+                          actions: [
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Color(
+                                        0x4D968C83),
+                                    minimumSize: Size(150, 30)
                                 ),
                                 onPressed: () =>
                                     Navigator.of(context).pop(),
@@ -1033,22 +981,63 @@ class _customWidget4State extends State<customWidget4> {
                         width: 25,
                         height: 25,
                       ),
-
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DiaryUpdate(diaryId : diaryId)),
-                          );
-                        },
-                        icon: Image.asset(
-                          'images/main/pencil.png',
-                          width: 25,
-                          height: 25,
-                        ),
-
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
+                      },
+                      icon: Image.asset(
+                        'images/main/trash.png',
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                   ]
