@@ -10,6 +10,8 @@ class Diary {
   int diaryId;
   int scommentCount;
 
+
+
   Diary({
     required this.date,
     required this.content,

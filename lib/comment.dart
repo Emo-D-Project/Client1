@@ -42,7 +42,7 @@ class _commentState extends State<comment> {
     fetchMyIDFromServer();
   }
 
-  // 다이어리 아이디랑 페이보릿 카운트
+  // 다이어리 아이디 카운트
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getCommentData(postId);
@@ -200,7 +200,7 @@ class _commentState extends State<comment> {
                                   ],
                                 ),
                                 Container(
-                                  width: 300,
+                                  width: 270,
                                   padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                   child: Text(
                                     commentList[index].content,

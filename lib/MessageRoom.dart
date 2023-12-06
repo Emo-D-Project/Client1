@@ -52,47 +52,40 @@ class _MessageRoomState extends State<MessageRoom> {
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "채팅방입니다",
+        title: Text(
+              "채팅방",
               style: TextStyle(
                 fontSize: 30,
                 fontFamily: 'kim',
                 color: Color(0xFF968C83),
               ),
             ),
-            SizedBox(width: 110), // 간격 조절
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        message_write(otherUserId: otherUserId),
-                  ),
-                ).then((value) async {
-                  // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
-                  // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
-                  await Future.delayed(Duration(seconds: 1)); // 1초 대기
-                  fetchDataFromServer();
-                });
-              },
-              icon: Image.asset(
-                'images/send/real_send.png',
-                height: 50, // 이미지 높이 조절
-                width: 30, // 이미지 너비 조절
-              ),
-            ),
-          ],
-        ),
+            actions:[ IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          message_write(otherUserId: otherUserId),
+                    ),
+                  ).then((value) async {
+                    // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
+                    // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
+                    await Future.delayed(Duration(seconds: 1)); // 1초 대기
+                    fetchDataFromServer();
+                  });
+                },
+                icon: Image.asset(
+                  'images/send/real_send.png',
+                  height: 30, // 이미지 높이 조절
+                  width: 30, // 이미지 너비 조절
+                ),
+              ),] // 간격 조절
       ),
       body: ListView.builder(
         itemCount: messageList.length,

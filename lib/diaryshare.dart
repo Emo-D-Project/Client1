@@ -166,10 +166,7 @@ class _diaryshareState extends State<diaryshare> {
                       height: 50,
                     ),
                     onPressed: () async {
-                      await Future.delayed(Duration(seconds: 5), () {
-                        // 이곳에 4초 후에 실행될 코드 작성
-                        print("After 0.5 seconds");
-                      });
+                      await Future.delayed(Duration(milliseconds: 500), () {});
                       setState(() {
                         // 해당 이미지에 대한 일기 내용을 찾기
                         List<Diary> diariesWithSelectedEmotion = diaries
@@ -191,13 +188,11 @@ class _diaryshareState extends State<diaryshare> {
               padding: const EdgeInsets.all(10),
               itemCount: selectedEmotionDiaries.length,
               itemBuilder: (BuildContext context, int index) {
-
                 print(
                     "selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
                 selectedEmotionDiaries.forEach((element) {
                   print("selected diaries emotion: ${element.emotion}");
                 });
-
                 DateTime formattedDateTime = selectedEmotionDiaries[index].date;
                 String emotionImagePath;
 
@@ -235,7 +230,7 @@ class _diaryshareState extends State<diaryshare> {
                   return SizedBox(
                     child: (() {
                       if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
-                          selectedEmotionDiaries[index].audio=="") {
+                          selectedEmotionDiaries[index].audio == "") {
                         return customWidget1(
                           simagePath: emotionImagePath,
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
@@ -252,7 +247,7 @@ class _diaryshareState extends State<diaryshare> {
                       } else if (selectedEmotionDiaries[index]
                               .imagePath!
                               .isEmpty &&
-                          selectedEmotionDiaries[index].audio=="") {
+                          selectedEmotionDiaries[index].audio == "") {
                         return customWidget2(
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
@@ -268,7 +263,7 @@ class _diaryshareState extends State<diaryshare> {
                       } else if (selectedEmotionDiaries[index]
                               .imagePath!
                               .isEmpty &&
-                          selectedEmotionDiaries[index].audio!="") {
+                          selectedEmotionDiaries[index].audio != "") {
                         return customwidget3(
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
@@ -285,7 +280,7 @@ class _diaryshareState extends State<diaryshare> {
                       } else if (selectedEmotionDiaries[index]
                               .imagePath!
                               .isNotEmpty &&
-                          selectedEmotionDiaries[index].audio!="") {
+                          selectedEmotionDiaries[index].audio != "") {
                         return customwidget4(
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
@@ -346,7 +341,6 @@ class customWidget1 extends StatefulWidget {
 
 class _customWidget1State extends State<customWidget1> {
   late bool sfavoritColor; // 추가된 부분
-
   String imagePath = "";
   int userId = 36;
   int diaryId = 36;
@@ -606,10 +600,7 @@ class _customWidget2State extends State<customWidget2> {
   String imagePath = "";
   int diaryId = 36;
 
-
   List<Diary> selectedEmotionDiaries = [];
-
-
 
   //TextEditingController _commentController = TextEditingController();
   int favoriteCounts = 0;
@@ -691,7 +682,7 @@ class _customWidget2State extends State<customWidget2> {
         // formattedDate와 같은 날짜의 일기만 필터링
         selectedEmotionDiaries = diaries
             .where((diary) =>
-        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+                DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
             .toList();
       });
     } catch (error) {
@@ -1293,6 +1284,7 @@ class customwidget4 extends StatefulWidget {
 }
 
 class _customwidget4State extends State<customwidget4> {
+  String imagePath = "";
   int favoriteCounts = 0;
   bool sfavoritColor = false;
   int userId = -1;
@@ -1302,8 +1294,8 @@ class _customwidget4State extends State<customwidget4> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customwidget4State(int otherUserId, int diaryId) {
-    this.otherUserId = otherUserId;
-    this.userId = diaryId;
+    this.userId = otherUserId;
+    this.diaryId = diaryId;
   }
 
   void plusDialog(BuildContext context) async {
@@ -1332,7 +1324,6 @@ class _customwidget4State extends State<customwidget4> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  String imagePath = "";
 
   @override
   void initState() {
@@ -1488,6 +1479,7 @@ class _customwidget4State extends State<customwidget4> {
                     ],
                   ),
                 ),
+                //이미지
                 SingleChildScrollView(
                   child: Container(
                     width: 200,
