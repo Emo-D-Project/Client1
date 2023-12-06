@@ -132,7 +132,7 @@ class _writediaryState extends State<writediary> {
         'is_comm': _isChecked,
       };
 
-      print("write diary의 audioPath: $audioPath");
+      print("write diary의 audioPath, diaryImage: $audioPath || $diaryImage");
       apiManager.sendPostDiary(postData, diaryImage, audioPath);
 
       final postAudio = {'audioFile' : audioPath};
