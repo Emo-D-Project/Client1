@@ -892,6 +892,12 @@ class _customWidget3State extends State<customWidget3> {
     });
   }
 
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
   Future<void> playAudio() async {
     try {
       if (isPlaying == PlayerState.playing) {
