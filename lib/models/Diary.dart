@@ -27,7 +27,6 @@ class Diary {
     this.favoriteColor = false,
     this.userId = 1,
     this.scommentCount = 0,
-    this.is_share = true,
-    this.is_comm = true,
+
   });
 }
