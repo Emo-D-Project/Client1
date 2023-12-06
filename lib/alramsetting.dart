@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'category.dart';
 import 'package:flutter/cupertino.dart';
 import 'network/api_manager.dart';
+import 'models/Alram.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
+
 
 class alramsetting extends StatefulWidget {
   const alramsetting({super.key});
@@ -13,29 +16,18 @@ class alramsetting extends StatefulWidget {
 class _alramsettingState extends State<alramsetting> {
   ApiManager apiManager = ApiManager().getApiManager();
 
-  late bool _isMessageOn = false;
-  late bool _isMessageAlram = false;
-  late bool _isMentionAlram = false;
-  late bool _isHeartAlram = false;
-  late bool _isAlram = false;
-
-  Future<void> GetExample(String endpoint) async {
-    try {
-      final response = await apiManager.Get(endpoint); // 실제 API 엔드포인트로 대체
-
-      // 요청 응답 받기
-      final value = response['key']; // 키를 통해 value를 받아오기
-      print('Data: $value');
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
+  bool _isMessageOn = false;
+  bool _isMessageAlram = false;
+  bool _isMentionAlram = false;
+  bool _isHeartAlram = false;
+  bool _isAlram = false;
 
   Future<void> PostExample(String endpoint) async {
     ApiManager apiManager = ApiManager().getApiManager();
 
     try {
       final postData = {
+        'userId': LoginedUserInfo.loginedUserInfo.id,
         'allowMsg': _isMessageOn,
         'msgAlarm': _isMessageAlram,
         'commAlarm': _isMentionAlram,
@@ -45,6 +37,27 @@ class _alramsettingState extends State<alramsetting> {
       await apiManager.post(endpoint, postData); // 실제 API 엔드포인트로 대체
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  Alram? alram;
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getAlramData();
+      setState(() {
+        alram = data;
+      });
+
+    } catch (error) {
+      // 오류 처리
+      print('Error getting Alram list: $error');
     }
   }
 
@@ -89,7 +102,7 @@ class _alramsettingState extends State<alramsetting> {
                     ),
                   ),
                   CupertinoSwitch(
-                    value: _isMessageOn,
+                    value: alram!= null ? alram!.allowMsg : false,
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (bool? value) {
                       setState(() {
@@ -116,7 +129,7 @@ class _alramsettingState extends State<alramsetting> {
                     ),
                   ),
                   CupertinoSwitch(
-                    value: _isMessageAlram,
+                    value: alram!= null ? alram!.msgAlarm : false,
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (bool? value) {
                       setState(() {
@@ -143,7 +156,7 @@ class _alramsettingState extends State<alramsetting> {
                     ),
                   ),
                   CupertinoSwitch(
-                    value: _isMentionAlram,
+                    value: alram!= null ? alram!.commAlarm : false,
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (bool? value) {
                       setState(() {
@@ -170,7 +183,7 @@ class _alramsettingState extends State<alramsetting> {
                     ),
                   ),
                   CupertinoSwitch(
-                    value: _isHeartAlram,
+                    value: alram!= null ? alram!.empAlarm : false,
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (bool? value) {
                       setState(() {
@@ -197,7 +210,7 @@ class _alramsettingState extends State<alramsetting> {
                     ),
                   ),
                   CupertinoSwitch(
-                    value: _isAlram,
+                    value: alram!= null ? alram!.actAlarm : false,
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (bool? value) {
                       setState(() {

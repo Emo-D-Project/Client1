@@ -256,9 +256,8 @@ class _writediaryState extends State<DiaryReplay> {
                                             onPressed: () async {
                                               apiManager.RemoveDiary(diaries!.diaryId);
                                               print('다이어리 아이디 : ${diaries!.diaryId}');
-                                              Navigator.of(context).pop();
-                                              Navigator.of(context).pop();
-
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context) => MyApp()));
                                             },
                                             child: Text('확인', style: TextStyle(
                                                 color: Colors.black, fontSize: 20, fontFamily: 'soojin'))),

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import '../models/Alram.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
 import '../models/Message.dart';
@@ -950,6 +951,37 @@ class ApiManager {
     } else {
       print("응답 코드: ${response.statusCode}");
       throw Exception("Fail to load diary data from the API");
+    }
+  }
+
+  Future<Alram> getAlramData() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/settings";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("Alram data: " + response.body);
+
+      Alram Alramdata = Alram(
+        id: rawData['id'],
+        userId: rawData['userId'],
+        allowMsg: rawData['allowMsg'],
+        msgAlarm: rawData['magAlarm'],
+        empAlarm: rawData['empAlarm'],
+        commAlarm: rawData['commAlarm'],
+        actAlarm: rawData['actAlarm'],
+      );
+
+      return Alramdata;
+    } else {
+      throw Exception("Fail to load alram data from the API");
     }
   }
 
