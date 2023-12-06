@@ -289,6 +289,8 @@ class _calendarState extends State<calendar> {
           entry.date.month == month &&
           entry.date.day == day,
       orElse: () => Diary(
+        is_comm: true,
+        is_share: true,
         imagePath: [],
           date: DateTime(year, month, day),
           content: '',

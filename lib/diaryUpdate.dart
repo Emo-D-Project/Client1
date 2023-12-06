@@ -21,6 +21,8 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
   int diaryId = 0;
   Diary? diaries;
 
+  late String? content = _diaryController?.text;
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   _DiaryUpdateState(int diaryId) {
@@ -117,7 +119,8 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async{
+                await apiManager.putDiaryUpdate(diaryId,diaries!.emotion,content!,diaries!.is_share,diaries!.is_comm);
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => MyApp()));
               },
