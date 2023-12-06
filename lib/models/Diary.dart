@@ -9,6 +9,8 @@ class Diary {
   int userId;
   int diaryId;
   int scommentCount;
+  bool is_share;
+  bool is_comm;
 
 
 
@@ -23,5 +25,7 @@ class Diary {
     this.favoriteColor = false,
     this.userId = 1,
     this.scommentCount = 0,
+    this.is_share = true,
+    this.is_comm = true,
   });
 }
