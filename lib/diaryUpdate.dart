@@ -141,6 +141,8 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
               Container(
                 child: diaries != null
                     ? Container(
+
+
                         child: (() {
                           if (diaries!.imagePath!.isNotEmpty &&
                               diaries!.audio == "") {
@@ -304,8 +306,8 @@ class _customWidget1State extends State<customWidget1> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                              color: Colors.transparent,
-                            ))),
+                                      color: Colors.transparent,
+                                    ))),
                           ),
                         ),
                       ],
@@ -413,8 +415,8 @@ class _customWidget2State extends State<customWidget2> {
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                          color: Colors.transparent,
-                        ))),
+                                  color: Colors.transparent,
+                                ))),
                       ),
                     ),
                   ),
@@ -617,10 +619,12 @@ class _customwidget3State extends State<customwidget3> {
                               ),
                               Padding(
                                 padding:
+
                                     const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+
                                   children: [
                                     Text(
                                       formatTime(position),
@@ -679,8 +683,8 @@ class _customwidget3State extends State<customwidget3> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                              color: Colors.transparent,
-                            ))),
+                                      color: Colors.transparent,
+                                    ))),
                           ),
                         ),
                       ],
@@ -911,6 +915,7 @@ class _customwidget4State extends State<customwidget4> {
                               ),
                               Padding(
                                 padding:
+
                                     const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
@@ -973,8 +978,8 @@ class _customwidget4State extends State<customwidget4> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                              color: Colors.transparent,
-                            ))),
+                                      color: Colors.transparent,
+                                    ))),
                           ),
                         ),
                       ],
