@@ -349,6 +349,7 @@ class ApiManager {
           leastEmotion: data['leastEmotion'],
           comment: data['comment'],
           point: data['point'],
+
         );
       }).toList();
 
@@ -830,7 +831,7 @@ class ApiManager {
         "content": data['content'],
         "emotion": data['emotion'],
         "is_share": data['is_share'],
-        "is_comm": data['is_comm']
+        "is_comm": data['is_comm'],
       },
     };
 

@@ -13,6 +13,7 @@ class Diary {
   bool is_comm;
 
 
+
   Diary({
     required this.date,
     required this.content,
@@ -26,5 +27,7 @@ class Diary {
     this.favoriteColor = false,
     this.userId = 1,
     this.scommentCount = 0,
+    this.is_share = true,
+    this.is_comm = true,
   });
 }

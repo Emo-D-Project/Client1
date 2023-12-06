@@ -24,8 +24,6 @@ class _mypageState extends State<mypage> {
 
   int userId;
 
-
-
   late String title;
   late String content;
   late String tititle;
