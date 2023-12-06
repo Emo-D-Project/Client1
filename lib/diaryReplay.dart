@@ -180,7 +180,6 @@ class _customWidget1State extends State<customWidget1> {
 
   @override
   Widget build(BuildContext context) {
-    print("위젯 1입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -209,7 +208,7 @@ class _customWidget1State extends State<customWidget1> {
                             fontSize: 20,
                           ),
                         ),
-                        SizedBox(width: 90),
+                        SizedBox(width: 70),
                         IconButton(
                           onPressed: () {
                             // Navigator.push(
@@ -219,8 +218,8 @@ class _customWidget1State extends State<customWidget1> {
                           },
                           icon: Image.asset(
                             'images/main/pencil.png',
-                            width: 30,
-                            height: 30,
+                            width: 25,
+                            height: 25,
                           ),
                         ),
                         IconButton(
@@ -230,8 +229,8 @@ class _customWidget1State extends State<customWidget1> {
                           },
                           icon: Image.asset(
                             'images/main/trash.png',
-                            width: 30,
-                            height: 30,
+                            width: 25,
+                            height: 25,
                           ),
                         ),
                       ],
@@ -317,7 +316,6 @@ class _customWidget2State extends State<customWidget2> {
 
   @override
   Widget build(BuildContext context) {
-    print("위젯 2입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -348,14 +346,14 @@ class _customWidget2State extends State<customWidget2> {
                             ),
                           ),
                           SizedBox(
-                            width: 90,
+                            width: 70,
                           ),
                           IconButton(
                             onPressed: () {},
                             icon: Image.asset(
                               'images/main/pencil.png',
-                              width: 30,
-                              height: 30,
+                              width: 25,
+                              height: 25,
                             ),
                           ),
                           IconButton(
@@ -365,8 +363,8 @@ class _customWidget2State extends State<customWidget2> {
                             },
                             icon: Image.asset(
                               'images/main/trash.png',
-                              width: 30,
-                              height: 30,
+                              width: 25,
+                              height: 25,
                             ),
                           ),
                         ]),
@@ -509,7 +507,6 @@ class _customWidget3State extends State<customWidget3> {
 
   @override
   Widget build(BuildContext context) {
-    print("위젯 3입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -539,7 +536,7 @@ class _customWidget3State extends State<customWidget3> {
                       ),
                     ),
                     SizedBox(
-                      width: 90,
+                      width: 70,
                     ),
                     IconButton(
                       onPressed: () {
@@ -552,8 +549,8 @@ class _customWidget3State extends State<customWidget3> {
                       },
                       icon: Image.asset(
                         'images/main/pencil.png',
-                        width: 30,
-                        height: 30,
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                     IconButton(
@@ -563,8 +560,8 @@ class _customWidget3State extends State<customWidget3> {
                       },
                       icon: Image.asset(
                         'images/main/trash.png',
-                        width: 30,
-                        height: 30,
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                   ]),
@@ -787,7 +784,6 @@ class _customWidget4State extends State<customWidget4> {
 
   @override
   Widget build(BuildContext context) {
-    print("위젯 4입니다");
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
@@ -819,7 +815,7 @@ class _customWidget4State extends State<customWidget4> {
                         ),
                       ),
                       SizedBox(
-                        width: 90,
+                        width: 70,
                       ),
                       IconButton(
                         onPressed: () {
@@ -832,8 +828,8 @@ class _customWidget4State extends State<customWidget4> {
                         },
                         icon: Image.asset(
                           'images/main/pencil.png',
-                          width: 30,
-                          height: 30,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                       IconButton(
@@ -843,8 +839,8 @@ class _customWidget4State extends State<customWidget4> {
                         },
                         icon: Image.asset(
                           'images/main/trash.png',
-                          width: 30,
-                          height: 30,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                     ]
