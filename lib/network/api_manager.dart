@@ -990,4 +990,41 @@ class ApiManager {
     }
   }
 
+  Future<void> putDiaryUpdate(int id, String emotion, String content, bool is_share, bool is_comm) async {
+    String endpoint = "/api/diaries/change/${id}";
+    baseUrl = "http://34.64.78.183:8080";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await _dio.put(
+        '$baseUrl$endpoint',
+          data: {
+            "emotion": emotion,
+            "content": content,
+            "is_share": is_share,
+            "is_comm": is_comm,
+          },
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a PUT request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
 }
