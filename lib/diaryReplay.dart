@@ -211,10 +211,12 @@ class _customWidget1State extends State<customWidget1> {
                         SizedBox(width: 70),
                         IconButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => diaryUpdate(diary: diary,)));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DiaryUpdate(diaryId : diaryId)),
+                            );
                           },
                           icon: Image.asset(
                             'images/main/pencil.png',
@@ -396,7 +398,14 @@ class _customWidget2State extends State<customWidget2> {
                             width: 70,
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DiaryUpdate(diaryId : diaryId)),
+                              );
+                            },
                             icon: Image.asset(
                               'images/main/pencil.png',
                               width: 25,
@@ -634,12 +643,12 @@ class _customWidget3State extends State<customWidget3> {
                     ),
                     IconButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           diaryUpdate(date: DateTime(2023, 11, 24))),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DiaryUpdate(diaryId : diaryId)),
+                        );
                       },
                       icon: Image.asset(
                         'images/main/pencil.png',
@@ -960,12 +969,12 @@ class _customWidget4State extends State<customWidget4> {
                       ),
                       IconButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           diaryUpdate(date: DateTime(2023, 11, 24))),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DiaryUpdate(diaryId : diaryId)),
+                          );
                         },
                         icon: Image.asset(
                           'images/main/pencil.png',
