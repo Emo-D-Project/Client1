@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'diaryReplay.dart';
+import 'models/Diary.dart';
 import 'network/api_manager.dart';
 import 'statistics.dart';
 import 'package:intl/intl.dart';
+
 
 class gatherEmotion extends StatefulWidget {
   const gatherEmotion({super.key});
@@ -10,11 +13,20 @@ class gatherEmotion extends StatefulWidget {
   State<gatherEmotion> createState() => _gatherEmotionState();
 }
 
+class DiaryEntry {
+  final DateTime date;
+
+  DiaryEntry({required this.date});
+}
+
+
 class _gatherEmotionState extends State<gatherEmotion> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   Map<DateTime, String> _events =
       {}; // map.getkey를 해서 10월에 맞는 날짜를 추출해서 리스트로 만들고 쓰기
+
+  List<Diary> _diaryEntries = [];
 
   @override
   void initState() {
@@ -22,12 +34,15 @@ class _gatherEmotionState extends State<gatherEmotion> {
     fetchDataFromServer();
   }
 
+
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getCalendarData();
+      final diary_data = await apiManager.getDiaryData();
 
       setState(() {
         _events = data!;
+        _diaryEntries = diary_data!;
       });
     } catch (error) {
       print('Error fetching data: ${error.toString()}');
@@ -113,7 +128,31 @@ class _gatherEmotionState extends State<gatherEmotion> {
                           margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: Column(
                             children: [
-                              Container(
+                              GestureDetector(
+                                onTap: () {
+                                  Diary? diary;
+                                  for(Diary d in _diaryEntries){
+                                    if(d.date.year == currentDate.year && d.date.month == currentDate.month && d.date.day == currentDate.day){
+                                      diary = d;
+                                      print("매칭되는 다이어리 발견");
+                                    }
+                                  }
+                                  // 선택한 날짜에 대한 일기 항목이 있는지 확인
+                                  if (diary != null) {
+                                    // 사용자에게 일기 내용 표시
+                                    print("매칭되는 다이어리의 id ${diary.diaryId}");
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DiaryReplay(
+                                              diary: diary!,
+                                            )));
+                                  }
+                                  // 이 컨테이너가 눌렸을 때 실행될 코드를 여기에 추가
+                                  // 예: 특정 날짜에 연결된 이벤트를 가져와서 처리
+                                  String event = _events[currentDate] ?? '';
+                                  print('Event for $currentDate: $event');
+                                },
                                 child: (() {
                                   String emotion = valueList[dateIndex];
                                   switch (emotion) {
@@ -160,10 +199,20 @@ class _gatherEmotionState extends State<gatherEmotion> {
                                         height: 40,
                                       );
                                   }
+
+                                  Diary diary;
+                                  _diaryEntries.forEach((element) {
+                                    if (element.date.day == currentDate.day &&
+                                        element.date.month == currentDate.month &&
+                                        element.date.year == currentDate.year) {
+                                      diary = element;
+                                    }
+                                  });
                                 })(),
                               ),
+
                               Text(
-                                '${currentDate.month}${currentDate.day}',
+                                '${currentDate.month}/${currentDate.day}',
                                 style: TextStyle(
                                     fontFamily: 'soojin',
                                     fontSize: 15,

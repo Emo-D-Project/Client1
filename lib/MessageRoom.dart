@@ -52,7 +52,6 @@ class _MessageRoomState extends State<MessageRoom> {
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       appBar: AppBar(
