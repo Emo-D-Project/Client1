@@ -141,42 +141,44 @@ class _DiaryUpdateState extends State<DiaryUpdate> {
               Container(
                 child: diaries != null
                     ? Container(
-                  child: (() {
-                    if (diaries!.imagePath!.isNotEmpty &&
-                        diaries!.audio == "") {
-                      return customWidget1(
-                        scomment: diaries!.content,
-                        sdate: diaries!.date,
-                        sdiaryImage: diaries!.imagePath!,
-                        diaryId: diaries!.diaryId,
-                      );
-                    } else if (diaries!.imagePath!.isEmpty &&
-                        diaries!.audio == "") {
-                      return customWidget2(
-                        scomment: diaries!.content,
-                        diaryId: diaries!.diaryId,
-                        sdate: diaries!.date,
-                      );
-                    } else if (diaries!.imagePath!.isEmpty &&
-                        diaries!.audio != "") {
-                      return customwidget3(
-                        scomment: diaries!.content,
-                        sdate: diaries!.date,
-                        svoice: diaries!.audio,
-                        diaryId: diaries!.diaryId,
-                      );
-                    } else if (diaries!.imagePath!.isNotEmpty &&
-                        diaries!.audio != "") {
-                      return customwidget4(
-                        scomment: diaries!.content,
-                        sdate: diaries!.date,
-                        diaryId: diaries!.diaryId,
-                        sdiaryImage: diaries!.imagePath!,
-                        svoice: diaries!.audio,
-                      );
-                    }
-                  }()),
-                )
+
+
+                        child: (() {
+                          if (diaries!.imagePath!.isNotEmpty &&
+                              diaries!.audio == "") {
+                            return customWidget1(
+                              scomment: diaries!.content,
+                              sdate: diaries!.date,
+                              sdiaryImage: diaries!.imagePath!,
+                              diaryId: diaries!.diaryId,
+                            );
+                          } else if (diaries!.imagePath!.isEmpty &&
+                              diaries!.audio == "") {
+                            return customWidget2(
+                              scomment: diaries!.content,
+                              diaryId: diaries!.diaryId,
+                              sdate: diaries!.date,
+                            );
+                          } else if (diaries!.imagePath!.isEmpty &&
+                              diaries!.audio != "") {
+                            return customwidget3(
+                              scomment: diaries!.content,
+                              sdate: diaries!.date,
+                              svoice: diaries!.audio,
+                              diaryId: diaries!.diaryId,
+                            );
+                          } else if (diaries!.imagePath!.isNotEmpty &&
+                              diaries!.audio != "") {
+                            return customwidget4(
+                              scomment: diaries!.content,
+                              sdate: diaries!.date,
+                              diaryId: diaries!.diaryId,
+                              sdiaryImage: diaries!.imagePath!,
+                              svoice: diaries!.audio,
+                            );
+                          }
+                        }()),
+                      )
                     : Container(),
               ),
             ],
@@ -617,10 +619,12 @@ class _customwidget3State extends State<customwidget3> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 16),
+
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
+
                                   children: [
                                     Text(
                                       formatTime(position),
@@ -911,10 +915,11 @@ class _customwidget4State extends State<customwidget4> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 16),
+
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       formatTime(position),
