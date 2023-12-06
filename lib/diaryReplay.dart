@@ -91,61 +91,61 @@ class _writediaryState extends State<DiaryReplay> {
         ),
       ),
       body: Container(
-        width: sizeX,
-        height: sizeY,
-        decoration: BoxDecoration(
-          color: Color(0xFFF8F5EB),
-        ),
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: diaries != null
-                        ? Container(
-                            child: (() {
-                              if (diaries!.imagePath!.isNotEmpty &&
-                                  diaries!.audio == "") {
-                                return customWidget1(
-                                  sdate: diaries!.date,
-                                  sdiaryImage: diaries!.imagePath!,
-                                  scomment: diaries!.content,
-                                  diaryId: diaries!.diaryId,
-                                );
-                              }
-                              else if (diaries!.imagePath!.isEmpty &&
-                                  diaries!.audio == "") {
-                                return customWidget2(
-                                    diaryId: diaries!.diaryId,
-                                    sdate: diaries!.date,
-                                    scomment: diaries!.content);
-                              }
-                              else if (diaries!.imagePath!.isEmpty &&
-                                  diaries!.audio != "") {
-                                return customWidget3(
-                                  sdate: diaries!.date,
-                                  scomment: diaries!.content,
-                                  svoice: diaries!.audio,
-                                  diaryId: diaries!.diaryId,
-                                );
-                              }
-                              else if (diaries!.imagePath!.isNotEmpty &&
-                                  diaries!.audio != ""){
-                                return customWidget4(
-                                  sdate: diaries!.date,
-                                  diaryId: diaries!.diaryId,
-                                  sdiaryImage: diaries!.imagePath!,
-                                  scomment: diaries!.content,
-                                  svoice: diaries!.audio,
-                                );
-                              }
-                            }()),
-                          )
-                        : Container(),
-                  ),
-                ],
-              )),
+          width: sizeX,
+          height: sizeY,
+          decoration: BoxDecoration(
+            color: Color(0xFFF8F5EB),
+          ),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: diaries != null
+                    ? Container(
+                  child: (() {
+                    if (diaries!.imagePath!.isNotEmpty &&
+                        diaries!.audio == "") {
+                      return customWidget1(
+                        sdate: diaries!.date,
+                        sdiaryImage: diaries!.imagePath!,
+                        scomment: diaries!.content,
+                        diaryId: diaries!.diaryId,
+                      );
+                    }
+                    else if (diaries!.imagePath!.isEmpty &&
+                        diaries!.audio == "") {
+                      return customWidget2(
+                          diaryId: diaries!.diaryId,
+                          sdate: diaries!.date,
+                          scomment: diaries!.content);
+                    }
+                    else if (diaries!.imagePath!.isEmpty &&
+                        diaries!.audio != "") {
+                      return customWidget3(
+                        sdate: diaries!.date,
+                        scomment: diaries!.content,
+                        svoice: diaries!.audio,
+                        diaryId: diaries!.diaryId,
+                      );
+                    }
+                    else if (diaries!.imagePath!.isNotEmpty &&
+                        diaries!.audio != ""){
+                      return customWidget4(
+                        sdate: diaries!.date,
+                        diaryId: diaries!.diaryId,
+                        sdiaryImage: diaries!.imagePath!,
+                        scomment: diaries!.content,
+                        svoice: diaries!.audio,
+                      );
+                    }
+                  }()),
+                )
+                    : Container(),
+              ),
+            ],
+          )),
     );
   }
 }
@@ -185,150 +185,152 @@ class _customWidget1State extends State<customWidget1> {
 
     return Center(
       child: Container(
-              width: sizeX * 0.9,
-              height: sizeY * 0.8,
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+        width: sizeX * 0.9,
+        height: sizeY * 0.8,
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
                 children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Row(
-                      children: [
-                        SizedBox(width: 30),
-                        Text(
-                          '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                          style: TextStyle(
-                            fontFamily: 'soojin',
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(width: 70),
-                        IconButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => diaryUpdate(diary: diary,)));
-                          },
-                          icon: Image.asset(
-                            'images/main/pencil.png',
-                            width: 25,
-                            height: 25,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            return showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
-                                    title: Text(' '),
-                                    content: SizedBox(
-                                        height: sizeY * 0.05,
-                                        child: Center(child: Text(
-                                          "정말 삭제 하시겠습니까?", style: TextStyle(
-                                            fontFamily: 'soojin'),))
-                                    ),
-                                    actions: [
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              elevation: 0.0,
-                                              backgroundColor: Color(
-                                                  0x4D968C83),
-                                              minimumSize: Size(150, 30)
-                                          ),
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(),
-                                          child: Text('취소', style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                              fontFamily: 'soojin'))),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              elevation: 0.0,
-                                              backgroundColor: Color(
-                                                  0xFF7D5A50),
-                                              minimumSize: Size(150, 30)
-                                          ),
-                                          onPressed: () async {
-                                            apiManager.RemoveDiary(
-                                                widget.diaryId);
-                                            print('다이어리 아이디 : ${widget.diaryId}');
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MyApp()));
-                                          },
-                                          child: Text('확인', style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                              fontFamily: 'soojin'))),
-                                    ],
-                                  ),
-                            );
-                          },
-                          icon: Image.asset(
-                            'images/main/trash.png',
-                            width: 25,
-                            height: 25,
-                          ),
-                        ),
-                      ],
+                  SizedBox(width: 30),
+                  Text(
+                    '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                    style: TextStyle(
+                      fontFamily: 'soojin',
+                      fontSize: 20,
                     ),
-                  ), //날짜
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SingleChildScrollView(
-                            child: Container(
-                              width: 200,
-                              height: 150, // 이미지 높이 조절
-                              child: Container(
-                                child: PageView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: widget.sdiaryImage.length > 3
-                                      ? 3
-                                      : widget.sdiaryImage.length, // 최대 3장까지만 허용
-                                  itemBuilder: (context, index) {
-                                    print('일기 사진 : ${widget.sdiaryImage[index]}');
-                                    return Container(
-                                      child: Center(
-                                        child: Image.network(widget.sdiaryImage[index]),
-                                      ),
-                                    );
-                                  },
-                                ),
+                  ),
+                  SizedBox(width: 70),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DiaryUpdate(diaryId : diaryId)),
+                      );
+                    },
+                    icon: Image.asset(
+                      'images/main/pencil.png',
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      return showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) =>
+                            AlertDialog(
+                              title: Text(' '),
+                              content: SizedBox(
+                                  height: sizeY * 0.05,
+                                  child: Center(child: Text(
+                                    "정말 삭제 하시겠습니까?", style: TextStyle(
+                                      fontFamily: 'soojin'),))
                               ),
-                            ),
-                          ),
-                          Container(
-                            width: 380,
-                            padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                            color: Colors.white54,
-                            child: Column(
-                              children: [
-                                Text(
-                                  widget.scomment,
-                                  style: TextStyle(fontFamily: 'soojin', fontSize: 15),
-                                  textAlign: TextAlign.center,
-                                ),
+                              actions: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0.0,
+                                        backgroundColor: Color(
+                                            0x4D968C83),
+                                        minimumSize: Size(150, 30)
+                                    ),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('취소', style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontFamily: 'soojin'))),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0.0,
+                                        backgroundColor: Color(
+                                            0xFF7D5A50),
+                                        minimumSize: Size(150, 30)
+                                    ),
+                                    onPressed: () async {
+                                      apiManager.RemoveDiary(
+                                          widget.diaryId);
+                                      print('다이어리 아이디 : ${widget.diaryId}');
+                                      Navigator.push(context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyApp()));
+                                    },
+                                    child: Text('확인', style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontFamily: 'soojin'))),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
+                      );
+                    },
+                    icon: Image.asset(
+                      'images/main/trash.png',
+                      width: 25,
+                      height: 25,
                     ),
                   ),
                 ],
               ),
+            ), //날짜
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      child: Container(
+                        width: 200,
+                        height: 150, // 이미지 높이 조절
+                        child: Container(
+                          child: PageView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.sdiaryImage.length > 3
+                                ? 3
+                                : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                            itemBuilder: (context, index) {
+                              print('일기 사진 : ${widget.sdiaryImage[index]}');
+                              return Container(
+                                child: Center(
+                                  child: Image.network(widget.sdiaryImage[index]),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 380,
+                      padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                      color: Colors.white54,
+                      child: Column(
+                        children: [
+                          Text(
+                            widget.scomment,
+                            style: TextStyle(fontFamily: 'soojin', fontSize: 15),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -368,122 +370,129 @@ class _customWidget2State extends State<customWidget2> {
 
     return Center(
       child: Container(
-                  width: sizeX * 0.9,
-                  height: sizeY * 0.8,
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+        width: sizeX * 0.9,
+        height: sizeY * 0.8,
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(children: [
+                SizedBox(
+                  width: 30,
+                ),
+                Text(
+                  '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                  style: TextStyle(
+                    fontFamily: 'soojin',
+                    fontSize: 20,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(children: [
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(
-                            '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                            style: TextStyle(
-                              fontFamily: 'soojin',
-                              fontSize: 20,
+                ),
+                SizedBox(
+                  width: 70,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DiaryUpdate(diaryId : diaryId)),
+                    );
+                  },
+                  icon: Image.asset(
+                    'images/main/pencil.png',
+                    width: 25,
+                    height: 25,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    return showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) =>
+                          AlertDialog(
+                            title: Text(' '),
+                            content: SizedBox(
+                                height: sizeY * 0.05,
+                                child: Center(child: Text(
+                                  "정말 삭제 하시겠습니까?", style: TextStyle(
+                                    fontFamily: 'soojin'),))
                             ),
-                          ),
-                          SizedBox(
-                            width: 70,
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Image.asset(
-                              'images/main/pencil.png',
-                              width: 25,
-                              height: 25,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              return showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
-                                      title: Text(' '),
-                                      content: SizedBox(
-                                          height: sizeY * 0.05,
-                                          child: Center(child: Text(
-                                            "정말 삭제 하시겠습니까?", style: TextStyle(
-                                              fontFamily: 'soojin'),))
-                                      ),
-                                      actions: [
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                backgroundColor: Color(
-                                                    0x4D968C83),
-                                                minimumSize: Size(150, 30)
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: Text('취소', style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontFamily: 'soojin'))),
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                backgroundColor: Color(
-                                                    0xFF7D5A50),
-                                                minimumSize: Size(150, 30)
-                                            ),
-                                            onPressed: () async {
-                                              apiManager.RemoveDiary(
-                                                  widget.diaryId);
-                                              print('다이어리 아이디 : ${widget.diaryId}');
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MyApp()));
-                                            },
-                                            child: Text('확인', style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontFamily: 'soojin'))),
-                                      ],
-                                    ),
-                              );
-                            },
-                            icon: Image.asset(
-                              'images/main/trash.png',
-                              width: 25,
-                              height: 25,
-                            ),
-                          ),
-                        ]),
-                      ), //날짜
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Container(
-                              width: 380,
-                              padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                              color: Colors.white54,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    widget.scomment,
-                                    style:
-                                        TextStyle(fontFamily: 'soojin', fontSize: 15),
-                                    textAlign: TextAlign.center,
+                            actions: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Color(
+                                          0x4D968C83),
+                                      minimumSize: Size(150, 30)
                                   ),
-                                ],
-                              )),
-                        ),
-                      ), //글
-                      //수정버튼
-                    ],
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(),
+                                  child: Text('취소', style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontFamily: 'soojin'))),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Color(
+                                          0xFF7D5A50),
+                                      minimumSize: Size(150, 30)
+                                  ),
+                                  onPressed: () async {
+                                    apiManager.RemoveDiary(
+                                        widget.diaryId);
+                                    print('다이어리 아이디 : ${widget.diaryId}');
+                                    Navigator.push(context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MyApp()));
+                                  },
+                                  child: Text('확인', style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontFamily: 'soojin'))),
+                            ],
+                          ),
+                    );
+                  },
+                  icon: Image.asset(
+                    'images/main/trash.png',
+                    width: 25,
+                    height: 25,
                   ),
+                ),
+              ]),
+            ), //날짜
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                    width: 380,
+                    padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                    color: Colors.white54,
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.scomment,
+                          style:
+                          TextStyle(fontFamily: 'soojin', fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )),
+              ),
+            ), //글
+            //수정버튼
+          ],
+        ),
       ),
     );
   }
@@ -605,209 +614,209 @@ class _customWidget3State extends State<customWidget3> {
     final sizeY = MediaQuery.of(context).size.height;
 
     return Container(
-            width: sizeX * 0.9,
-            height: sizeY * 0.8,
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Row(children: [
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                      style: TextStyle(
-                        fontFamily: 'soojin',
-                        fontSize: 20,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 70,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           diaryUpdate(date: DateTime(2023, 11, 24))),
-                        // );
-                      },
-                      icon: Image.asset(
-                        'images/main/pencil.png',
-                        width: 25,
-                        height: 25,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        return showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) =>
-                              AlertDialog(
-                                title: Text(' '),
-                                content: SizedBox(
-                                    height: sizeY * 0.05,
-                                    child: Center(child: Text(
-                                      "정말 삭제 하시겠습니까?", style: TextStyle(
-                                        fontFamily: 'soojin'),))
-                                ),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: Color(
-                                              0x4D968C83),
-                                          minimumSize: Size(150, 30)
-                                      ),
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text('취소', style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontFamily: 'soojin'))),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: Color(
-                                              0xFF7D5A50),
-                                          minimumSize: Size(150, 30)
-                                      ),
-                                      onPressed: () async {
-                                        apiManager.RemoveDiary(
-                                            widget.diaryId);
-                                        print('다이어리 아이디 : ${widget.diaryId}');
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyApp()));
-                                      },
-                                      child: Text('확인', style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontFamily: 'soojin'))),
-                                ],
-                              ),
-                        );
-                      },
-                      icon: Image.asset(
-                        'images/main/trash.png',
-                        width: 25,
-                        height: 25,
-                      ),
-                    ),
-                  ]),
-                ), //날짜
-                SizedBox(
-                  height: 10,
+      width: sizeX * 0.9,
+      height: sizeY * 0.8,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(children: [
+              SizedBox(
+                width: 30,
+              ),
+              Text(
+                '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                style: TextStyle(
+                  fontFamily: 'soojin',
+                  fontSize: 20,
                 ),
-                Expanded(
-                    child: SingleChildScrollView(
+              ),
+              SizedBox(
+                width: 70,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DiaryUpdate(diaryId : diaryId)),
+                  );
+                },
+                icon: Image.asset(
+                  'images/main/pencil.png',
+                  width: 25,
+                  height: 25,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  return showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) =>
+                        AlertDialog(
+                          title: Text(' '),
+                          content: SizedBox(
+                              height: sizeY * 0.05,
+                              child: Center(child: Text(
+                                "정말 삭제 하시겠습니까?", style: TextStyle(
+                                  fontFamily: 'soojin'),))
+                          ),
+                          actions: [
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Color(
+                                        0x4D968C83),
+                                    minimumSize: Size(150, 30)
+                                ),
+                                onPressed: () =>
+                                    Navigator.of(context).pop(),
+                                child: Text('취소', style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontFamily: 'soojin'))),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Color(
+                                        0xFF7D5A50),
+                                    minimumSize: Size(150, 30)
+                                ),
+                                onPressed: () async {
+                                  apiManager.RemoveDiary(
+                                      widget.diaryId);
+                                  print('다이어리 아이디 : ${widget.diaryId}');
+                                  Navigator.push(context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MyApp()));
+                                },
+                                child: Text('확인', style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontFamily: 'soojin'))),
+                          ],
+                        ),
+                  );
+                },
+                icon: Image.asset(
+                  'images/main/trash.png',
+                  width: 25,
+                  height: 25,
+                ),
+              ),
+            ]),
+          ), //날짜
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                       child: Column(
                         children: [
-                          Container(
-                            padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                            child: Column(
-                              children: [
-                                SliderTheme(
-                                  data: SliderThemeData(
-                                    inactiveTrackColor: Color(0xFFF8F5EB),
-                                  ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: duration.inSeconds.toDouble(),
-                                    value: position.inSeconds.toDouble(),
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        position = Duration(seconds: value.toInt());
-                                      });
-                                      await audioPlayer.seek(position);
-                                      //await audioPlayer.resume();
-                                    },
-                                    activeColor: Color(0xFF968C83),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        formatTime(position),
-                                        style: TextStyle(color: Colors.brown),
-                                      ),
-                                      SizedBox(width: 20),
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: Colors.transparent,
-                                        child: IconButton(
-                                          padding: EdgeInsets.only(bottom: 50),
-                                          icon: Icon(
-                                            isPlaying ? Icons.pause : Icons.play_arrow,
-                                            color: Colors.brown,
-                                          ),
-                                          iconSize: 25,
-                                          onPressed: () async {
-                                            print("isplaying 전 : $isPlaying");
-
-                                            if (isPlaying) {
-                                              //재생중이면
-                                              await audioPlayer.pause(); //멈춤고
-                                              setState(() {
-                                                isPlaying = false; //상태변경하기..?
-                                              });
-                                            } else {
-                                              //멈춘 상태였으면
-                                              await playAudio();
-                                              await audioPlayer.resume(); // 녹음된 오디오 재생
-                                            }
-                                            print("isplaying 후 : $isPlaying");
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(width: 20),
-                                      Text(
-                                        formatTime(duration),
-                                        style: TextStyle(color: Colors.brown),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                          SliderTheme(
+                            data: SliderThemeData(
+                              inactiveTrackColor: Color(0xFFF8F5EB),
+                            ),
+                            child: Slider(
+                              min: 0,
+                              max: duration.inSeconds.toDouble(),
+                              value: position.inSeconds.toDouble(),
+                              onChanged: (value) async {
+                                setState(() {
+                                  position = Duration(seconds: value.toInt());
+                                });
+                                await audioPlayer.seek(position);
+                                //await audioPlayer.resume();
+                              },
+                              activeColor: Color(0xFF968C83),
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 380,
-                            padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                            color: Colors.white54,
-                            child: Column(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  widget.scomment,
-                                  style: TextStyle(fontFamily: 'soojin', fontSize: 15),
-                                  textAlign: TextAlign.center,
+                                  formatTime(position),
+                                  style: TextStyle(color: Colors.brown),
+                                ),
+                                SizedBox(width: 20),
+                                CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: Colors.transparent,
+                                  child: IconButton(
+                                    padding: EdgeInsets.only(bottom: 50),
+                                    icon: Icon(
+                                      isPlaying ? Icons.pause : Icons.play_arrow,
+                                      color: Colors.brown,
+                                    ),
+                                    iconSize: 25,
+                                    onPressed: () async {
+                                      print("isplaying 전 : $isPlaying");
+
+                                      if (isPlaying) {
+                                        //재생중이면
+                                        await audioPlayer.pause(); //멈춤고
+                                        setState(() {
+                                          isPlaying = false; //상태변경하기..?
+                                        });
+                                      } else {
+                                        //멈춘 상태였으면
+                                        await playAudio();
+                                        await audioPlayer.resume(); // 녹음된 오디오 재생
+                                      }
+                                      print("isplaying 후 : $isPlaying");
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Text(
+                                  formatTime(duration),
+                                  style: TextStyle(color: Colors.brown),
                                 ),
                               ],
                             ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: 380,
+                      padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                      color: Colors.white54,
+                      child: Column(
+                        children: [
+                          Text(
+                            widget.scomment,
+                            style: TextStyle(fontFamily: 'soojin', fontSize: 15),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
-                    )
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              )
+          )
+        ],
+      ),
     );
 
   }
@@ -930,236 +939,236 @@ class _customWidget4State extends State<customWidget4> {
 
     return Center(
       child: Container(
-              width: sizeX * 0.9,
-              height: sizeY * 0.8,
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Row(
-                        children: [
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Text(
-                        '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
-                        style: TextStyle(
-                          fontFamily: 'soojin',
-                          fontSize: 20,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           diaryUpdate(date: DateTime(2023, 11, 24))),
-                          // );
-                        },
-                        icon: Image.asset(
-                          'images/main/pencil.png',
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          return showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) =>
-                                AlertDialog(
-                                  title: Text(' '),
-                                  content: SizedBox(
-                                      height: sizeY * 0.05,
-                                      child: Center(child: Text(
-                                        "정말 삭제 하시겠습니까?", style: TextStyle(
-                                          fontFamily: 'soojin'),))
-                                  ),
-                                  actions: [
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: Color(
-                                                0x4D968C83),
-                                            minimumSize: Size(150, 30)
-                                        ),
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                        child: Text('취소', style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontFamily: 'soojin'))),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: Color(
-                                                0xFF7D5A50),
-                                            minimumSize: Size(150, 30)
-                                        ),
-                                        onPressed: () async {
-                                          apiManager.RemoveDiary(
-                                              widget.diaryId);
-                                          print('다이어리 아이디 : ${widget.diaryId}');
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MyApp()));
-                                        },
-                                        child: Text('확인', style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontFamily: 'soojin'))),
-                                  ],
-                                ),
-                          );
-                        },
-                        icon: Image.asset(
-                          'images/main/trash.png',
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
-                    ]
+        width: sizeX * 0.9,
+        height: sizeY * 0.8,
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
+                  children: [
+                    SizedBox(
+                      width: 30,
                     ),
-                  ), //날짜
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                      child: SingleChildScrollView(
+                    Text(
+                      '${widget.sdate.year}년 ${widget.sdate.month}월 ${widget.sdate.day}일',
+                      style: TextStyle(
+                        fontFamily: 'soojin',
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 70,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DiaryUpdate(diaryId : diaryId)),
+                        );
+                      },
+                      icon: Image.asset(
+                        'images/main/pencil.png',
+                        width: 25,
+                        height: 25,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
+                      },
+                      icon: Image.asset(
+                        'images/main/trash.png',
+                        width: 25,
+                        height: 25,
+                      ),
+                    ),
+                  ]
+              ),
+            ), //날짜
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SingleChildScrollView(
+                        child: Container(
+                          width: 200,
+                          height: 150, // 이미지 높이 조절
+                          child: Container(
+                            child: PageView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.sdiaryImage.length > 3
+                                  ? 3
+                                  : widget.sdiaryImage.length, // 최대 3장까지만 허용
+                              itemBuilder: (context, index) {
+                                print('일기 사진 : ${widget.sdiaryImage[index]}');
+                                return Container(
+                                  child: Center(
+                                    child: Image.network(widget.sdiaryImage[index]),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                         child: Column(
                           children: [
-                            SingleChildScrollView(
-                              child: Container(
-                                width: 200,
-                                height: 150, // 이미지 높이 조절
-                                child: Container(
-                                  child: PageView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: widget.sdiaryImage.length > 3
-                                        ? 3
-                                        : widget.sdiaryImage.length, // 최대 3장까지만 허용
-                                    itemBuilder: (context, index) {
-                                      print('일기 사진 : ${widget.sdiaryImage[index]}');
-                                      return Container(
-                                        child: Center(
-                                          child: Image.network(widget.sdiaryImage[index]),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                            SliderTheme(
+                              data: SliderThemeData(
+                                inactiveTrackColor: Color(0xFFF8F5EB),
+                              ),
+                              child: Slider(
+                                min: 0,
+                                max: duration.inSeconds.toDouble(),
+                                value: position.inSeconds.toDouble(),
+                                onChanged: (value) async {
+                                  setState(() {
+                                    position = Duration(seconds: value.toInt());
+                                  });
+                                  await audioPlayer.seek(position);
+                                  //await audioPlayer.resume();
+                                },
+                                activeColor: Color(0xFF968C83),
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                              child: Column(
-                                children: [
-                                  SliderTheme(
-                                    data: SliderThemeData(
-                                      inactiveTrackColor: Color(0xFFF8F5EB),
-                                    ),
-                                    child: Slider(
-                                      min: 0,
-                                      max: duration.inSeconds.toDouble(),
-                                      value: position.inSeconds.toDouble(),
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          position = Duration(seconds: value.toInt());
-                                        });
-                                        await audioPlayer.seek(position);
-                                        //await audioPlayer.resume();
-                                      },
-                                      activeColor: Color(0xFF968C83),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          formatTime(position),
-                                          style: TextStyle(color: Colors.brown),
-                                        ),
-                                        SizedBox(width: 20),
-                                        CircleAvatar(
-                                          radius: 15,
-                                          backgroundColor: Colors.transparent,
-                                          child: IconButton(
-                                            padding: EdgeInsets.only(bottom: 50),
-                                            icon: Icon(
-                                              isPlaying ? Icons.pause : Icons.play_arrow,
-                                              color: Colors.brown,
-                                            ),
-                                            iconSize: 25,
-                                            onPressed: () async {
-                                              print("isplaying 전 : $isPlaying");
-
-                                              if (isPlaying) {
-                                                //재생중이면
-                                                await audioPlayer.pause(); //멈춤고
-                                                setState(() {
-                                                  isPlaying = false; //상태변경하기..?
-                                                });
-                                              } else {
-                                                //멈춘 상태였으면
-                                                await playAudio();
-                                                await audioPlayer.resume(); // 녹음된 오디오 재생
-                                              }
-                                              print("isplaying 후 : $isPlaying");
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        Text(
-                                          formatTime(duration),
-                                          style: TextStyle(color: Colors.brown),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: 380,
-                              padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                              color: Colors.white54,
-                              child: Column(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    widget.scomment,
-                                    style: TextStyle(fontFamily: 'soojin', fontSize: 15),
-                                    textAlign: TextAlign.center,
+                                    formatTime(position),
+                                    style: TextStyle(color: Colors.brown),
+                                  ),
+                                  SizedBox(width: 20),
+                                  CircleAvatar(
+                                    radius: 15,
+                                    backgroundColor: Colors.transparent,
+                                    child: IconButton(
+                                      padding: EdgeInsets.only(bottom: 50),
+                                      icon: Icon(
+                                        isPlaying ? Icons.pause : Icons.play_arrow,
+                                        color: Colors.brown,
+                                      ),
+                                      iconSize: 25,
+                                      onPressed: () async {
+                                        print("isplaying 전 : $isPlaying");
+
+                                        if (isPlaying) {
+                                          //재생중이면
+                                          await audioPlayer.pause(); //멈춤고
+                                          setState(() {
+                                            isPlaying = false; //상태변경하기..?
+                                          });
+                                        } else {
+                                          //멈춘 상태였으면
+                                          await playAudio();
+                                          await audioPlayer.resume(); // 녹음된 오디오 재생
+                                        }
+                                        print("isplaying 후 : $isPlaying");
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  Text(
+                                    formatTime(duration),
+                                    style: TextStyle(color: Colors.brown),
                                   ),
                                 ],
                               ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: 380,
+                        padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                        color: Colors.white54,
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.scomment,
+                              style: TextStyle(fontFamily: 'soojin', fontSize: 15),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
-                      )
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                )
+            ),
+          ],
+        ),
 
       ),
     );

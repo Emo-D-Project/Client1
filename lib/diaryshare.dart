@@ -93,7 +93,7 @@ class _diaryshareState extends State<diaryshare> {
         // formattedDate와 같은 날짜의 일기만 필터링
         selectedEmotionDiaries = diaries
             .where((diary) =>
-                DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
             .toList();
       });
     } catch (error) {
@@ -223,7 +223,7 @@ class _diaryshareState extends State<diaryshare> {
                     break;
                 }
                 if (selectedImageEmotion ==
-                        selectedEmotionDiaries[index].emotion &&
+                    selectedEmotionDiaries[index].emotion &&
                     formattedDateTime.year == DateTime.now().year &&
                     formattedDateTime.month == DateTime.now().month &&
                     formattedDateTime.day == DateTime.now().day) {
@@ -232,76 +232,70 @@ class _diaryshareState extends State<diaryshare> {
                       if (selectedEmotionDiaries[index].imagePath!.isNotEmpty &&
                           selectedEmotionDiaries[index].audio == "") {
                         return customWidget1(
-                          sshare: selectedEmotionDiaries[index].is_share,
-                          scomm: selectedEmotionDiaries[index].is_comm,
                           simagePath: emotionImagePath,
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
-                              selectedEmotionDiaries[index].favoriteColor,
+                          selectedEmotionDiaries[index].favoriteColor,
                           sfavoritCount:
-                              selectedEmotionDiaries[index].favoriteCount,
+                          selectedEmotionDiaries[index].favoriteCount,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
                           scommentCount:
-                              selectedEmotionDiaries[index].scommentCount,
+                          selectedEmotionDiaries[index].scommentCount,
                         );
                       } else if (selectedEmotionDiaries[index]
-                              .imagePath!
-                              .isEmpty &&
+                          .imagePath!
+                          .isEmpty &&
                           selectedEmotionDiaries[index].audio == "") {
                         return customWidget2(
                           sshare: selectedEmotionDiaries[index].is_share,
                           scomm: selectedEmotionDiaries[index].is_comm,
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
-                              selectedEmotionDiaries[index].favoriteColor,
+                          selectedEmotionDiaries[index].favoriteColor,
                           sfavoritCount:
-                              selectedEmotionDiaries[index].favoriteCount,
+                          selectedEmotionDiaries[index].favoriteCount,
                           simagePath: emotionImagePath,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
                           scommentCount:
-                              selectedEmotionDiaries[index].scommentCount,
+                          selectedEmotionDiaries[index].scommentCount,
                         );
                       } else if (selectedEmotionDiaries[index]
-                              .imagePath!
-                              .isEmpty &&
+                          .imagePath!
+                          .isEmpty &&
                           selectedEmotionDiaries[index].audio != "") {
                         return customwidget3(
-                          sshare: selectedEmotionDiaries[index].is_share,
-                          scomm: selectedEmotionDiaries[index].is_comm,
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
-                              selectedEmotionDiaries[index].favoriteColor,
+                          selectedEmotionDiaries[index].favoriteColor,
                           sfavoritCount:
-                              selectedEmotionDiaries[index].favoriteCount,
+                          selectedEmotionDiaries[index].favoriteCount,
                           simagePath: emotionImagePath,
                           svoice: selectedEmotionDiaries[index].audio,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
                           scommentCount:
-                              selectedEmotionDiaries[index].scommentCount,
+                          selectedEmotionDiaries[index].scommentCount,
                         );
                       } else if (selectedEmotionDiaries[index]
-                              .imagePath!
-                              .isNotEmpty &&
+                          .imagePath!
+                          .isNotEmpty &&
                           selectedEmotionDiaries[index].audio != "") {
                         return customwidget4(
-                          sshare: selectedEmotionDiaries[index].is_share,
-                          scomm: selectedEmotionDiaries[index].is_comm,
                           sdiaryImage: selectedEmotionDiaries[index].imagePath,
                           scomment: selectedEmotionDiaries[index].content,
                           sfavoritColor:
-                              selectedEmotionDiaries[index].favoriteColor,
+                          selectedEmotionDiaries[index].favoriteColor,
                           sfavoritCount:
-                              selectedEmotionDiaries[index].favoriteCount,
+                          selectedEmotionDiaries[index].favoriteCount,
                           simagePath: emotionImagePath,
                           svoice: selectedEmotionDiaries[index].audio,
                           otherUserId: selectedEmotionDiaries[index].userId,
                           diaryId: selectedEmotionDiaries[index].diaryId,
                           scommentCount:
-                              selectedEmotionDiaries[index].scommentCount,
+                          selectedEmotionDiaries[index].scommentCount,
                         );
                       }
                     })(),
@@ -329,8 +323,6 @@ class customWidget1 extends StatefulWidget {
   final int otherUserId;
   final int diaryId;
   final int scommentCount;
-  final bool sshare;
-  final bool scomm;
 
   const customWidget1({
     super.key,
@@ -342,13 +334,11 @@ class customWidget1 extends StatefulWidget {
     required this.otherUserId,
     required this.diaryId,
     required this.scommentCount,
-    required this.sshare,
-    required this.scomm,
   });
 
   @override
   State<customWidget1> createState() =>
-      _customWidget1State(otherUserId, diaryId, scomm, sshare, simagePath);
+      _customWidget1State(otherUserId, diaryId);
 }
 
 class _customWidget1State extends State<customWidget1> {
@@ -358,18 +348,12 @@ class _customWidget1State extends State<customWidget1> {
   int diaryId = 36;
   int favoriteCounts = 0;
   final List<Comment> comments = [];
-  bool scomm = true;
-  bool sshare = true;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customWidget1State(
-      int otherUserId, int diaryId, bool scomm, bool sshare, String imagePath) {
+  _customWidget1State(int otherUserId, int diaryId) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
-    this.imagePath = imagePath;
-    this.scomm = scomm;
-    this.sshare = sshare;
   }
 
   void initState() {
@@ -406,189 +390,184 @@ class _customWidget1State extends State<customWidget1> {
     print("commentCount1: ${commentCount[diaryId]}");
     print("otherUserId1: ${userId}");
 
-    if (sshare) {
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: 380,
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: 380,
-                    height: 65,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => otherMypage(
-                                          userId: userId,
-                                        ),
-                                      ),
-                                    );
-                                    print('감정 탭하기');
-                                  },
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    margin: EdgeInsets.only(left: 50),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(widget.simagePath),
-                                        fit: BoxFit.contain,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            width: 380,
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 380,
+                  height: 65,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => otherMypage(
+                                        userId: userId,
                                       ),
                                     ),
+                                  );
+                                  print('감정 탭하기');
+                                },
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  margin: EdgeInsets.only(left: 50),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(widget.simagePath),
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
-                                ))),
-                        IconButton(
-                          onPressed: () {
-                            if (userId != LoginedUserInfo.loginedUserInfo.id) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      message_write(otherUserId: userId),
                                 ),
-                              );
+                              ))),
+                      IconButton(
+                        onPressed: () {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
+                          }
+                        },
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
+                            ? Image.asset(
+                          'images/send/real_send.png',
+                          height: 50, // 이미지 높이 조절
+                          width: 30, // 이미지 너비 조절
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
+                      ),
+                    ],
+                  ),
+                ),
+                //이미지
+                SingleChildScrollView(
+                  child: Container(
+                    width: 200,
+                    height: 150, // 이미지 높이 조절
+                    child: Container(
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.sdiaryImage!.length > 3
+                            ? 3
+                            : widget.sdiaryImage?.length, // 최대 3장까지만 허용
+                        itemBuilder: (context, index) {
+                          print('일기 사진 : ${widget.sdiaryImage?[index]}');
+                          return Container(
+                            child: Center(
+                              child: Image.network(widget.sdiaryImage![index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                //일기 내용
+                Container(
+                    width: 380,
+                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
+                    color: Colors.white54,
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.scomment,
+                          style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+          //좋아요,댓글
+
+          Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            await apiManager.putFavoriteCount(diaryId);
+                            print("좋아요 누름 :${diaryId}");
+                            try {
+                              setState(() {
+                                if (sfavoritColor) {
+                                  favoriteCounts = favoriteCounts - 1;
+                                } else {
+                                  favoriteCounts = favoriteCounts + 1;
+                                }
+                                sfavoritColor = !sfavoritColor;
+                              });
+                            } catch (error) {
+                              print('Error updating favorite count: $error');
                             }
                           },
-                          icon: userId != LoginedUserInfo.loginedUserInfo.id
-                              ? Image.asset(
-                                  'images/send/real_send.png',
-                                  height: 50, // 이미지 높이 조절
-                                  width: 30, // 이미지 너비 조절
-                                )
-                              : Container(), // userId가 36이면 빈 컨테이너 반환
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${favoriteCounts}',
+                          style: TextStyle(fontSize: 11),
                         ),
                       ],
                     ),
                   ),
-                  //이미지
-                  SingleChildScrollView(
-                    child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage!.length > 3
-                              ? 3
-                              : widget.sdiaryImage?.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            print('일기 사진 : ${widget.sdiaryImage?[index]}');
-                            return Container(
-                              child: Center(
-                                child:
-                                    Image.network(widget.sdiaryImage![index]),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  //일기 내용
+                  //댓글
                   Container(
-                      width: 380,
-                      padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
-                      color: Colors.white54,
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.scomment,
-                            style:
-                                TextStyle(fontSize: 15, fontFamily: 'soojin'),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )),
-                ],
-              ),
-            ),
-            //좋아요,댓글
-
-            Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          await apiManager.putFavoriteCount(diaryId);
-                          print("좋아요 누름 :${diaryId}");
-                          try {
-                            setState(() {
-                              if (sfavoritColor) {
-                                favoriteCounts = favoriteCounts - 1;
-                              } else {
-                                favoriteCounts = favoriteCounts + 1;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          } catch (error) {
-                            print('Error updating favorite count: $error');
-                          }
-                        },
-                        child: Icon(
-                          Icons.favorite,
-                          color: sfavoritColor ? Colors.red : Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        '${favoriteCounts}',
-                        style: TextStyle(fontSize: 11),
-                      ),
-                    ],
-                  ),
-                ),
-                //댓글
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: Column(
-                    children: [
-                      Visibility(
-                        visible: scomm,
-                        child: GestureDetector(
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
                           onTap: () {
                             plusDialog(context);
+                            Future.delayed(Duration(seconds: 4), () {
+                              print(commentList.length);
+                            });
                           },
                           child: Icon(Icons.chat_outlined, color: Colors.grey),
                         ),
-                      ),
-                      Visibility(
-                        visible: scomm,
-                        child: Text(
+                        Text(
                           '${commentCount[diaryId]}',
                           style: TextStyle(fontSize: 11),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+
                   ),
-                ),
-              ],
-            )),
-          ],
-        ),
-      );
-    } else {
-      return SingleChildScrollView();
-    }
+
+
+                ],
+              )),
+
+        ],
+      ),
+    );
   }
 }
 
@@ -619,12 +598,12 @@ class customWidget2 extends StatefulWidget {
 
   @override
   State<customWidget2> createState() => _customWidget2State(
-        otherUserId,
-        diaryId,
-        scomm,
-        sshare,
-        simagePath,
-      );
+    otherUserId,
+    diaryId,
+    scomm,
+    sshare,
+    simagePath,
+  );
 }
 
 class _customWidget2State extends State<customWidget2> {
@@ -649,12 +628,13 @@ class _customWidget2State extends State<customWidget2> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   _customWidget2State(
-    int otherUserId,
-    int diaryId,
-    bool scomm,
-    bool sshare,
-    String imagePath,
-  ) {
+
+      int otherUserId,
+      int diaryId,
+      bool scomm,
+      bool sshare,
+      String imagePath,
+      ) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
     this.imagePath = imagePath;
@@ -687,6 +667,7 @@ class _customWidget2State extends State<customWidget2> {
     try {
       final data = await apiManager.getDiaryShareData();
 
+
       setState(() {
         diaries = data;
         for (Diary diary in diaries) {
@@ -716,7 +697,7 @@ class _customWidget2State extends State<customWidget2> {
         // formattedDate와 같은 날짜의 일기만 필터링
         selectedEmotionDiaries = diaries
             .where((diary) =>
-                DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
             .toList();
       });
     } catch (error) {
@@ -743,7 +724,7 @@ class _customWidget2State extends State<customWidget2> {
     print("otherUserId2: ${userId}");
     print("실행되는 감정 path: ${imagePath}");
 
-    if (sshare) {
+    if(sshare){
       return SingleChildScrollView(
         child: Column(
           children: [
@@ -816,10 +797,10 @@ class _customWidget2State extends State<customWidget2> {
                           },
                           icon: userId != LoginedUserInfo.loginedUserInfo.id
                               ? Image.asset(
-                                  'images/send/real_send.png',
-                                  height: 50, // 이미지 높이 조절
-                                  width: 30, // 이미지 너비 조절
-                                )
+                            'images/send/real_send.png',
+                            height: 50, // 이미지 높이 조절
+                            width: 30, // 이미지 너비 조절
+                          )
                               : Container(),
                         ),
                       ],
@@ -833,8 +814,7 @@ class _customWidget2State extends State<customWidget2> {
                         children: [
                           Text(
                             widget.scomment,
-                            style:
-                                TextStyle(fontSize: 15, fontFamily: 'soojin'),
+                            style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -844,71 +824,71 @@ class _customWidget2State extends State<customWidget2> {
             ),
             Container(
                 child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          fetchDataFromServer();
-                          apiManager.putFavoriteCount(diaryId);
-                          print("좋아요 누름 :${diaryId}");
-                          try {
-                            setState(() {
-                              if (sfavoritColor) {
-                                favoriteCounts = favoriteCounts - 1;
-                              } else {
-                                favoriteCounts = favoriteCounts + 1;
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              fetchDataFromServer();
+                              apiManager.putFavoriteCount(diaryId);
+                              print("좋아요 누름 :${diaryId}");
+                              try {
+                                setState(() {
+                                  if (sfavoritColor) {
+                                    favoriteCounts = favoriteCounts - 1;
+                                  } else {
+                                    favoriteCounts = favoriteCounts + 1;
+                                  }
+                                  sfavoritColor = !sfavoritColor;
+                                });
+                              } catch (error) {
+                                print('Error updating favorite count: $error');
                               }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          } catch (error) {
-                            print('Error updating favorite count: $error');
-                          }
-                        },
-                        child: Icon(
-                          Icons.favorite,
-                          color: sfavoritColor ? Colors.red : Colors.grey,
-                        ),
+                            },
+                            child: Icon(
+                              Icons.favorite,
+                              color: sfavoritColor ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            '${favoriteCounts}',
+                            style: TextStyle(fontSize: 11),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${favoriteCounts}',
-                        style: TextStyle(fontSize: 11),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                      child: Column(
+                        children: [
+                          Visibility(
+                            visible: scomm,
+                            child: GestureDetector(
+                              onTap: () {
+                                plusDialog(context);
+                              },
+                              child: Icon(Icons.chat_outlined, color: Colors.grey),
+                            ),
+                          ),
+                          Visibility(
+                            visible: scomm,
+                            child: Text(
+                              '${commentCount[diaryId]}',
+                              style: TextStyle(fontSize: 11),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: Column(
-                    children: [
-                      Visibility(
-                        visible: scomm,
-                        child: GestureDetector(
-                          onTap: () {
-                            plusDialog(context);
-                          },
-                          child: Icon(Icons.chat_outlined, color: Colors.grey),
-                        ),
-                      ),
-                      Visibility(
-                        visible: scomm,
-                        child: Text(
-                          '${commentCount[diaryId]}',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )),
+                    ),
+                  ],
+                )),
           ],
         ),
       );
-    } else {
+    }else{
       return SingleChildScrollView();
     }
   }
@@ -924,8 +904,6 @@ class customwidget3 extends StatefulWidget {
   final int otherUserId;
   final int diaryId;
   final int scommentCount;
-  final bool sshare;
-  final bool scomm;
 
   const customwidget3({
     super.key,
@@ -937,18 +915,11 @@ class customwidget3 extends StatefulWidget {
     required this.otherUserId,
     required this.diaryId,
     required this.scommentCount,
-    required this.sshare,
-    required this.scomm,
   });
 
   @override
-  State<customwidget3> createState() => _customwidget3State(
-        otherUserId,
-        diaryId,
-        simagePath,
-        scomm,
-        sshare,
-      );
+  State<customwidget3> createState() =>
+      _customwidget3State(otherUserId, diaryId);
 }
 
 class _customwidget3State extends State<customwidget3> {
@@ -960,23 +931,12 @@ class _customwidget3State extends State<customwidget3> {
   int userId = -1;
   String imagePath = "";
   int diaryId = 0;
-  bool scomm = true;
-  bool sshare = true;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customwidget3State(
-    int otherUserId,
-    int diaryId,
-    String imagePath,
-    bool scomm,
-    bool sshare,
-  ) {
+  _customwidget3State(int otherUserId, int diaryId) {
     this.userId = otherUserId;
-    this.imagePath = imagePath;
     this.diaryId = diaryId;
-    this.scomm = scomm;
-    this.sshare = sshare;
   }
 
   void plusDialog(BuildContext context) {
@@ -1089,237 +1049,229 @@ class _customwidget3State extends State<customwidget3> {
 
     print("otherUserId3: ${userId}");
 
-    if (sshare) {
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: 380,
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: 380,
-                    height: 65,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => otherMypage(
-                                          userId: userId,
-                                        ),
-                                      ),
-                                    );
-                                    print('감정 탭하기');
-                                  },
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    margin: EdgeInsets.only(left: 50),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(widget.simagePath),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                ))),
-                        IconButton(
-                          onPressed: () {
-                            if (userId != LoginedUserInfo.loginedUserInfo.id) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      message_write(otherUserId: userId),
-                                ),
-                              );
-                            }
-                          },
-                          icon: userId != LoginedUserInfo.loginedUserInfo.id
-                              ? Image.asset(
-                                  'images/send/real_send.png',
-                                  height: 50, // 이미지 높이 조절
-                                  width: 30, // 이미지 너비 조절
-                                )
-                              : Container(), // userId가 36이면 빈 컨테이너 반환
-                        ),
-                      ],
-                    ),
-                  ),
-                  //녹음
-                  Container(
-                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                    child: Column(
-                      children: [
-                        SliderTheme(
-                          data: SliderThemeData(
-                            inactiveTrackColor: Color(0xFFF8F5EB),
-                          ),
-                          child: Slider(
-                            min: 0,
-                            max: duration.inSeconds.toDouble(),
-                            value: position.inSeconds.toDouble(),
-                            onChanged: (value) async {
-                              setState(() {
-                                position = Duration(seconds: value.toInt());
-                              });
-                              await audioPlayer.seek(position);
-                              //await audioPlayer.resume();
-                            },
-                            activeColor: Color(0xFF968C83),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                formatTime(position),
-                                style: TextStyle(color: Colors.brown),
-                              ),
-                              SizedBox(width: 20),
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundColor: Colors.transparent,
-                                child: IconButton(
-                                  padding: EdgeInsets.only(bottom: 50),
-                                  icon: Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    color: Colors.brown,
-                                  ),
-                                  iconSize: 25,
-                                  onPressed: () async {
-                                    print("isplaying 전 : $isPlaying");
-
-                                    if (isPlaying) {
-                                      //재생중이면
-                                      await audioPlayer.pause(); //멈춤고
-                                      setState(() {
-                                        isPlaying = false; //상태변경하기..?
-                                      });
-                                    } else {
-                                      //멈춘 상태였으면
-                                      await playAudio();
-                                      await audioPlayer.resume(); // 녹음된 오디오 재생
-                                    }
-                                    print("isplaying 후 : $isPlaying");
-                                  },
-                                ),
-                              ),
-                              SizedBox(width: 20),
-                              Text(
-                                formatTime(duration),
-                                style: TextStyle(color: Colors.brown),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  //텍스트
-                  Container(
-                      width: 380,
-                      padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
-                      color: Colors.white54,
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.scomment,
-                            style:
-                                TextStyle(fontSize: 15, fontFamily: 'soojin'),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )),
-                ],
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            width: 380,
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            //좋아요,댓글
-            Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Column(
+                  width: 380,
+                  height: 65,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () async {
-                          apiManager.putFavoriteCount(diaryId);
-                          print("좋아요 누름 :${diaryId}");
-                          try {
-                            setState(() {
-                              if (sfavoritColor) {
-                                favoriteCounts = favoriteCounts - 1;
-                              } else {
-                                favoriteCounts = favoriteCounts + 1;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          } catch (error) {
-                            print('Error updating favorite count: $error');
+                      Expanded(
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => otherMypage(
+                                        userId: userId,
+                                      ),
+                                    ),
+                                  );
+                                  print('감정 탭하기');
+                                },
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  margin: EdgeInsets.only(left: 50),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(widget.simagePath),
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ))),
+                      IconButton(
+                        onPressed: () {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
                           }
                         },
-                        child: Icon(
-                          Icons.favorite,
-                          color: sfavoritColor ? Colors.red : Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        '${favoriteCounts}',
-                        style: TextStyle(fontSize: 11),
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
+                            ? Image.asset(
+                          'images/send/real_send.png',
+                          height: 50, // 이미지 높이 조절
+                          width: 30, // 이미지 너비 조절
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
                   ),
                 ),
-
-                //댓글
+                //녹음
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                   child: Column(
                     children: [
-                      Visibility(
-                        visible: scomm,
-                        child: GestureDetector(
+                      SliderTheme(
+                        data: SliderThemeData(
+                          inactiveTrackColor: Color(0xFFF8F5EB),
+                        ),
+                        child: Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value: position.inSeconds.toDouble(),
+                          onChanged: (value) async {
+                            setState(() {
+                              position = Duration(seconds: value.toInt());
+                            });
+                            await audioPlayer.seek(position);
+                            //await audioPlayer.resume();
+                          },
+                          activeColor: Color(0xFF968C83),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              formatTime(position),
+                              style: TextStyle(color: Colors.brown),
+                            ),
+                            SizedBox(width: 20),
+                            CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.transparent,
+                              child: IconButton(
+                                padding: EdgeInsets.only(bottom: 50),
+                                icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.brown,
+                                ),
+                                iconSize: 25,
+                                onPressed: () async {
+                                  print("isplaying 전 : $isPlaying");
+
+                                  if (isPlaying) {
+                                    //재생중이면
+                                    await audioPlayer.pause(); //멈춤고
+                                    setState(() {
+                                      isPlaying = false; //상태변경하기..?
+                                    });
+                                  } else {
+                                    //멈춘 상태였으면
+                                    await playAudio();
+                                    await audioPlayer.resume(); // 녹음된 오디오 재생
+                                  }
+                                  print("isplaying 후 : $isPlaying");
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            Text(
+                              formatTime(duration),
+                              style: TextStyle(color: Colors.brown),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                //텍스트
+                Container(
+                    width: 380,
+                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
+                    color: Colors.white54,
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.scomment,
+                          style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+          //좋아요,댓글
+          Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            apiManager.putFavoriteCount(diaryId);
+                            print("좋아요 누름 :${diaryId}");
+                            try {
+                              setState(() {
+                                if (sfavoritColor) {
+                                  favoriteCounts = favoriteCounts - 1;
+                                } else {
+                                  favoriteCounts = favoriteCounts + 1;
+                                }
+                                sfavoritColor = !sfavoritColor;
+                              });
+                            } catch (error) {
+                              print('Error updating favorite count: $error');
+                            }
+                          },
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${favoriteCounts}',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //댓글
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
                           onTap: () {
                             plusDialog(context);
+                            Future.delayed(Duration(seconds: 4), () {
+                              print(commentList.length);
+                            });
                           },
                           child: Icon(Icons.chat_outlined, color: Colors.grey),
                         ),
-                      ),
-                      Visibility(
-                        visible: scomm,
-                        child: Text(
+                        Text(
                           '${commentCount[diaryId]}',
                           style: TextStyle(fontSize: 11),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
-          ],
-        ),
-      );
-    } else {
-      return SingleChildScrollView();
-    }
+                ],
+              )),
+        ],
+      ),
+    );
   }
 }
 
@@ -1334,8 +1286,6 @@ class customwidget4 extends StatefulWidget {
   final int otherUserId;
   final int diaryId;
   final int scommentCount;
-  final bool sshare;
-  final bool scomm;
 
   const customwidget4({
     super.key,
@@ -1348,13 +1298,11 @@ class customwidget4 extends StatefulWidget {
     required this.otherUserId,
     required this.diaryId,
     required this.scommentCount,
-    required this.sshare,
-    required this.scomm,
   });
 
   @override
   State<customwidget4> createState() =>
-      _customwidget4State(otherUserId, diaryId, simagePath, scomm, sshare);
+      _customwidget4State(otherUserId, diaryId);
 }
 
 class _customwidget4State extends State<customwidget4> {
@@ -1364,23 +1312,12 @@ class _customwidget4State extends State<customwidget4> {
   int userId = -1;
   int otherUserId = 36;
   int diaryId = 0;
-  bool scomm = true;
-  bool sshare = true;
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-  _customwidget4State(
-    int otherUserId,
-    int diaryId,
-    String imagePath,
-    bool scomm,
-    bool sshare,
-  ) {
+  _customwidget4State(int otherUserId, int diaryId) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
-    this.imagePath = imagePath;
-    this.scomm = scomm;
-    this.sshare = sshare;
   }
 
   void plusDialog(BuildContext context) async {
@@ -1495,259 +1432,250 @@ class _customwidget4State extends State<customwidget4> {
 
     print("otherUserId4: ${userId}");
 
-    if (sshare) {
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: 380,
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: 380,
-                    height: 65,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => otherMypage(
-                                          userId: userId,
-                                        ),
-                                      ),
-                                    );
-                                    print('감정 탭하기');
-                                  },
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    margin: EdgeInsets.only(left: 50),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(widget.simagePath),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                ))),
-                        IconButton(
-                          onPressed: () {
-                            if (userId != LoginedUserInfo.loginedUserInfo.id) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      message_write(otherUserId: userId),
-                                ),
-                              );
-                            }
-                          },
-                          icon: userId != LoginedUserInfo.loginedUserInfo.id
-                              ? Image.asset(
-                                  'images/send/real_send.png',
-                                  height: 50, // 이미지 높이 조절
-                                  width: 30, // 이미지 너비 조절
-                                )
-                              : Container(), // userId가 36이면 빈 컨테이너 반환
-                        ),
-                      ],
-                    ),
-                  ),
-                  //이미지
-                  SingleChildScrollView(
-                    child: Container(
-                      width: 200,
-                      height: 150, // 이미지 높이 조절
-                      child: Container(
-                        child: PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sdiaryImage!.length > 3
-                              ? 3
-                              : widget.sdiaryImage?.length, // 최대 3장까지만 허용
-                          itemBuilder: (context, index) {
-                            print('일기 사진 : ${widget.sdiaryImage?[index]}');
-                            return Container(
-                              child: Center(
-                                child:
-                                    Image.network(widget.sdiaryImage![index]),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                    child: Column(
-                      children: [
-                        SliderTheme(
-                          data: SliderThemeData(
-                            inactiveTrackColor: Color(0xFFF8F5EB),
-                          ),
-                          child: Slider(
-                            min: 0,
-                            max: duration.inSeconds.toDouble(),
-                            value: position.inSeconds.toDouble(),
-                            onChanged: (value) async {
-                              setState(() {
-                                position = Duration(seconds: value.toInt());
-                              });
-                              await audioPlayer.seek(position);
-                              //await audioPlayer.resume();
-                            },
-                            activeColor: Color(0xFF968C83),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                formatTime(position),
-                                style: TextStyle(color: Colors.brown),
-                              ),
-                              SizedBox(width: 20),
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundColor: Colors.transparent,
-                                child: IconButton(
-                                  padding: EdgeInsets.only(bottom: 50),
-                                  icon: Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    color: Colors.brown,
-                                  ),
-                                  iconSize: 25,
-                                  onPressed: () async {
-                                    print("isplaying 전 : $isPlaying");
-
-                                    if (isPlaying) {
-                                      //재생중이면
-                                      await audioPlayer.pause(); //멈춤고
-                                      setState(() {
-                                        isPlaying = false; //상태변경하기..?
-                                      });
-                                    } else {
-                                      //멈춘 상태였으면
-                                      await playAudio();
-                                      await audioPlayer.resume(); // 녹음된 오디오 재생
-                                    }
-                                    print("isplaying 후 : $isPlaying");
-                                  },
-                                ),
-                              ),
-                              SizedBox(width: 20),
-                              Text(
-                                formatTime(duration),
-                                style: TextStyle(color: Colors.brown),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  //텍스트
-                  Container(
-                      width: 380,
-                      padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
-                      color: Colors.white54,
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.scomment,
-                            style:
-                                TextStyle(fontSize: 15, fontFamily: 'soojin'),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )),
-                ],
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            width: 380,
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            //좋아요,댓글
-            Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Column(
+                  width: 380,
+                  height: 65,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () async {
-                          apiManager.putFavoriteCount(diaryId);
-                          print("좋아요 누름 :${diaryId}");
-                          try {
-                            setState(() {
-                              if (sfavoritColor) {
-                                favoriteCounts = favoriteCounts - 1;
-                              } else {
-                                favoriteCounts = favoriteCounts + 1;
-                              }
-                              sfavoritColor = !sfavoritColor;
-                            });
-                          } catch (error) {
-                            print('Error updating favorite count: $error');
+                      Expanded(
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => otherMypage(
+                                        userId: userId,
+                                      ),
+                                    ),
+                                  );
+                                  print('감정 탭하기');
+                                },
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  margin: EdgeInsets.only(left: 50),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(widget.simagePath),
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ))),
+                      IconButton(
+                        onPressed: () {
+                          if (userId != LoginedUserInfo.loginedUserInfo.id) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    message_write(otherUserId: userId),
+                              ),
+                            );
                           }
                         },
-                        child: Icon(
-                          Icons.favorite,
-                          color: sfavoritColor ? Colors.red : Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        '${favoriteCounts}',
-                        style: TextStyle(fontSize: 11),
+                        icon: userId != LoginedUserInfo.loginedUserInfo.id
+                            ? Image.asset(
+                          'images/send/real_send.png',
+                          height: 50, // 이미지 높이 조절
+                          width: 30, // 이미지 너비 조절
+                        )
+                            : Container(), // userId가 36이면 빈 컨테이너 반환
                       ),
                     ],
                   ),
                 ),
-
-                //댓글
+                //이미지
+                SingleChildScrollView(
+                  child: Container(
+                    width: 200,
+                    height: 150, // 이미지 높이 조절
+                    child: Container(
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.sdiaryImage!.length > 3
+                            ? 3
+                            : widget.sdiaryImage?.length, // 최대 3장까지만 허용
+                        itemBuilder: (context, index) {
+                          print('일기 사진 : ${widget.sdiaryImage?[index]}');
+                          return Container(
+                            child: Center(
+                              child: Image.network(widget.sdiaryImage![index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                   child: Column(
                     children: [
-                      Visibility(
-                        visible: scomm,
-                        child: GestureDetector(
+                      SliderTheme(
+                        data: SliderThemeData(
+                          inactiveTrackColor: Color(0xFFF8F5EB),
+                        ),
+                        child: Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value: position.inSeconds.toDouble(),
+                          onChanged: (value) async {
+                            setState(() {
+                              position = Duration(seconds: value.toInt());
+                            });
+                            await audioPlayer.seek(position);
+                            //await audioPlayer.resume();
+                          },
+                          activeColor: Color(0xFF968C83),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              formatTime(position),
+                              style: TextStyle(color: Colors.brown),
+                            ),
+                            SizedBox(width: 20),
+                            CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.transparent,
+                              child: IconButton(
+                                padding: EdgeInsets.only(bottom: 50),
+                                icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.brown,
+                                ),
+                                iconSize: 25,
+                                onPressed: () async {
+                                  print("isplaying 전 : $isPlaying");
+
+                                  if (isPlaying) {
+                                    //재생중이면
+                                    await audioPlayer.pause(); //멈춤고
+                                    setState(() {
+                                      isPlaying = false; //상태변경하기..?
+                                    });
+                                  } else {
+                                    //멈춘 상태였으면
+                                    await playAudio();
+                                    await audioPlayer.resume(); // 녹음된 오디오 재생
+                                  }
+                                  print("isplaying 후 : $isPlaying");
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            Text(
+                              formatTime(duration),
+                              style: TextStyle(color: Colors.brown),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                //텍스트
+                Container(
+                    width: 380,
+                    padding: const EdgeInsets.fromLTRB(35, 20, 35, 10),
+                    color: Colors.white54,
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.scomment,
+                          style: TextStyle(fontSize: 15, fontFamily: 'soojin'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+          //좋아요,댓글
+          Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            apiManager.putFavoriteCount(diaryId);
+                            print("좋아요 누름 :${diaryId}");
+                            try {
+                              setState(() {
+                                if (sfavoritColor) {
+                                  favoriteCounts = favoriteCounts - 1;
+                                } else {
+                                  favoriteCounts = favoriteCounts + 1;
+                                }
+                                sfavoritColor = !sfavoritColor;
+                              });
+                            } catch (error) {
+                              print('Error updating favorite count: $error');
+                            }
+                          },
+                          child: Icon(
+                            Icons.favorite,
+                            color: sfavoritColor ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${favoriteCounts}',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //댓글
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
                           onTap: () {
                             plusDialog(context);
+                            Future.delayed(Duration(seconds: 4), () {
+                              print(commentList.length);
+                            });
                           },
                           child: Icon(Icons.chat_outlined, color: Colors.grey),
                         ),
-                      ),
-                      Visibility(
-                        visible: scomm,
-                        child: Text(
+                        Text(
                           '${commentCount[diaryId]}',
                           style: TextStyle(fontSize: 11),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
-          ],
-        ),
-      );
-    } else {
-      return SingleChildScrollView();
-    }
+                ],
+              )),
+        ],
+      ),
+    );
   }
 }
