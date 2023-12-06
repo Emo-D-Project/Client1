@@ -200,7 +200,7 @@ class _commentState extends State<comment> {
                                   ],
                                 ),
                                 Container(
-                                  width: 300,
+                                  width: 270,
                                   padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                   child: Text(
                                     commentList[index].content,
