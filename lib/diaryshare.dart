@@ -698,6 +698,7 @@ class _customWidget2State extends State<customWidget2> {
         for (Diary diary in diaries) {
           FavoriteCount favoriteCount = new FavoriteCount();
 
+
           apiManager.getFavoriteCount(diary.diaryId).then((int value) {
             favoriteCount.favoriteCount = value;
           });
