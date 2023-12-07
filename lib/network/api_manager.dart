@@ -542,8 +542,8 @@ class ApiManager {
           imagePath: List<String>.from(data['images']?.where((element) => element != null) ?? const []),
           favoriteColor: data['favoriteColor'] ?? false,
           diaryId: data['id'] ?? 0,
-          is_comm: data['is_comm'] ?? true,
-          is_share: data['is_share'] ?? true,
+          is_comm: data['_comm'] ?? true,
+          is_share: data['_share'] ?? true,
         );
       }).toList();
 
