@@ -984,7 +984,7 @@ class ApiManager {
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         print("post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
