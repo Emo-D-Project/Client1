@@ -649,7 +649,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 5,
+                                                  width: 3,
                                                 ),
                                                 Container(
                                                   width: 28,
@@ -665,7 +665,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 5,
+                                                  width: 3,
                                                 ),
                                                 Container(
                                                   width: 28,
@@ -681,7 +681,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 5,
+                                                  width: 3,
                                                 ),
                                                 Container(
                                                   width: 28,
@@ -697,7 +697,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 5,
+                                                  width: 3,
                                                 ),
                                                 Container(
                                                   width: 28,
@@ -713,7 +713,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 5,
+                                                  width: 3,
                                                 ),
                                                 Container(
                                                   width: 28,
@@ -729,7 +729,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 5,
+                                                  width: 3,
                                                 ),
                                                 Container(
                                                   width: 28,

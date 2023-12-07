@@ -154,7 +154,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Container(
                                       width: 33,
@@ -169,7 +169,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Container(
                                       width: 33,
@@ -184,7 +184,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Container(
                                       width: 33,
@@ -199,7 +199,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Container(
                                       width: 33,
@@ -214,7 +214,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Container(
                                       width: 33,
@@ -229,7 +229,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Container(
                                       width: 33,

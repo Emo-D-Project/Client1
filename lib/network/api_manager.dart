@@ -26,11 +26,10 @@ class ApiManager {
     return apiManager;
   }
 
-  String baseUrl = "http://34.64.78.183:8080";
+  String baseUrl = "http://34.22.108.184:8080";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     final response = await http.get(
@@ -87,7 +86,7 @@ class ApiManager {
 
   //정보 보낼 때
   Future<dynamic> post(String endpoint, dynamic data) async {
-    baseUrl = "http://34.64.78.183:8080";
+
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
@@ -122,7 +121,6 @@ class ApiManager {
   }
 
   Future<Map<String, dynamic>> Get(String endpoint) async {
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     final response = await http.get(
@@ -291,7 +289,6 @@ class ApiManager {
 
   void sendMessage(String message, int otherUserId, DateTime dateTime) async {
     String endpoint = "/api/messages";
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
@@ -622,7 +619,6 @@ class ApiManager {
 //post 댓글작성
   void sendComment(String content, int post_id) async {
     String endpoint = "/api/comments/create";
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
@@ -690,7 +686,6 @@ class ApiManager {
   // 마이페이지에 정보 등록하는 기능
   void sendMypageIntroduce(int userId, String title, String content) async {
     String endpoint = "/api/userInfo/my/description";
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
@@ -725,7 +720,6 @@ class ApiManager {
   void sendMypage(int userId, String title, String content) async {
 
     String endpoint = "/api/userInfo";
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
@@ -765,7 +759,6 @@ class ApiManager {
   //==================================================
   void RemoveDiary(int id) async {
     String accessToken = tokenManager.getAccessToken();
-    baseUrl = "http://34.64.78.183:8080";
     String endPoint = "/api/diaries/delete/${id}";
 
     Dio _dio = Dio();
@@ -901,7 +894,6 @@ class ApiManager {
 
   void RemoveComment(int id) async {
     String accessToken = tokenManager.getAccessToken();
-    baseUrl = "http://34.64.78.183:8080";
     String endPoint = "/api/comments/delete/${id}";
 
     Dio _dio = Dio();
@@ -962,7 +954,6 @@ class ApiManager {
   }
   Future<void> putDiaryUpdate(int id, String emotion, String content, bool is_share, bool is_comm) async {
     String endpoint = "/api/diaries/change/${id}";
-    baseUrl = "http://34.64.78.183:8080";
     String accessToken = tokenManager.getAccessToken();
 
     Dio _dio = Dio();
