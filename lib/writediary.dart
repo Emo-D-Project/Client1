@@ -339,8 +339,7 @@ class _writediaryState extends State<writediary> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
           decoration: BoxDecoration(
             color: Color(0xFFF8F5EB),
           ),
@@ -481,20 +480,29 @@ class _writediaryState extends State<writediary> {
                               SingleChildScrollView(
                                 reverse: true,
                                 child: Container(
-                                  margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                  margin:  EdgeInsets.only(
+                                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                                  ),
                                   child: TextField(
                                     style: TextStyle(fontFamily: 'soojin'),
                                     controller: _contentEditController,
-                                    maxLines: 14,
+                                    maxLines: null,
                                     decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                        ),
                                         enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                       color: Colors.transparent,
                                       width: 1.0,
                                     ))),
+                                    cursorColor: Colors.grey,
                                   ),
                                 ),
                               ),
+
+
                             ],
                           ),
                         ),
@@ -660,7 +668,7 @@ class _writediaryState extends State<writediary> {
             ],
           ),
         ),
-      ),
+
     );
   }
 }
