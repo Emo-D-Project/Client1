@@ -257,9 +257,56 @@ class _customWidget1State extends State<customWidget1> {
                       width: 110,
                     ),
                     IconButton(
-                      onPressed: () {
-                        apiManager.RemoveDiary(diaryId);
-                        print('다이어리 아이디 : ${diaryId}');
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
                       },
                       icon: Image.asset(
                         'images/main/trash.png',
@@ -391,9 +438,56 @@ class _customWidget2State extends State<customWidget2> {
                     ),
 
                     IconButton(
-                      onPressed: () {
-                        apiManager.RemoveDiary(diaryId);
-                        print('다이어리 아이디 : ${diaryId}');
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
                       },
                       icon: Image.asset(
                         'images/main/trash.png',
@@ -578,9 +672,56 @@ class _customwidget3State extends State<customwidget3> {
                       width: 110,
                     ),
                     IconButton(
-                      onPressed: () {
-                        apiManager.RemoveDiary(diaryId);
-                        print('다이어리 아이디 : ${diaryId}');
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
                       },
                       icon: Image.asset(
                         'images/main/trash.png',
@@ -851,9 +992,56 @@ class _customwidget4State extends State<customwidget4> {
                       width: 110,
                     ),
                     IconButton(
-                      onPressed: () {
-                        apiManager.RemoveDiary(diaryId);
-                        print('다이어리 아이디 : ${diaryId}');
+                      onPressed: () async {
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Text(' '),
+                                content: SizedBox(
+                                    height: sizeY * 0.05,
+                                    child: Center(child: Text(
+                                      "정말 삭제 하시겠습니까?", style: TextStyle(
+                                        fontFamily: 'soojin'),))
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0x4D968C83),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(
+                                              0xFF7D5A50),
+                                          minimumSize: Size(150, 30)
+                                      ),
+                                      onPressed: () async {
+                                        apiManager.RemoveDiary(
+                                            widget.diaryId);
+                                        print('다이어리 아이디 : ${widget.diaryId}');
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyApp()));
+                                      },
+                                      child: Text('확인', style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                                ],
+                              ),
+                        );
                       },
                       icon: Image.asset(
                         'images/main/trash.png',
