@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'bar graph/bar_graph_month.dart';
 import 'models/MonthData.dart';
@@ -292,6 +294,8 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
   List<MonthData> monthDatas = [];
 
+  final _answerEditController = TextEditingController();
+
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getMSatisData();
@@ -300,6 +304,19 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
       });
     } catch (error) {
       print('Error getting MS list: $error');
+    }
+  }
+
+  void sendReportComment() async {
+    try {
+      String comment = _answerEditController.text;
+      print('send comment 실행');
+
+      apiManager.sendReportComment(comment);
+      print('post comment :${comment}');
+
+    } catch (error) {
+      print('Error sending comment Intro: $error');
     }
   }
 
@@ -528,7 +545,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        '가장 많았던 감정',
+                                                        '가장 적었던 감정',
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'soojin',
@@ -822,22 +839,22 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                       15, 10, 0, 0)),
                                               Container(
                                                   width: 250,
-                                                  child: RichText(
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      text: TextSpan(children: [
-                                                        TextSpan(
-                                                            text: monthDatas[
-                                                                    index]
-                                                                .comment,
-                                                            //n월로 변경해야함
-                                                            style: TextStyle(
-                                                                fontSize: 16,
-                                                                fontFamily:
-                                                                    'soojin',
-                                                                color: Colors
-                                                                    .brown)),
-                                                      ]))),
+                                                  child: TextField(
+                                                    controller:
+                                                        _answerEditController,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.brown,
+                                                      fontSize: 14,
+                                                      fontFamily: 'soojin',
+                                                    ),
+                                                    onTap: () async {
+                                                      sendReportComment();
+                                                      setState(() {
+
+                                                      });
+                                                    },
+                                                  )),
                                             ],
                                           );
                                         },
