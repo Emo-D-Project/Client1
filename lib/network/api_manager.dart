@@ -488,6 +488,26 @@ class ApiManager {
     }
   }
 
+  Future<DateTime> getCurrentTime() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endpoint = "/api/korean-time";
+    
+    Uri uri = Uri.parse("$baseUrl$endpoint");
+
+    final response = await http.get(
+      uri,
+      headers: {
+      'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200){
+      return DateTime.parse(response.body);
+    } else{
+      throw Exception("Fail to Load currentTime data from the API");
+    }
+  }
+
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
   Future<String> GetMyPageDataItrodById(int userId) async {
