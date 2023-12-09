@@ -52,7 +52,7 @@ class _gatherEmotionState extends State<gatherEmotion> {
   @override
   Widget build(BuildContext context) {
     Map<DateTime, String> sortedMap = Map.fromEntries(
-        _events.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));
+        _events.entries.toList()..sort((e1, e2) => e2.key.compareTo(e1.key)));
 
     List<DateTime> dateList = sortedMap.keys.toList();
     List<String> valueList = sortedMap.values.toList();
@@ -71,6 +71,8 @@ class _gatherEmotionState extends State<gatherEmotion> {
         yearMonthList.add(key);
       }
     });
+
+    List<DateTime> reversedYearMonthList = yearMonthList.reversed.toList();
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -93,7 +95,7 @@ class _gatherEmotionState extends State<gatherEmotion> {
       body: ListView.builder(
           itemCount: yearMonthList.length,
           itemBuilder: (BuildContext context, int index) {
-            DateTime currentMonth = yearMonthList[index];
+            DateTime currentMonth = reversedYearMonthList[index];
             List<DateTime> monthDates = dateList
                 .where((date) =>
                     date.year == currentMonth.year &&
