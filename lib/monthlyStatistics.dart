@@ -362,6 +362,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
   @override
   Widget build(BuildContext context) {
+    monthDatas.sort((a, b) => b.date.compareTo(a.date));
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       appBar: AppBar(

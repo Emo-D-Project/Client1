@@ -943,7 +943,7 @@ class ApiManager {
     try {
       var response = await request.send();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print('Uploaded!');
         print(await response.stream.bytesToString());
       } else {

@@ -344,11 +344,12 @@ class _writediaryState extends State<writediary> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async{
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               PostWriteDiary("/api/diaries/create");
               fetchDataFromServer();
+              await Future.delayed(Duration(milliseconds: 500));
             },
             icon: Image.asset(
               "images/send/upload.png",
