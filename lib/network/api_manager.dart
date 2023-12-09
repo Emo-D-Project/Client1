@@ -550,6 +550,48 @@ class ApiManager {
     }
   }
 
+  Future<String> ConvertSpeechToText(String audioFilePath) async {
+
+    var url = Uri.parse("$baseUrl/api/audio/upload");
+    String accessToken = tokenManager.getAccessToken();
+
+    var request = http.MultipartRequest('POST', url);
+
+    var audioFile = audioFilePath; // 오디오 파일
+
+    request.headers['Authorization'] = 'Bearer $accessToken';
+
+    // 오디오 파일을 추가
+    if (audioFile != null && audioFile.isNotEmpty) {
+      print('Audio File Path: $audioFile');
+
+      request.files.add(await http.MultipartFile.fromPath(
+          'audioFile', audioFile, contentType: MediaType('audio', 'mp3')));
+    } else {
+      print('Warning: audioFile is empty or null. Skipping audioFile.');
+    }
+
+    try {
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // response를 문자열로 변환
+        var responseString = await response.stream.bytesToString();
+        print("audio recognize response: $responseString");
+        return responseString;
+      } else {
+        print('ConvertSpeechToText failed with status: ${response.statusCode}');
+        return "";
+      }
+    } catch (e) {
+      print('Error uploading data: $e');
+    }
+
+    return "";
+
+  }
+
+
   //좋아요 수
   Future<void> putFavoriteCount(int id) async {
     String accessToken = tokenManager.getAccessToken();
@@ -816,7 +858,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("http://34.64.78.183:8080/api/diaries/create");
+    var url = Uri.parse("http://34.22.108.184:8080/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {

@@ -65,6 +65,7 @@ dependencies:
   http_parser: ^4.0.0
 
   path_provider: ^2.0.5  # 최신 버전을 확인하여 적용해 주세요
+  ntp: ^2.0.0
 
 
 dev_dependencies:

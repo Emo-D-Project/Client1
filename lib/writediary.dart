@@ -12,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path/path.dart' as p;
 
+
 import 'models/Diary.dart';
 
 final String now = DateTime.now().toString();
@@ -41,7 +42,7 @@ class _writediaryState extends State<writediary> {
   bool _isChecked = false;
   bool _isCheckedShare = false;
 
-  final _contentEditController = TextEditingController(); //일기내용 변수에 저장
+  var _contentEditController = TextEditingController(); //일기내용 변수에 저장
 
   //녹음에 필요한 것들
   final recorder = sound.FlutterSoundRecorder();
@@ -64,6 +65,7 @@ class _writediaryState extends State<writediary> {
     playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
+    print("datetime now: ${DateTime.now()}");
 
     //재생 상태가 변경될 때마다 상태를 감지하는 이벤트 핸들러
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -124,6 +126,7 @@ class _writediaryState extends State<writediary> {
       print('Error getting share diaries list: $error');
     }
   }
+
 
   Future<void> PostWriteDiary(String endpoint) async {
     ApiManager apiManager = ApiManager().getApiManager();
@@ -239,6 +242,14 @@ class _writediaryState extends State<writediary> {
 
     final savedFilePath = await saveRecordingLocally(); // 녹음된 파일을 로컬에 저장
     print("savedFilePath: $savedFilePath");
+
+    String convertedAudioContents = await apiManager.ConvertSpeechToText(savedFilePath);
+
+    setState(() {
+      _contentEditController.text += convertedAudioContents;
+    });
+
+
   }
 
   String formatTime(Duration duration) {
