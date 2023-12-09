@@ -62,6 +62,8 @@ class _writediaryState extends State<writediary> {
   @override
   void initState() {
     super.initState();
+    getCurrentTime();
+
     playAudio();
     //마이크 권한 요청, 녹음 초기화
     initRecorder();
@@ -127,6 +129,13 @@ class _writediaryState extends State<writediary> {
     }
   }
 
+  void getCurrentTime() async{
+    formattedDate = DateFormat('yyyy년 MM월 dd일').format( await apiManager.getCurrentTime());
+
+    setState(()  {
+      formattedDate = formattedDate;
+    });
+  }
 
   Future<void> PostWriteDiary(String endpoint) async {
     ApiManager apiManager = ApiManager().getApiManager();
