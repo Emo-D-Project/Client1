@@ -274,6 +274,8 @@ class monthlyStatistics extends StatefulWidget {
   State<monthlyStatistics> createState() => _monthlyStatisticsState();
 }
 
+final _answerEditController = TextEditingController(); //질문에 대한 답변 저장 변수
+
 class _monthlyStatisticsState extends State<monthlyStatistics> {
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -358,6 +360,85 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
     } catch (e) {
       print('Error: $e');
     }
+  }
+
+  void _sendMycomment() async{
+    try{
+      String comment = _answerEditController.text;
+
+      apiManager.sendMycomment(comment);
+
+    }
+    catch(error){
+      print('Error sending Mycooment: $error');
+    }
+  }
+
+  Future<void> _showDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "나의 한달은?",
+            style: TextStyle(
+              fontFamily: 'soojin',
+              color: Color(0xFF7D5A50),
+            ),
+          ),
+          content: TextField(
+            style: TextStyle(fontFamily: 'soojin'),
+            maxLength: 30,
+            decoration: InputDecoration(
+              hintText: '30자 이내로 작성해주세요.',
+              hintStyle: TextStyle(fontFamily: 'soojin'),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+            controller: _answerEditController,
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0x4D968C83),
+                    minimumSize: Size(150, 30)),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('취소',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0xFF7D5A50),
+                    minimumSize: Size(150, 30)),
+                onPressed: () async {
+                  _sendMycomment(); //
+                  final data = await apiManager.getMSatisData();
+                  setState(() {
+                    monthDatas = data!;
+                  });
+                }, //showContainer로 데이터 넘기기 // 디비에 저장하기
+                child: Text('확인',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -529,7 +610,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        '가장 많았던 감정',
+                                                        '가장 적었던 감정',
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'soojin',
@@ -793,26 +874,34 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                 MainAxisAlignment.center,
                                             // 위아래 중앙 정렬
                                             children: [
-                                              Container(
-                                                  width: 300,
-                                                  height: 40,
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 5, 0, 0),
-                                                  child: RichText(
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      text: TextSpan(children: [
-                                                        TextSpan(
-                                                            text:
-                                                                '나의 ${monthDatas[index].date.month}월은',
-                                                            //n월로 변경해야함
-                                                            style: TextStyle(
-                                                                fontSize: 30,
-                                                                fontFamily:
-                                                                    'soojin',
-                                                                color: Colors
-                                                                    .brown)),
-                                                      ]))),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                      width: 285,
+                                                      height: 40,
+                                                      padding: EdgeInsets.fromLTRB(
+                                                          20, 5, 0, 0),
+                                                      child: RichText(
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          text: TextSpan(children: [
+                                                            TextSpan(
+                                                                text:
+                                                                    '  나의 ${monthDatas[index].date.month}월은',
+                                                                //n월로 변경해야함
+                                                                style: TextStyle(
+                                                                    fontSize: 30,
+                                                                    fontFamily:
+                                                                        'soojin',
+                                                                    color: Colors
+                                                                        .brown)),
+                                                          ]))),
+                                                  IconButton(onPressed: () { _showDialog(context);}, icon: Image.asset("images/main/pencil.png", width: 20, height: 20,color: Colors.brown,)
+                                                  
+                                                  
+                                                  )
+                                                ],
+                                              ),
                                               Container(
                                                 color: Colors.black26,
                                                 width: 250,
@@ -831,7 +920,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                             text: monthDatas[
                                                                     index]
                                                                 .comment,
-                                                            //n월로 변경해야함
                                                             style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontFamily:
