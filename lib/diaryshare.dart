@@ -22,6 +22,7 @@ final List<String> imagePaths = [
   'images/emotion/sad.gif',
 ];
 
+
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
 
@@ -84,7 +85,11 @@ class _diaryshareState extends State<diaryshare> {
             // commentList의 길이에 접근
             int listLength = commentList.length;
 
-            commentCount.addAll({diary.diaryId: listLength});
+            if(commentCount.containsKey(diary.diaryId)){
+              commentCount[diary.diaryId] = listLength;
+            }else{
+              commentCount.addAll({diary.diaryId: listLength});
+            }
             // 원하는 작업 수행
           }).catchError((error) {
             print('Error getting commentList: $error');
@@ -381,6 +386,57 @@ class _customWidget1State extends State<customWidget1> {
     print("init state 좋아요 카운트: $favoriteCounts");
   }
 
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+
+
+      setState(() {
+        diaries = data;
+        for (Diary diary in diaries) {
+          FavoriteCount favoriteCount = new FavoriteCount();
+
+
+          apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+            favoriteCount.favoriteCount = value;
+          });
+
+          apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+            favoriteCount.favoriteColor = value;
+          });
+
+          apiManager
+              .getCommentData(diary.diaryId)
+              .then((List<Comment> commentList) {
+            favoriteMap.addAll({diary.diaryId: favoriteCount});
+
+            print("diaryId: ${diary.diaryId} commentlist length: ${commentList.length}");
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
+
+            if(commentCount.containsKey(diary.diaryId)){
+              commentCount[diary.diaryId] = listLength;
+            }else{
+              commentCount.addAll({diary.diaryId: listLength});
+            }            // 원하는 작업 수행
+            print(("${diary.diaryId}commentCount 값: ${commentCount[diary.diaryId]}"));
+          }).catchError((error) {
+            print('Error getting commentList: $error');
+          });
+        }
+        // formattedDate와 같은 날짜의 일기만 필터링
+        /*selectedEmotionDiaries = diaries
+            .where((diary) =>
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+            .toList();*/
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
+
   void plusDialog(BuildContext context) async {
     final sizeY = MediaQuery.of(context).size.height;
     await showModalBottomSheet(
@@ -399,13 +455,25 @@ class _customWidget1State extends State<customWidget1> {
           ),
         );
       },
-    );
+    ).then((value) async {
+      await fetchDataFromServer();
+
+      await Future.delayed(Duration(milliseconds: 400));
+      setState(() {
+      });
+
+    });
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
     print("commentCount1: ${commentCount[diaryId]}");
     print("otherUserId1: ${userId}");
+
+    print("diary id: ${diaryId}출력한 댓글 수 ${commentCount[diaryId]}");
 
 
     if(sshare){
@@ -539,6 +607,7 @@ class _customWidget1State extends State<customWidget1> {
                                     favoriteCounts = favoriteCounts + 1;
                                   }
                                   sfavoritColor = !sfavoritColor;
+                                  favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
                                 });
                               } catch (error) {
                                 print('Error updating favorite count: $error');
@@ -685,8 +754,15 @@ class _customWidget2State extends State<customWidget2> {
           ),
         );
       },
-    );
+    ).then((value) async {
+      await fetchDataFromServer();
+
+      await Future.delayed(Duration(milliseconds: 400));
+      setState(() {
+      });
+    });
   }
+
 
   Future<void> fetchDataFromServer() async {
     try {
@@ -714,8 +790,11 @@ class _customWidget2State extends State<customWidget2> {
             // commentList의 길이에 접근
             int listLength = commentList.length;
 
-            commentCount.addAll({diary.diaryId: listLength});
-            // 원하는 작업 수행
+            if(commentCount.containsKey(diary.diaryId)){
+              commentCount[diary.diaryId] = listLength;
+            }else{
+              commentCount.addAll({diary.diaryId: listLength});
+            }            // 원하는 작업 수행
           }).catchError((error) {
             print('Error getting commentList: $error');
           });
@@ -869,6 +948,7 @@ class _customWidget2State extends State<customWidget2> {
                                     favoriteCounts = favoriteCounts + 1;
                                   }
                                   sfavoritColor = !sfavoritColor;
+                                  favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
                                 });
                               } catch (error) {
                                 print('Error updating favorite count: $error');
@@ -980,23 +1060,79 @@ class _customwidget3State extends State<customwidget3> {
 
   }
 
-  void plusDialog(BuildContext context) {
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+
+
+      setState(() {
+        diaries = data;
+        for (Diary diary in diaries) {
+          FavoriteCount favoriteCount = new FavoriteCount();
+
+
+          apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+            favoriteCount.favoriteCount = value;
+          });
+
+          apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+            favoriteCount.favoriteColor = value;
+          });
+
+          apiManager
+              .getCommentData(diary.diaryId)
+              .then((List<Comment> commentList) {
+            favoriteMap.addAll({diary.diaryId: favoriteCount});
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
+
+            if(commentCount.containsKey(diary.diaryId)){
+              commentCount[diary.diaryId] = listLength;
+            }else{
+              commentCount.addAll({diary.diaryId: listLength});
+            }            // 원하는 작업 수행
+          }).catchError((error) {
+            print('Error getting commentList: $error');
+          });
+        }
+        /*// formattedDate와 같은 날짜의 일기만 필터링
+        selectedEmotionDiaries = diaries
+            .where((diary) =>
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+            .toList();*/
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
+
+  void plusDialog(BuildContext context) async {
     final sizeY = MediaQuery.of(context).size.height;
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
+        print('다이어리 아이디 $diaryId');
         return SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            //child: comment(),
+            child: comment(postId: diaryId),
           ),
         );
       },
-    );
+    ).then((value) async {
+      await fetchDataFromServer();
+
+      await Future.delayed(Duration(milliseconds: 400));
+      setState(() {
+      });
+    });
   }
 
   //재생에 필요한 것들
@@ -1271,6 +1407,8 @@ class _customwidget3State extends State<customwidget3> {
                                       favoriteCounts = favoriteCounts + 1;
                                     }
                                     sfavoritColor = !sfavoritColor;
+                                    favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
+
                                   });
                                 } catch (error) {
                                   print('Error updating favorite count: $error');
@@ -1384,6 +1522,55 @@ class _customwidget4State extends State<customwidget4> {
     this.sshare = sshare;
   }
 
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getDiaryShareData();
+
+
+      setState(() {
+        diaries = data;
+        for (Diary diary in diaries) {
+          FavoriteCount favoriteCount = new FavoriteCount();
+
+
+          apiManager.getFavoriteCount(diary.diaryId).then((int value) {
+            favoriteCount.favoriteCount = value;
+          });
+
+          apiManager.GetFavoriteColor(diary.diaryId).then((value) {
+            favoriteCount.favoriteColor = value;
+          });
+
+          apiManager
+              .getCommentData(diary.diaryId)
+              .then((List<Comment> commentList) {
+            favoriteMap.addAll({diary.diaryId: favoriteCount});
+
+            // commentList의 길이에 접근
+            int listLength = commentList.length;
+
+            if(commentCount.containsKey(diary.diaryId)){
+              commentCount[diary.diaryId] = listLength;
+            }else{
+              commentCount.addAll({diary.diaryId: listLength});
+            }            // 원하는 작업 수행
+          }).catchError((error) {
+            print('Error getting commentList: $error');
+          });
+        }
+        /*// formattedDate와 같은 날짜의 일기만 필터링
+        selectedEmotionDiaries = diaries
+            .where((diary) =>
+        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
+            .toList();*/
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting share diaries list: $error');
+    }
+  }
+
+
   void plusDialog(BuildContext context) async {
     final sizeY = MediaQuery.of(context).size.height;
     await showModalBottomSheet(
@@ -1402,7 +1589,13 @@ class _customwidget4State extends State<customwidget4> {
           ),
         );
       },
-    );
+    ).then((value) async {
+      await fetchDataFromServer();
+
+      await Future.delayed(Duration(milliseconds: 400));
+      setState(() {
+      });
+    });
   }
 
   //재생에 필요한 것들
@@ -1698,6 +1891,7 @@ class _customwidget4State extends State<customwidget4> {
                                    favoriteCounts = favoriteCounts + 1;
                                  }
                                  sfavoritColor = !sfavoritColor;
+                                 favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
                                });
                              } catch (error) {
                                print('Error updating favorite count: $error');
