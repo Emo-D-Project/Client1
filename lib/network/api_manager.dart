@@ -855,7 +855,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("http://34.64.78.183:8080/api/diaries/create");
+    var url = Uri.parse("$baseUrl/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {

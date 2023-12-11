@@ -325,6 +325,7 @@ class _writediaryState extends State<writediary> {
         actions: [
           IconButton(
             onPressed: () {
+              print("시간   ${formattedDate}");
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
               PostWriteDiary("/api/diaries/create");
