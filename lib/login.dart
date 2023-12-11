@@ -106,7 +106,7 @@ class _MyLoginState extends State<MyLogin> {
       backgroundColor: Color(0xFFD1CBC2),
       body: Center(
         child: Container(
-          height: 355,
+          height: 400,
           width: 329,
           decoration: BoxDecoration(
             boxShadow: [

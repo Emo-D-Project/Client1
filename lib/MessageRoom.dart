@@ -140,9 +140,9 @@ class _MessageRoomState extends State<MessageRoom> {
                                     // 시간
                                     Container(
                                       width: 100,
-                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                      padding: EdgeInsets.fromLTRB(40, 5, 0, 0),
                                       child: Text(
-                                        DateFormat('MM/dd hh:mm').format(
+                                        DateFormat('MM/dd').format(
                                             messageList[index].sendtime),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(

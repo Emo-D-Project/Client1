@@ -880,7 +880,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                       width: 285,
                                                       height: 40,
                                                       padding: EdgeInsets.fromLTRB(
-                                                          20, 5, 0, 0),
+                                                          15, 5, 0, 0),
                                                       child: RichText(
                                                           textAlign:
                                                               TextAlign.center,
