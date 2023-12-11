@@ -603,8 +603,11 @@ class _customWidget1State extends State<customWidget1> {
                                 setState(() {
                                   if (sfavoritColor) {
                                     favoriteCounts = favoriteCounts - 1;
+                                    favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                   } else {
                                     favoriteCounts = favoriteCounts + 1;
+                                    favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
                                   }
                                   sfavoritColor = !sfavoritColor;
                                   favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
@@ -944,8 +947,12 @@ class _customWidget2State extends State<customWidget2> {
                                 setState(() {
                                   if (sfavoritColor) {
                                     favoriteCounts = favoriteCounts - 1;
+                                    favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                   } else {
                                     favoriteCounts = favoriteCounts + 1;
+                                    favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                   }
                                   sfavoritColor = !sfavoritColor;
                                   favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
@@ -1403,8 +1410,12 @@ class _customwidget3State extends State<customwidget3> {
                                   setState(() {
                                     if (sfavoritColor) {
                                       favoriteCounts = favoriteCounts - 1;
+                                      favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                     } else {
                                       favoriteCounts = favoriteCounts + 1;
+                                      favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                     }
                                     sfavoritColor = !sfavoritColor;
                                     favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
@@ -1887,8 +1898,12 @@ class _customwidget4State extends State<customwidget4> {
                                setState(() {
                                  if (sfavoritColor) {
                                    favoriteCounts = favoriteCounts - 1;
+                                   favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                  } else {
                                    favoriteCounts = favoriteCounts + 1;
+                                   favoriteMap[diaryId]!.favoriteCount = favoriteCounts;
+
                                  }
                                  sfavoritColor = !sfavoritColor;
                                  favoriteMap[diaryId]!.favoriteColor = sfavoritColor;
