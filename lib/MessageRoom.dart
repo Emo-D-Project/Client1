@@ -90,6 +90,7 @@ class _MessageRoomState extends State<MessageRoom> {
       body: ListView.builder(
         itemCount: messageList.length,
         itemBuilder: (BuildContext context, int index) {
+          messageList.sort((a, b) => a.sendtime.compareTo(b.sendtime));
           return Row(
             children: [
               Column(

@@ -527,7 +527,7 @@ class _mypageState extends State<mypage> {
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: (() {
                       return Text(
-                        "권해진 바보",
+                        "김수진",
                         //myInfo.getNickName(),
                         style: TextStyle(
                             fontSize: 28,

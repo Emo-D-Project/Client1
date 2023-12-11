@@ -877,7 +877,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                               Row(
                                                 children: [
                                                   Container(
-                                                      width: 285,
+                                                      width: 260,
                                                       height: 40,
                                                       padding: EdgeInsets.fromLTRB(
                                                           15, 5, 0, 0),
