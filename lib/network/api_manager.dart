@@ -527,6 +527,26 @@ class ApiManager {
     }
   }
 
+  Future<DateTime> getCurrentTime() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endpoint = "/api/korean-time";
+    
+    Uri uri = Uri.parse("$baseUrl$endpoint");
+
+    final response = await http.get(
+      uri,
+      headers: {
+      'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if(response.statusCode == 200){
+      return DateTime.parse(response.body);
+    } else{
+      throw Exception("Fail to Load currentTime data from the API");
+    }
+  }
+
 
   // 자신의 마이페이지에 등록한 자기 소개 정보를 불러오는 기능
   Future<String> GetMyPageDataItrodById(int userId) async {
@@ -588,6 +608,48 @@ class ApiManager {
       throw Exception("Fail to load diary data from the API");
     }
   }
+
+  Future<String> ConvertSpeechToText(String audioFilePath) async {
+
+    var url = Uri.parse("$baseUrl/api/audio/upload");
+    String accessToken = tokenManager.getAccessToken();
+
+    var request = http.MultipartRequest('POST', url);
+
+    var audioFile = audioFilePath; // 오디오 파일
+
+    request.headers['Authorization'] = 'Bearer $accessToken';
+
+    // 오디오 파일을 추가
+    if (audioFile != null && audioFile.isNotEmpty) {
+      print('Audio File Path: $audioFile');
+
+      request.files.add(await http.MultipartFile.fromPath(
+          'audioFile', audioFile, contentType: MediaType('audio', 'mp3')));
+    } else {
+      print('Warning: audioFile is empty or null. Skipping audioFile.');
+    }
+
+    try {
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // response를 문자열로 변환
+        var responseString = await response.stream.bytesToString();
+        print("audio recognize response: $responseString");
+        return responseString;
+      } else {
+        print('ConvertSpeechToText failed with status: ${response.statusCode}');
+        return "";
+      }
+    } catch (e) {
+      print('Error uploading data: $e');
+    }
+
+    return "";
+
+  }
+
 
   //좋아요 수
   Future<void> putFavoriteCount(int id) async {
@@ -855,7 +917,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("$baseUrl/api/diaries/create");
+    var url = Uri.parse("http://34.22.108.184:8080/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {
@@ -920,7 +982,7 @@ class ApiManager {
     try {
       var response = await request.send();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print('Uploaded!');
         print(await response.stream.bytesToString());
       } else {
@@ -1056,6 +1118,41 @@ class ApiManager {
       return Alramdata;
     } else {
       throw Exception("Fail to load alram data from the API");
+    }
+  }
+
+  void sendMycomment(String comment) async {
+    String endpoint = "/api/report/create/${comment}";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "comment":comment,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 200) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
     }
   }
 

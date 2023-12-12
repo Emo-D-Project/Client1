@@ -30,7 +30,7 @@ Widget A_good = Row(
   ],
 );
 
-final DateTime smonth = DateTime(DateTime.now().month, 3); // ~월의 감정 통지서
+final DateTime smonth = DateTime(DateTime.now().month, 11); // ~월의 감정 통지서
 
 class shareData {
   final DateTime smonth;
