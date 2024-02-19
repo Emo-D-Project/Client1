@@ -17,26 +17,26 @@ import 'package:capston1/config/fcm_setting.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  //
+  // final fcmToken = await FirebaseMessaging.instance.getToken();
+  // String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
+  // await initializeDateFormatting();
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  await initializeDateFormatting();
-
-  int myId = await ApiManager().getApiManager().GetMyId() as int;
-  LoginedUserInfo.loginedUserInfo.id = myId;
+  // int myId = await ApiManager().getApiManager().GetMyId() as int;
+  // LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-        firebaseToken: firebaseToken,
+        //firebaseToken: firebaseToken,
       )));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key, firebaseToken}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
