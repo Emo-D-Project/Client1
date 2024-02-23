@@ -28,6 +28,7 @@ void main() async {
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
 
+
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
@@ -36,7 +37,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key, firebaseToken}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
