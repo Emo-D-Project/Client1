@@ -26,7 +26,7 @@ class ApiManager {
     return apiManager;
   }
 
-  String baseUrl = "http://34.22.108.184:8080";
+  String baseUrl = "http://34.64.78.56:8080";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
@@ -878,7 +878,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("http://34.22.108.184:8080/api/diaries/create");
+    var url = Uri.parse("http://34.64.78.56:8080/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {

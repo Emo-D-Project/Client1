@@ -17,21 +17,22 @@ import 'package:capston1/config/fcm_setting.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  //
-  // final fcmToken = await FirebaseMessaging.instance.getToken();
-  // String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  // await initializeDateFormatting();
+  /*await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  // int myId = await ApiManager().getApiManager().GetMyId() as int;
-  // LoginedUserInfo.loginedUserInfo.id = myId;
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
+  await initializeDateFormatting();*/
+
+  int myId = await ApiManager().getApiManager().GetMyId() as int;
+  LoginedUserInfo.loginedUserInfo.id = myId;
+
 
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-        //firebaseToken: firebaseToken,
+        firebaseToken: "",
       )));
 }
 
