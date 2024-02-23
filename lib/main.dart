@@ -17,13 +17,13 @@ import 'package:capston1/config/fcm_setting.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
+  /*await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
   String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  await initializeDateFormatting();
+  await initializeDateFormatting();*/
 
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
@@ -31,7 +31,7 @@ void main() async {
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-        firebaseToken: firebaseToken,
+        firebaseToken: "",
       )));
 }
 

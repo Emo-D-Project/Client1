@@ -1,7 +1,7 @@
 class TokenManager {
   static final TokenManager tokenManager = new TokenManager();
   String accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhcGRkbDVAbmF2ZXIuY29tIiwiaWF0IjoxNzAxMjIzNDM3LCJleHAiOjE3MDY0MDc0MzcsInN1YiI6ImFwZGRsNUBuYXZlci5jb20iLCJpZCI6MzZ9.xVdHG6ZiNz__CJYVaL97_khHVuusBMlzfEr6NawrfMM";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhcGRkbDVAbmF2ZXIuY29tIiwiaWF0IjoxNzA4NjU5NjEwLCJleHAiOjE3MTM4NDM2MTAsInN1YiI6ImFwZGRsNUBuYXZlci5jb20iLCJpZCI6MX0.W8A4hxnJU9dDs13VyPN2w2T42aT5Rtmlp2p9ViDXSo0";
   String refreshToken = "";
 
   TokenManager getTokenManager() {
