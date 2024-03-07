@@ -1,18 +1,13 @@
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
 import 'calendar.dart';
 import 'diaryshare.dart';
 import 'home.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:capston1/config/fcm_setting.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,12 +23,11 @@ void main() async {
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
 
-
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-        firebaseToken: "",
-      )));
+          //firebaseToken: "",
+          )));
 }
 
 class MyApp extends StatefulWidget {

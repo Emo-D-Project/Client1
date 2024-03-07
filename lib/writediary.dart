@@ -351,6 +351,7 @@ class _writediaryState extends State<writediary> {
 
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
+              Navigator.popUntil(context, ModalRoute.withName('/'));
 
             },
             icon: Image.asset(
