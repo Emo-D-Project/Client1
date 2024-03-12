@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'bar graph/bar_graph_month.dart';
 import 'models/MonthData.dart';
@@ -296,8 +294,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
 
   List<MonthData> monthDatas = [];
 
-  final _answerEditController = TextEditingController();
-
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getMSatisData();
@@ -306,19 +302,6 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
       });
     } catch (error) {
       print('Error getting MS list: $error');
-    }
-  }
-
-  void sendReportComment() async {
-    try {
-      String comment = _answerEditController.text;
-      print('send comment 실행');
-
-      apiManager.sendReportComment(comment);
-      print('post comment :${comment}');
-
-    } catch (error) {
-      print('Error sending comment Intro: $error');
     }
   }
 
@@ -538,15 +521,15 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                               width: 180,
                                               child: MyPieChart(
                                                 emotioncount2:
-                                                    monthDatas[index].emotions,
+                                                monthDatas[index].emotions,
                                               ),
                                             ),
                                             Column(
                                               children: [
                                                 Padding(
                                                     padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            130, 7, 0, 0)),
+                                                    EdgeInsets.fromLTRB(
+                                                        130, 7, 0, 0)),
                                                 Container(
                                                   height: 120,
                                                   width: 130,
@@ -557,13 +540,13 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                         '가장 많았던 감정',
                                                         style: TextStyle(
                                                             fontFamily:
-                                                                'soojin',
+                                                            'soojin',
                                                             fontSize: 16),
                                                       ),
                                                       Container(
                                                         child: (() {
                                                           switch (monthDatas[
-                                                                  index]
+                                                          index]
                                                               .mostEmotion) {
                                                             case 1:
                                                               return Image
@@ -630,13 +613,13 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                         '가장 적었던 감정',
                                                         style: TextStyle(
                                                             fontFamily:
-                                                                'soojin',
+                                                            'soojin',
                                                             fontSize: 16),
                                                       ),
                                                       Container(
                                                         child: (() {
                                                           switch (monthDatas[
-                                                                  index]
+                                                          index]
                                                               .leastEmotion) {
                                                             case 1:
                                                               return Image
@@ -716,28 +699,28 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           Container(
                                             height: 150,
                                             child: MyBarGraph_M(
                                               emotioncount:
-                                                  monthDatas[index].emotions,
+                                              monthDatas[index].emotions,
                                             ),
                                           ),
                                           //감정 이모션 사진
                                           Container(
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                               children: [
                                                 Container(
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -754,7 +737,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -770,7 +753,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -786,7 +769,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -802,7 +785,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -818,7 +801,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -834,7 +817,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 28,
                                                   height: 28,
                                                   margin:
-                                                      const EdgeInsets.all(6.5),
+                                                  const EdgeInsets.all(6.5),
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -888,7 +871,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                             BoxConstraints constraints) {
                                           return Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             // 위아래 중앙 정렬
                                             children: [
                                               Row(
@@ -900,22 +883,22 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                           15, 5, 0, 0),
                                                       child: RichText(
                                                           textAlign:
-                                                              TextAlign.center,
+                                                          TextAlign.center,
                                                           text: TextSpan(children: [
                                                             TextSpan(
                                                                 text:
-                                                                    '  나의 ${monthDatas[index].date.month}월은',
+                                                                '  나의 ${monthDatas[index].date.month}월은',
                                                                 //n월로 변경해야함
                                                                 style: TextStyle(
                                                                     fontSize: 30,
                                                                     fontFamily:
-                                                                        'soojin',
+                                                                    'soojin',
                                                                     color: Colors
                                                                         .brown)),
                                                           ]))),
                                                   IconButton(onPressed: () { _showDialog(context);}, icon: Image.asset("images/main/pencil.png", width: 20, height: 20,color: Colors.brown,)
-                                                  
-                                                  
+
+
                                                   )
                                                 ],
                                               ),
@@ -931,16 +914,16 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   width: 250,
                                                   child: RichText(
                                                       textAlign:
-                                                          TextAlign.center,
+                                                      TextAlign.center,
                                                       text: TextSpan(children: [
                                                         TextSpan(
                                                             text: monthDatas[
-                                                                    index]
+                                                            index]
                                                                 .comment,
                                                             style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontFamily:
-                                                                    'soojin',
+                                                                'soojin',
                                                                 color: Colors
                                                                     .brown)),
                                                       ]))),
