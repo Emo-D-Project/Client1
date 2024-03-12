@@ -1,29 +1,24 @@
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
 import 'calendar.dart';
 import 'diaryshare.dart';
 import 'home.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:capston1/config/fcm_setting.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
+  /*await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
   String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  await initializeDateFormatting();
+  await initializeDateFormatting();*/
 
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
@@ -31,12 +26,12 @@ void main() async {
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-        firebaseToken: firebaseToken,
-      )));
+          //firebaseToken: "",
+          )));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key, firebaseToken}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
