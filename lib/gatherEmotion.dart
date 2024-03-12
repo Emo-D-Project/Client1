@@ -15,7 +15,6 @@ class gatherEmotion extends StatefulWidget {
 
 class DiaryEntry {
   final DateTime date;
-
   DiaryEntry({required this.date});
 }
 

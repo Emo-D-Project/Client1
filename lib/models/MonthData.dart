@@ -6,6 +6,8 @@ class MonthData {
   final String comment;
   final int point;
 
+
+
   MonthData({
     required this.date,
     required this.emotions,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'help.dart';
 import 'mypage.dart';
 import 'opinion.dart';
+import 'question.dart';
 import 'network/api_manager.dart';
 
 class category extends StatefulWidget {
@@ -160,7 +161,31 @@ class _categoryState extends State<category> {
                       child: Text("지원", style: TextStyle(fontSize: 15,
                           fontFamily: 'soojin',
                           color: Color(0xFF7D5A50)))
-                  ), //지원
+                  ),
+                  //지원
+                  SizedBox(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0.0,
+                        backgroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (
+                                context) => const question()));
+                      }, //=> FlutterLocalNotification.showNotification(),
+                      child: Row(
+                        children: [
+                          Icon(Icons.person_2_outlined, color: Colors.black,
+                            size: 25,),
+                          SizedBox(width: 5,),
+                          Text("문의 보내기", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
+                        ],
+                      ),
+                    ),
+                  ), //의견보내기
                   SizedBox(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
