@@ -1,5 +1,6 @@
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -8,9 +9,12 @@ import 'diaryshare.dart';
 import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
+import 'liveAlram.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
 
   /*await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -43,6 +47,11 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
 
   late List<Map<String, dynamic>> data;
+  @override
+  void initState() {
+    super.initState();
+    initNotification(context); //추가함
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +92,9 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => alrampage()));
+            onPressed: () async {
+              await showNotification2();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => alrampage()));
             },
             icon: Image.asset(
               'images/bottom/bell.png',
@@ -94,6 +103,7 @@ class _MyAppState extends State<MyApp> {
               color: Color(0xFF968C83),
             ),
           )
+
         ],
       ),
       body: [home(), diaryshare(), calendar()][tab],
