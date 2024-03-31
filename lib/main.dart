@@ -9,7 +9,6 @@ import 'diaryshare.dart';
 import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
-import 'liveAlram.dart';
 
 
 void main() async {
@@ -50,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initNotification(context); //추가함
+
   }
 
   @override
@@ -92,8 +91,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           IconButton(
-            onPressed: () async {
-              await showNotification2();
+            onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => alrampage()));
             },
             icon: Image.asset(
