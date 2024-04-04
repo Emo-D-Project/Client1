@@ -9,7 +9,7 @@ class FcmSetting {
 
 //백그라운드 메세지
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    await Firebase.initializeApp();
+    //await Firebase.initializeApp();
     print("Handling a background message: ${message.messageId}");
 
   }

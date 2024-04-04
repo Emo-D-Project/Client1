@@ -22,28 +22,16 @@ import 'alrampage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Platform.isAndroid
-  //     ? await Firebase.initializeApp(
-  //         options: const FirebaseOptions(
-  //             apiKey: 'AIzaSyDObBMe8FWtWvPEz5uLUWK9riR_XKAul1w',
-  //             appId: '1:381803609512:android:3206f320b2352fc7fbf19d',
-  //             messagingSenderId: '381803609512',
-  //             projectId: 'emod-34180'))
-  //     : await Firebase.initializeApp();
 
-  // 파이어베이스 초기화
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
+  //final fcmToken = await FirebaseMessaging.instance.getToken();
   //String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
   // await initializeFDateFormatting();
 
+
+  // 파이어베이스 초기화
   await Firebase.initializeApp();
-   await FirebaseApi().initNotifications();
-
-
+  await FirebaseApi().initNotifications();
 
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
