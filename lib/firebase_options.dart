@@ -54,11 +54,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAjFpIMLU75oxiswfuH46D6oYeFNjLUajQ',
-    appId: '1:1070355012345:android:9b28baf30c57c1e2fc6028',
-    messagingSenderId: '1070355012345',
-    projectId: 'emod-project',
-    storageBucket: 'emod-project.appspot.com',
+    apiKey: 'AIzaSyDObBMe8FWtWvPEz5uLUWK9riR_XKAul1w',
+    appId: '1:381803609512:android:3206f320b2352fc7fbf19d',
+    messagingSenderId: '381803609512',
+    projectId: 'emod-34180',
+    storageBucket: 'emod-34180.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
