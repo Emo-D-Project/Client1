@@ -3,11 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+
+
 class FcmSetting {
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
+
+//백그라운드 메세지
+  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp();
     print("Handling a background message: ${message.messageId}");
+
   }
 
   Future<String?> fcmSetting() async {
@@ -35,6 +39,7 @@ class FcmSetting {
       provisional: true,
       sound: true,
     );
+
     print("fcmSetting 3");
 
     print("User granted permission: ${settings.authorizationStatus}");
@@ -44,13 +49,26 @@ class FcmSetting {
         description: '알림입니다', importance: Importance.max);
 
     print("fcmSetting 4");
+    var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    var initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+
+
+    FlutterLocalNotificationsPlugin();
+
+/*    if (flutterLocalNotificationsPlugin != null) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      await flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+      );
+    }*/
+
 
     // foreground 푸시 알림 핸들링
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -60,25 +78,27 @@ class FcmSetting {
       print('Got a message whilst in the foreground!');
       print('Message notification: ${message.notification.toString()}');
 
-      if (message.notification != null && android != null) {
+      if (message.notification != null && android != null ) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification?.title,
             notification?.body,
             NotificationDetails(
                 android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              icon: android.smallIcon,
-            )));
+                  channel.id,
+                  channel.name,
+                  channelDescription: channel.description,
+                  icon: '@mipmap/ic_launcher' ,
+                )));
+
         print('Message also contained a notification: ${message.notification}');
       }
     });
-    print("fcmSetting 5");
+
 
     // firebase token 발급
     String? firebaseToken = await messaging.getToken();
+
     print("fcmSetting 6");
 
     print('firebaseToken: ${firebaseToken}');
