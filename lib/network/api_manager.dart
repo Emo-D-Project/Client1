@@ -143,7 +143,7 @@ class ApiManager {
     String endpoint = "/user/auth/kakao";
 
     final response = await http.get(
-      Uri.parse('$baseUrl/$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: <String, String>{
         'kakaoAccessToken': 'Bearer $kakaoAccessToken', // 요청 헤더 설정
       },
