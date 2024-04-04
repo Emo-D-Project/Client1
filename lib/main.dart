@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_file.dart';
-import 'config/fcm_setting.dart';
+//import 'config/fcm_setting.dart';
+
+import 'config/fcm_new.dart';
 import 'firebase_options.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +19,17 @@ import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Platform.isAndroid
+  //     ? await Firebase.initializeApp(
+  //         options: const FirebaseOptions(
+  //             apiKey: 'AIzaSyDObBMe8FWtWvPEz5uLUWK9riR_XKAul1w',
+  //             appId: '1:381803609512:android:3206f320b2352fc7fbf19d',
+  //             messagingSenderId: '381803609512',
+  //             projectId: 'emod-34180'))
+  //     : await Firebase.initializeApp();
 
   // 파이어베이스 초기화
   await Firebase.initializeApp(
@@ -26,12 +37,16 @@ void main() async {
   );
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  // await initializeDateFormatting();
+  //String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
+  // await initializeFDateFormatting();
+
+  await Firebase.initializeApp();
+   await FirebaseApi().initNotifications();
+
+
 
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
-
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
@@ -52,10 +67,10 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
 
   late List<Map<String, dynamic>> data;
+
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -98,7 +113,8 @@ class _MyAppState extends State<MyApp> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => alrampage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => alrampage()));
             },
             icon: Image.asset(
               'images/bottom/bell.png',
@@ -107,7 +123,6 @@ class _MyAppState extends State<MyApp> {
               color: Color(0xFF968C83),
             ),
           )
-
         ],
       ),
       body: [home(), diaryshare(), calendar()][tab],
