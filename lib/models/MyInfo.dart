@@ -1,7 +1,7 @@
 class MyInfo {
   static final MyInfo myInfo = new MyInfo();
-  late String nickName;
-  int myUserId = 36;
+  String nickName ="";
+  late int myUserId;
 
   MyInfo getMyInfo() {
     return myInfo;

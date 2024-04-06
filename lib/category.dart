@@ -3,6 +3,7 @@ import 'package:capston1/main.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'help.dart';
+import 'lock.dart';
 import 'mypage.dart';
 import 'opinion.dart';
 import 'question.dart';
@@ -143,6 +144,29 @@ class _categoryState extends State<category> {
                       ),
                     ),
                   ), //알람 설정
+                  SizedBox(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0.0,
+                        backgroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (
+                                context) => const lock()));
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.lock_outline, color: Colors.black,
+                            size: 25,),
+                          SizedBox(width: 5,),
+                          Text("어플 잠금 설정", style: TextStyle(color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'soojin')),
+                        ],
+                      ),
+                    ),
+                  ), // 어플 잠금 설정
                 ],
               ), //유저 설정 칸
               Center(
