@@ -59,13 +59,12 @@ class _diaryshareState extends State<diaryshare> {
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getDiaryShareData();
-      apiManager.getFavoriteCount(30);
+      //apiManager.getFavoriteCount(30);
 
       setState(() {
         diaries = data;
         for (Diary diary in diaries) {
           FavoriteCount favoriteCount = new FavoriteCount();
-
           {
             bool favoriteColor = false;
             int favoriteCount = 0;

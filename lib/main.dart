@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,8 +14,9 @@ import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
 
-void main() async {
+/*void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -28,7 +31,7 @@ void main() async {
       home: MyApp(
           //firebaseToken: "",
           )));
-}
+}*/
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -47,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
