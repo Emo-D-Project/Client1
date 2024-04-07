@@ -26,7 +26,10 @@ class _lockState extends State<lock> {
   Future<void> fetchDataFromServer() async {
     try {
       String passSwitchString = await apiManager.GetPassSwitch();
-      bool passSwitch = passSwitchString.toLowerCase() == 'true';
+      bool passSwitch = false;
+      if(passSwitchString.toLowerCase() == 'true'){
+        passSwitch = true;
+      }
       setState(() {
         _isChecked = passSwitch;
       });
@@ -81,7 +84,7 @@ class _lockState extends State<lock> {
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (value) {
                       setState(() {
-                        _isChecked = value;
+                       _togglePassSwitch(value);
                       });
                     },
                   ),
@@ -93,4 +96,12 @@ class _lockState extends State<lock> {
       ),
     );
   }
+  void _togglePassSwitch(bool value) async{
+    setState(() {
+      _isChecked = value;
+    });
+    await apiManager.putPassSwitch();
+    print("일기 잠금 상태 변경");
+  }
+
 }

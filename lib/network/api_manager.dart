@@ -1167,7 +1167,7 @@ class ApiManager {
     );
     if (response.statusCode == 200) {} else {
       throw Exception(
-          "Fail to load favorite data from the API : ${response.statusCode}");
+          "Fail to load passState data from the API : ${response.statusCode}");
     }
   }
 
@@ -1186,7 +1186,7 @@ class ApiManager {
       final data = json.decode(utf8.decode(response.bodyBytes));
 
       print("잠금띠예 ${data}");
-      return data;
+      return data.toString();
       } else {
         throw Exception("Unexpected data value received from the API");
       }
