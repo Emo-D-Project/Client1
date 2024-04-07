@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCNWkwuwiWbBLHXl1ut4ClKAs_4mY-Xqmc',
-    appId: '1:1070355012345:web:1aa05c5fee3f9ccdfc6028',
-    messagingSenderId: '1070355012345',
-    projectId: 'emod-project',
-    authDomain: 'emod-project.firebaseapp.com',
-    storageBucket: 'emod-project.appspot.com',
-    measurementId: 'G-VVHZYQ3BB0',
+    apiKey: 'AIzaSyA-fKFrOjTpTgI1IJvIq5OW9HzrggtdZXo',
+    appId: '1:647782774462:web:888969d591c64d62e890ef',
+    messagingSenderId: '647782774462',
+    projectId: 'emodsujin',
+    authDomain: 'emodsujin.firebaseapp.com',
+    storageBucket: 'emodsujin.appspot.com',
+    measurementId: 'G-L1CHE4JY02',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAjFpIMLU75oxiswfuH46D6oYeFNjLUajQ',
-    appId: '1:1070355012345:android:9b28baf30c57c1e2fc6028',
-    messagingSenderId: '1070355012345',
-    projectId: 'emod-project',
-    storageBucket: 'emod-project.appspot.com',
+    apiKey: 'AIzaSyCjs9r3fWhfSYN_UpIzrwEkHovIPFWHxig',
+    appId: '1:647782774462:android:554e2dd36cde84f6e890ef',
+    messagingSenderId: '647782774462',
+    projectId: 'emodsujin',
+    storageBucket: 'emodsujin.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA3XjRgICPfwG184YRcf_zO63hcQT5ERFw',
-    appId: '1:1070355012345:ios:9fadd5005fa57243fc6028',
-    messagingSenderId: '1070355012345',
-    projectId: 'emod-project',
-    storageBucket: 'emod-project.appspot.com',
-    iosBundleId: 'com.emod.app',
+    apiKey: 'AIzaSyDunDNj2vM8KV-w2wHiWBduDhIqeumFsmQ',
+    appId: '1:647782774462:ios:0a70e30eb37d2ebbe890ef',
+    messagingSenderId: '647782774462',
+    projectId: 'emodsujin',
+    storageBucket: 'emodsujin.appspot.com',
+    iosBundleId: 'Y',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA3XjRgICPfwG184YRcf_zO63hcQT5ERFw',
-    appId: '1:1070355012345:ios:ea23f581bb54eb04fc6028',
-    messagingSenderId: '1070355012345',
-    projectId: 'emod-project',
-    storageBucket: 'emod-project.appspot.com',
+    apiKey: 'AIzaSyDunDNj2vM8KV-w2wHiWBduDhIqeumFsmQ',
+    appId: '1:647782774462:ios:c3afb33afb33dd1ae890ef',
+    messagingSenderId: '647782774462',
+    projectId: 'emodsujin',
+    storageBucket: 'emodsujin.appspot.com',
     iosBundleId: 'com.example.capston1.RunnerTests',
   );
 }
