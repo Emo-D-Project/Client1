@@ -1,5 +1,6 @@
 import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'style.dart' as style;
@@ -29,36 +30,55 @@ class MyLogin extends StatefulWidget {
 
 class _MyLoginState extends State<MyLogin> {
   //카카오 어세스 토큰을 사용해 서버의 어세스 토큰 및 리프레시 토큰 어플에 저장 함수
+
+  String jwttoken = '';
+  int sendMyId = 0;
+
   Future<void> authenticate(String token) async {
     MyInfo myInfo = MyInfo().getMyInfo();
     tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
-
     final url = Uri.parse(
-        'http://34.64.78.183:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
-
+        'http://34.64.78.56:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'kakaoAccessToken': token,
     });
 
-    if (response.statusCode == 200) {
-      String responseBody = utf8.decode(response.bodyBytes);
-      Map<String, dynamic> jsonResponse = json.decode(responseBody);
+    try{
+      if (response.statusCode == 200) {
+        String responseBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> jsonResponse = json.decode(responseBody);
 
-      tokenManager.setAccessToken(jsonResponse["access_token"]);
-      tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
+        tokenManager.setAccessToken(jsonResponse["access_token"]);
+        tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
 
-      myInfo.setNickName(jsonResponse["properties"]["nickname"]);
+        myInfo.setNickName(jsonResponse["properties"]["nickname"]);
 
-      ApiManager apiManager = ApiManager().getApiManager();
-      apiManager.tokenManager = tokenManager;
-    } else {
-      throw Exception('Faild to authenticate');
+        ApiManager apiManager = ApiManager().getApiManager();
+        apiManager.tokenManager = tokenManager;
+        print("로그인통신성공입니댜");
+        print("전달 받은 토큰 : ${tokenManager.accessToken}");
+        jwttoken = tokenManager.accessToken;
+
+        int myId = await ApiManager().GetMyId() as int;
+        LoginedUserInfo.loginedUserInfo.id = myId;
+        sendMyId = myId;
+        print("내 아이디 : ${myId}");
+
+      } else {
+        print("ㅋㅋ안됨ㅋㅋ");
+        throw Exception('Faild to authenticate');
+      }
     }
+    catch(error){
+      print("에러입니다 : $error");
+    }
+
   }
 
   Future<int> _handleKakaoLogin() async {
     MyInfo myInfo = MyInfo().getMyInfo();
+
     OAuthToken? token;
 
     if (await isKakaoTalkInstalled()) {
@@ -66,7 +86,8 @@ class _MyLoginState extends State<MyLogin> {
         print(await KakaoSdk.origin);
         token = await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공 ${token.accessToken}');
-        authenticate(token.accessToken); //토큰 전달
+        await authenticate(token.accessToken); //토큰 전달
+        print("토토큰큰 : ${jwttoken}");
         return 1;
       } catch (error) {
         print(await KakaoSdk.origin);
@@ -80,7 +101,8 @@ class _MyLoginState extends State<MyLogin> {
         try {
           token = await UserApi.instance.loginWithKakaoAccount();
           print('카카오계정으로 로그인 성공');
-          authenticate(token.accessToken);
+          await authenticate(token.accessToken);
+          print("토토큰큰 : ${jwttoken}");
           return 1;
         } catch (error) {
           print('카카오계정으로 로그인 실패 $error');
@@ -91,7 +113,8 @@ class _MyLoginState extends State<MyLogin> {
       try {
         token = await UserApi.instance.loginWithKakaoAccount();
         print('카카오계정으로 로그인 성공');
-        authenticate(token.accessToken);
+        await authenticate(token.accessToken);
+        print("토토큰큰 : ${jwttoken}");
         return 1;
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
@@ -148,6 +171,7 @@ class _MyLoginState extends State<MyLogin> {
                 child: IconButton(
                   onPressed: () async {
                     if (await _handleKakaoLogin() == 1) {
+                      print("넘기는 아이디 : ${sendMyId}");
                       // 카카오 로그인 성공 시
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => MyApp()));
