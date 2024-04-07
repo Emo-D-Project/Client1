@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1070355012345",
-    "project_id": "emod-project",
-    "storage_bucket": "emod-project.appspot.com"
+    "project_number": "647782774462",
+    "project_id": "emodsujin",
+    "storage_bucket": "emodsujin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1070355012345:android:9b28baf30c57c1e2fc6028",
+        "mobilesdk_app_id": "1:647782774462:android:554e2dd36cde84f6e890ef",
         "android_client_info": {
           "package_name": "com.example.capston1"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAjFpIMLU75oxiswfuH46D6oYeFNjLUajQ"
+          "current_key": "AIzaSyCjs9r3fWhfSYN_UpIzrwEkHovIPFWHxig"
         }
       ],
       "services": {

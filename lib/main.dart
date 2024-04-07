@@ -1,5 +1,8 @@
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'config/fcm_setting.dart';
+import 'firebase_options.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -12,13 +15,10 @@ import 'alrampage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  await initializeDateFormatting();*/
+  await FirebaseApi().initNotifications();
 
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
