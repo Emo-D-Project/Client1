@@ -1191,4 +1191,62 @@ class ApiManager {
         throw Exception("Unexpected data value received from the API");
       }
   }
+
+  Future<void> putPassword(String password) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/user/diaryPassword";
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    print(password);
+
+    try {
+      var response = await _dio.put(
+        '$baseUrl$endPoint',
+         data: {
+          'string' : password,
+         },
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      print(response);
+
+      if (response.statusCode == 200) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a password PUT request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+      throw e;
+    }
+  }
+  Future<String> GetPassword() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/user/diaryPassword";
+
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+
+      print("일기장 비번 변경 : ${data}");
+      return data.toString();
+    } else {
+      throw Exception("Unexpected data value received from the API");
+    }
+  }
 }

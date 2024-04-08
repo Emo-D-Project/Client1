@@ -5,7 +5,6 @@ import 'network/api_manager.dart';
 import 'models/Alram.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 
-
 class lock extends StatefulWidget {
   const lock({super.key});
 
@@ -14,6 +13,7 @@ class lock extends StatefulWidget {
 }
 
 class _lockState extends State<lock> {
+  TextEditingController _passwordController = TextEditingController();
   ApiManager apiManager = ApiManager().getApiManager();
   bool _isChecked = false;
 
@@ -27,7 +27,7 @@ class _lockState extends State<lock> {
     try {
       String passSwitchString = await apiManager.GetPassSwitch();
       bool passSwitch = false;
-      if(passSwitchString.toLowerCase() == 'true'){
+      if (passSwitchString.toLowerCase() == 'true') {
         passSwitch = true;
       }
       setState(() {
@@ -36,6 +36,16 @@ class _lockState extends State<lock> {
     } catch (error) {
       // 오류 처리
       print('Error getting pass list: $error');
+    }
+  }
+
+  void _sendPassword() async {
+    try {
+      String password = _passwordController.text;
+
+      await apiManager.putPassword(password);
+    } catch (error) {
+      print('Error sending MyPage: $error');
     }
   }
 
@@ -84,9 +94,134 @@ class _lockState extends State<lock> {
                     activeColor: CupertinoColors.activeGreen,
                     onChanged: (value) {
                       setState(() {
-                       _togglePassSwitch(value);
+                        _togglePassSwitch(value);
                       });
                     },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (_isChecked == true) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                title: Text(
+                                  "일기장 비밀번호",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'soojin',
+                                      color: Color(0xFF7D5A50)),
+                                ),
+                                content: TextField(
+                                  controller: _passwordController,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontFamily: 'soojin',
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: '비밀번호를 입력해주세요.',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(0x4D968C83),
+                                          minimumSize: Size(150, 30)),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(0xFF7D5A50),
+                                          minimumSize: Size(150, 30)),
+                                      onPressed: () async {
+                                        _sendPassword();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontFamily: 'soojin'))),
+                                ],
+                              );
+                            });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                title: Text(
+                                  "일기장 비밀번호",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'soojin',
+                                      color: Color(0xFF7D5A50)),
+                                ),
+                                content: Text("비밀번호 설정을 켜주세요."),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(0x4D968C83),
+                                          minimumSize: Size(150, 30)),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text('취소',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontFamily: 'soojin'))),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: Color(0xFF7D5A50),
+                                          minimumSize: Size(150, 30)),
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontFamily: 'soojin'))),
+                                ],
+                              );
+                            });
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(70, 0, 170, 0),
+                      child: Text(
+                        "비밀번호 설정",
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontFamily: 'soojin',
+                            color: Color(0xFF7D5A50)),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -96,12 +231,12 @@ class _lockState extends State<lock> {
       ),
     );
   }
-  void _togglePassSwitch(bool value) async{
+
+  void _togglePassSwitch(bool value) async {
     setState(() {
       _isChecked = value;
     });
     await apiManager.putPassSwitch();
     print("일기 잠금 상태 변경");
   }
-
 }
