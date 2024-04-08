@@ -1208,9 +1208,8 @@ class ApiManager {
     try {
       var response = await _dio.put(
         '$baseUrl$endPoint',
-         data: {
-          'string' : password,
-         },
+         data: password,
+
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
