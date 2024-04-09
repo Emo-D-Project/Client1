@@ -99,10 +99,14 @@ class _MyAppState extends State<MyApp> {
           content: Text('일기를 작성하셔야 보실 수 있습니다.'),
           actions: <Widget>[
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                backgroundColor: Color(0xFFD2C6BC),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('확인'),
+              child: Text('확인', style: TextStyle(color: Colors.black),),
             ),
           ],
         );
