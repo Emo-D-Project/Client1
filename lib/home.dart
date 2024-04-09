@@ -28,6 +28,7 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     fetchDataFromServer();
+
   }
 
   String getTime() {
@@ -94,6 +95,9 @@ class _homeState extends State<home> {
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getDiaryShareData();
+      int myId = await ApiManager().getApiManager().GetMyId() as int;
+      LoginedUserInfo.loginedUserInfo.id = myId;
+      print("여기임 ${LoginedUserInfo.loginedUserInfo.id}");
 
       setState(() {
         diaries = data; // fetchDataFromServer()가 완료된 후에 감정을 설정함
@@ -103,7 +107,7 @@ class _homeState extends State<home> {
                   diary.date.year == now.year &&
                   diary.date.month == now.month &&
                   diary.date.day == now.day &&
-                  diary.userId ==  LoginedUserInfo.loginedUserInfo.id,
+                  diary.userId == LoginedUserInfo.loginedUserInfo.id,
               orElse: () => Diary(
                 is_share: true,
                 is_comm: true,

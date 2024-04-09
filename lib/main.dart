@@ -1,7 +1,12 @@
+import 'dart:ui';
+
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:intl/intl.dart';
 import 'models/Diary.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'config/fcm_setting.dart';
+import 'firebase_options.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -11,16 +16,14 @@ import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
 
-void main() async {
+/*void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*await Firebase.initializeApp(
+
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  String? firebaseToken = await FcmSetting().fcmSetting(); // 수정된 부분
-  await initializeDateFormatting();*/
+  await FirebaseApi().initNotifications();
 
   int myId = await ApiManager().getApiManager().GetMyId() as int;
   LoginedUserInfo.loginedUserInfo.id = myId;
@@ -30,7 +33,7 @@ void main() async {
       home: MyApp(
           //firebaseToken: "",
           )));
-}
+}*/
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -117,6 +120,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
