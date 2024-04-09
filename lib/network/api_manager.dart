@@ -914,6 +914,25 @@ class ApiManager {
       return null;
     }
   }
+  Future<String> getWeatherData(int lat, int lon) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/weather";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+
+      return data.toString();
+    } else {
+      throw Exception("Fail to load chat data from the API");
+    }
+  }
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
@@ -1156,23 +1175,4 @@ class ApiManager {
     }
   }
 
-  Future<String> getWeatherData(int lat, int lon) async {
-    String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/weather";
-
-    final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(utf8.decode(response.bodyBytes));
-
-      return data.toString();
-    } else {
-      throw Exception("Fail to load chat data from the API");
-    }
-  }
 }
