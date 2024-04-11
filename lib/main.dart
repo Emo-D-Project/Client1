@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'statistics.dart';

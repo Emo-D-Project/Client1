@@ -109,7 +109,7 @@ class _homeState extends State<home> {
               );
             case 'calmness':
               return Image.asset(
-                'images/main/catmovereal.gif',
+                'images/main/03.png',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,

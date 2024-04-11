@@ -41,6 +41,8 @@ dependencies:
 
   firebase_core: ^2.23.0
   firebase_messaging: ^14.7.5
+  flutter_screen_lock: ^9.0.2
+
 
 
 
@@ -118,6 +120,7 @@ flutter:
     - images/emotion/
     - images/send/
     - images/background/
+
 
 
 

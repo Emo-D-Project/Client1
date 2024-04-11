@@ -1231,7 +1231,6 @@ class ApiManager {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/user/diaryPassword";
 
-
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
@@ -1242,7 +1241,7 @@ class ApiManager {
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
 
-      print("일기장 비번 변경 : ${data}");
+      print("일기장 비번: ${data}");
       return data.toString();
     } else {
       throw Exception("Unexpected data value received from the API");

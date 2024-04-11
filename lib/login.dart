@@ -3,6 +3,7 @@ import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'blur.dart';
 import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -33,6 +34,7 @@ class _MyLoginState extends State<MyLogin> {
 
   String jwttoken = '';
   int sendMyId = 0;
+  bool lockk = false;
 
   Future<void> authenticate(String token) async {
     MyInfo myInfo = MyInfo().getMyInfo();
@@ -62,8 +64,12 @@ class _MyLoginState extends State<MyLogin> {
 
         int myId = await ApiManager().GetMyId() as int;
         LoginedUserInfo.loginedUserInfo.id = myId;
-        sendMyId = myId;
+        String passSwitchString = await apiManager.GetPassSwitch();
+        if (passSwitchString.toLowerCase() == 'true') {
+          lockk = true;
+        }
         print("내 아이디 : ${myId}");
+        print("잠금여부 : ${lockk}");
 
       } else {
         print("ㅋㅋ안됨ㅋㅋ");
@@ -174,7 +180,7 @@ class _MyLoginState extends State<MyLogin> {
                       print("넘기는 아이디 : ${sendMyId}");
                       // 카카오 로그인 성공 시
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyApp()));
+                          MaterialPageRoute(builder: (context) => lockk ? blur() : MyApp()));
                     } else {
                       // 카카오 로그인 실패시
                       showDialog(
