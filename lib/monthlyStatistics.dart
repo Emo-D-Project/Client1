@@ -551,49 +551,49 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                             case 1:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/smile.gif',
+                                                                'images/bung/01.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 2:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/flutter.gif',
+                                                                'images/bung/02.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 3:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/angry.png',
+                                                                'images/bung/03.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 4:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/annoying.gif',
+                                                                'images/bung/04.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 5:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/tired.gif',
+                                                                'images/bung/05.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 6:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/sad.gif',
+                                                                'images/bung/06.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 7:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/calmness.gif',
+                                                                'images/bung/07.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
@@ -624,49 +624,49 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                             case 1:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/smile.gif',
+                                                                'images/bung/01.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 2:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/flutter.gif',
+                                                                'images/bung/02.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 3:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/angry.png',
+                                                                'images/bung/03.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 4:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/annoying.gif',
+                                                                'images/bung/04.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 5:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/tired.gif',
+                                                                'images/bung/05.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 6:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/sad.gif',
+                                                                'images/bung/06.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
                                                             case 7:
                                                               return Image
                                                                   .asset(
-                                                                'images/emotion/calmness.gif',
+                                                                'images/bung/07.png',
                                                                 width: 90,
                                                                 height: 90,
                                                               );
@@ -724,7 +724,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                        'images/emotion/smile.gif',
+                                                        'images/bung/01.png',
                                                       ),
                                                       fit: BoxFit.contain,
                                                     ),
@@ -741,7 +741,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/flutter.gif'),
+                                                          'images/bung/02.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
@@ -757,7 +757,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/angry.png'),
+                                                          'images/bung/03.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
@@ -773,7 +773,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/annoying.gif'),
+                                                          'images/bung/04.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
@@ -789,7 +789,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/tired.gif'),
+                                                          'images/bung/05.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
@@ -805,7 +805,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/sad.gif'),
+                                                          'images/bung/06.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),
@@ -821,7 +821,7 @@ class _monthlyStatisticsState extends State<monthlyStatistics> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                          'images/emotion/calmness.gif'),
+                                                          'images/bung/07.png'),
                                                       fit: BoxFit.contain,
                                                     ),
                                                   ),

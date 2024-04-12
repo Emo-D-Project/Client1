@@ -74,14 +74,14 @@ class _homeState extends State<home> {
           switch (emotionToday) {
             case 'flutter':
               return Image.asset(
-                'images/main/flutter.gif',
+                'images/bung/02.png',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
               );
             case 'angry':
               return Image.asset(
-                'images/main/angry.gif',
+                'images/bung/03.png',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
@@ -95,28 +95,29 @@ class _homeState extends State<home> {
               );
             case 'smile':
               return Image.asset(
-                'images/main/smile.gif',
+                'images/bung/01.png',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
               );
             case 'tired':
               return Image.asset(
-                'images/main/tired.gif',
+                'images/bung/05.png',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
               );
             case 'calmness':
               return Image.asset(
-                'images/main/03.png',
+                //'images/main/catmovereal.gif',
+                '',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
               );
             case 'sad':
               return Image.asset(
-                'images/main/sad.gif',
+                'images/bung/06.png',
                 width: 1200,
                 height: 1000,
                 fit: BoxFit.contain,
@@ -178,7 +179,7 @@ class _homeState extends State<home> {
                                                   )));
                                     },
                                     icon: Image.asset(
-                                      'images/emotion/smile.gif',
+                                      'images/bung/01.png',
                                       width: 50,
                                       height: 50,
                                     )),
@@ -193,7 +194,7 @@ class _homeState extends State<home> {
                                                   )));
                                     },
                                     icon: Image.asset(
-                                        'images/emotion/flutter.gif')),
+                                        'images/bung/02.png')),
                                 Container(
                                   child: IconButton(
                                       iconSize: 40,
@@ -207,7 +208,7 @@ class _homeState extends State<home> {
                                                     )));
                                       },
                                       icon: Image.asset(
-                                          'images/emotion/angry.png')),
+                                          'images/bung/03.png')),
                                 )
                               ],
                             ),
@@ -227,7 +228,7 @@ class _homeState extends State<home> {
                                                   )));
                                     },
                                     icon: Image.asset(
-                                        'images/emotion/annoying.gif')),
+                                        'images/bung/04.png')),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -239,7 +240,7 @@ class _homeState extends State<home> {
                                                   )));
                                     },
                                     icon: Image.asset(
-                                        'images/emotion/tired.gif')),
+                                        'images/bung/05.png')),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -251,7 +252,7 @@ class _homeState extends State<home> {
                                                   )));
                                     },
                                     icon:
-                                        Image.asset('images/emotion/sad.gif')),
+                                        Image.asset('images/bung/06.png')),
                                 IconButton(
                                     iconSize: 40,
                                     onPressed: () {
@@ -263,7 +264,7 @@ class _homeState extends State<home> {
                                                   )));
                                     },
                                     icon: Image.asset(
-                                        'images/emotion/calmness.gif'))
+                                        'images/bung/07.png'))
                               ],
                             ),
                           ), //감정 둘째줄

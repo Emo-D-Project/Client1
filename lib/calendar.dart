@@ -91,28 +91,28 @@ class _calendarState extends State<calendar> {
 
                   switch (_events[DateTime(day.year, day.month, day.day)]) {
                     case "angry":
-                      image = 'images/emotion/angry.png';
+                      image = 'images/bung/03.png';
                       break;
                     case "flutter":
-                      image = 'images/emotion/flutter.gif';
+                      image = 'images/bung/02.png';
                       break;
                     case "smile":
-                      image = 'images/emotion/smile.gif';
+                      image = 'images/bung/01.png';
                       break;
                     case "annoying":
-                      image = 'images/emotion/annoying.gif';
+                      image = 'images/bung/04.png';
                       break;
                     case "sad":
-                      image = 'images/emotion/sad.gif';
+                      image = 'images/bung/06.png';
                       break;
                     case "calmness":
-                      image = 'images/emotion/calmness.gif';
+                      image = 'images/bung/07.png';
                       break;
                     case "tired":
-                      image = 'images/emotion/tired.gif';
+                      image = 'images/bung/05.png';
                       break;
                     default:
-                      image = 'images/emotion/flutter.gif';
+                      image = 'images/bung/02.png';
                       break;
                   }
                   // If there are events, highlight the cell with an image

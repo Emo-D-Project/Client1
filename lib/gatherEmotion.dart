@@ -159,43 +159,43 @@ class _gatherEmotionState extends State<gatherEmotion> {
                                   switch (emotion) {
                                     case "smile":
                                       return Image.asset(
-                                        'images/emotion/smile.gif',
+                                        'images/bung/01.png',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "flutter":
                                       return Image.asset(
-                                        'images/emotion/flutter.gif',
+                                        'images/bung/02.png',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "angry":
                                       return Image.asset(
-                                        'images/emotion/angry.png',
+                                        'images/bung/03.png',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "annoying":
                                       return Image.asset(
-                                        'images/emotion/annoying.gif',
+                                        'images/bung/04.png',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "tired":
                                       return Image.asset(
-                                        'images/emotion/tired.gif',
+                                        'images/bung/05.png',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "sad":
                                       return Image.asset(
-                                        'images/emotion/sad.gif',
+                                        'images/bung/06.png',
                                         width: 40,
                                         height: 40,
                                       );
                                     case "calmness":
                                       return Image.asset(
-                                        'images/emotion/calmness.gif',
+                                        'images/bung/07.png',
                                         width: 40,
                                         height: 40,
                                       );

@@ -13,13 +13,13 @@ import 'package:capston1/otherMypage.dart';
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
-  'images/emotion/calmness.gif',
-  'images/emotion/smile.gif',
-  'images/emotion/flutter.gif',
-  'images/emotion/angry.png',
-  'images/emotion/annoying.gif',
-  'images/emotion/tired.gif',
-  'images/emotion/sad.gif',
+  'images/bung/07.png',
+  'images/bung/01.png',
+  'images/bung/02.png',
+  'images/bung/03.png',
+  'images/bung/04.png',
+  'images/bung/05.png',
+  'images/bung/06.png',
 ];
 
 
@@ -136,25 +136,25 @@ class _diaryshareState extends State<diaryshare> {
                 String imagePath = entry.value;
                 String emotion = "";
                 switch (imagePath) {
-                  case 'images/emotion/angry.png':
+                  case 'images/bung/03.png':
                     emotion = "angry";
                     break;
-                  case "images/emotion/flutter.gif":
+                  case "images/bung/02.png":
                     emotion = 'flutter';
                     break;
-                  case "images/emotion/smile.gif":
+                  case "images/bung/01.png":
                     emotion = 'smile';
                     break;
-                  case "images/emotion/annoying.gif":
+                  case "images/bung/04.png":
                     emotion = 'annoying';
                     break;
-                  case "images/emotion/sad.gif":
+                  case "images/bung/06.png":
                     emotion = 'sad';
                     break;
-                  case "images/emotion/calmness.gif":
+                  case "images/bung/07.png":
                     emotion = 'calmness';
                     break;
-                  case "images/emotion/tired.gif":
+                  case "images/bung/05.png":
                     emotion = 'tired';
                     break;
                   default:
@@ -202,28 +202,28 @@ class _diaryshareState extends State<diaryshare> {
 
                 switch (selectedEmotionDiaries[index].emotion) {
                   case "angry":
-                    emotionImagePath = 'images/emotion/angry.png';
+                    emotionImagePath = 'images/bung/03.png';
                     break;
                   case "flutter":
-                    emotionImagePath = 'images/emotion/flutter.gif';
+                    emotionImagePath = 'images/bung/02.png';
                     break;
                   case "smile":
-                    emotionImagePath = 'images/emotion/smile.gif';
+                    emotionImagePath = 'images/bung/01.png';
                     break;
                   case "annoying":
-                    emotionImagePath = 'images/emotion/annoying.gif';
+                    emotionImagePath = 'images/bung/04.png';
                     break;
                   case "sad":
-                    emotionImagePath = 'images/emotion/sad.gif';
+                    emotionImagePath = 'images/bung/06.png';
                     break;
                   case "calmness":
-                    emotionImagePath = 'images/emotion/calmness.gif';
+                    emotionImagePath = 'images/bung/07.png';
                     break;
                   case "tired":
-                    emotionImagePath = 'images/emotion/tired.gif';
+                    emotionImagePath = 'images/bung/05.png';
                     break;
                   default:
-                    emotionImagePath = 'images/emotion/flutter.gif';
+                    emotionImagePath = 'images/bung/02.png';
                     break;
                 }
                 if (selectedImageEmotion ==

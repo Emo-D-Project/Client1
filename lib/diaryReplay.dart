@@ -40,43 +40,43 @@ class _writediaryState extends State<DiaryReplay> {
             switch (diaries?.emotion) {
               case 'smile':
                 return Image.asset(
-                  'images/emotion/smile.gif',
+                  'images/bung/01.png',
                   height: 50,
                   width: 50,
                 );
               case 'flutter':
                 return Image.asset(
-                  'images/emotion/flutter.gif',
+                  'images/bung/02.png',
                   height: 50,
                   width: 50,
                 );
               case 'angry':
                 return Image.asset(
-                  'images/emotion/angry.png',
+                  'images/bung/03.png',
                   height: 50,
                   width: 50,
                 );
               case 'annoying':
                 return Image.asset(
-                  'images/emotion/annoying.gif',
+                  'images/bung/04.png',
                   height: 50,
                   width: 50,
                 );
               case 'tired':
                 return Image.asset(
-                  'images/emotion/tired.gif',
+                  'images/bung/05.png',
                   height: 50,
                   width: 50,
                 );
               case 'sad':
                 return Image.asset(
-                  'images/emotion/sad.gif',
+                  'images/bung/06.png',
                   height: 50,
                   width: 50,
                 );
               case 'calmness':
                 return Image.asset(
-                  'images/emotion/calmness.gif',
+                  'images/bung/07.png',
                   height: 50,
                   width: 50,
                 );
