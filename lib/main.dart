@@ -14,24 +14,23 @@ import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
 
-/*void main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
 
-  int myId = await ApiManager().getApiManager().GetMyId() as int;
-  LoginedUserInfo.loginedUserInfo.id = myId;
+   //int myId = await ApiManager().getApiManager().GetMyId() as int;
+  //LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-          //firebaseToken: "",
+          //firebaseToken: " ",
           )));
-}*/
+}
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
