@@ -16,7 +16,7 @@ import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
 
-/*void main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
@@ -33,7 +33,7 @@ import 'alrampage.dart';
       home: MyApp(
           //firebaseToken: "",
           )));
-}*/
+}
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
