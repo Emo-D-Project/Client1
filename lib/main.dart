@@ -1,6 +1,9 @@
 import 'dart:ui';
+import 'package:capston1/login.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'statistics.dart';
 import 'package:flutter/material.dart';
 import 'category.dart';
@@ -44,6 +47,12 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
 
   late List<Map<String, dynamic>> data;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {

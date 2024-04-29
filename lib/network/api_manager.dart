@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,8 @@ import '../models/TotalData.dart';
 import '../models/Mypage.dart';
 import '../models/Comment.dart';
 import 'package:http_parser/http_parser.dart';
+
+final storage = FlutterSecureStorage();
 
 
 class ApiManager {
