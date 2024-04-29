@@ -1213,6 +1213,45 @@ class ApiManager {
       }
   }
 
+
+  // notification
+  void sendNotification(int targetUserId, String title, String body) async {
+    String endpoint = "/api/v1/notification";
+    String accessToken = tokenManager.getAccessToken();
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data:{
+          "targetUserId": 1,
+          "title": title,
+          "body": body,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 200) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
+
   Future<Weekly> getWeeklySummary() async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "api/diaries/ai";
@@ -1238,6 +1277,7 @@ class ApiManager {
       return Weeklydata;
     } else {
       throw Exception("Fail to load alram data from the API");
+
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/models/Comment.dart';
+import 'alrampage.dart';
 
 final cat_image = 'images/send/cat_real_image.png';
 
@@ -32,6 +33,7 @@ class _commentState extends State<comment> {
   final Map<int, List<Comment>> commentCount = {};
 
   Map<int, int> catCount = {};
+  String latestComment = "";
 
   _commentState(this.postId);
 
@@ -55,6 +57,10 @@ class _commentState extends State<comment> {
             catCount.addAll({c.user_id: count});
             count++;
           }
+        }
+        // 새로운 댓글이 추가될 때마다 latestComment 값을 업데이트
+        if (commentList.isNotEmpty) {
+          latestComment = commentList.last.content;
         }
 
       });
@@ -127,6 +133,7 @@ class _commentState extends State<comment> {
       apiManager.sendComment(text, postId);
       print('포스트아이디:${postId}');
       _commentController.clear();
+
 
       await fetchDataFromServer();
     }

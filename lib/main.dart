@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:intl/intl.dart';
@@ -19,19 +18,18 @@ import 'alrampage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
 
-  int myId = await ApiManager().getApiManager().GetMyId() as int;
-  LoginedUserInfo.loginedUserInfo.id = myId;
+  // int myId = await ApiManager().getApiManager().GetMyId() as int;
+ // LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       theme: style.theme,
       home: MyApp(
-          //firebaseToken: "",
+          //firebaseToken: " ",
           )));
 }
 

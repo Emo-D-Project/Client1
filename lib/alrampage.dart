@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/otherMypage.dart';
+import 'comment.dart';
+import 'package:capston1/models/Comment.dart';
+
+List<Comment> commentList = [];
+
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -95,28 +100,50 @@ class _A_EmodState extends State<A_Emod> {
 }
 
 //알람 - 댓글 알람
-Widget A_Chat = Row(
-  children: [
-    Column(
+class A_Chat extends StatelessWidget {
+
+  final String latestComment;
+  const A_Chat(this.latestComment);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Row(
       children: [
-        Container(
-          child: Image.asset(
-            'images/send/real_chat.png',
-            width: 15,
-          ),
+        Column(
+          children: [
+            Container(
+              child: Image.asset(
+                'images/send/real_chat.png',
+                width: 15,
+              ),
+            ),
+          ],
         ),
+        SizedBox(width: 5),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "새로운 댓글이 달렸습니다.",
+              style: TextStyle(
+                fontFamily: 'soojin',
+                fontSize: 13,
+              ),
+            ),
+            Text(
+              latestComment,
+              style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        )
       ],
-    ),
-    SizedBox(width: 5),
-    Text(
-      "새로운 댓글이 달렸습니다",
-      style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-    ),
-    SizedBox(
-      height: 10,
-    )
-  ],
-);
+    );
+  }
+}
 
 //알람 - 문의내역 알람
 Widget A_Question = Row(
@@ -220,7 +247,7 @@ class alrampage extends StatelessWidget {
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(), // 스와이프 비활성화
             children: [
-              FirstScreen(),
+              FirstScreen(latestComment: '',),
               SecondScreen(),
             ],
           ),
@@ -238,6 +265,10 @@ class Item {
 
 //알람
 class FirstScreen extends StatelessWidget {
+  final String latestComment; // latestComment 변수 추가
+
+  const FirstScreen({Key? key, required this.latestComment}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -246,7 +277,7 @@ class FirstScreen extends StatelessWidget {
       Item(
           title: '오늘',
           contentList: [A_good, A_good, A_Emod(stitle: smonth), A_Question]),
-      Item(title: '어제', contentList: [A_Chat, A_Message]),
+      Item(title: '어제', contentList: [A_Chat(latestComment), A_Message]),
       Item(title: '5일전', contentList: [A_Question, A_good, A_good]),
     ];
 

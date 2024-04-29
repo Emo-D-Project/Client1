@@ -17,7 +17,7 @@ class FirebaseApi {
 
     // 플러그인 초기화
     final AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/launcher_icon');
     final InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -72,7 +72,7 @@ Future<void> fbMsgForegroundHandler(
             channel.id,
             channel.name,
             channelDescription: channel.description,
-            icon: '@mipmap/ic_launcher',
+            icon: '@mipmap/launcher_icon',
           ),
         ));
   } else {
