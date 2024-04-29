@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:capston1/models/MyInfo.dart';
+import 'package:capston1/models/Weekly.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import '../models/Alram.dart';
 import '../models/ChatRoom.dart';
 import '../models/Diary.dart';
+import '../models/Weekly.dart';
 import '../models/Message.dart';
 import '../models/MonthData.dart';
 import '../models/TotalData.dart';
@@ -1209,5 +1211,33 @@ class ApiManager {
       } else {
         throw Exception("Unexpected data value received from the API");
       }
+  }
+
+  Future<Weekly> getWeeklySummary() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "api/diaries/ai";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("Alram data: " + response.body);
+
+      Weekly Weeklydata = Weekly(
+        positiveEvent: rawData['id'],
+        negativeEvent: rawData['userId'],
+        emotion: rawData['allowMsg'],
+        summary: rawData['magAlarm'],
+      );
+
+      return Weeklydata;
+    } else {
+      throw Exception("Fail to load alram data from the API");
+    }
   }
 }

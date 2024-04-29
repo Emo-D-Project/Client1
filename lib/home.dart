@@ -5,7 +5,7 @@ import 'models/Diary.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'WeeklySummary.dart';
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -162,62 +162,84 @@ class _homeState extends State<home> {
           backgroundColor: Colors.transparent,
           body: Container(
             padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
-            child: SizedBox(
-                child: (() {
-              switch (emotionToday) {
-                case 'flutter':
-                  return Image.asset(
-                    'images/main/flutter.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                case 'angry':
-                  return Image.asset(
-                    'images/main/angry.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                case 'annoying':
-                  return Image.asset(
-                    'images/main/anoying.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                case 'smile':
-                  return Image.asset(
-                    'images/main/smile.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                case 'tired':
-                  return Image.asset(
-                    'images/main/tired.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                case 'calmness':
-                  return Image.asset(
-                    'images/main/catmovereal.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                case 'sad':
-                  return Image.asset(
-                    'images/main/sad.gif',
-                    width: 1200,
-                    height: 1000,
-                    fit: BoxFit.contain,
-                  );
-                default:
-                  return Container();
-              }
-            }())),
+            child: Stack(
+              children: [
+                SizedBox(
+                    child: (() {
+                  switch (emotionToday) {
+                    case 'flutter':
+                      return Image.asset(
+                        'images/main/flutter.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    case 'angry':
+                      return Image.asset(
+                        'images/main/angry.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    case 'annoying':
+                      return Image.asset(
+                        'images/main/anoying.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    case 'smile':
+                      return Image.asset(
+                        'images/main/smile.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    case 'tired':
+                      return Image.asset(
+                        'images/main/tired.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    case 'calmness':
+                      return Image.asset(
+                        'images/main/catmovereal.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    case 'sad':
+                      return Image.asset(
+                        'images/main/sad.gif',
+                        width: 1200,
+                        height: 1000,
+                        fit: BoxFit.contain,
+                      );
+                    default:
+                      return Container();
+                  }
+                }())),
+                Positioned(
+                  top: 450,
+                  left: 150,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0.0,
+                        backgroundColor: Color(0xFFF8F5EB),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => weeklySummary()));
+                      },
+                      child: Text("이번주 요약 보기",style: TextStyle(color: Colors.black, fontFamily: 'kim',),)
+                  ),
+                )
+              ],
+            ),
           ),
           floatingActionButton: Builder(builder: (context) {
             return FloatingActionButton(
