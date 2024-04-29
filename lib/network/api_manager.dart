@@ -718,7 +718,7 @@ class ApiManager {
   }
 
 //post 댓글작성
-  void sendComment(String content, int post_id) async {
+  void sendComment(String content, int postId) async {
     String endpoint = "/api/comments/create";
     String accessToken = tokenManager.getAccessToken();
 
@@ -734,7 +734,7 @@ class ApiManager {
         '$baseUrl$endpoint',
         data: {
           "content": content,
-          "post_id": post_id,
+          "post_id": postId,
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
@@ -914,6 +914,25 @@ class ApiManager {
       return null;
     }
   }
+  Future<String> getWeatherData(int lat, int lon) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/weather";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+
+      return data.toString();
+    } else {
+      throw Exception("Fail to load chat data from the API");
+    }
+  }
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
@@ -1053,7 +1072,7 @@ class ApiManager {
       throw Exception("Fail to load diary data from the API");
     }
   }
-  Future<void> putDiaryUpdate(int id, String emotion, String content, bool is_share, bool is_comm) async {
+  Future<void> putDiaryUpdate(int id, String emotion, String content, bool isShare, bool isComm) async {
     String endpoint = "/api/diaries/change/${id}";
     String accessToken = tokenManager.getAccessToken();
 
@@ -1070,8 +1089,8 @@ class ApiManager {
         data: {
           "emotion": emotion,
           "content": content,
-          "is_share": is_share,
-          "is_comm": is_comm,
+          "is_share": isShare,
+          "is_comm": isComm,
         },
         options: Options(headers: headers), // 요청 헤더 설정
       );

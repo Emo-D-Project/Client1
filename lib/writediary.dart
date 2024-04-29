@@ -347,12 +347,8 @@ class _writediaryState extends State<writediary> {
             onPressed: () async{
               PostWriteDiary("/api/diaries/create");
               fetchDataFromServer();
-              await Future.delayed(Duration(milliseconds: 3000 ));
-
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyApp()));
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-
+              await Future.delayed(Duration(seconds: 5));
+              print("저장완료");
             },
             icon: Image.asset(
               "images/send/upload.png",
@@ -695,4 +691,29 @@ class _writediaryState extends State<writediary> {
 
     );
   }
+}
+
+Widget _showDialog(BuildContext context) {
+  final sizeY = MediaQuery.of(context).size.height;
+  return AlertDialog(
+
+    title: Text('알림'),
+    content: SizedBox(
+      height: sizeY * 0.05,
+      child: Center(child: Text("저장되었습니다.")),
+    ),
+    actions: [
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0.0,
+          backgroundColor: Colors.blue,
+          minimumSize: Size(150, 30),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text('확인', style: TextStyle(color: Colors.black, fontSize: 20)),
+      ),
+    ],
+  );
 }
