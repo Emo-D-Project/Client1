@@ -29,7 +29,7 @@ class ApiManager {
     return apiManager;
   }
 
-  String baseUrl = "http://34.64.78.56:8080";
+  String baseUrl = "http://34.64.255.126:8000";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
@@ -1175,24 +1175,31 @@ class ApiManager {
   }
 
   Future<String> GetPassSwitch() async {
-    String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/user/diaryPassword/switch";
+    try {
+      String accessToken = tokenManager.getAccessToken();
+      String endPoint = "/user/diaryPassword/switch";
 
-    final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
+      final response = await http.get(
+        Uri.parse('$baseUrl$endPoint'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final data = json.decode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        final data = json.decode(utf8.decode(response.bodyBytes));
 
-      print("잠금띠예 ${data}");
-      return data.toString();
+        print("잠금띠예 $data");
+        return data.toString();
       } else {
-        throw Exception("Unexpected data value received from the API");
+        throw Exception("Failed to fetch data from the API. Status code: ${response.statusCode}");
       }
+    } catch (e) {
+      // 여기서 예외를 적절히 처리합니다.
+      print("An error occurred: $e");
+      // 사용자에게 알림을 표시하거나 다른 조치를 취할 수 있습니다.
+      return "An error occurred while fetching data. Please try again later.";
+    }
   }
 
   Future<void> putPassword(String password) async {

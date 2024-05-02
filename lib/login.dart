@@ -50,8 +50,9 @@ class _MyLoginState extends State<MyLogin> {
   _asyncMethod() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
-    final dio = Dio();
+    Dio dio = Dio();
 
+    //accessToken = null;
     if (accessToken != null) {
       print('djdjdjdjdj: ${accessToken}');
       tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
@@ -73,10 +74,18 @@ class _MyLoginState extends State<MyLogin> {
     }
     else {
       try {
-        final response = await dio.post(
-          'http://34.64.78.56:8080/api/token',
-          options: Options(headers: {'authorization': 'Bearer $refreshToken'}),
+        Map<String, String> headers = {
+          'Content-Type': 'application/json',
+          //'Authorization': 'Bearer $accessToken',
+        };
+        var response = await dio.post(
+          'http://34.64.255.126:8000',
+          data: {
+            "refreshToken": refreshToken
+          },
+          options: Options(headers: headers),// 요청 데이터
         );
+        print(response.statusCode);
         if (response.statusCode == 200) {
           print('토큰 재발급 성공');
         } else {
@@ -85,6 +94,7 @@ class _MyLoginState extends State<MyLogin> {
       }
       catch (e) {
         _handleKakaoLogin();
+        print("이거 실행");
       }
       // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
     }
@@ -94,7 +104,7 @@ class _MyLoginState extends State<MyLogin> {
     MyInfo myInfo = MyInfo().getMyInfo();
     tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
     final url = Uri.parse(
-        'http://34.64.78.56:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
+        'http://34.64.255.126:8000/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'kakaoAccessToken': token,
