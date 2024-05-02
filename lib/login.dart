@@ -1,9 +1,12 @@
 import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'blur.dart';
+import 'config/fcm_setting.dart';
+import 'firebase_options.dart';
 import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -21,6 +24,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: '002001aad48dcca2375e4c52bb8c1281');
   await initializeDateFormatting();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotifications();
+
 
   runApp(MaterialApp(theme: style.theme, home: MyLogin()));
 }
@@ -52,20 +60,22 @@ class _MyLoginState extends State<MyLogin> {
     final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
     Dio dio = Dio();
 
-    //accessToken = null;
     if (accessToken != null) {
       print('djdjdjdjdj: ${accessToken}');
       tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
       tokenManager.setAccessToken(accessToken);
       tokenManager.setRefreshToken(refreshToken!);
+      print("kkkkkkkk:${refreshToken}");
       ApiManager apiManager = ApiManager().getApiManager();
       int myId = await ApiManager().GetMyId() as int;
       LoginedUserInfo.loginedUserInfo.id = myId;
       print('아아아 ${myId}');
-      // String passSwitchString = await ApiManager().GetPassSwitch() ?? 'false';
-      // if (passSwitchString.toLowerCase() == 'true') {
-      //   lockk = true;
-      // }
+      print("에프씨엠${tokenManager.getFirebaseToken()}");
+      apiManager.putFirebaseToken(tokenManager.getFirebaseToken());
+      String passSwitchString = await ApiManager().GetPassSwitch() ?? 'false';
+      if (passSwitchString.toLowerCase() == 'true') {
+        lockk = true;
+      }
       Navigator.push(context,
           MaterialPageRoute(builder: (context) =>
           lockk
@@ -74,19 +84,19 @@ class _MyLoginState extends State<MyLogin> {
     }
     else {
       try {
+        print("44");
         Map<String, String> headers = {
           'Content-Type': 'application/json',
-          //'Authorization': 'Bearer $accessToken',
         };
         var response = await dio.post(
-          'http://34.64.255.126:8000',
+          'http://34.64.255.126:8000/api/token',
           data: {
             "refreshToken": refreshToken
           },
           options: Options(headers: headers),// 요청 데이터
         );
         print(response.statusCode);
-        if (response.statusCode == 200) {
+        if (response.statusCode == 201) {
           print('토큰 재발급 성공');
         } else {
           throw Exception('ㅏㅏFailed to load data from the API');
@@ -94,7 +104,7 @@ class _MyLoginState extends State<MyLogin> {
       }
       catch (e) {
         _handleKakaoLogin();
-        print("이거 실행");
+        print("이거 실행 $e");
       }
       // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
     }
@@ -135,6 +145,7 @@ class _MyLoginState extends State<MyLogin> {
 
         int myId = await ApiManager().GetMyId() as int;
         LoginedUserInfo.loginedUserInfo.id = myId;
+        apiManager.putFirebaseToken(tokenManager.getFirebaseToken());
         String passSwitchString = await apiManager.GetPassSwitch();
         if (passSwitchString.toLowerCase() == 'true') {
           lockk = true;

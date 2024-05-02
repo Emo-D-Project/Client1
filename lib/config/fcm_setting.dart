@@ -1,4 +1,7 @@
+import 'package:capston1/network/api_manager.dart';
+import 'package:capston1/tokenManager.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:capston1/tokenManager.dart' as tk;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -23,8 +26,11 @@ class FirebaseApi {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     // 토큰 발급
-    final fcmToken = await _firebaseMessaging.getToken();
+    String? fcmToken = await _firebaseMessaging.getToken();
+    tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
+    tokenManager.setFirebaseToken(fcmToken!);
     print('Token: $fcmToken\n');
+
 
     await _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
