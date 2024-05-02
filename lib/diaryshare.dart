@@ -25,6 +25,8 @@ final List<String> imagePaths = [
 
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
+ApiManager apiManager = ApiManager().getApiManager();
+
 
 class diaryshare extends StatefulWidget {
   diaryshare({Key? key}) : super(key: key);
@@ -32,6 +34,7 @@ class diaryshare extends StatefulWidget {
   @override
   State<diaryshare> createState() => _diaryshareState();
 }
+
 
 List<Diary> diaries = [];
 Map<int, int> commentCount = {};
@@ -43,7 +46,6 @@ class FavoriteCount {
 }
 
 class _diaryshareState extends State<diaryshare> {
-  ApiManager apiManager = ApiManager().getApiManager();
 
   //List<Diary> _diaryInfo = [];
   List<Diary> selectedEmotionDiaries = [];
@@ -374,6 +376,24 @@ class _customWidget1State extends State<customWidget1> {
 
   ApiManager apiManager = ApiManager().getApiManager();
 
+
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    if (apiManager != null) {
+      try {
+        int targetUserId = userId;
+        print("커스텀 1 일기 알림 ${targetUserId}");
+
+        apiManager.sendNotification(targetUserId, title, body);
+      } catch (error) {
+        print('Error sending notification : $error');
+      }
+    } else {
+      print('ApiManager is null. Cannot send notification.');
+    }
+  }
+
+
   _customWidget1State(int otherUserId, int diaryId, bool scomm, bool sshare) {
     this.userId = otherUserId;
     this.diaryId = diaryId;
@@ -453,7 +473,7 @@ class _customWidget1State extends State<customWidget1> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -612,6 +632,13 @@ class _customWidget1State extends State<customWidget1> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            // 좋아요 알림을 보냅니다.
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = " ";
+                              _sendNotification(title, body);
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }
@@ -747,7 +774,7 @@ class _customWidget2State extends State<customWidget2> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -804,6 +831,21 @@ class _customWidget2State extends State<customWidget2> {
     }
   }
 
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    if (apiManager != null) {
+      try {
+        int targetUserId = userId;
+        print("커스텀 2 일기 알림 ${targetUserId}");
+
+        apiManager.sendNotification(targetUserId, title, body);
+      } catch (error) {
+        print('Error sending notification : $error');
+      }
+    } else {
+      print('ApiManager is null. Cannot send notification.');
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -949,6 +991,12 @@ class _customWidget2State extends State<customWidget2> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = " ";
+                              _sendNotification(title, body);
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }
@@ -1116,7 +1164,7 @@ class _customwidget3State extends State<customwidget3> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -1219,6 +1267,21 @@ class _customwidget3State extends State<customwidget3> {
 
     print("otherUserId3: ${userId}");
 
+    //알람 실행
+    void _sendNotification(String title, String body) async {
+      if (apiManager != null) {
+        try {
+          int targetUserId = userId;
+          print("커스텀 3 일기 알림 ${targetUserId}");
+
+          apiManager.sendNotification(targetUserId, title, body);
+        } catch (error) {
+          print('Error sending notification : $error');
+        }
+      } else {
+        print('ApiManager is null. Cannot send notification.');
+      }
+    }
     if (sshare) {
       return SingleChildScrollView(
         child: Column(
@@ -1407,6 +1470,12 @@ class _customwidget3State extends State<customwidget3> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = "";
+                              _sendNotification(title, body);
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }
@@ -1577,7 +1646,7 @@ class _customwidget4State extends State<customwidget4> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -1674,6 +1743,22 @@ class _customwidget4State extends State<customwidget4> {
     return result;
   }
 
+
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    if (apiManager != null) {
+      try {
+        int targetUserId = userId;
+        print("커스텀 4 일기 알림 ${targetUserId}");
+
+        apiManager.sendNotification(targetUserId, title, body);
+      } catch (error) {
+        print('Error sending notification : $error');
+      }
+    } else {
+      print('ApiManager is null. Cannot send notification.');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     print("commentCount4: ${commentCount[diaryId]}");
@@ -1891,6 +1976,12 @@ class _customwidget4State extends State<customwidget4> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = "";
+                              _sendNotification(title, body);
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }

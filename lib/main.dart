@@ -25,9 +25,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
+  await FirebaseApi().fetchMyDataFromServer();
+  await FirebaseApi().checkMyDiaryExists();
 
-  // int myId = await ApiManager().getApiManager().GetMyId() as int;
- // LoginedUserInfo.loginedUserInfo.id = myId;
+  // 매월 1일에 알림 보내기
+  sendMonthlyNotification();
+  sendDiaryNotification();
+
+   //int myId = await ApiManager().getApiManager().GetMyId() as int;
+   //LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       theme: style.theme,

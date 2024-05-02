@@ -941,7 +941,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("http://34.64.78.56:8080/api/diaries/create");
+    var url = Uri.parse("http://34.64.255.126:8000/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {
@@ -1296,7 +1296,7 @@ class ApiManager {
       var response = await _dio.post(
         '$baseUrl$endpoint',
         data:{
-          "targetUserId": 1,
+          "targetUserId": targetUserId,
           "title": title,
           "body": body,
         }, // 요청 데이터
@@ -1304,7 +1304,8 @@ class ApiManager {
       );
 
       if (response.statusCode == 200) {
-        print("post 응답 성공");
+        print("post 응답 성공dl");
+        print(targetUserId);
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
