@@ -1347,4 +1347,38 @@ class ApiManager {
 
     }
   }
+  Future<void> putFirebaseToken(String firebasetoken) async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/user/firebaseToken";
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    print(firebasetoken);
+
+    try {
+      var response = await _dio.put(
+        '$baseUrl$endPoint',
+        data: firebasetoken,
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      print(response);
+
+      if (response.statusCode == 200) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a password PUT request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+      throw e;
+    }
+  }
 }
