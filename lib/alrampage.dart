@@ -1,5 +1,6 @@
 import 'package:capston1/main.dart';
 import 'package:capston1/MessageRoom.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
@@ -9,6 +10,27 @@ import 'package:capston1/models/Comment.dart';
 
 List<Comment> commentList = [];
 
+//알람 실행
+
+void _sendNotification(RemoteMessage message) async {
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  try {
+    // 사용자 ID 설정
+    int targetUserId = 1;
+
+    // 알림 제목 설정
+    String? title = message.notification?.title;
+
+    // 알림 본문 설정
+    String? body = message.notification?.body;
+
+    // 이하 코드 생략
+  }
+  catch (error) {
+    print('Error sending notification : $error');
+  }
+}
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -35,6 +57,34 @@ Widget A_good = Row(
   ],
 );
 
+
+
+//감정 통지서 텍스트 형태
+Widget A_Emod= Row(
+  children: [
+    Column(
+      children: [
+        Container(
+          //   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Image.asset(
+            'images/send/cat_real_image.png',
+            width: 16,
+          ),
+        ),
+      ],
+    ),
+    SizedBox(width: 5),
+    Text(
+      "Emo:D가 이 달의 감정 통지서를 보냈습니다!",
+      style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+    ),
+    SizedBox(
+      height: 25,
+    )
+  ],
+);
+
+
 final DateTime smonth = DateTime(DateTime.now().month, 11); // ~월의 감정 통지서
 
 class shareData {
@@ -45,59 +95,6 @@ class shareData {
   });
 }
 
-//알람 - 이모디 새소식
-class A_Emod extends StatefulWidget {
-  final DateTime stitle;
-
-  const A_Emod({
-    super.key,
-    required this.stitle,
-  });
-
-  @override
-  State<A_Emod> createState() => _A_EmodState();
-}
-
-class _A_EmodState extends State<A_Emod> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 11),
-              child: Image.asset(
-                'images/send/cat_real_image.png',
-                width: 16,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(width: 5),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "EMO:D 가 새 소식을 보냈습니다.",
-              style: TextStyle(
-                fontFamily: 'soojin',
-                fontSize: 13,
-              ),
-            ),
-            Text(
-              '${smonth.month}월의 감정 통지서가 도착했습니다!',
-              style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 45,
-        )
-      ],
-    );
-  }
-}
 
 //알람 - 댓글 알람
 class A_Chat extends StatelessWidget {
@@ -144,43 +141,6 @@ class A_Chat extends StatelessWidget {
     );
   }
 }
-
-//알람 - 문의내역 알람
-Widget A_Question = Row(
-  children: [
-    Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 28),
-          child: Image.asset(
-            'images/send/question.png',
-            width: 15,
-          ),
-        ),
-      ],
-    ),
-    SizedBox(width: 5), // 아이콘과 텍스트 사이의 간격 조절
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "문의 내역",
-          style: TextStyle(
-            fontFamily: 'soojin',
-            fontSize: 13,
-          ),
-        ),
-        Text(
-          "남겨주신 문의에 답변이 등록 되었어요.\nEMO:D : '문의 주셔서 감사합...'",
-          style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-        ),
-      ],
-    ),
-    SizedBox(
-      height: 50,
-    )
-  ],
-);
 
 //알람- 쪽지 알람
 Widget A_Message = Row(
@@ -276,9 +236,9 @@ class FirstScreen extends StatelessWidget {
     List<Item> itemList = [
       Item(
           title: '오늘',
-          contentList: [A_good, A_good, A_Emod(stitle: smonth), A_Question]),
-      Item(title: '어제', contentList: [A_Chat(latestComment), A_Message]),
-      Item(title: '5일전', contentList: [A_Question, A_good, A_good]),
+          contentList: []),
+      Item(title: '어제', contentList: []),
+      Item(title: '5일전', contentList: []),
     ];
 
     return Center(
@@ -369,6 +329,47 @@ class FirstScreen extends StatelessWidget {
     );
   }
 }
+
+////////////////////////
+
+//알람 - 문의내역 알람
+Widget A_Question = Row(
+  children: [
+    Column(
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 28),
+          child: Image.asset(
+            'images/send/question.png',
+            width: 15,
+          ),
+        ),
+      ],
+    ),
+    SizedBox(width: 5), // 아이콘과 텍스트 사이의 간격 조절
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "문의 내역",
+          style: TextStyle(
+            fontFamily: 'soojin',
+            fontSize: 13,
+          ),
+        ),
+        Text(
+          "남겨주신 문의에 답변이 등록 되었어요.\nEMO:D : '문의 주셔서 감사합...'",
+          style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+        ),
+      ],
+    ),
+    SizedBox(
+      height: 50,
+    )
+  ],
+);
+
+////////////////////////
 
 // 메세지 파트
 class SecondScreen extends StatefulWidget {
@@ -575,3 +576,6 @@ class _SecondScreenState extends State<SecondScreen> {
     );
   }
 }
+
+
+

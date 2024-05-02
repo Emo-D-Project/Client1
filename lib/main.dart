@@ -21,13 +21,25 @@ import 'alrampage.dart';
 void main() async {
  // WidgetsFlutterBinding.ensureInitialized();
 
+
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
   // await FirebaseApi().initNotifications();
 
-  // int myId = await ApiManager().getApiManager().GetMyId() as int;
- // LoginedUserInfo.loginedUserInfo.id = myId;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotifications();
+  await FirebaseApi().fetchMyDataFromServer();
+  await FirebaseApi().checkMyDiaryExists();
+
+  // 매월 1일에 알림 보내기
+  sendMonthlyNotification();
+  sendDiaryNotification();
+
+   //int myId = await ApiManager().getApiManager().GetMyId() as int;
+   //LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       theme: style.theme,
