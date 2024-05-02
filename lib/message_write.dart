@@ -1,6 +1,11 @@
 import 'package:capston1/network/api_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:capston1/MessageRoom.dart';
+
+import 'models/Message.dart';
+
 
 class message_write extends StatefulWidget {
   final int otherUserId;
@@ -20,13 +25,64 @@ class _message_writeState extends State<message_write> {
 
   _message_writeState(this.otherUserId);
 
+  int Myid = 0;
+
+  List<Message> messageList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+
+  }
+
+  // 서버로부터 데이터를 가져오는 함수
+  Future<void> fetchDataFromServer() async {
+    try {
+      // 상대방과의 대화나눈 메시지 가져오기
+      final data = await apiManager.getMessageList(otherUserId);
+
+      setState(() {
+        messageList = data!;
+      });
+    } catch (error) {
+      // 에러 제어하는 부분
+      print('Error getting chat list: $error');
+    }
+  }
+
+
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    try {
+      int targetUserId = otherUserId;
+      print("///////////////");
+      print(targetUserId);
+      print(title);
+      print(body);
+      print(".........");
+      apiManager.sendNotification(targetUserId, title, body);
+      print('쪽지 알람실행');
+    } catch (error) {
+      print('Error sending write message notification : $error');
+    }
+  }
+
   // 메세지 전송 함수
   void _sendMessage() {
-    String message = _contentEditController.text;
-    if (message.isNotEmpty) {
+    String writeMessage = _contentEditController.text;
+    if (writeMessage.isNotEmpty) {
       String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
-      apiManager.sendMessage(message, otherUserId, DateTime.now());
+      apiManager.sendMessage(writeMessage, otherUserId, DateTime.now());
       _contentEditController.clear();
+
+        // 알림 생성 및 전송
+        String title = "쪽지가 왔습니다!";
+        String body = writeMessage.length > 6
+            ? writeMessage.substring(0, 6) + "..."
+            : writeMessage;
+
+        _sendNotification(title, body);
 
       Navigator.pop(context);
     }
