@@ -4,6 +4,7 @@ import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/models/Weekly.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,8 @@ import '../models/Mypage.dart';
 import '../models/Comment.dart';
 import 'package:http_parser/http_parser.dart';
 
+final storage = FlutterSecureStorage();
+
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -28,7 +31,7 @@ class ApiManager {
     return apiManager;
   }
 
-  String baseUrl = "http://34.64.78.56:8080";
+  String baseUrl = "http://34.64.255.126:8000";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
@@ -1193,8 +1196,71 @@ class ApiManager {
   }
 
   Future<String> GetPassSwitch() async {
+    try {
+      String accessToken = tokenManager.getAccessToken();
+      String endPoint = "/user/diaryPassword/switch";
+
+      final response = await http.get(
+        Uri.parse('$baseUrl$endPoint'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(utf8.decode(response.bodyBytes));
+
+        print("잠금띠예 $data");
+        return data.toString();
+      } else {
+        throw Exception("Failed to fetch data from the API. Status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      // 여기서 예외를 적절히 처리합니다.
+      print("An error occurred: $e");
+      // 사용자에게 알림을 표시하거나 다른 조치를 취할 수 있습니다.
+      return "An error occurred while fetching data. Please try again later.";
+    }
+  }
+
+  Future<void> putPassword(String password) async {
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "/user/diaryPassword/switch";
+    String endPoint = "/user/diaryPassword";
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    print(password);
+
+    try {
+      var response = await _dio.put(
+        '$baseUrl$endPoint',
+         data: password,
+
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      print(response);
+
+      if (response.statusCode == 200) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a password PUT request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+      throw e;
+    }
+  }
+  Future<String> GetPassword() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/user/diaryPassword";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
@@ -1206,11 +1272,11 @@ class ApiManager {
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
 
-      print("잠금띠예 ${data}");
+      print("일기장 비번: ${data}");
       return data.toString();
-      } else {
-        throw Exception("Unexpected data value received from the API");
-      }
+    } else {
+      throw Exception("Unexpected data value received from the API");
+    }
   }
 
 

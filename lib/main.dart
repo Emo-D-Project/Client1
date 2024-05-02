@@ -1,4 +1,7 @@
 import 'dart:ui';
+import 'package:capston1/login.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:intl/intl.dart';
@@ -114,6 +117,12 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
