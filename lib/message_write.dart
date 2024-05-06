@@ -1,11 +1,13 @@
+import 'package:capston1/category.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/MessageRoom.dart';
-
+import 'alrampage.dart';
+import 'config/fcm_setting.dart';
+import 'main.dart';
 import 'models/Message.dart';
-
 
 class message_write extends StatefulWidget {
   final int otherUserId;
@@ -25,15 +27,16 @@ class _message_writeState extends State<message_write> {
 
   _message_writeState(this.otherUserId);
 
-  int Myid = 0;
+  // int Myid = 0;
 
   List<Message> messageList = [];
+  String latestMessage = " ";
 
   @override
   void initState() {
-    super.initState();
     fetchDataFromServer();
 
+    super.initState();
   }
 
   // 서버로부터 데이터를 가져오는 함수
@@ -51,17 +54,24 @@ class _message_writeState extends State<message_write> {
     }
   }
 
-
   //알람 실행
   void _sendNotification(String title, String body) async {
     try {
-      int targetUserId = otherUserId;
+     //int targetUserId = otherUserId;
+       int targetUserId = 1;
       print("///////////////");
       print(targetUserId);
       print(title);
       print(body);
       print(".........");
+
       apiManager.sendNotification(targetUserId, title, body);
+
+      setState(() {
+        latestMessage = body;
+      });
+
+
       print('쪽지 알람실행');
     } catch (error) {
       print('Error sending write message notification : $error');
@@ -72,17 +82,15 @@ class _message_writeState extends State<message_write> {
   void _sendMessage() {
     String writeMessage = _contentEditController.text;
     if (writeMessage.isNotEmpty) {
-      String sentTime = DateFormat('MM/dd hh:mm').format(DateTime.now());
       apiManager.sendMessage(writeMessage, otherUserId, DateTime.now());
       _contentEditController.clear();
 
-        // 알림 생성 및 전송
-        String title = "쪽지가 왔습니다!";
-        String body = writeMessage.length > 6
-            ? writeMessage.substring(0, 6) + "..."
-            : writeMessage;
-
-        _sendNotification(title, body);
+      // 알림 생성 및 전송
+      String title = "쪽지가 왔습니다!";
+      String body = writeMessage.length > 6
+          ? writeMessage.substring(0,6) + "..."
+          : writeMessage;
+      _sendNotification(title, body);
 
       Navigator.pop(context);
     }

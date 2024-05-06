@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:capston1/login.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
@@ -17,10 +18,12 @@ import 'diaryshare.dart';
 import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
+import 'models/Navigator.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
- // WidgetsFlutterBinding.ensureInitialized();
-
+  WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
@@ -30,10 +33,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+
   await FirebaseApi().initNotifications();
   await FirebaseApi().fetchMyDataFromServer();
   await FirebaseApi().checkMyDiaryExists();
-
   // 매월 1일에 알림 보내기
   sendMonthlyNotification();
   sendDiaryNotification();
@@ -42,14 +46,18 @@ void main() async {
    //LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
+
+      navigatorKey: GlobalVariable.navState,
       theme: style.theme,
       home: MyApp(
           //firebaseToken: " ",
           )));
 }
 
+
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
+
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -64,6 +72,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     checkMyDiaryExists();
   }
 
@@ -186,55 +195,57 @@ class _MyAppState extends State<MyApp> {
             )
           ],
         ),
-        body: [home(), diaryshare(), calendar()][tab],
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 5.0,
-          backgroundColor: Color(0xFFF8F5EB),
-          showUnselectedLabels: false,
-          //선택되지 않은 하단바의 label 숨기기
-          showSelectedLabels: false,
-          //선택된 하단바의 label 숨기기
-          currentIndex: tab,
-          //현재 select된 bar item의 index, 변수 tab부터 시작
-          type: BottomNavigationBarType.fixed,
-          onTap: (i) {
-            setState(() {
-              if (i == 1 && !_myDiaryExists) {
-                _showAlertDialog(context);
-                return;
-              }
-              tab = i;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              label: '홈화면',
-              icon: Image.asset(
-                "images/bottom/home.png",
-                width: 30,
-                height: 30,
-                color: Color(0xFF968C83),
+        body: Scaffold(
+          body: [home(), diaryshare(), calendar()][tab],
+          bottomNavigationBar: BottomNavigationBar(
+            elevation: 5.0,
+            backgroundColor: Color(0xFFF8F5EB),
+            showUnselectedLabels: false,
+            //선택되지 않은 하단바의 label 숨기기
+            showSelectedLabels: false,
+            //선택된 하단바의 label 숨기기
+            currentIndex: tab,
+            //현재 select된 bar item의 index, 변수 tab부터 시작
+            type: BottomNavigationBarType.fixed,
+            onTap: (i) {
+              setState(() {
+                if (i == 1 && !_myDiaryExists) {
+                  _showAlertDialog(context);
+                  return;
+                }
+                tab = i;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                label: '홈화면',
+                icon: Image.asset(
+                  "images/bottom/home.png",
+                  width: 30,
+                  height: 30,
+                  color: Color(0xFF968C83),
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              label: '일기공유',
-              icon: Image.asset(
-                "images/bottom/globe.png",
-                width: 30,
-                height: 30,
-                color: Color(0xFF968C83),
+              BottomNavigationBarItem(
+                label: '일기공유',
+                icon: Image.asset(
+                  "images/bottom/globe.png",
+                  width: 30,
+                  height: 30,
+                  color: Color(0xFF968C83),
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              label: '캘린더',
-              icon: Image.asset(
-                "images/bottom/calendar.png",
-                width: 35,
-                height: 35,
-                color: Color(0xFF968C83),
+              BottomNavigationBarItem(
+                label: '캘린더',
+                icon: Image.asset(
+                  "images/bottom/calendar.png",
+                  width: 35,
+                  height: 35,
+                  color: Color(0xFF968C83),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
