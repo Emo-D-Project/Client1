@@ -172,7 +172,6 @@ class FirebaseApi {
               priority: Priority.high,
             ),
           ),
-
         );
       } else {
         // 알림이 없는 메시지 처리
@@ -186,6 +185,12 @@ class FirebaseApi {
               .push(MaterialPageRoute(builder: (context) => category()));
         });
       }
+      else if (message.notification!.title!.contains('누군가 댓글을 달았습니다')) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.of(GlobalVariable.navState.currentContext!)
+              .push(MaterialPageRoute(builder: (context) => category()));
+        });
+      }
       else{
         print('노노노노노노노노');
       }
@@ -193,8 +198,8 @@ class FirebaseApi {
 
 
 
-    void handleFirebaseMessage2 (RemoteMessage message) {
-      if (message.notification!.title!.contains('쪽지가 왔습니다!')) {
+    void handleFirebaseMessage23(RemoteMessage message) {
+      if (message.notification!.title!.contains('쪽지')) {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(GlobalVariable.navState.currentContext!)
               .push(MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)));
@@ -217,8 +222,10 @@ class FirebaseApi {
 
       print(
           '푸시 알림 수신: ${message.notification?.title ?? 'No Title'} - ${message.notification?.body ?? 'No Body'}');
-      handleFirebaseMessage(message);
-      handleFirebaseMessage2(message);
+      if (message.notification != null && message.notification!.title != null) {
+
+        handleFirebaseMessage(message);
+      }     // handleFirebaseMessage2(message);
       fbMsgForegroundHandler(message, flutterLocalNotificationsPlugin, channel);
     });
   }
