@@ -98,7 +98,7 @@ class FirebaseApi {
       await fetchMyDataFromServer();
       // 오늘 작성한 본인의 일기가 있는지 확인
       bool myDiaryExists = _diaryInfo.any((diary) =>
-          DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
+      DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
 
       _myDiaryExists = myDiaryExists;
 
@@ -121,16 +121,16 @@ class FirebaseApi {
         importance: Importance.high);
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
     // 플러그인 초기화
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+    AndroidInitializationSettings('@mipmap/launcher_icon');
     final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    InitializationSettings(android: initializationSettingsAndroid);
 
     final StreamController<String?> notificationStream =
-        StreamController<String?>.broadcast();
+    StreamController<String?>.broadcast();
 
     void onNotificationTap(NotificationResponse notificationResponse) {
 
@@ -168,7 +168,7 @@ class FirebaseApi {
     //상단 알림
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     // 토큰 발급
@@ -243,7 +243,7 @@ void sendDiaryNotification() {
 
   if (now.hour == 22 && now.minute == 00 && !_myDiaryExists) {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.show(
       0,
       '하루가 지나가요! 오늘을 공유해보세요',
@@ -276,7 +276,7 @@ void sendMonthlyNotification() {
   if (now.day == 6) {
     // 알림 보내기
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.show(
       0, // ID
       'EMO:D가 이달의 감정 통지서를 보냈습니다!', // 제목
