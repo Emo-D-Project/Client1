@@ -180,237 +180,240 @@ class _commentState extends State<comment> {
   Widget build(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
 
-    return Container(
-      height: sizeY * 0.7,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        height: sizeY,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Center(
-            child: Container(
-              width: 100,
-              height: 5,
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-              color: Color.fromRGBO(117, 117, 117, 100),
-            ),
-          ), // 맨위에 회색 줄
-          //댓글 부분
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: commentList.length,
-              itemBuilder: (context, index) {
-                //Comment comment = commentList[index];
-                return Container(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                        child: Image.asset(
-                          cat_image,
-                          fit: BoxFit.contain,
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                width: 100,
+                height: 5,
+                margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                color: Color.fromRGBO(117, 117, 117, 100),
+              ),
+            ), // 맨위에 회색 줄
+            //댓글 부분
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: commentList.length,
+                itemBuilder: (context, index) {
+                  //Comment comment = commentList[index];
+                  return Container(
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                          child: Image.asset(
+                            cat_image,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                      child: Text(
-                                        '삼냥이 ${catCount[commentList[index].user_id]}',
-                                        //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF7D5A50),
-                                          fontFamily: 'soojin',
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                        child: Text(
+                                          '삼냥이 ${catCount[commentList[index].user_id]}',
+                                          //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF7D5A50),
+                                            fontFamily: 'soojin',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width: 270,
-                                  padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                  child: Text(
-                                    commentList[index].content,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: 'soojin',
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 270,
+                                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                    child: Text(
+                                      commentList[index].content,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'soojin',
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            //Padding(padding: EdgeInsets.fromLTRB(200, 0, 0, 0),),
-                            Visibility(
-                              visible: commentList[index].user_id == Myid,
-                              child: IconButton(
-                                onPressed: () async {
-                                  return showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      title: Text(' '),
-                                      content: SizedBox(
-                                          height: sizeY * 0.05,
-                                          child: Center(
-                                              child: Text(
-                                            "정말 삭제 하시겠습니까?",
-                                            style:
-                                                TextStyle(fontFamily: 'soojin'),
-                                          ))),
-                                      actions: [
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                backgroundColor:
-                                                    Color(0x4D968C83),
-                                                minimumSize: Size(150, 30)),
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: Text('취소',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20,
-                                                    fontFamily: 'soojin'))),
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                backgroundColor:
-                                                    Color(0xFF7D5A50),
-                                                minimumSize: Size(150, 30)),
-                                            onPressed: () async {
-                                              apiManager.RemoveComment(
-                                                  commentList[index].id);
-                                              await Future.delayed(
-                                                  Duration(milliseconds: 500));
+                                ],
+                              ),
+                              //Padding(padding: EdgeInsets.fromLTRB(200, 0, 0, 0),),
+                              Visibility(
+                                visible: commentList[index].user_id == Myid,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    return showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: Text(' '),
+                                        content: SizedBox(
+                                            height: sizeY * 0.05,
+                                            child: Center(
+                                                child: Text(
+                                              "정말 삭제 하시겠습니까?",
+                                              style:
+                                                  TextStyle(fontFamily: 'soojin'),
+                                            ))),
+                                        actions: [
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  elevation: 0.0,
+                                                  backgroundColor:
+                                                      Color(0x4D968C83),
+                                                  minimumSize: Size(150, 30)),
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: Text('취소',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20,
+                                                      fontFamily: 'soojin'))),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  elevation: 0.0,
+                                                  backgroundColor:
+                                                      Color(0xFF7D5A50),
+                                                  minimumSize: Size(150, 30)),
+                                              onPressed: () async {
+                                                apiManager.RemoveComment(
+                                                    commentList[index].id);
+                                                await Future.delayed(
+                                                    Duration(milliseconds: 500));
 
-                                              fetchDataFromServer();
-                                              Navigator.of(context).pop();
+                                                fetchDataFromServer();
+                                                Navigator.of(context).pop();
 
-                                              print(
-                                                  '댓글 아이디 : ${commentList[index].id}');
-                                            },
-                                            child: Text('확인',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20,
-                                                    fontFamily: 'soojin'))),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                icon: Image.asset(
-                                  'images/main/trash.png',
-                                  width: 20,
-                                  height: 20,
+                                                print(
+                                                    '댓글 아이디 : ${commentList[index].id}');
+                                              },
+                                              child: Text('확인',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20,
+                                                      fontFamily: 'soojin'))),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  icon: Image.asset(
+                                    'images/main/trash.png',
+                                    width: 20,
+                                    height: 20,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-
-          //댓글 달 수 있는 칸
-          Container(
-            height: 70,
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 40,
-                  width: 350,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 1.0,
+                      ],
                     ),
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: 280,
-                        height: 30,
-                        padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
-                        child: TextField(
-                          controller: _commentController,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontFamily: 'soojin',
-                          ),
-                          decoration: InputDecoration(
-                            hintText: '내용을 입력해주세요',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          print('  ${commentList.length}');
-                          _sendComment();
-
-                          fetchDataFromServer();
-                          await Future.delayed(Duration(milliseconds: 500));
-                          final data = await apiManager.getCommentData(postId);
-                          setState(() {
-                            commentList = data!;
-                            int count = 1;
-                            for (Comment c in commentList) {
-                              if (!catCount.containsKey(c.user_id)) {
-                                catCount.addAll({c.user_id: count});
-                                count++;
-                              }
-                            }
-                          });
-                        },
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          margin: EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/send/real_send.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+
+            //댓글 달 수 있는 칸
+            Container(
+              height: 70,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 40,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          width: 280,
+                          height: 30,
+                          padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                          child: TextField(
+                            controller: _commentController,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontFamily: 'soojin',
+                            ),
+                            decoration: InputDecoration(
+                              hintText: '내용을 입력해주세요',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            print('  ${commentList.length}');
+                            _sendComment();
+
+                            fetchDataFromServer();
+                            await Future.delayed(Duration(milliseconds: 500));
+                            final data = await apiManager.getCommentData(postId);
+                            setState(() {
+                              commentList = data!;
+                              int count = 1;
+                              for (Comment c in commentList) {
+                                if (!catCount.containsKey(c.user_id)) {
+                                  catCount.addAll({c.user_id: count});
+                                  count++;
+                                }
+                              }
+                            });
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            margin: EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('images/send/real_send.png'),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

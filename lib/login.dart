@@ -1,3 +1,7 @@
+import 'package:capston1/MessageRoom.dart';
+import 'package:capston1/calendar.dart';
+import 'package:capston1/comment.dart';
+import 'package:capston1/diaryshare.dart';
 import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
@@ -7,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'blur.dart';
 import 'config/fcm_setting.dart';
 import 'firebase_options.dart';
+import 'models/Navigator.dart';
 import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -19,6 +24,7 @@ import 'tokenManager.dart' as tk;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +36,18 @@ void main() async {
   await FirebaseApi().initNotifications();
   await FirebaseApi().fetchMyDataFromServer();
   await FirebaseApi().checkMyDiaryExists();
+  sendMonthlyNotification();
+  sendDiaryNotification();
 
-
-  runApp(MaterialApp(theme: style.theme, home: MyLogin()));
+  runApp(MaterialApp(
+      routes: {
+      '/diaryshare': (context) => diaryshare(),
+        '/comment' : (context) => comment(postId: 0, userid: senderId),
+        '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
+      },
+      navigatorKey: GlobalVariable.navState,
+      theme: style.theme,
+      home: MyLogin()));
 }
 
 class MyLogin extends StatefulWidget {
@@ -79,12 +94,8 @@ class _MyLoginState extends State<MyLogin> {
         lockk = true;
       }
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>
-          lockk
-              ? blur()
-              : MyApp()));
-    }
-    else {
+          MaterialPageRoute(builder: (context) => lockk ? blur() : MyApp()));
+    } else {
       try {
         print("44");
         Map<String, String> headers = {
@@ -92,10 +103,8 @@ class _MyLoginState extends State<MyLogin> {
         };
         var response = await dio.post(
           'http://34.64.255.126:8000/api/token',
-          data: {
-            "refreshToken": refreshToken
-          },
-          options: Options(headers: headers),// 요청 데이터
+          data: {"refreshToken": refreshToken},
+          options: Options(headers: headers), // 요청 데이터
         );
         print(response.statusCode);
         if (response.statusCode == 201) {
@@ -103,8 +112,7 @@ class _MyLoginState extends State<MyLogin> {
         } else {
           throw Exception('ㅏㅏFailed to load data from the API');
         }
-      }
-      catch (e) {
+      } catch (e) {
         _handleKakaoLogin();
         print("이거 실행 $e");
       }
@@ -157,8 +165,7 @@ class _MyLoginState extends State<MyLogin> {
       } else {
         throw Exception('Faild to authenticate');
       }
-    }
-    catch (error) {
+    } catch (error) {
       print("에러입니다 : $error");
     }
   }
@@ -259,11 +266,10 @@ class _MyLoginState extends State<MyLogin> {
                   onPressed: () async {
                     if (await _handleKakaoLogin() == 1) {
                       // 카카오 로그인 성공 시
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) =>
-                          lockk
-                              ? blur()
-                              : MyApp()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => lockk ? blur() : MyApp()));
                     } else {
                       // 카카오 로그인 실패시
                       showDialog(
