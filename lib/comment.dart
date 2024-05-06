@@ -13,23 +13,29 @@ class comment extends StatefulWidget {
 
   const comment({
     super.key,
-    required this.postId, required this.userid,
+    required this.postId,
+    required this.userid,
   });
 
   @override
-  State<comment> createState() => _commentState(postId,userid);
+  State<comment> createState() => _commentState(postId, userid);
 }
+
+List<Item> itemList = [];
 
 class _commentState extends State<comment> {
   //알람 실행
-  void _sendNotification( String title, String body) async {
+  void _sendNotification(String title, String body) async {
     try {
       int targetUserId = userid;
-      print("/////////////////////////");
       print(userid);
-      print("ddddddddddddd");
+
       apiManager.sendNotification(targetUserId, title, body);
       print('댓글 알람실행');
+
+      setState(() {
+        latestComment = body;
+      });
     } catch (error) {
       print('Error sending comment notification : $error');
     }
@@ -52,7 +58,7 @@ class _commentState extends State<comment> {
   Map<int, int> catCount = {};
   String latestComment = "";
 
-  _commentState(this.postId,this.userid);
+  _commentState(this.postId, this.userid);
 
   @override
   void initState() {
@@ -60,7 +66,6 @@ class _commentState extends State<comment> {
     fetchDataFromServer();
     fetchMyIDFromServer();
   }
-
 
   // 다이어리 아이디 카운트
   Future<void> fetchDataFromServer() async {
@@ -151,19 +156,19 @@ class _commentState extends State<comment> {
       print('포스트아이디:${postId}');
       _commentController.clear();
 
-      if (Myid != userid) {
-        String title = "누군가 댓글을 달았습니다";
-        print("되나연");
-        String body = text.length > 6 ? text.substring(0, 6) + "..." : text;
+      String title = "누군가 댓글을 달았습니다";
+      print("되나연");
+
+      String body = text.length > 6 ? text.substring(0, 6) + "..." : text;
+
+      if (Myid == userid) {
         _sendNotification(title, body);
+
         print(title);
         print(body);
+      } else {
+        print("알ㄹ미 실채");
       }
-      else
-        {
-          print("알ㄹ미 실채");
-        }
-
 
       // 댓글 목록을 다시 가져옵니다.
       await fetchDataFromServer();

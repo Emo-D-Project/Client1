@@ -11,6 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
 import 'models/Diary.dart';
 import 'package:capston1/otherMypage.dart';
+import 'alrampage.dart';
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
@@ -30,6 +31,8 @@ ApiManager apiManager = ApiManager().getApiManager();
 
 class diaryshare extends StatefulWidget {
   diaryshare({Key? key}) : super(key: key);
+
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   State<diaryshare> createState() => _diaryshareState();
@@ -637,7 +640,9 @@ class _customWidget1State extends State<customWidget1> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
-                              _sendNotification(title, body);
+                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
                             }
                           } catch (error) {
                             print('Error updating favorite count: $error');
@@ -839,6 +844,9 @@ class _customWidget2State extends State<customWidget2> {
         print("커스텀 2 일기 알림 ${targetUserId}");
 
         apiManager.sendNotification(targetUserId, title, body);
+
+        alrampage.addToItemList(A_good);
+
       } catch (error) {
         print('Error sending notification : $error');
       }
@@ -995,7 +1003,9 @@ class _customWidget2State extends State<customWidget2> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
-                              _sendNotification(title, body);
+                              if(userId == LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
                             }
                           } catch (error) {
                             print('Error updating favorite count: $error');
@@ -1474,7 +1484,9 @@ class _customwidget3State extends State<customwidget3> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = "";
-                              _sendNotification(title, body);
+                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
                             }
                           } catch (error) {
                             print('Error updating favorite count: $error');
@@ -1980,7 +1992,9 @@ class _customwidget4State extends State<customwidget4> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = "";
-                              _sendNotification(title, body);
+                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
                             }
                           } catch (error) {
                             print('Error updating favorite count: $error');

@@ -1,36 +1,18 @@
 import 'package:capston1/main.dart';
 import 'package:capston1/MessageRoom.dart';
+import 'package:capston1/models/notification.dart';
+import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'diaryshare.dart';
 import 'models/ChatRoom.dart';
 import 'network/api_manager.dart';
 import 'package:capston1/otherMypage.dart';
 import 'comment.dart';
 import 'package:capston1/models/Comment.dart';
+import 'models/Navigator.dart';
 
 List<Comment> commentList = [];
-
-//알람 실행
-
-void _sendNotification(RemoteMessage message) async {
-  ApiManager apiManager = ApiManager().getApiManager();
-
-  try {
-    // 사용자 ID 설정
-    int targetUserId = 1;
-
-    // 알림 제목 설정
-    String? title = message.notification?.title;
-
-    // 알림 본문 설정
-    String? body = message.notification?.body;
-
-    // 이하 코드 생략
-  }
-  catch (error) {
-    print('Error sending notification : $error');
-  }
-}
 
 //알람 좋아요 텍스트 형태
 Widget A_good = Row(
@@ -84,6 +66,30 @@ Widget A_Emod= Row(
   ],
 );
 
+//감정 통지서 텍스트 형태
+Widget A_DEmod= Row(
+  children: [
+    Column(
+      children: [
+        Container(
+          //   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Image.asset(
+            'images/send/cat_real_image.png',
+            width: 16,
+          ),
+        ),
+      ],
+    ),
+    SizedBox(width: 5),
+    Text(
+      "오늘 당신의 하루는 어땠나요?",
+      style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+    ),
+    SizedBox(
+      height: 25,
+    )
+  ],
+);
 
 final DateTime smonth = DateTime(DateTime.now().month, 11); // ~월의 감정 통지서
 
@@ -100,6 +106,7 @@ class shareData {
 class A_Chat extends StatelessWidget {
 
   final String latestComment;
+
   const A_Chat(this.latestComment);
 
   @override
@@ -142,33 +149,67 @@ class A_Chat extends StatelessWidget {
   }
 }
 
-//알람- 쪽지 알람
-Widget A_Message = Row(
-  children: [
-    Column(
+
+//쪽지 알람
+class A_Message extends StatelessWidget {
+  final String latestMessage;
+  const A_Message(this.latestMessage);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
       children: [
-        Container(
-          child: Image.asset(
-            'images/send/real_chat.png',
-            width: 15,
-          ),
+        Column(
+          children: [
+            Container(
+              child: Image.asset(
+                'images/send/real_chat.png',
+                width: 15,
+              ),
+            ),
+          ],
         ),
+        SizedBox(width: 5),
+        Column(
+          children: [
+            Text(
+              "쪽지가 왔습니다!",
+              style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+            ),
+            Text(
+              latestMessage,
+              style: TextStyle(fontFamily: 'soojin', fontSize: 13),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 30,
+        )
       ],
-    ),
-    SizedBox(width: 5),
-    Text(
-      "쪽지가 왔습니다!",
-      style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-    ),
-    SizedBox(
-      height: 30,
-    )
-  ],
-);
+    );
+  }
+}
 
-class alrampage extends StatelessWidget {
+
+
+List<Item> itemList = [
+  Item(
+      title: '오늘',
+      contentList: []),
+
+];
+
+class alrampage extends StatefulWidget {
   const alrampage({super.key});
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  static void addToItemList(Widget widget) {
+    itemList.add(Item(title: '', contentList: [widget]));
+  }
 
+  @override
+  State<alrampage> createState() => _alrampageState();
+}
+
+class _alrampageState extends State<alrampage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -207,14 +248,13 @@ class alrampage extends StatelessWidget {
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(), // 스와이프 비활성화
             children: [
-              FirstScreen(latestComment: '',),
+              FirstScreen(),
               SecondScreen(),
             ],
           ),
         ));
   }
 }
-
 // 언제 뭔 알람 온지
 class Item {
   String title;
@@ -224,22 +264,183 @@ class Item {
 }
 
 //알람
-class FirstScreen extends StatelessWidget {
-  final String latestComment; // latestComment 변수 추가
+class FirstScreen extends StatefulWidget {
 
-  const FirstScreen({Key? key, required this.latestComment}) : super(key: key);
+  const FirstScreen({Key? key, }) : super(key: key);
+
+  @override
+  State<FirstScreen> createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends State<FirstScreen> {
+  @override
+  void initState() {
+    alrampage();
+    super.initState();
+    print("알람 페이지 입장");
+    fetchMyIDFromServer();
+    fetchNotificationDataFromServer();
+
+  }
+  int Myid = 0;
+  List<notification> notificationList =[];
+
+  Future<void> fetchMyIDFromServer() async {
+    try {
+      final myid = await apiManager.GetMyId();
+
+      print('나의 아이디는 ${Myid}');
+      setState(() {
+        Myid = myid!;
+      });
+    } catch (error) {
+      print('Error getting intro list: $error');
+    }
+  }
+
+// fetchNotificationDataFromServer 함수 내부에서 처리
+  Future<void> fetchNotificationDataFromServer( ) async {
+    try {
+      fetchMyIDFromServer();
+      print("지금은 누구의 아이디세연 ${Myid}");
+      final data = await apiManager.getNotificationList();
+
+      setState(() {
+        notificationList = data!;
+        print(notificationList);
+
+        // 항목 초기화
+        itemList.clear();
+
+        // 오늘, 어제, 7일 전 항목 추가
+        itemList.add(Item(title: '오늘', contentList: []));
+        itemList.add(Item(title: '어제', contentList: []));
+        itemList.add(Item(title: '7일 전', contentList: []));
+
+        List<Widget> todayWidgets = [];
+        List<Widget> yesterdayWidgets = [];
+        List<Widget> sevenDaysAgoWidgets = [];
+
+        // 알림을 날짜에 따라 분류하여 해당 항목의 리스트에 추가
+        DateTime now = DateTime.now();
+        for (final notification in notificationList) {
+          // 알림을 받은 시간
+          DateTime notificationTime = notification.sentTime;
+          // 날짜에 따라 분류
+          if (notificationTime.year == now.year && notificationTime.month == now.month && notificationTime.day == now.day) {
+            // 오늘의 알림 위젯 생성
+            late Widget todayWidget;
+            // 알림 타입에 따라 적절한 위젯 생성
+            switch (notification.title) {
+              case "누군가가 당신의 일기에 좋아요를 눌렀습니다!":
+                todayWidget = A_good;
+                break;
+              case "EMO:D가 이달의 감정 통지서를 보냈습니다!":
+                todayWidget = A_Emod;
+                break;
+              case "누군가 댓글을 달았습니다":
+                String body = notification.body;
+                body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
+                body = body.length > 6 ? body.substring(0, 6) + "..." : body;
+
+                todayWidget = A_Chat(body);
+                break;
+
+              case "쪽지가 왔습니다!":
+                String body = notification.body;
+                body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
+                body = body.length > 6 ? body.substring(0, 6) + "..." : body;
+
+                todayWidget = A_Message(body);
+                break;
+              case "하루가 지나가요! 오늘을 공유해보세요":
+                todayWidget = A_DEmod;
+                break;
+              default:
+                continue;
+            }
+            todayWidgets.add(todayWidget);
+          } else if (notificationTime.year == now.year && notificationTime.month == now.month && notificationTime.day == now.day - 1) {
+            // 어제의 알림 위젯 생성
+            late Widget yesterdayWidget;
+            // 알림 타입에 따라 적절한 위젯 생성
+            switch (notification.title) {
+              case "누군가가 당신의 일기에 좋아요를 눌렀습니다!":
+                yesterdayWidget = A_good;
+                break;
+              case "EMO:D가 이달의 감정 통지서를 보냈습니다!":
+                yesterdayWidget = A_Emod;
+                break;
+              case "누군가 댓글을 달았습니다":
+                String body = notification.body;
+                body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
+                body = body.length > 6 ? body.substring(0, 6) + "..." : body;
+
+                yesterdayWidget = A_Chat(notification.body); // 댓글 내용을 전달
+                break;
+              case "쪽지가 왔습니다!":
+                String body = notification.body;
+                body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
+                body = body.length > 6 ? body.substring(0, 6) + "..." : body;
+
+                yesterdayWidget = A_Message(body); // 댓글 내용을 전달
+                break;
+              case "하루가 지나가요! 오늘을 공유해보세요":
+                yesterdayWidget = A_DEmod;
+                break;
+              default:
+                continue;
+            }
+            yesterdayWidgets.add(yesterdayWidget);
+          } else {
+            // 7일 전의 알림 위젯 생성
+            late Widget sevenDaysAgoWidget;
+            // 알림 타입에 따라 적절한 위젯 생성
+            switch (notification.title) {
+              case "누군가가 당신의 일기에 좋아요를 눌렀습니다!":
+                sevenDaysAgoWidget = A_good;
+                break;
+              case "EMO:D가 이달의 감정 통지서를 보냈습니다!":
+                sevenDaysAgoWidget = A_Emod;
+                break;
+              case "누군가 댓글을 달았습니다":
+                String body = notification.body;
+                body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
+                body = body.length > 6 ? body.substring(0, 6) + "..." : body;
+
+                sevenDaysAgoWidget = A_Chat(notification.body); // 댓글 내용을 전달
+                break;
+              case "쪽지가 왔습니다!":
+                String body = notification.body;
+                body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
+                body = body.length > 6 ? body.substring(0, 6) + "..." : body;
+
+                sevenDaysAgoWidget = A_Message(body); // 댓글 내용을 전달
+                break;
+              case "하루가 지나가요! 오늘을 공유해보세요":
+                sevenDaysAgoWidget = A_DEmod;
+                break;
+              default:
+                continue;
+            }
+            sevenDaysAgoWidgets.add(sevenDaysAgoWidget);
+          }
+        }
+        // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
+        itemList.firstWhere((item) => item.title == '오늘').contentList.addAll(todayWidgets);
+        itemList.firstWhere((item) => item.title == '어제').contentList.addAll(yesterdayWidgets);
+        itemList.firstWhere((item) => item.title == '7일 전').contentList.addAll(sevenDaysAgoWidgets);
+      });
+    } catch (error) {
+      print('Error getting MS list: $error');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
-
-    List<Item> itemList = [
-      Item(
-          title: '오늘',
-          contentList: []),
-      Item(title: '어제', contentList: []),
-      Item(title: '5일전', contentList: []),
-    ];
 
     return Center(
       child: Column(
@@ -295,7 +496,7 @@ class FirstScreen extends StatelessWidget {
                 );
               },
               separatorBuilder: (BuildContext context, int index) => Divider(
-                height: 10,
+                height: 5,
                 thickness: 1.0,
                 color: Color(0xFFCEC5BE),
               ),

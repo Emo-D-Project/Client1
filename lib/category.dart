@@ -8,9 +8,11 @@ import 'mypage.dart';
 import 'opinion.dart';
 import 'question.dart';
 import 'network/api_manager.dart';
+import 'models/Navigator.dart';
 
 class category extends StatefulWidget {
   const category({super.key});
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   State<category> createState() => _categoryState();
@@ -39,6 +41,7 @@ class _categoryState extends State<category> {
         .height;
 
     return Scaffold(
+
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFFF8F5EB),
@@ -431,3 +434,4 @@ Future<dynamic> _showDialog(BuildContext context) {
         ),
   );
 }
+
