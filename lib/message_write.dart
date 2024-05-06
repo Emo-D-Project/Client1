@@ -57,8 +57,8 @@ class _message_writeState extends State<message_write> {
   //알람 실행
   void _sendNotification(String title, String body) async {
     try {
-     //int targetUserId = otherUserId;
-       int targetUserId = 1;
+      int targetUserId = otherUserId;
+      // int targetUserId = 1;
       print("///////////////");
       print(targetUserId);
       print(title);
