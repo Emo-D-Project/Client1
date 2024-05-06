@@ -34,7 +34,7 @@ Widget A_good = Row(
       style: TextStyle(fontFamily: 'soojin', fontSize: 13),
     ),
     SizedBox(
-      height: 25,
+      height: 40,
     )
   ],
 );
@@ -61,7 +61,7 @@ Widget A_Emod= Row(
       style: TextStyle(fontFamily: 'soojin', fontSize: 13),
     ),
     SizedBox(
-      height: 25,
+      height: 35,
     )
   ],
 );
@@ -86,7 +86,7 @@ Widget A_DEmod= Row(
       style: TextStyle(fontFamily: 'soojin', fontSize: 13),
     ),
     SizedBox(
-      height: 25,
+      height: 35,
     )
   ],
 );
@@ -142,7 +142,7 @@ class A_Chat extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 10,
+          height: 40,
         )
       ],
     );
@@ -170,6 +170,7 @@ class A_Message extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "쪽지가 왔습니다!",
@@ -182,7 +183,7 @@ class A_Message extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 30,
+          height: 40,
         )
       ],
     );
@@ -312,10 +313,13 @@ class _FirstScreenState extends State<FirstScreen> {
         // 항목 초기화
         itemList.clear();
 
+
         // 오늘, 어제, 7일 전 항목 추가
         itemList.add(Item(title: '오늘', contentList: []));
         itemList.add(Item(title: '어제', contentList: []));
         itemList.add(Item(title: '7일 전', contentList: []));
+
+
 
         List<Widget> todayWidgets = [];
         List<Widget> yesterdayWidgets = [];
@@ -376,7 +380,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
                 body = body.length > 6 ? body.substring(0, 6) + "..." : body;
 
-                yesterdayWidget = A_Chat(notification.body); // 댓글 내용을 전달
+                yesterdayWidget = A_Chat(body); // 댓글 내용을 전달
                 break;
               case "쪽지가 왔습니다!":
                 String body = notification.body;
@@ -408,7 +412,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 body = body.replaceAll(RegExp('보낸 시간 : .+'), '').trim();
                 body = body.length > 6 ? body.substring(0, 6) + "..." : body;
 
-                sevenDaysAgoWidget = A_Chat(notification.body); // 댓글 내용을 전달
+                sevenDaysAgoWidget = A_Chat(body); // 댓글 내용을 전달
                 break;
               case "쪽지가 왔습니다!":
                 String body = notification.body;
@@ -427,9 +431,12 @@ class _FirstScreenState extends State<FirstScreen> {
           }
         }
         // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
-        itemList.firstWhere((item) => item.title == '오늘').contentList.addAll(todayWidgets);
-        itemList.firstWhere((item) => item.title == '어제').contentList.addAll(yesterdayWidgets);
-        itemList.firstWhere((item) => item.title == '7일 전').contentList.addAll(sevenDaysAgoWidgets);
+        // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
+        itemList.firstWhere((item) => item.title == '오늘').contentList.insertAll(0, todayWidgets.reversed.toList());
+        itemList.firstWhere((item) => item.title == '어제').contentList.insertAll(0, yesterdayWidgets.reversed.toList());
+        itemList.firstWhere((item) => item.title == '7일 전').contentList.insertAll(0, sevenDaysAgoWidgets.reversed.toList());
+
+
       });
     } catch (error) {
       print('Error getting MS list: $error');

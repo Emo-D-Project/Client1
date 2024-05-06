@@ -39,7 +39,7 @@ void main() async {
   await FirebaseApi().fetchMyDataFromServer();
   await FirebaseApi().checkMyDiaryExists();
   // 매월 1일에 알림 보내기
-  sendMonthlyNotification();
+  //sendMonthlyNotification();
   sendDiaryNotification();
 
    //int myId = await ApiManager().getApiManager().GetMyId() as int;

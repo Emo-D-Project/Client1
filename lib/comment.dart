@@ -170,6 +170,7 @@ class _commentState extends State<comment> {
         print("알ㄹ미 실채");
       }
 
+
       // 댓글 목록을 다시 가져옵니다.
       await fetchDataFromServer();
     }
