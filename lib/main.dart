@@ -23,21 +23,20 @@ import 'models/Navigator.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+
+ // WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
   // await FirebaseApi().initNotifications();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // await FirebaseApi().initNotifications();
+  // await FirebaseApi().fetchMyDataFromServer();
+  // await FirebaseApi().checkMyDiaryExists();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-
-  await FirebaseApi().initNotifications();
-  await FirebaseApi().fetchMyDataFromServer();
-  await FirebaseApi().checkMyDiaryExists();
   // 매월 1일에 알림 보내기
   sendMonthlyNotification();
   sendDiaryNotification();
