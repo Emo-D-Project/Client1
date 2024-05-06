@@ -933,7 +933,7 @@ class _customWidget2State extends State<customWidget2> {
                                 ))),
                         IconButton(
                           onPressed: () async {
-                            if (userId != LoginedUserInfo.loginedUserInfo.id) {
+                            if (userId == LoginedUserInfo.loginedUserInfo.id) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

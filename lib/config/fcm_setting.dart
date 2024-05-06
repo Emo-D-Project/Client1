@@ -4,6 +4,7 @@ import 'package:capston1/category.dart';
 import 'package:capston1/comment.dart';
 import 'package:capston1/message_write.dart';
 import 'package:capston1/models/notification.dart';
+import 'package:capston1/monthlyStatistics.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/tokenManager.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +29,6 @@ final GlobalKey<NavigatorState> navState = GlobalKey<NavigatorState>();
 bool _myDiaryExists = false;
 
 class FirebaseApi {
-
   final int otherUserId = 2;
 
   final _firebaseMessaging = FirebaseMessaging.instance;
@@ -46,14 +46,12 @@ class FirebaseApi {
       // 상대방과의 대화나눈 메시지 가져오기
       final data = await apiManager.getMessageList(otherUserId);
 
-        messageList = data.cast<Message>();
-
+      messageList = data.cast<Message>();
     } catch (error) {
       // 에러 제어하는 부분
       print('Error getting chat list: $error');
     }
   }
-
 
   Future<void> fetchMyDataFromServer() async {
     try {
@@ -106,13 +104,42 @@ class FirebaseApi {
     final StreamController<String?> notificationStream =
         StreamController<String?>.broadcast();
 
-// 푸시 알림 탭 햇을때 호출되는 콜백함수
-    void onTap(NotificationResponse notificationResponse) {
+
+    void onNotificationTap(NotificationResponse notificationResponse) {
       notificationStream.add(notificationResponse.payload!);
+      if (notificationResponse.payload!.contains('누군가가 당신의 일기에 좋아요를 눌렀습니다!')) {
+        // 좋아요 알림인 경우
+        Navigator.of(GlobalVariable.navState.currentContext!)
+            .push(MaterialPageRoute(builder: (context) => alrampage()));
+      } else if (notificationResponse.payload!.contains('누군가 댓글을 달았습니다')) {
+        // 댓글 알림인 경우
+        Navigator.of(GlobalVariable.navState.currentContext!)
+            .push(MaterialPageRoute(builder: (context) => alrampage()));
+      }
+      else if (notificationResponse.payload!.contains('하루가 지나가요! 오늘을 공유해보세요')) {
+        // 댓글 알림인 경우
+        Navigator.of(GlobalVariable.navState.currentContext!)
+            .push(MaterialPageRoute(builder: (context) => MyApp()));
+      }
+
+      else if (notificationResponse.payload!.contains('EMO:D가 이달의 감정 통지서를 보냈습니다!')) {
+        // 댓글 알림인 경우
+        Navigator.of(GlobalVariable.navState.currentContext!)
+            .push(MaterialPageRoute(builder: (context) => monthlyStatistics()));
+      }
+
+      else if (notificationResponse.payload!.contains('쪽지가 왔습니다!')) {
+        // 댓글 알림인 경우
+        Navigator.of(GlobalVariable.navState.currentContext!)
+            .push(MaterialPageRoute(builder: (context) => alrampage()));
+      }
+      else{
+        print('알림 클릭이 안됩니다!!!!!!!!!!!!!!!!!');
+      }
     }
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onDidReceiveNotificationResponse: onTap );
+        onDidReceiveNotificationResponse: onNotificationTap);
     //상단 알림
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -141,7 +168,6 @@ class FirebaseApi {
 
     // background 메세지 핸들링
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-
 
     ////--------------------------------------------
 
@@ -172,38 +198,16 @@ class FirebaseApi {
               priority: Priority.high,
             ),
           ),
-
+          payload: message.data['title']
         );
+
       } else {
         // 알림이 없는 메시지 처리
         print('Message does not contain a notification.');
       }
     }
-    void handleFirebaseMessage(RemoteMessage message) {
-      if (message.notification!.title!.contains('누군가가 당신의 일기에 좋아요를 눌렀습니다!')) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          Navigator.of(GlobalVariable.navState.currentContext!)
-              .push(MaterialPageRoute(builder: (context) => category()));
-        });
-      }
-      else{
-        print('노노노노노노노노');
-      }
-    }
 
 
-
-    void handleFirebaseMessage2 (RemoteMessage message) {
-      if (message.notification!.title!.contains('쪽지가 왔습니다!')) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          Navigator.of(GlobalVariable.navState.currentContext!)
-              .push(MaterialPageRoute(builder: (context) => MessageRoom(otherUserId: otherUserId)));
-        });
-      }
-      else{
-        print('노노노노노노노노2');
-      }
-    }
     // Foreground 메세지 핸들링
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       final Map<String, dynamic>? data = message.data;
@@ -217,13 +221,11 @@ class FirebaseApi {
 
       print(
           '푸시 알림 수신: ${message.notification?.title ?? 'No Title'} - ${message.notification?.body ?? 'No Body'}');
-      handleFirebaseMessage(message);
-      handleFirebaseMessage2(message);
+
       fbMsgForegroundHandler(message, flutterLocalNotificationsPlugin, channel);
     });
   }
 }
-
 
 // 오후 10시에 일기를 안 쓴 사람에게 알림 보내기
 void sendDiaryNotification() {
@@ -261,6 +263,7 @@ void sendMonthlyNotification() {
   // 현재 날짜를 확인하여 매월 1일이면 알림을 보냅니다.
   final DateTime now = DateTime.now();
   if (now.hour == 10 && now.minute == 30 && now.day == 1) {
+  //if (now.day == 6){
     // 알림 보내기
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
