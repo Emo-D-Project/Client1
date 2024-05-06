@@ -19,7 +19,7 @@ import '../models/TotalData.dart';
 import '../models/Mypage.dart';
 import '../models/Comment.dart';
 import 'package:http_parser/http_parser.dart';
-
+import '../models/notification.dart';
 final storage = FlutterSecureStorage();
 
 
@@ -1381,4 +1381,38 @@ class ApiManager {
       throw e;
     }
   }
+
+
+
+  Future<List<notification>> getNotificationList() async {
+    String accessToken = tokenManager.getAccessToken();
+    String endPoint = "/api/v1/notification";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("알림 data: " + response.body);
+
+      List<notification> notifications = rawData.map((data) {
+        return notification(
+            id : data['id'],
+            targetUserId: data['targetUserId'],
+            title: data['title'],
+            body: data['body'],
+            sentTime: DateTime.parse(data['sentTime']),
+        );
+      }).toList();
+
+      return notifications;
+    } else {
+      throw Exception("Fail to load notification data from the API");
+    }
+  }
+
 }
