@@ -161,15 +161,13 @@ class _commentState extends State<comment> {
 
       String body = text.length > 6 ? text.substring(0, 6) + "..." : text;
 
-      if (Myid != userid) {
+      if (Myid == userid) {
         _sendNotification(title, body);
-
         print(title);
         print(body);
       } else {
         print("알ㄹ미 실채");
       }
-
 
       // 댓글 목록을 다시 가져옵니다.
       await fetchDataFromServer();

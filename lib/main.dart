@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'models/Diary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'config/fcm_setting.dart';
@@ -34,30 +35,30 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   await FirebaseApi().initNotifications();
+  await FirebaseApi().setupInteractedMessage();
   await FirebaseApi().fetchMyDataFromServer();
   await FirebaseApi().checkMyDiaryExists();
-  // 매월 1일에 알림 보내기
+
   sendMonthlyNotification();
   sendDiaryNotification();
 
-   //int myId = await ApiManager().getApiManager().GetMyId() as int;
-   //LoginedUserInfo.loginedUserInfo.id = myId;
+  //int myId = await ApiManager().getApiManager().GetMyId() as int;
+  //LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
-
       navigatorKey: GlobalVariable.navState,
+      routes: {
+        "/diaryshare": (context) => calendar(),
+      },
       theme: style.theme,
       home: MyApp(
           //firebaseToken: " ",
           )));
 }
 
-
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
-
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -74,8 +75,15 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     checkMyDiaryExists();
+    _permissionWithNotification();
   }
 
+  void _permissionWithNotification() async {
+    if (await Permission.notification.isDenied &&
+        !await Permission.notification.isPermanentlyDenied) {
+      await [Permission.notification].request();
+    }
+  }
 
   Future<void> fetchMyDataFromServer() async {
     try {
@@ -95,7 +103,7 @@ class _MyAppState extends State<MyApp> {
       await fetchMyDataFromServer();
       // 오늘 작성한 본인의 일기가 있는지 확인
       bool myDiaryExists = _diaryInfo.any((diary) =>
-      DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
+          DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
 
       setState(() {
         _myDiaryExists = myDiaryExists; // 필드 설정
@@ -131,14 +139,16 @@ class _MyAppState extends State<MyApp> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('확인', style: TextStyle(color: Colors.black),),
+              child: Text(
+                '확인',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         );
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -171,8 +181,10 @@ class _MyAppState extends State<MyApp> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const statistics()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const statistics()));
               },
               icon: Image.asset(
                 'images/bottom/stats.png',
@@ -195,56 +207,56 @@ class _MyAppState extends State<MyApp> {
             )
           ],
         ),
-          body: [home(), diaryshare(), calendar()][tab],
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 5.0,
-            backgroundColor: Color(0xFFF8F5EB),
-            showUnselectedLabels: false,
-            //선택되지 않은 하단바의 label 숨기기
-            showSelectedLabels: false,
-            //선택된 하단바의 label 숨기기
-            currentIndex: tab,
-            //현재 select된 bar item의 index, 변수 tab부터 시작
-            type: BottomNavigationBarType.fixed,
-            onTap: (i) {
-              setState(() {
-                if (i == 1 && !_myDiaryExists) {
-                  _showAlertDialog(context);
-                  return;
-                }
-                tab = i;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                label: '홈화면',
-                icon: Image.asset(
-                  "images/bottom/home.png",
-                  width: 30,
-                  height: 30,
-                  color: Color(0xFF968C83),
-                ),
+        body: [home(), diaryshare(), calendar()][tab],
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 5.0,
+          backgroundColor: Color(0xFFF8F5EB),
+          showUnselectedLabels: false,
+          //선택되지 않은 하단바의 label 숨기기
+          showSelectedLabels: false,
+          //선택된 하단바의 label 숨기기
+          currentIndex: tab,
+          //현재 select된 bar item의 index, 변수 tab부터 시작
+          type: BottomNavigationBarType.fixed,
+          onTap: (i) {
+            setState(() {
+              if (i == 1 && !_myDiaryExists) {
+                _showAlertDialog(context);
+                return;
+              }
+              tab = i;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              label: '홈화면',
+              icon: Image.asset(
+                "images/bottom/home.png",
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
               ),
-              BottomNavigationBarItem(
-                label: '일기공유',
-                icon: Image.asset(
-                  "images/bottom/globe.png",
-                  width: 30,
-                  height: 30,
-                  color: Color(0xFF968C83),
-                ),
+            ),
+            BottomNavigationBarItem(
+              label: '일기공유',
+              icon: Image.asset(
+                "images/bottom/globe.png",
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
               ),
-              BottomNavigationBarItem(
-                label: '캘린더',
-                icon: Image.asset(
-                  "images/bottom/calendar.png",
-                  width: 35,
-                  height: 35,
-                  color: Color(0xFF968C83),
-                ),
+            ),
+            BottomNavigationBarItem(
+              label: '캘린더',
+              icon: Image.asset(
+                "images/bottom/calendar.png",
+                width: 35,
+                height: 35,
+                color: Color(0xFF968C83),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }
