@@ -39,10 +39,8 @@ Widget A_good = Row(
   ],
 );
 
-
-
 //감정 통지서 텍스트 형태
-Widget A_Emod= Row(
+Widget A_Emod = Row(
   children: [
     Column(
       children: [
@@ -67,7 +65,7 @@ Widget A_Emod= Row(
 );
 
 //감정 통지서 텍스트 형태
-Widget A_DEmod= Row(
+Widget A_DEmod = Row(
   children: [
     Column(
       children: [
@@ -101,17 +99,14 @@ class shareData {
   });
 }
 
-
 //알람 - 댓글 알람
 class A_Chat extends StatelessWidget {
-
   final String latestComment;
 
   const A_Chat(this.latestComment);
 
   @override
   Widget build(BuildContext context) {
-
     return Row(
       children: [
         Column(
@@ -149,11 +144,12 @@ class A_Chat extends StatelessWidget {
   }
 }
 
-
 //쪽지 알람
 class A_Message extends StatelessWidget {
   final String latestMessage;
+
   const A_Message(this.latestMessage);
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -190,18 +186,15 @@ class A_Message extends StatelessWidget {
   }
 }
 
-
-
 List<Item> itemList = [
-  Item(
-      title: '오늘',
-      contentList: []),
-
+  Item(title: '오늘', contentList: []),
 ];
 
 class alrampage extends StatefulWidget {
   const alrampage({super.key});
+
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
   static void addToItemList(Widget widget) {
     itemList.add(Item(title: '', contentList: [widget]));
   }
@@ -256,6 +249,7 @@ class _alrampageState extends State<alrampage> {
         ));
   }
 }
+
 // 언제 뭔 알람 온지
 class Item {
   String title;
@@ -266,8 +260,9 @@ class Item {
 
 //알람
 class FirstScreen extends StatefulWidget {
-
-  const FirstScreen({Key? key, }) : super(key: key);
+  const FirstScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<FirstScreen> createState() => _FirstScreenState();
@@ -281,10 +276,10 @@ class _FirstScreenState extends State<FirstScreen> {
     print("알람 페이지 입장");
     fetchMyIDFromServer();
     fetchNotificationDataFromServer();
-
   }
+
   int Myid = 0;
-  List<notification> notificationList =[];
+  List<notification> notificationList = [];
 
   Future<void> fetchMyIDFromServer() async {
     try {
@@ -300,7 +295,7 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
 // fetchNotificationDataFromServer 함수 내부에서 처리
-  Future<void> fetchNotificationDataFromServer( ) async {
+  Future<void> fetchNotificationDataFromServer() async {
     try {
       fetchMyIDFromServer();
       print("지금은 누구의 아이디세연 ${Myid}");
@@ -313,13 +308,10 @@ class _FirstScreenState extends State<FirstScreen> {
         // 항목 초기화
         itemList.clear();
 
-
         // 오늘, 어제, 7일 전 항목 추가
         itemList.add(Item(title: '오늘', contentList: []));
         itemList.add(Item(title: '어제', contentList: []));
         itemList.add(Item(title: '7일 전', contentList: []));
-
-
 
         List<Widget> todayWidgets = [];
         List<Widget> yesterdayWidgets = [];
@@ -331,7 +323,9 @@ class _FirstScreenState extends State<FirstScreen> {
           // 알림을 받은 시간
           DateTime notificationTime = notification.sentTime;
           // 날짜에 따라 분류
-          if (notificationTime.year == now.year && notificationTime.month == now.month && notificationTime.day == now.day) {
+          if (notificationTime.year == now.year &&
+              notificationTime.month == now.month &&
+              notificationTime.day == now.day) {
             // 오늘의 알림 위젯 생성
             late Widget todayWidget;
             // 알림 타입에 따라 적절한 위젯 생성
@@ -364,7 +358,9 @@ class _FirstScreenState extends State<FirstScreen> {
                 continue;
             }
             todayWidgets.add(todayWidget);
-          } else if (notificationTime.year == now.year && notificationTime.month == now.month && notificationTime.day == now.day - 1) {
+          } else if (notificationTime.year == now.year &&
+              notificationTime.month == now.month &&
+              notificationTime.day == now.day - 1) {
             // 어제의 알림 위젯 생성
             late Widget yesterdayWidget;
             // 알림 타입에 따라 적절한 위젯 생성
@@ -432,18 +428,23 @@ class _FirstScreenState extends State<FirstScreen> {
         }
         // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
         // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
-        itemList.firstWhere((item) => item.title == '오늘').contentList.insertAll(0, todayWidgets.reversed.toList());
-        itemList.firstWhere((item) => item.title == '어제').contentList.insertAll(0, yesterdayWidgets.reversed.toList());
-        itemList.firstWhere((item) => item.title == '7일 전').contentList.insertAll(0, sevenDaysAgoWidgets.reversed.toList());
-
-
+        itemList
+            .firstWhere((item) => item.title == '오늘')
+            .contentList
+            .insertAll(0, todayWidgets.reversed.toList());
+        itemList
+            .firstWhere((item) => item.title == '어제')
+            .contentList
+            .insertAll(0, yesterdayWidgets.reversed.toList());
+        itemList
+            .firstWhere((item) => item.title == '7일 전')
+            .contentList
+            .insertAll(0, sevenDaysAgoWidgets.reversed.toList());
       });
     } catch (error) {
       print('Error getting MS list: $error');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -594,7 +595,6 @@ class _SecondScreenState extends State<SecondScreen> {
   late int receiver_Id;
   late DateTime sentAt;
 
-
   List<ChatRoom> chatRooms = [];
 
   @override
@@ -693,84 +693,83 @@ class _SecondScreenState extends State<SecondScreen> {
                               otherUserId: (chatRooms[index].otherUserId),
                             )),
                   ).then((value) async {
-                    await Future.delayed(Duration(milliseconds: 500)); // 0.5초 대기 (500 milliseconds)
+                    await Future.delayed(Duration(
+                        milliseconds: 500)); // 0.5초 대기 (500 milliseconds)
                     setState(() {
                       fetchDataFromServer();
                       chatRooms[index].isRead = true;
                       print("읽음 : ${chatRooms[index].isRead}");
-
                     });
                   });
                 },
-
-                  child: Container(
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          iconSize: 43,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => otherMypage(
-                                  userId: (chatRooms[index].otherUserId),
-                                ),
+                child: Container(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        iconSize: 43,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => otherMypage(
+                                userId: (chatRooms[index].otherUserId),
                               ),
-                            );
-                          },
-                          icon: Container(
-                            padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
-                            child: Image.asset(
-                              "images/send/cat_real_image.png",
-                              fit: BoxFit.contain,
                             ),
+                          );
+                        },
+                        icon: Container(
+                          padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                          child: Image.asset(
+                            "images/send/cat_real_image.png",
+                            fit: BoxFit.contain,
                           ),
                         ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 100,
-                                padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                child: Text(
-                                  "삼냥이",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.brown,
-                                  ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 100,
+                              padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                              child: Text(
+                                "삼냥이",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.brown,
                                 ),
                               ),
-                              Container(
-                                width: 100,
-                                padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                child: Text(
-                                  chatRooms[index].lastMessage,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 13),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                            ),
+                            Container(
+                              width: 100,
+                              padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                              child: Text(
+                                chatRooms[index].lastMessage,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 13),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Visibility(
-                          visible: !chatRooms[index].isRead,
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            width: 20,
-                            height: 20,
-                            child: Icon(Icons.circle,
-                                color: Colors.redAccent, size: 10),
-                          ),
+                      ),
+                      Visibility(
+                        visible: !chatRooms[index].isRead,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          width: 20,
+                          height: 20,
+                          child: Icon(Icons.circle,
+                              color: Colors.redAccent, size: 10),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                ),
               );
             },
             separatorBuilder: (BuildContext context, int index) => Divider(
@@ -784,6 +783,3 @@ class _SecondScreenState extends State<SecondScreen> {
     );
   }
 }
-
-
-
