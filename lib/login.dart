@@ -28,6 +28,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
+  await FirebaseApi().fetchMyDataFromServer();
+  await FirebaseApi().checkMyDiaryExists();
 
 
   runApp(MaterialApp(theme: style.theme, home: MyLogin()));
