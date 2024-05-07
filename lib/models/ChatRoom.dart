@@ -5,8 +5,6 @@ class ChatRoom {
   final DateTime lastMessageSentAt;
   late final bool isRead;
 
-
-
   ChatRoom({
     required this.otherUserId,
     required this.name,

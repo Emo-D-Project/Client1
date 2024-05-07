@@ -1,7 +1,12 @@
 import 'dart:ui';
+import 'package:capston1/login.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'models/Diary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'config/fcm_setting.dart';
@@ -14,19 +19,48 @@ import 'diaryshare.dart';
 import 'home.dart';
 import 'style.dart' as style;
 import 'alrampage.dart';
+import 'models/Navigator.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+
+ // WidgetsFlutterBinding.ensureInitialized();
+
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // await FirebaseApi().initNotifications();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // await FirebaseApi().initNotifications();
+  // await FirebaseApi().fetchMyDataFromServer();
+  // await FirebaseApi().checkMyDiaryExists();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseApi().initNotifications();
 
-  int myId = await ApiManager().getApiManager().GetMyId() as int;
+  await FirebaseApi().initNotifications();
+  await FirebaseApi().setupInteractedMessage();
+  await FirebaseApi().fetchMyDataFromServer();
+  await FirebaseApi().checkMyDiaryExists();
+
+  // 매월 1일에 알림 보내기
+  sendMonthlyNotification();
+  sendDiaryNotification();
+
+
+ int myId = await ApiManager().getApiManager().GetMyId() as int;
  LoginedUserInfo.loginedUserInfo.id = myId;
 
+
   runApp(MaterialApp(
+      navigatorKey: GlobalVariable.navState,
+      routes: {
+        "/diaryshare": (context) => calendar(),
+      },
       theme: style.theme,
       home: MyApp(
           //firebaseToken: " ",
@@ -49,9 +83,17 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     checkMyDiaryExists();
+    _permissionWithNotification();
   }
 
+  void _permissionWithNotification() async {
+    if (await Permission.notification.isDenied &&
+        !await Permission.notification.isPermanentlyDenied) {
+      await [Permission.notification].request();
+    }
+  }
 
   Future<void> fetchMyDataFromServer() async {
     try {
@@ -71,7 +113,7 @@ class _MyAppState extends State<MyApp> {
       await fetchMyDataFromServer();
       // 오늘 작성한 본인의 일기가 있는지 확인
       bool myDiaryExists = _diaryInfo.any((diary) =>
-      DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
+          DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
 
       setState(() {
         _myDiaryExists = myDiaryExists; // 필드 설정
@@ -107,7 +149,10 @@ class _MyAppState extends State<MyApp> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('확인', style: TextStyle(color: Colors.black),),
+              child: Text(
+                '확인',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         );
@@ -117,106 +162,111 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Color(0xFFF8F5EB),
-        title: Text(
-          "EMO:D",
-          style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'kim',
-            color: Color(0xFF968C83),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Color(0xFFF8F5EB),
+          title: Text(
+            "EMO:D",
+            style: TextStyle(
+              fontSize: 30,
+              fontFamily: 'kim',
+              color: Color(0xFF968C83),
+            ),
           ),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const category()));
+              },
+              icon: Image.asset(
+                'images/bottom/menu.png',
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
+              )),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const statistics()));
+              },
+              icon: Image.asset(
+                'images/bottom/stats.png',
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => alrampage()));
+              },
+              icon: Image.asset(
+                'images/bottom/bell.png',
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
+              ),
+            )
+          ],
         ),
-        leading: IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const category()));
-            },
-            icon: Image.asset(
-              'images/bottom/menu.png',
-              width: 30,
-              height: 30,
-              color: Color(0xFF968C83),
-            )),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const statistics()));
-            },
-            icon: Image.asset(
-              'images/bottom/stats.png',
-              width: 30,
-              height: 30,
-              color: Color(0xFF968C83),
+        body: [home(), diaryshare(), calendar()][tab],
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 5.0,
+          backgroundColor: Color(0xFFF8F5EB),
+          showUnselectedLabels: false,
+          //선택되지 않은 하단바의 label 숨기기
+          showSelectedLabels: false,
+          //선택된 하단바의 label 숨기기
+          currentIndex: tab,
+          //현재 select된 bar item의 index, 변수 tab부터 시작
+          type: BottomNavigationBarType.fixed,
+          onTap: (i) {
+            setState(() {
+              if (i == 1 && !_myDiaryExists) {
+                _showAlertDialog(context);
+                return;
+              }
+              tab = i;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              label: '홈화면',
+              icon: Image.asset(
+                "images/bottom/home.png",
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => alrampage()));
-            },
-            icon: Image.asset(
-              'images/bottom/bell.png',
-              width: 30,
-              height: 30,
-              color: Color(0xFF968C83),
+            BottomNavigationBarItem(
+              label: '일기공유',
+              icon: Image.asset(
+                "images/bottom/globe.png",
+                width: 30,
+                height: 30,
+                color: Color(0xFF968C83),
+              ),
             ),
-          )
-        ],
-      ),
-      body: [home(), diaryshare(), calendar()][tab],
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 5.0,
-        backgroundColor: Color(0xFFF8F5EB),
-        showUnselectedLabels: false,
-        //선택되지 않은 하단바의 label 숨기기
-        showSelectedLabels: false,
-        //선택된 하단바의 label 숨기기
-        currentIndex: tab,
-        //현재 select된 bar item의 index, 변수 tab부터 시작
-        type: BottomNavigationBarType.fixed,
-        onTap: (i) {
-          setState(() {
-            if (i == 1 && !_myDiaryExists) {
-              _showAlertDialog(context);
-              return;
-            }
-            tab = i;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: '홈화면',
-            icon: Image.asset(
-              "images/bottom/home.png",
-              width: 30,
-              height: 30,
-              color: Color(0xFF968C83),
+            BottomNavigationBarItem(
+              label: '캘린더',
+              icon: Image.asset(
+                "images/bottom/calendar.png",
+                width: 35,
+                height: 35,
+                color: Color(0xFF968C83),
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            label: '일기공유',
-            icon: Image.asset(
-              "images/bottom/globe.png",
-              width: 30,
-              height: 30,
-              color: Color(0xFF968C83),
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: '캘린더',
-            icon: Image.asset(
-              "images/bottom/calendar.png",
-              width: 35,
-              height: 35,
-              color: Color(0xFF968C83),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

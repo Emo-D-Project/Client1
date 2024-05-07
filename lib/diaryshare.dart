@@ -11,6 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'models/Comment.dart';
 import 'models/Diary.dart';
 import 'package:capston1/otherMypage.dart';
+import 'alrampage.dart';
 
 //맨 위 상단 감정 7개
 final List<String> imagePaths = [
@@ -25,13 +26,18 @@ final List<String> imagePaths = [
 
 String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
+ApiManager apiManager = ApiManager().getApiManager();
+
 
 class diaryshare extends StatefulWidget {
   diaryshare({Key? key}) : super(key: key);
 
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
   @override
   State<diaryshare> createState() => _diaryshareState();
 }
+
 
 List<Diary> diaries = [];
 Map<int, int> commentCount = {};
@@ -43,7 +49,6 @@ class FavoriteCount {
 }
 
 class _diaryshareState extends State<diaryshare> {
-  ApiManager apiManager = ApiManager().getApiManager();
 
   //List<Diary> _diaryInfo = [];
   List<Diary> selectedEmotionDiaries = [];
@@ -110,222 +115,223 @@ class _diaryshareState extends State<diaryshare> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(microseconds: 5000));
+    return Scaffold(
+      body: Container(
+          color: Color(0xFFF8F5EB),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: Text(
+                  formattedDate,
+                  style: TextStyle(
+                    color: Color(0xFF7D5A50),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'soojin',
+                  ),
+                ), //날짜
+              ),
+              //감정 아이콘
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: ClampingScrollPhysics(),
+                child: Row(
+                  children: imagePaths.asMap().entries.map((entry) {
+                    String imagePath = entry.value;
+                    String emotion = "";
+                    switch (imagePath) {
+                      case 'images/emotion/angry.png':
+                        emotion = "angry";
+                        break;
+                      case "images/emotion/flutter.gif":
+                        emotion = 'flutter';
+                        break;
+                      case "images/emotion/smile.gif":
+                        emotion = 'smile';
+                        break;
+                      case "images/emotion/annoying.gif":
+                        emotion = 'annoying';
+                        break;
+                      case "images/emotion/sad.gif":
+                        emotion = 'sad';
+                        break;
+                      case "images/emotion/calmness.gif":
+                        emotion = 'calmness';
+                        break;
+                      case "images/emotion/tired.gif":
+                        emotion = 'tired';
+                        break;
+                      default:
+                        emotion = 'flutter';
+                        break;
+                    }
+                    return Padding(
+                      padding: EdgeInsets.all(3),
+                      child: IconButton(
+                        icon: Image.asset(
+                          imagePath,
+                          width: 50,
+                          height: 50,
+                        ),
+                        onPressed: () async {
+                          await Future.delayed(
+                              Duration(milliseconds: 500), () {});
+                          setState(() {
+                            // 해당 이미지에 대한 일기 내용을 찾기
+                            List<Diary> diariesWithSelectedEmotion = diaries
+                                .where((diary) => diary.emotion == emotion)
+                                .toList();
 
-    return Container(
-        color: Color(0xFFF8F5EB),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-              child: Text(
-                formattedDate,
-                style: TextStyle(
-                  color: Color(0xFF7D5A50),
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: 'soojin',
-                ),
-              ), //날짜
-            ),
-            //감정 아이콘
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: ClampingScrollPhysics(),
-              child: Row(
-                children: imagePaths.asMap().entries.map((entry) {
-                  String imagePath = entry.value;
-                  String emotion = "";
-                  switch (imagePath) {
-                    case 'images/emotion/angry.png':
-                      emotion = "angry";
-                      break;
-                    case "images/emotion/flutter.gif":
-                      emotion = 'flutter';
-                      break;
-                    case "images/emotion/smile.gif":
-                      emotion = 'smile';
-                      break;
-                    case "images/emotion/annoying.gif":
-                      emotion = 'annoying';
-                      break;
-                    case "images/emotion/sad.gif":
-                      emotion = 'sad';
-                      break;
-                    case "images/emotion/calmness.gif":
-                      emotion = 'calmness';
-                      break;
-                    case "images/emotion/tired.gif":
-                      emotion = 'tired';
-                      break;
-                    default:
-                      emotion = 'flutter';
-                      break;
-                  }
-                  return Padding(
-                    padding: EdgeInsets.all(3),
-                    child: IconButton(
-                      icon: Image.asset(
-                        imagePath,
-                        width: 50,
-                        height: 50,
+                            selectedImageEmotion = emotion;
+                            selectedEmotionDiaries = diariesWithSelectedEmotion;
+                          });
+                        },
                       ),
-                      onPressed: () async {
-                        await Future.delayed(
-                            Duration(milliseconds: 500), () {});
-                        setState(() {
-                          // 해당 이미지에 대한 일기 내용을 찾기
-                          List<Diary> diariesWithSelectedEmotion = diaries
-                              .where((diary) => diary.emotion == emotion)
-                              .toList();
-
-                          selectedImageEmotion = emotion;
-                          selectedEmotionDiaries = diariesWithSelectedEmotion;
-                        });
-                      },
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(10),
-                itemCount: selectedEmotionDiaries.length,
-                itemBuilder: (BuildContext context, int index) {
-                  print(
-                      "selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
-                  selectedEmotionDiaries.forEach((element) {
-                    print("selected diaries emotion: ${element.emotion}");
-                  });
-                  DateTime formattedDateTime =
-                      selectedEmotionDiaries[index].date;
-                  String emotionImagePath;
-
-                  switch (selectedEmotionDiaries[index].emotion) {
-                    case "angry":
-                      emotionImagePath = 'images/emotion/angry.png';
-                      break;
-                    case "flutter":
-                      emotionImagePath = 'images/emotion/flutter.gif';
-                      break;
-                    case "smile":
-                      emotionImagePath = 'images/emotion/smile.gif';
-                      break;
-                    case "annoying":
-                      emotionImagePath = 'images/emotion/annoying.gif';
-                      break;
-                    case "sad":
-                      emotionImagePath = 'images/emotion/sad.gif';
-                      break;
-                    case "calmness":
-                      emotionImagePath = 'images/emotion/calmness.gif';
-                      break;
-                    case "tired":
-                      emotionImagePath = 'images/emotion/tired.gif';
-                      break;
-                    default:
-                      emotionImagePath = 'images/emotion/flutter.gif';
-                      break;
-                  }
-                  if (selectedImageEmotion ==
-                          selectedEmotionDiaries[index].emotion &&
-                      formattedDateTime.year == DateTime.now().year &&
-                      formattedDateTime.month == DateTime.now().month &&
-                      formattedDateTime.day == DateTime.now().day) {
-                    return SizedBox(
-                      child: (() {
-                        if (selectedEmotionDiaries[index]
-                                .imagePath!
-                                .isNotEmpty &&
-                            selectedEmotionDiaries[index].audio == "") {
-                          return customWidget1(
-                            sshare: selectedEmotionDiaries[index].is_share,
-                            scomm: selectedEmotionDiaries[index].is_comm,
-                            simagePath: emotionImagePath,
-                            sdiaryImage:
-                                selectedEmotionDiaries[index].imagePath,
-                            scomment: selectedEmotionDiaries[index].content,
-                            sfavoritColor:
-                                selectedEmotionDiaries[index].favoriteColor,
-                            sfavoritCount:
-                                selectedEmotionDiaries[index].favoriteCount,
-                            otherUserId: selectedEmotionDiaries[index].userId,
-                            diaryId: selectedEmotionDiaries[index].diaryId,
-                            scommentCount:
-                                selectedEmotionDiaries[index].scommentCount,
-                          );
-                        } else if (selectedEmotionDiaries[index]
-                                .imagePath!
-                                .isEmpty &&
-                            selectedEmotionDiaries[index].audio == "") {
-                          return customWidget2(
-                            sshare: selectedEmotionDiaries[index].is_share,
-                            scomm: selectedEmotionDiaries[index].is_comm,
-                            scomment: selectedEmotionDiaries[index].content,
-                            sfavoritColor:
-                                selectedEmotionDiaries[index].favoriteColor,
-                            sfavoritCount:
-                                selectedEmotionDiaries[index].favoriteCount,
-                            simagePath: emotionImagePath,
-                            otherUserId: selectedEmotionDiaries[index].userId,
-                            diaryId: selectedEmotionDiaries[index].diaryId,
-                            scommentCount:
-                                selectedEmotionDiaries[index].scommentCount,
-                          );
-                        } else if (selectedEmotionDiaries[index]
-                                .imagePath!
-                                .isEmpty &&
-                            selectedEmotionDiaries[index].audio != "") {
-                          return customwidget3(
-                            sshare: selectedEmotionDiaries[index].is_share,
-                            scomm: selectedEmotionDiaries[index].is_comm,
-                            scomment: selectedEmotionDiaries[index].content,
-                            sfavoritColor:
-                                selectedEmotionDiaries[index].favoriteColor,
-                            sfavoritCount:
-                                selectedEmotionDiaries[index].favoriteCount,
-                            simagePath: emotionImagePath,
-                            svoice: selectedEmotionDiaries[index].audio,
-                            otherUserId: selectedEmotionDiaries[index].userId,
-                            diaryId: selectedEmotionDiaries[index].diaryId,
-                            scommentCount:
-                                selectedEmotionDiaries[index].scommentCount,
-                          );
-                        } else if (selectedEmotionDiaries[index]
-                                .imagePath!
-                                .isNotEmpty &&
-                            selectedEmotionDiaries[index].audio != "") {
-                          return customwidget4(
-                            sshare: selectedEmotionDiaries[index].is_share,
-                            scomm: selectedEmotionDiaries[index].is_comm,
-                            sdiaryImage:
-                                selectedEmotionDiaries[index].imagePath,
-                            scomment: selectedEmotionDiaries[index].content,
-                            sfavoritColor:
-                                selectedEmotionDiaries[index].favoriteColor,
-                            sfavoritCount:
-                                selectedEmotionDiaries[index].favoriteCount,
-                            simagePath: emotionImagePath,
-                            svoice: selectedEmotionDiaries[index].audio,
-                            otherUserId: selectedEmotionDiaries[index].userId,
-                            diaryId: selectedEmotionDiaries[index].diaryId,
-                            scommentCount:
-                                selectedEmotionDiaries[index].scommentCount,
-                          );
-                        }
-                      })(),
                     );
-                  } else {
-                    // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
-                    return Container();
-                  }
-                },
+                  }).toList(),
+                ),
               ),
-            ),
-          ],
-        ));
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(10),
+                  itemCount: selectedEmotionDiaries.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    print(
+                        "selectedEmotionDiaries length: ${selectedEmotionDiaries.length}");
+                    selectedEmotionDiaries.forEach((element) {
+                      print("selected diaries emotion: ${element.emotion}");
+                    });
+                    DateTime formattedDateTime =
+                        selectedEmotionDiaries[index].date;
+                    String emotionImagePath;
+
+                    switch (selectedEmotionDiaries[index].emotion) {
+                      case "angry":
+                        emotionImagePath = 'images/emotion/angry.png';
+                        break;
+                      case "flutter":
+                        emotionImagePath = 'images/emotion/flutter.gif';
+                        break;
+                      case "smile":
+                        emotionImagePath = 'images/emotion/smile.gif';
+                        break;
+                      case "annoying":
+                        emotionImagePath = 'images/emotion/annoying.gif';
+                        break;
+                      case "sad":
+                        emotionImagePath = 'images/emotion/sad.gif';
+                        break;
+                      case "calmness":
+                        emotionImagePath = 'images/emotion/calmness.gif';
+                        break;
+                      case "tired":
+                        emotionImagePath = 'images/emotion/tired.gif';
+                        break;
+                      default:
+                        emotionImagePath = 'images/emotion/flutter.gif';
+                        break;
+                    }
+                    if (selectedImageEmotion ==
+                            selectedEmotionDiaries[index].emotion &&
+                        formattedDateTime.year == DateTime.now().year &&
+                        formattedDateTime.month == DateTime.now().month &&
+                        formattedDateTime.day == DateTime.now().day) {
+                      return SizedBox(
+                        child: (() {
+                          if (selectedEmotionDiaries[index]
+                                  .imagePath!
+                                  .isNotEmpty &&
+                              selectedEmotionDiaries[index].audio == "") {
+                            return customWidget1(
+                              sshare: selectedEmotionDiaries[index].is_share,
+                              scomm: selectedEmotionDiaries[index].is_comm,
+                              simagePath: emotionImagePath,
+                              sdiaryImage:
+                                  selectedEmotionDiaries[index].imagePath,
+                              scomment: selectedEmotionDiaries[index].content,
+                              sfavoritColor:
+                                  selectedEmotionDiaries[index].favoriteColor,
+                              sfavoritCount:
+                                  selectedEmotionDiaries[index].favoriteCount,
+                              otherUserId: selectedEmotionDiaries[index].userId,
+                              diaryId: selectedEmotionDiaries[index].diaryId,
+                              scommentCount:
+                                  selectedEmotionDiaries[index].scommentCount,
+                            );
+                          } else if (selectedEmotionDiaries[index]
+                                  .imagePath!
+                                  .isEmpty &&
+                              selectedEmotionDiaries[index].audio == "") {
+                            return customWidget2(
+                              sshare: selectedEmotionDiaries[index].is_share,
+                              scomm: selectedEmotionDiaries[index].is_comm,
+                              scomment: selectedEmotionDiaries[index].content,
+                              sfavoritColor:
+                                  selectedEmotionDiaries[index].favoriteColor,
+                              sfavoritCount:
+                                  selectedEmotionDiaries[index].favoriteCount,
+                              simagePath: emotionImagePath,
+                              otherUserId: selectedEmotionDiaries[index].userId,
+                              diaryId: selectedEmotionDiaries[index].diaryId,
+                              scommentCount:
+                                  selectedEmotionDiaries[index].scommentCount,
+                            );
+                          } else if (selectedEmotionDiaries[index]
+                                  .imagePath!
+                                  .isEmpty &&
+                              selectedEmotionDiaries[index].audio != "") {
+                            return customwidget3(
+                              sshare: selectedEmotionDiaries[index].is_share,
+                              scomm: selectedEmotionDiaries[index].is_comm,
+                              scomment: selectedEmotionDiaries[index].content,
+                              sfavoritColor:
+                                  selectedEmotionDiaries[index].favoriteColor,
+                              sfavoritCount:
+                                  selectedEmotionDiaries[index].favoriteCount,
+                              simagePath: emotionImagePath,
+                              svoice: selectedEmotionDiaries[index].audio,
+                              otherUserId: selectedEmotionDiaries[index].userId,
+                              diaryId: selectedEmotionDiaries[index].diaryId,
+                              scommentCount:
+                                  selectedEmotionDiaries[index].scommentCount,
+                            );
+                          } else if (selectedEmotionDiaries[index]
+                                  .imagePath!
+                                  .isNotEmpty &&
+                              selectedEmotionDiaries[index].audio != "") {
+                            return customwidget4(
+                              sshare: selectedEmotionDiaries[index].is_share,
+                              scomm: selectedEmotionDiaries[index].is_comm,
+                              sdiaryImage:
+                                  selectedEmotionDiaries[index].imagePath,
+                              scomment: selectedEmotionDiaries[index].content,
+                              sfavoritColor:
+                                  selectedEmotionDiaries[index].favoriteColor,
+                              sfavoritCount:
+                                  selectedEmotionDiaries[index].favoriteCount,
+                              simagePath: emotionImagePath,
+                              svoice: selectedEmotionDiaries[index].audio,
+                              otherUserId: selectedEmotionDiaries[index].userId,
+                              diaryId: selectedEmotionDiaries[index].diaryId,
+                              scommentCount:
+                                  selectedEmotionDiaries[index].scommentCount,
+                            );
+                          }
+                        })(),
+                      );
+                    } else {
+                      // 선택된 이미지에 해당하는 일기가 없을 경우 빈 컨테이너 반환
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+            ],
+          )),
+    );
   }
 }
 
@@ -373,6 +379,24 @@ class _customWidget1State extends State<customWidget1> {
   bool sshare = true;
 
   ApiManager apiManager = ApiManager().getApiManager();
+
+
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    if (apiManager != null) {
+      try {
+        int targetUserId = userId;
+        print("커스텀 1 일기 알림 ${targetUserId}");
+
+        apiManager.sendNotification(targetUserId, title, body);
+      } catch (error) {
+        print('Error sending notification : $error');
+      }
+    } else {
+      print('ApiManager is null. Cannot send notification.');
+    }
+  }
+
 
   _customWidget1State(int otherUserId, int diaryId, bool scomm, bool sshare) {
     this.userId = otherUserId;
@@ -453,7 +477,7 @@ class _customWidget1State extends State<customWidget1> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -612,6 +636,15 @@ class _customWidget1State extends State<customWidget1> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            // 좋아요 알림을 보냅니다.
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = " ";
+                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }
@@ -747,7 +780,7 @@ class _customWidget2State extends State<customWidget2> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -804,6 +837,24 @@ class _customWidget2State extends State<customWidget2> {
     }
   }
 
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    if (apiManager != null) {
+      try {
+        int targetUserId = userId;
+        print("커스텀 2 일기 알림 ${targetUserId}");
+
+        apiManager.sendNotification(targetUserId, title, body);
+
+        alrampage.addToItemList(A_good);
+
+      } catch (error) {
+        print('Error sending notification : $error');
+      }
+    } else {
+      print('ApiManager is null. Cannot send notification.');
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -949,6 +1000,18 @@ class _customWidget2State extends State<customWidget2> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = " ";
+                              if (userId == LoginedUserInfo.loginedUserInfo.id) {
+                                // 5초 지연 후 알림 보내기
+                                Future.delayed(Duration(seconds: 5), () {
+                                  _sendNotification(title, body);
+                                });
+                              }
+
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }
@@ -1116,7 +1179,7 @@ class _customwidget3State extends State<customwidget3> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -1219,6 +1282,21 @@ class _customwidget3State extends State<customwidget3> {
 
     print("otherUserId3: ${userId}");
 
+    //알람 실행
+    void _sendNotification(String title, String body) async {
+      if (apiManager != null) {
+        try {
+          int targetUserId = userId;
+          print("커스텀 3 일기 알림 ${targetUserId}");
+
+          apiManager.sendNotification(targetUserId, title, body);
+        } catch (error) {
+          print('Error sending notification : $error');
+        }
+      } else {
+        print('ApiManager is null. Cannot send notification.');
+      }
+    }
     if (sshare) {
       return SingleChildScrollView(
         child: Column(
@@ -1407,6 +1485,14 @@ class _customwidget3State extends State<customwidget3> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = "";
+                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }
@@ -1577,7 +1663,7 @@ class _customwidget4State extends State<customwidget4> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId),
+            child: comment(postId: diaryId, userid: userId,),
           ),
         );
       },
@@ -1674,6 +1760,22 @@ class _customwidget4State extends State<customwidget4> {
     return result;
   }
 
+
+  //알람 실행
+  void _sendNotification(String title, String body) async {
+    if (apiManager != null) {
+      try {
+        int targetUserId = userId;
+        print("커스텀 4 일기 알림 ${targetUserId}");
+
+        apiManager.sendNotification(targetUserId, title, body);
+      } catch (error) {
+        print('Error sending notification : $error');
+      }
+    } else {
+      print('ApiManager is null. Cannot send notification.');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     print("commentCount4: ${commentCount[diaryId]}");
@@ -1891,6 +1993,14 @@ class _customwidget4State extends State<customwidget4> {
                               favoriteMap[diaryId]!.favoriteColor =
                                   sfavoritColor;
                             });
+                            if (sfavoritColor) {
+                              // 좋아요가 눌렸을 때만 알림을 보냅니다.
+                              String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
+                              String body = "";
+                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                                _sendNotification(title, body);
+                              }
+                            }
                           } catch (error) {
                             print('Error updating favorite count: $error');
                           }

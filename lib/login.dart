@@ -1,8 +1,17 @@
+import 'package:capston1/MessageRoom.dart';
+import 'package:capston1/calendar.dart';
+import 'package:capston1/comment.dart';
+import 'package:capston1/diaryshare.dart';
 import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'blur.dart';
+import 'config/fcm_setting.dart';
+import 'firebase_options.dart';
+import 'models/Navigator.dart';
 import 'style.dart' as style;
 import 'package:capston1/main.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,13 +21,33 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'tokenManager.dart' as tk;
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: '002001aad48dcca2375e4c52bb8c1281');
   await initializeDateFormatting();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotifications();
+  await FirebaseApi().fetchMyDataFromServer();
+  await FirebaseApi().checkMyDiaryExists();
+  sendMonthlyNotification();
+  sendDiaryNotification();
 
-  runApp(MaterialApp(theme: style.theme, home: MyLogin()));
+  runApp(MaterialApp(
+      routes: {
+      '/diaryshare': (context) => diaryshare(),
+        '/comment' : (context) => comment(postId: 0, userid: senderId),
+        '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
+      },
+      navigatorKey: GlobalVariable.navState,
+      theme: style.theme,
+      home: MyLogin()));
 }
 
 class MyLogin extends StatefulWidget {
@@ -31,26 +60,90 @@ class MyLogin extends StatefulWidget {
 class _MyLoginState extends State<MyLogin> {
   //카카오 어세스 토큰을 사용해 서버의 어세스 토큰 및 리프레시 토큰 어플에 저장 함수
 
+  final storage = FlutterSecureStorage();
   String jwttoken = '';
   int sendMyId = 0;
+  bool lockk = false;
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+  _asyncMethod() async {
+    final accessToken = await storage.read(key: 'ACCESS_TOKEN');
+    final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
+    Dio dio = Dio();
+
+    if (accessToken != null) {
+      print('djdjdjdjdj: ${accessToken}');
+      tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
+      tokenManager.setAccessToken(accessToken);
+      tokenManager.setRefreshToken(refreshToken!);
+      print("kkkkkkkk:${refreshToken}");
+      ApiManager apiManager = ApiManager().getApiManager();
+      int myId = await ApiManager().GetMyId() as int;
+      LoginedUserInfo.loginedUserInfo.id = myId;
+      print('아아아 ${myId}');
+      print("에프씨엠${tokenManager.getFirebaseToken()}");
+      apiManager.putFirebaseToken(tokenManager.getFirebaseToken());
+      String passSwitchString = await ApiManager().GetPassSwitch() ?? 'false';
+      if (passSwitchString.toLowerCase() == 'true') {
+        lockk = true;
+      }
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => lockk ? blur() : MyApp()));
+    } else {
+      try {
+        print("44");
+        Map<String, String> headers = {
+          'Content-Type': 'application/json',
+        };
+        var response = await dio.post(
+          'http://34.64.255.126:8000/api/token',
+          data: {"refreshToken": refreshToken},
+          options: Options(headers: headers), // 요청 데이터
+        );
+        print(response.statusCode);
+        if (response.statusCode == 201) {
+          print('토큰 재발급 성공');
+        } else {
+          throw Exception('ㅏㅏFailed to load data from the API');
+        }
+      } catch (e) {
+        _handleKakaoLogin();
+        print("이거 실행 $e");
+      }
+      // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
+    }
+  }
 
   Future<void> authenticate(String token) async {
     MyInfo myInfo = MyInfo().getMyInfo();
     tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
     final url = Uri.parse(
-        'http://34.64.78.56:8080/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
+        'http://34.64.255.126:8000/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'kakaoAccessToken': token,
     });
 
-    try{
+    try {
       if (response.statusCode == 200) {
         String responseBody = utf8.decode(response.bodyBytes);
         Map<String, dynamic> jsonResponse = json.decode(responseBody);
 
         tokenManager.setAccessToken(jsonResponse["access_token"]);
         tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
+        var accessToken = tokenManager
+            .accessToken; // resp.data.accessToken : api서버를 통해 발급받은 accessToken
+        var refreshToken = tokenManager
+            .refreshToken; // resp.data.refreshToken : api서버를 통해 발급받은 refreshToken
+
+        await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+        await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
 
         myInfo.setNickName(jsonResponse["properties"]["nickname"]);
 
@@ -62,18 +155,19 @@ class _MyLoginState extends State<MyLogin> {
 
         int myId = await ApiManager().GetMyId() as int;
         LoginedUserInfo.loginedUserInfo.id = myId;
-        sendMyId = myId;
+        apiManager.putFirebaseToken(tokenManager.getFirebaseToken());
+        String passSwitchString = await apiManager.GetPassSwitch();
+        if (passSwitchString.toLowerCase() == 'true') {
+          lockk = true;
+        }
         print("내 아이디 : ${myId}");
-
+        print("잠금여부 : ${lockk}");
       } else {
-        print("ㅋㅋ안됨ㅋㅋ");
         throw Exception('Faild to authenticate');
       }
-    }
-    catch(error){
+    } catch (error) {
       print("에러입니다 : $error");
     }
-
   }
 
   Future<int> _handleKakaoLogin() async {
@@ -171,10 +265,11 @@ class _MyLoginState extends State<MyLogin> {
                 child: IconButton(
                   onPressed: () async {
                     if (await _handleKakaoLogin() == 1) {
-                      print("넘기는 아이디 : ${sendMyId}");
                       // 카카오 로그인 성공 시
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyApp()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => lockk ? blur() : MyApp()));
                     } else {
                       // 카카오 로그인 실패시
                       showDialog(
