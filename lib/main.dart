@@ -51,8 +51,10 @@ void main() async {
   sendMonthlyNotification();
   sendDiaryNotification();
 
-  //int myId = await ApiManager().getApiManager().GetMyId() as int;
-  //LoginedUserInfo.loginedUserInfo.id = myId;
+
+ int myId = await ApiManager().getApiManager().GetMyId() as int;
+ LoginedUserInfo.loginedUserInfo.id = myId;
+
 
   runApp(MaterialApp(
       navigatorKey: GlobalVariable.navState,
