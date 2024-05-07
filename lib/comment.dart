@@ -30,7 +30,9 @@ class _commentState extends State<comment> {
       int targetUserId = userid;
       print(userid);
 
-      apiManager.sendNotification(targetUserId, title, body);
+      int post_id = postId;
+
+      apiManager.sendNotification(targetUserId, title, body, post_id);
       print('댓글 알람실행');
 
       setState(() {
@@ -181,7 +183,7 @@ class _commentState extends State<comment> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        height: sizeY,
+        height: sizeY * 0.7,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -231,7 +233,6 @@ class _commentState extends State<comment> {
                                         padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                         child: Text(
                                           '삼냥이 ${catCount[commentList[index].user_id]}',
-                                          //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontSize: 13,

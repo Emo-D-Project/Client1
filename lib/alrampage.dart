@@ -294,7 +294,6 @@ class _FirstScreenState extends State<FirstScreen> {
     }
   }
 
-// fetchNotificationDataFromServer 함수 내부에서 처리
   Future<void> fetchNotificationDataFromServer() async {
     try {
       fetchMyIDFromServer();
