@@ -294,7 +294,6 @@ class _FirstScreenState extends State<FirstScreen> {
     }
   }
 
-// fetchNotificationDataFromServer 함수 내부에서 처리
   Future<void> fetchNotificationDataFromServer() async {
     try {
       fetchMyIDFromServer();
@@ -690,8 +689,8 @@ class _SecondScreenState extends State<SecondScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MessageRoom(
-                              otherUserId: (chatRooms[index].otherUserId),
-                            )),
+                          otherUserId: (chatRooms[index].otherUserId),
+                        )),
                   ).then((value) async {
                     await Future.delayed(Duration(
                         milliseconds: 500)); // 0.5초 대기 (500 milliseconds)

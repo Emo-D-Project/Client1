@@ -2,6 +2,7 @@ import 'package:capston1/category.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/MessageRoom.dart';
 import 'alrampage.dart';
@@ -57,15 +58,16 @@ class _message_writeState extends State<message_write> {
   //알람 실행
   void _sendNotification(String title, String body) async {
     try {
-      int targetUserId = otherUserId;
-      // int targetUserId = 1;
+     //int targetUserId = otherUserId;
+       int targetUserId = 1;
       print("///////////////");
       print(targetUserId);
       print(title);
       print(body);
       print(".........");
 
-      apiManager.sendNotification(targetUserId, title, body);
+      int postId = 0;
+      apiManager.sendNotification(targetUserId, title, body,postId);
 
       setState(() {
         latestMessage = body;

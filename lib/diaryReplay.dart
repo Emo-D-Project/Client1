@@ -18,6 +18,7 @@ class DiaryReplay extends StatefulWidget {
 
 List<Diary> diariess = [];
 
+
 class _writediaryState extends State<DiaryReplay> {
   Diary? diaries;
 

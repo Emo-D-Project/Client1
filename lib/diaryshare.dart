@@ -383,7 +383,9 @@ class _customWidget1State extends State<customWidget1> {
         int targetUserId = userId;
         print("커스텀 1 일기 알림 ${targetUserId}");
 
-        apiManager.sendNotification(targetUserId, title, body);
+        int postId = diaryId;
+
+        apiManager.sendNotification(targetUserId, title, body, postId);
       } catch (error) {
         print('Error sending notification : $error');
       }
@@ -845,7 +847,9 @@ class _customWidget2State extends State<customWidget2> {
         int targetUserId = userId;
         print("커스텀 2 일기 알림 ${targetUserId}");
 
-        apiManager.sendNotification(targetUserId, title, body);
+        int postId = diaryId;
+
+        apiManager.sendNotification(targetUserId, title, body, postId);
 
         alrampage.addToItemList(A_good);
       } catch (error) {
@@ -1009,7 +1013,6 @@ class _customWidget2State extends State<customWidget2> {
                                   LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }
-
                             }
                           } catch (error) {
                             print('Error updating favorite count: $error');
@@ -1291,7 +1294,9 @@ class _customwidget3State extends State<customwidget3> {
           int targetUserId = userId;
           print("커스텀 3 일기 알림 ${targetUserId}");
 
-          apiManager.sendNotification(targetUserId, title, body);
+          int postId = diaryId;
+
+          apiManager.sendNotification(targetUserId, title, body, postId);
         } catch (error) {
           print('Error sending notification : $error');
         }
@@ -1774,7 +1779,9 @@ class _customwidget4State extends State<customwidget4> {
         int targetUserId = userId;
         print("커스텀 4 일기 알림 ${targetUserId}");
 
-        apiManager.sendNotification(targetUserId, title, body);
+        int postId = diaryId;
+
+        apiManager.sendNotification(targetUserId, title, body, postId);
       } catch (error) {
         print('Error sending notification : $error');
       }
