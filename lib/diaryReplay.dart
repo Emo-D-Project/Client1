@@ -15,6 +15,8 @@ class DiaryReplay extends StatefulWidget {
   State<DiaryReplay> createState() => _writediaryState(diary);
 }
 
+
+
 class _writediaryState extends State<DiaryReplay> {
   Diary? diaries;
 

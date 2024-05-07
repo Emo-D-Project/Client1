@@ -25,7 +25,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
 
- // WidgetsFlutterBinding.ensureInitialized();
+ WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
@@ -45,11 +45,11 @@ void main() async {
   await FirebaseApi().initNotifications();
   await FirebaseApi().setupInteractedMessage();
   await FirebaseApi().fetchMyDataFromServer();
-  await FirebaseApi().checkMyDiaryExists();
+  //await FirebaseApi().checkMyDiaryExists();
 
   // 매월 1일에 알림 보내기
-  sendMonthlyNotification();
-  sendDiaryNotification();
+  /*sendMonthlyNotification();
+  sendDiaryNotification();*/
 
   //int myId = await ApiManager().getApiManager().GetMyId() as int;
   //LoginedUserInfo.loginedUserInfo.id = myId;

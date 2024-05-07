@@ -35,9 +35,8 @@ void main() async {
   );
   await FirebaseApi().initNotifications();
   await FirebaseApi().fetchMyDataFromServer();
-  await FirebaseApi().checkMyDiaryExists();
-  sendMonthlyNotification();
-  sendDiaryNotification();
+ // await FirebaseApi().checkMyDiaryExists();
+
 
   runApp(MaterialApp(
       routes: {
