@@ -146,6 +146,7 @@ class A_Chat extends StatelessWidget {
 }
 
 //알람 - 문의내역 알람
+
 Widget A_Question = Row(
   children: [
     Column(

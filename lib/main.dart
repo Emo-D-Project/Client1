@@ -23,8 +23,8 @@ void main() async {
   );
   await FirebaseApi().initNotifications();
 
-  // int myId = await ApiManager().getApiManager().GetMyId() as int;
- // LoginedUserInfo.loginedUserInfo.id = myId;
+  int myId = await ApiManager().getApiManager().GetMyId() as int;
+ LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       theme: style.theme,
