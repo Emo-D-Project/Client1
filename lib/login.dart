@@ -34,15 +34,19 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
+  await FirebaseApi().setupInteractedMessage();
+  await FirebaseApi().GetComments();
+  await FirebaseApi().fetchDataFromServer();
   await FirebaseApi().fetchMyDataFromServer();
+
  // await FirebaseApi().checkMyDiaryExists();
 
 
   runApp(MaterialApp(
       routes: {
       '/diaryshare': (context) => diaryshare(),
-        '/comment' : (context) => comment(postId: 0, userid: senderId),
-        '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
+       // '/comment' : (context) => comment(postId: 0, userid: senderId),
+       // '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
       },
       navigatorKey: GlobalVariable.navState,
       theme: style.theme,

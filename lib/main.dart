@@ -5,8 +5,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'MessageRoom.dart';
+import 'comment.dart';
 import 'models/Diary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'config/fcm_setting.dart';
@@ -44,6 +47,8 @@ void main() async {
 
   await FirebaseApi().initNotifications();
   await FirebaseApi().setupInteractedMessage();
+  await FirebaseApi().GetComments();
+  await FirebaseApi().fetchDataFromServer();
   await FirebaseApi().fetchMyDataFromServer();
   //await FirebaseApi().checkMyDiaryExists();
 
@@ -59,7 +64,9 @@ void main() async {
   runApp(MaterialApp(
       navigatorKey: GlobalVariable.navState,
       routes: {
-        "/diaryshare": (context) => calendar(),
+        '/diaryshare': (context) => diaryshare(),
+       // '/comment' : (context) => comment(postId: postId, userid: ),
+       // '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
       },
       theme: style.theme,
       home: MyApp(
