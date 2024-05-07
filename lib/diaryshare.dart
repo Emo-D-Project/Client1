@@ -28,7 +28,6 @@ String formattedDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
 String selectedImageEmotion = ' '; // 기본으로 'images/emotion/calmness.gif'를 선택
 ApiManager apiManager = ApiManager().getApiManager();
 
-
 class diaryshare extends StatefulWidget {
   diaryshare({Key? key}) : super(key: key);
 
@@ -37,7 +36,6 @@ class diaryshare extends StatefulWidget {
   @override
   State<diaryshare> createState() => _diaryshareState();
 }
-
 
 List<Diary> diaries = [];
 Map<int, int> commentCount = {};
@@ -49,7 +47,6 @@ class FavoriteCount {
 }
 
 class _diaryshareState extends State<diaryshare> {
-
   //List<Diary> _diaryInfo = [];
   List<Diary> selectedEmotionDiaries = [];
   int favoriteCounts = 0;
@@ -335,7 +332,6 @@ class _diaryshareState extends State<diaryshare> {
   }
 }
 
-
 // 일기 버전 1 - 텍스트 + 사진
 class customWidget1 extends StatefulWidget {
   final String simagePath;
@@ -380,7 +376,6 @@ class _customWidget1State extends State<customWidget1> {
 
   ApiManager apiManager = ApiManager().getApiManager();
 
-
   //알람 실행
   void _sendNotification(String title, String body) async {
     if (apiManager != null) {
@@ -396,7 +391,6 @@ class _customWidget1State extends State<customWidget1> {
       print('ApiManager is null. Cannot send notification.');
     }
   }
-
 
   _customWidget1State(int otherUserId, int diaryId, bool scomm, bool sshare) {
     this.userId = otherUserId;
@@ -477,7 +471,10 @@ class _customWidget1State extends State<customWidget1> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId, userid: userId,),
+            child: comment(
+              postId: diaryId,
+              userid: userId,
+            ),
           ),
         );
       },
@@ -641,7 +638,8 @@ class _customWidget1State extends State<customWidget1> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
-                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                              if (userId !=
+                                  LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }
                             }
@@ -780,7 +778,10 @@ class _customWidget2State extends State<customWidget2> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId, userid: userId,),
+            child: comment(
+              postId: diaryId,
+              userid: userId,
+            ),
           ),
         );
       },
@@ -847,7 +848,6 @@ class _customWidget2State extends State<customWidget2> {
         apiManager.sendNotification(targetUserId, title, body);
 
         alrampage.addToItemList(A_good);
-
       } catch (error) {
         print('Error sending notification : $error');
       }
@@ -855,6 +855,7 @@ class _customWidget2State extends State<customWidget2> {
       print('ApiManager is null. Cannot send notification.');
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -1004,7 +1005,8 @@ class _customWidget2State extends State<customWidget2> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
-                              if(userId == LoginedUserInfo.loginedUserInfo.id) {
+                              if (userId ==
+                                  LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }
                             }
@@ -1175,7 +1177,10 @@ class _customwidget3State extends State<customwidget3> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId, userid: userId,),
+            child: comment(
+              postId: diaryId,
+              userid: userId,
+            ),
           ),
         );
       },
@@ -1293,6 +1298,7 @@ class _customwidget3State extends State<customwidget3> {
         print('ApiManager is null. Cannot send notification.');
       }
     }
+
     if (sshare) {
       return SingleChildScrollView(
         child: Column(
@@ -1485,7 +1491,8 @@ class _customwidget3State extends State<customwidget3> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = "";
-                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                              if (userId !=
+                                  LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }
                             }
@@ -1659,7 +1666,10 @@ class _customwidget4State extends State<customwidget4> {
             ),
             height: sizeY * 0.8,
             color: Color(0xFF737373),
-            child: comment(postId: diaryId, userid: userId,),
+            child: comment(
+              postId: diaryId,
+              userid: userId,
+            ),
           ),
         );
       },
@@ -1756,7 +1766,6 @@ class _customwidget4State extends State<customwidget4> {
     return result;
   }
 
-
   //알람 실행
   void _sendNotification(String title, String body) async {
     if (apiManager != null) {
@@ -1772,6 +1781,7 @@ class _customwidget4State extends State<customwidget4> {
       print('ApiManager is null. Cannot send notification.');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     print("commentCount4: ${commentCount[diaryId]}");
@@ -1993,7 +2003,8 @@ class _customwidget4State extends State<customwidget4> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = "";
-                              if(userId != LoginedUserInfo.loginedUserInfo.id) {
+                              if (userId !=
+                                  LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }
                             }

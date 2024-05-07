@@ -97,7 +97,7 @@ class _homeState extends State<home> {
       final data = await apiManager.getDiaryShareData();
       int myId = await ApiManager().getApiManager().GetMyId() as int;
       LoginedUserInfo.loginedUserInfo.id = myId;
-      print("여기임 ${LoginedUserInfo.loginedUserInfo.id}");
+      print("현재 내 아이 ${LoginedUserInfo.loginedUserInfo.id}");
 
       setState(() {
         diaries = data; // fetchDataFromServer()가 완료된 후에 감정을 설정함
