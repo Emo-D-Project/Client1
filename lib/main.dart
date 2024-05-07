@@ -46,10 +46,11 @@ void main() async {
   );
 
   await FirebaseApi().initNotifications();
-  await FirebaseApi().setupInteractedMessage();
-  await FirebaseApi().GetComments();
-  await FirebaseApi().fetchDataFromServer();
-  await FirebaseApi().fetchMyDataFromServer();
+ // await FirebaseApi().setupInteractedMessage();
+  //await FirebaseApi().GetComments();
+ // await FirebaseApi().fetchDataFromServer();
+//  await FirebaseApi().fetchMyDataFromServer();
+
   //await FirebaseApi().checkMyDiaryExists();
 
   // 매월 1일에 알림 보내기

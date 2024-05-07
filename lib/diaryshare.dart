@@ -399,6 +399,7 @@ class _customWidget1State extends State<customWidget1> {
     this.diaryId = diaryId;
     this.scomm = scomm;
     this.sshare = sshare;
+
   }
 
   void initState() {
@@ -447,11 +448,6 @@ class _customWidget1State extends State<customWidget1> {
             print('Error getting commentList: $error');
           });
         }
-        // formattedDate와 같은 날짜의 일기만 필터링
-        /*selectedEmotionDiaries = diaries
-            .where((diary) =>
-        DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate)
-            .toList();*/
       });
     } catch (error) {
       // 에러 제어하는 부분
@@ -1009,7 +1005,7 @@ class _customWidget2State extends State<customWidget2> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
-                              if (userId ==
+                              if (userId !=
                                   LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }

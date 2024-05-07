@@ -426,7 +426,6 @@ class _FirstScreenState extends State<FirstScreen> {
           }
         }
         // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
-        // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
         itemList
             .firstWhere((item) => item.title == '오늘')
             .contentList
