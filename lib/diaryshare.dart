@@ -1009,6 +1009,7 @@ class _customWidget2State extends State<customWidget2> {
                                   LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }
+
                             }
                           } catch (error) {
                             print('Error updating favorite count: $error');
