@@ -58,8 +58,8 @@ class _message_writeState extends State<message_write> {
   //알람 실행
   void _sendNotification(String title, String body) async {
     try {
-     //int targetUserId = otherUserId;
-       int targetUserId = 1;
+      int targetUserId = otherUserId;
+      // int targetUserId = 1;
       print("///////////////");
       print(targetUserId);
       print(title);
@@ -67,12 +67,11 @@ class _message_writeState extends State<message_write> {
       print(".........");
 
       int postId = 0;
-      apiManager.sendNotification(targetUserId, title, body,postId);
+      apiManager.sendNotification(targetUserId, title, body, postId);
 
       setState(() {
         latestMessage = body;
       });
-
 
       print('쪽지 알람실행');
     } catch (error) {
@@ -90,7 +89,7 @@ class _message_writeState extends State<message_write> {
       // 알림 생성 및 전송
       String title = "쪽지가 왔습니다!";
       String body = writeMessage.length > 6
-          ? writeMessage.substring(0,6) + "..."
+          ? writeMessage.substring(0, 6) + "..."
           : writeMessage;
       _sendNotification(title, body);
 

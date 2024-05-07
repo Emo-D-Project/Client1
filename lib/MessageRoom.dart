@@ -47,49 +47,53 @@ class _MessageRoomState extends State<MessageRoom> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
       appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Color(0xFFF8F5EB),
-        title: Text(
-              "채팅방",
-              style: TextStyle(
-                fontSize: 30,
-                fontFamily: 'kim',
-                color: Color(0xFF968C83),
+          elevation: 0.0,
+          backgroundColor: Color(0xFFF8F5EB),
+          title: Text(
+            "채팅방",
+            style: TextStyle(
+              fontSize: 30,
+              fontFamily: 'kim',
+              color: Color(0xFF968C83),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        message_write(otherUserId: otherUserId),
+                  ),
+                ).then((value) async {
+                  // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
+                  // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
+                  await Future.delayed(Duration(seconds: 1)); // 1초 대기
+                  fetchDataFromServer();
+                });
+              },
+              icon: Image.asset(
+                'images/send/real_send.png',
+                height: 30, // 이미지 높이 조절
+                width: 30, // 이미지 너비 조절
               ),
             ),
-            actions:[ IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          message_write(otherUserId: otherUserId),
-                    ),
-                  ).then((value) async {
-                    // 이 부분은 message_write 화면이 닫힌 후에 실행됩니다.
-                    // 여기서 MessageRoom 화면을 갱신하고 싶은 작업을 수행
-                    await Future.delayed(Duration(seconds: 1)); // 1초 대기
-                    fetchDataFromServer();
-                  });
-                },
-                icon: Image.asset(
-                  'images/send/real_send.png',
-                  height: 30, // 이미지 높이 조절
-                  width: 30, // 이미지 너비 조절
-                ),
-              ),] // 간격 조절
-      ),
+          ] // 간격 조절
+          ),
       body: ListView.builder(
         itemCount: messageList.length,
         itemBuilder: (BuildContext context, int index) {
-          messageList.sort((a, b) => a.sendtime.compareTo(b.sendtime));
+          // 거꾸로 인덱스 계산
+          int reversedIndex = messageList.length - 1 - index;
+
+          // 정렬된 messageList를 거꾸로 순회하며 아이템을 그립니다.
           return Row(
             children: [
               Column(
@@ -111,21 +115,24 @@ class _MessageRoomState extends State<MessageRoom> {
                                       width: 100,
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
-                                            () {
-                                              if (messageList[index].receiverId == otherUserId) {
-                                              return "보낸 쪽지";
-                                            } else {
-                                              // 만약 otherUserId가 아닌 다른 유저에게 보낸 쪽지라면
-                                              return "받은 쪽지";
-                                            }
-
+                                        () {
+                                          if (messageList[reversedIndex]
+                                                  .receiverId ==
+                                              otherUserId) {
+                                            return "보낸 쪽지";
+                                          } else {
+                                            // 만약 otherUserId가 아닌 다른 유저에게 보낸 쪽지라면
+                                            return "받은 쪽지";
+                                          }
                                         }(),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: () {
-                                            if (messageList[index].receiverId == otherUserId) {
+                                            if (messageList[reversedIndex]
+                                                    .receiverId ==
+                                                otherUserId) {
                                               return Colors.blue; // 보낸 쪽지
                                             } else {
                                               return Colors.green; // 받은 쪽지
@@ -134,8 +141,6 @@ class _MessageRoomState extends State<MessageRoom> {
                                         ),
                                       ),
                                     ),
-
-
                                     Expanded(child: Container()),
                                     // 시간
                                     Container(
@@ -143,7 +148,8 @@ class _MessageRoomState extends State<MessageRoom> {
                                       padding: EdgeInsets.fromLTRB(40, 5, 0, 0),
                                       child: Text(
                                         DateFormat('MM/dd').format(
-                                            messageList[index].sendtime),
+                                            messageList[reversedIndex]
+                                                .sendtime),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 15,
@@ -159,7 +165,7 @@ class _MessageRoomState extends State<MessageRoom> {
                                   width: double.infinity,
                                   padding: EdgeInsets.fromLTRB(10, 3, 0, 0),
                                   child: Text(
-                                    messageList[index].content,
+                                    messageList[reversedIndex].content,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(fontSize: 14),
                                   ),

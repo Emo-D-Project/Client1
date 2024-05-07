@@ -51,7 +51,6 @@ class _commentState extends State<comment> {
   late int postId;
   late String comment;
   int id = 0;
-
   int Myid = 0;
 
   final Map<int, List<int>> userTitle = {};
@@ -163,7 +162,7 @@ class _commentState extends State<comment> {
 
       String body = text.length > 6 ? text.substring(0, 6) + "..." : text;
 
-      if (Myid == userid) {
+      if (Myid != userid) {
         _sendNotification(title, body);
         print(title);
         print(body);
@@ -180,9 +179,7 @@ class _commentState extends State<comment> {
   Widget build(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
+    return Container(
         height: sizeY * 0.7,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -413,7 +410,7 @@ class _commentState extends State<comment> {
             ),
           ],
         ),
-      ),
+
     );
   }
 }

@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:capston1/MessageRoom.dart';
-import 'package:capston1/comment.dart';
-import 'package:capston1/models/MyInfo.dart';
 import 'package:capston1/models/notification.dart';
 import 'package:capston1/monthlyStatistics.dart';
 import 'package:capston1/network/api_manager.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:capston1/main.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:capston1/alrampage.dart';
 import 'package:capston1/diaryReplay.dart';
@@ -19,8 +16,10 @@ import '../diaryshare.dart';
 import '../models/Diary.dart';
 import '../models/Navigator.dart';
 import 'package:capston1/models/Comment.dart';
+import 'package:capston1/commentClick.dart';
 
 late int Myid;
+late int post_Id = 0;
 
 final GlobalKey<NavigatorState> navState = GlobalKey<NavigatorState>();
 
@@ -29,24 +28,17 @@ bool _myDiaryExists = false;
 class FirebaseApi {
   final int otherUserId = 0;
   late int sendId = 0; // 보낸 사람
-
-  late int post_Id = 0;
   Diary? diary;
   late String comments = " ";
-
-  late int findDiary = 0;
   int id = 0;
-
   late String message_content = " ";
   late int receiver_Id;
   late DateTime sentAt;
-
   final _firebaseMessaging = FirebaseMessaging.instance;
   ApiManager apiManager = ApiManager().getApiManager();
   final NavigatorState? currentState = navState.currentState;
 
   List<Diary> _diaryInfo = [];
-
   List<notification> notificationList = [];
   List<Message> messageList = [];
   List<Comment> commentList = [];
@@ -160,20 +152,22 @@ class FirebaseApi {
     try {
       final myid = await apiManager.GetMyId();
       final diaryData = await apiManager.getDiaryData();
+
       Myid = myid!;
 
       _diaryInfo = diaryData;
 
-      Diary? foundDiary =
-          _diaryInfo.firstWhere((diary) => diary.diaryId == findDiary);
+      for (Diary d in _diaryInfo) {
+        print(d.diaryId);
 
-      if (foundDiary != null) {
-        diary = foundDiary;
-      } else {
-        print('해당하는 post_id에 해당하는 일기를 찾을 수 없습니다.');
+        if (d.diaryId == post_Id) {
+          diary = d;
+          print(diary?.diaryId);
+          break;
+        }
       }
     } catch (error) {
-      print('Error fetching data: ${error.toString()}');
+      print('데이터를 불러오는 도중 오류가 발생했습니다: ${error.toString()}');
     }
   }
 
@@ -199,11 +193,14 @@ class FirebaseApi {
       Navigator.of(GlobalVariable.navState.currentContext!)
           .push(MaterialPageRoute(builder: (context) => monthlyStatistics()));
     } else if (message.data['title'] == '누군가 댓글을 달았습니다') {
-      Navigator.of(GlobalVariable.navState.currentContext!)
-          .push(MaterialPageRoute(builder: (context) => alrampage()));
+      Navigator.of(GlobalVariable.navState.currentContext!).push(
+          MaterialPageRoute(
+              builder: (context) =>
+                  commentClick(diary: diary!, postId: post_Id, userid: Myid)));
     } else if (message.data['title'] == '쪽지가 왔습니다!') {
-      Navigator.pushNamed(
-          GlobalVariable.navState.currentContext!, '/messageroom');
+      Navigator.of(GlobalVariable.navState.currentContext!).push(
+          MaterialPageRoute(
+              builder: (context) => MessageRoom(otherUserId: sendId)));
     } else if (message.data['title'] == '하루가 지나가요! 오늘을 공유해보세요') {
       Navigator.of(GlobalVariable.navState.currentContext!)
           .push(MaterialPageRoute(builder: (context) => MyApp()));
@@ -252,9 +249,7 @@ class FirebaseApi {
 
     Future<void> sendMonthlyNotification() async {
       final DateTime now = DateTime.now();
-      //if (now.hour == 10 && now.minute == 30 && now.day == 1) {
-
-      if (now.day == 60) {
+      if (now.hour == 10 && now.minute == 30 && now.day == 1) {
         final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
             FlutterLocalNotificationsPlugin();
         flutterLocalNotificationsPlugin.show(
@@ -285,8 +280,7 @@ class FirebaseApi {
 
     Future<void> sendDiaryNotification() async {
       final DateTime now = DateTime.now();
-      // if (now.hour == 22 && now.minute == 00 && !_myDiaryExists) {
-      if (_myDiaryExists) {
+      if (now.hour == 22 && now.minute == 00 && !_myDiaryExists) {
         final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
             FlutterLocalNotificationsPlugin();
         flutterLocalNotificationsPlugin.show(
@@ -312,14 +306,15 @@ class FirebaseApi {
 
         apiManager.sendNotification(targetUserId, title, body, postId);
       }
+
       alrampage.addToItemList(A_DEmod);
     }
 
     // 매월 1일 알림
-    //   await sendMonthlyNotification();
+    await sendMonthlyNotification();
 
     // 매일 10시에 일기 작성 알림
-    // await sendDiaryNotification();
+    await sendDiaryNotification();
 
     // 안드로이드 알림 채널 설정
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -344,7 +339,6 @@ class FirebaseApi {
       notificationStream.add(notificationResponse.payload!);
       if (notificationResponse.payload!.contains('누군가가 당신의 일기에 좋아요를 눌렀습니다!')) {
         print('포어 - 좋아요 알림 클릭');
-
         Navigator.of(GlobalVariable.navState.currentContext!).push(
             MaterialPageRoute(
                 builder: (context) => DiaryReplay(diary: diary!)));
@@ -352,8 +346,8 @@ class FirebaseApi {
         // 댓글 알림인 경우
         Navigator.of(GlobalVariable.navState.currentContext!).push(
             MaterialPageRoute(
-                builder: (context) => comment(
-                    postId: post_Id, userid:Myid ))) ;
+                builder: (context) => commentClick(
+                    diary: diary!, postId: post_Id, userid: Myid)));
       } else if (notificationResponse.payload!
           .contains('하루가 지나가요! 오늘을 공유해보세요')) {
         // 일기작성 알림인 경우
@@ -393,8 +387,6 @@ class FirebaseApi {
       badge: true,
       sound: true,
     );
-
-    ////--------------------------------------------
 
     // Foreground Messaging 핸들러
     Future<void> fbMsgForegroundHandler(
@@ -436,25 +428,23 @@ class FirebaseApi {
 
       if (data != null) {
         final String? title = data['senderId'] as String?;
-        sendId = int.parse(title!);
+        //   sendId = int.parse(title!);
+        sendId = 2;
         print(sendId);
         fetchDataFromServer();
         print("Message from ${title ?? 'No Title'}:");
-
         final String? findDiary = data['postId'] as String?;
         post_Id = int.parse(findDiary!);
 
-        print('ddddddddddddddd');
-        print(post_Id);
         GetComments();
+
+        fetchMyDataFromServer();
         print("Message comment from ${findDiary ?? 'No findairy'}:");
       } else {
         print("안됨");
       }
-
       print(
           '푸시 알림 수신: ${message.notification?.title ?? 'No Title'} - ${message.notification?.body ?? 'No Body'}');
-
       fbMsgForegroundHandler(message, flutterLocalNotificationsPlugin, channel);
     });
   }
