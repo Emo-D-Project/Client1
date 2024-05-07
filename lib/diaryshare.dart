@@ -30,6 +30,7 @@ ApiManager apiManager = ApiManager().getApiManager();
 
 
 class diaryshare extends StatefulWidget {
+
   diaryshare({Key? key}) : super(key: key);
 
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -1005,10 +1006,8 @@ class _customWidget2State extends State<customWidget2> {
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
                               if (userId == LoginedUserInfo.loginedUserInfo.id) {
-                                // 5초 지연 후 알림 보내기
-                                Future.delayed(Duration(seconds: 5), () {
-                                  _sendNotification(title, body);
-                                });
+                                _sendNotification(title, body);
+
                               }
 
                             }
