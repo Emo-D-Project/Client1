@@ -186,72 +186,9 @@ class A_Message extends StatelessWidget {
   }
 }
 
-//알람 - 문의내역 알람
-
-Widget A_Question = Row(
-  children: [
-    Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 28),
-          child: Image.asset(
-            'images/send/question.png',
-            width: 15,
-          ),
-        ),
-      ],
-    ),
-    SizedBox(width: 5), // 아이콘과 텍스트 사이의 간격 조절
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "문의 내역",
-          style: TextStyle(
-            fontFamily: 'soojin',
-            fontSize: 13,
-          ),
-        ),
-        Text(
-          "남겨주신 문의에 답변이 등록 되었어요.\nEMO:D : '문의 주셔서 감사합...'",
-          style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-        ),
-      ],
-    ),
-    SizedBox(
-      height: 50,
-    )
-  ],
-);
-
-//알람- 쪽지 알람
-Widget A_Message = Row(
-  children: [
-    Column(
-      children: [
-        Container(
-          child: Image.asset(
-            'images/send/real_chat.png',
-            width: 15,
-          ),
-        ),
-      ],
-    ),
-    SizedBox(width: 5),
-    Text(
-      "쪽지가 왔습니다!",
-      style: TextStyle(fontFamily: 'soojin', fontSize: 13),
-    ),
-    SizedBox(
-      height: 30,
-    )
-  ],
-);
-
 List<Item> itemList = [
   Item(title: '오늘', contentList: []),
 ];
-
 
 class alrampage extends StatefulWidget {
   const alrampage({super.key});
@@ -753,8 +690,8 @@ class _SecondScreenState extends State<SecondScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MessageRoom(
-                              otherUserId: (chatRooms[index].otherUserId),
-                            )),
+                          otherUserId: (chatRooms[index].otherUserId),
+                        )),
                   ).then((value) async {
                     await Future.delayed(Duration(
                         milliseconds: 500)); // 0.5초 대기 (500 milliseconds)
