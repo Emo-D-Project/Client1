@@ -1,4 +1,5 @@
 import 'package:capston1/bar%20graph/bar_graph.dart';
+import 'package:capston1/models/MyInfo.dart';
 import 'package:flutter/material.dart';
 import 'models/Diary.dart';
 import 'statistics.dart';
@@ -61,7 +62,6 @@ class _fullStatisticsState extends State<fullStatistics> {
 
   @override
   Widget build(BuildContext context) {
-    //print("DiaryID: ${diaries!.diaryId}");
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F5EB),
@@ -329,7 +329,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: '수진',
+                                          text: MyInfo().getMyInfo().nickName,
                                           style: TextStyle(
                                               fontFamily: 'soojin',
                                               fontWeight: FontWeight.w700,
@@ -472,7 +472,7 @@ class _fullStatisticsState extends State<fullStatistics> {
                                               color: Colors.white,
                                             ),
                                             children: [
-                                              TextSpan(text: '수진'),
+                                              TextSpan(text: MyInfo().getMyInfo().nickName,),
                                               //닉네임
                                               TextSpan(text: '님의 공유된 일기 중'),
                                               //일

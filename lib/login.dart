@@ -1,5 +1,4 @@
 import 'package:capston1/MessageRoom.dart';
-import 'package:capston1/calendar.dart';
 import 'package:capston1/comment.dart';
 import 'package:capston1/diaryshare.dart';
 import 'package:capston1/models/MyInfo.dart';
@@ -25,6 +24,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+final storage = FlutterSecureStorage();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,12 +61,10 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
-  //카카오 어세스 토큰을 사용해 서버의 어세스 토큰 및 리프레시 토큰 어플에 저장 함수
-
-  final storage = FlutterSecureStorage();
   String jwttoken = '';
   int sendMyId = 0;
   bool lockk = false;
+  ApiManager apiManager = ApiManager().getApiManager();
 
   void initState() {
     super.initState();
@@ -78,19 +76,21 @@ class _MyLoginState extends State<MyLogin> {
   _asyncMethod() async {
     final accessToken = await storage.read(key: 'ACCESS_TOKEN');
     final refreshToken = await storage.read(key: 'REFRESH_TOKEN');
+    final nickname = await storage.read(key: 'NICKNAME');
     Dio dio = Dio();
 
     if (accessToken != null) {
-      print('djdjdjdjdj: ${accessToken}');
+      MyInfo myInfo = MyInfo().getMyInfo();
       tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
       tokenManager.setAccessToken(accessToken);
       tokenManager.setRefreshToken(refreshToken!);
-      print("kkkkkkkk:${refreshToken}");
-      ApiManager apiManager = ApiManager().getApiManager();
+      myInfo.setNickName(nickname!);
       int myId = await ApiManager().GetMyId() as int;
       LoginedUserInfo.loginedUserInfo.id = myId;
-      print('아아아 ${myId}');
-      print("에프씨엠${tokenManager.getFirebaseToken()}");
+
+      print('아이디 가져오기 성공 : ${myId}');
+      print("닉네임: ${myInfo.nickName}");
+      print("FCM 토큰 : ${tokenManager.getFirebaseToken()}");
       apiManager.putFirebaseToken(tokenManager.getFirebaseToken());
       String passSwitchString = await ApiManager().GetPassSwitch() ?? 'false';
       if (passSwitchString.toLowerCase() == 'true') {
@@ -100,7 +100,6 @@ class _MyLoginState extends State<MyLogin> {
           MaterialPageRoute(builder: (context) => lockk ? blur() : MyApp()));
     } else {
       try {
-        print("44");
         Map<String, String> headers = {
           'Content-Type': 'application/json',
         };
@@ -113,21 +112,18 @@ class _MyLoginState extends State<MyLogin> {
         if (response.statusCode == 201) {
           print('토큰 재발급 성공');
         } else {
-          throw Exception('ㅏㅏFailed to load data from the API');
+          throw Exception('Failed to load data from the API');
         }
       } catch (e) {
-        _handleKakaoLogin();
-        print("이거 실행 $e");
+        print("$e");
       }
-      // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
     }
   }
 
   Future<void> authenticate(String token) async {
     MyInfo myInfo = MyInfo().getMyInfo();
     tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
-    final url = Uri.parse(
-        'http://34.64.255.126:8000/user/auth/kakao'); // 서버의 엔드포인트 URL로 변경
+    final url = Uri.parse('http://34.64.255.126:8000/user/auth/kakao');
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'kakaoAccessToken': token,
@@ -140,21 +136,17 @@ class _MyLoginState extends State<MyLogin> {
 
         tokenManager.setAccessToken(jsonResponse["access_token"]);
         tokenManager.setRefreshToken(jsonResponse["refresh_token"]);
-        var accessToken = tokenManager
-            .accessToken; // resp.data.accessToken : api서버를 통해 발급받은 accessToken
-        var refreshToken = tokenManager
-            .refreshToken; // resp.data.refreshToken : api서버를 통해 발급받은 refreshToken
 
-        await storage.write(key: 'ACCESS_TOKEN', value: accessToken);
-        await storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+        await storage.write(key: 'ACCESS_TOKEN', value: tokenManager.accessToken);
+        await storage.write(key: 'REFRESH_TOKEN', value: tokenManager.refreshToken);
 
         myInfo.setNickName(jsonResponse["properties"]["nickname"]);
+        await storage.write(key: 'NICKNAME', value: myInfo.nickName);
 
-        ApiManager apiManager = ApiManager().getApiManager();
-        apiManager.tokenManager = tokenManager;
-        print("로그인통신성공입니댜");
+
+        print("로그인 통신 성공입니댜");
+        print("닉네임: ${myInfo.nickName}");
         print("전달 받은 토큰 : ${tokenManager.accessToken}");
-        jwttoken = tokenManager.accessToken;
 
         int myId = await ApiManager().GetMyId() as int;
         LoginedUserInfo.loginedUserInfo.id = myId;
@@ -164,9 +156,9 @@ class _MyLoginState extends State<MyLogin> {
           lockk = true;
         }
         print("내 아이디 : ${myId}");
-        print("잠금여부 : ${lockk}");
+        print("잠금 여부 : ${lockk}");
       } else {
-        throw Exception('Faild to authenticate');
+        throw Exception('로그인 인증에 실패했습니다.');
       }
     } catch (error) {
       print("에러입니다 : $error");
@@ -174,8 +166,6 @@ class _MyLoginState extends State<MyLogin> {
   }
 
   Future<int> _handleKakaoLogin() async {
-    MyInfo myInfo = MyInfo().getMyInfo();
-
     OAuthToken? token;
 
     if (await isKakaoTalkInstalled()) {
@@ -184,7 +174,7 @@ class _MyLoginState extends State<MyLogin> {
         token = await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공 ${token.accessToken}');
         await authenticate(token.accessToken); //토큰 전달
-        print("토토큰큰 : ${jwttoken}");
+        print("토큰 : ${token.accessToken}");
         return 1;
       } catch (error) {
         print(await KakaoSdk.origin);
@@ -199,7 +189,7 @@ class _MyLoginState extends State<MyLogin> {
           token = await UserApi.instance.loginWithKakaoAccount();
           print('카카오계정으로 로그인 성공');
           await authenticate(token.accessToken);
-          print("토토큰큰 : ${jwttoken}");
+          print("토큰 : ${token.accessToken}");
           return 1;
         } catch (error) {
           print('카카오계정으로 로그인 실패 $error');
@@ -211,7 +201,7 @@ class _MyLoginState extends State<MyLogin> {
         token = await UserApi.instance.loginWithKakaoAccount();
         print('카카오계정으로 로그인 성공');
         await authenticate(token.accessToken);
-        print("토토큰큰 : ${jwttoken}");
+        print("토큰 : ${token.accessToken}");
         return 1;
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');

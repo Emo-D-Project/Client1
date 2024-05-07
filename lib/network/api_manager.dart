@@ -20,7 +20,7 @@ import '../models/Mypage.dart';
 import '../models/Comment.dart';
 import 'package:http_parser/http_parser.dart';
 import '../models/notification.dart';
-final storage = FlutterSecureStorage();
+
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -1209,7 +1209,7 @@ class ApiManager {
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
 
-        print("잠금띠예 $data");
+        print("잠금 상태 $data");
         return data.toString();
       } else {
         throw Exception("Failed to fetch data from the API. Status code: ${response.statusCode}");
