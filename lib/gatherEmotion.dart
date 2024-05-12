@@ -5,7 +5,6 @@ import 'network/api_manager.dart';
 import 'statistics.dart';
 import 'package:intl/intl.dart';
 
-
 class gatherEmotion extends StatefulWidget {
   const gatherEmotion({super.key});
 

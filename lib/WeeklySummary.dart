@@ -35,6 +35,10 @@ class _weeklySummaryState extends State<weeklySummary> {
 
   @override
   Widget build(BuildContext context) {
+    print(weekly?.summary);
+    print(weekly?.positiveEvent);
+    print(weekly?.emotion);
+    print(weekly?.negativeEvent);
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -88,18 +92,22 @@ class _weeklySummaryState extends State<weeklySummary> {
                             style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'kim',
+                              color: Color(0xFFFFC0CB),
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Text(
-                            weekly?.positiveEvent ?? ' ',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'kim',
+                          child: weekly != null ? Container(
+                            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Text(
+                              weekly?.positiveEvent ?? ' ',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'kim',
+                              ),
                             ),
-                          ),
+                          ) : Container()
                         ),
                       ],
                     ),
@@ -122,18 +130,22 @@ class _weeklySummaryState extends State<weeklySummary> {
                             style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'kim',
+                              color: Color(0xFFFF9898),
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Text(
-                            weekly?.negativeEvent ?? ' ',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'kim',
+                          child: weekly != null ? Container(
+                            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Text(
+                              weekly?.negativeEvent ?? ' ',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'kim',
+                              ),
                             ),
-                          ),
+                          ):Container()
                         ),
                       ],
                     ),
@@ -145,8 +157,9 @@ class _weeklySummaryState extends State<weeklySummary> {
                 width: sizeX * 0.9,
                 height: sizeY * 0.2,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white),
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
                 child: Column(
                   children: [
                     Container(
@@ -156,62 +169,71 @@ class _weeklySummaryState extends State<weeklySummary> {
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'kim',
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF00051C)
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: sizeX * 0.3,
-                      height: sizeY * 0.12,
-                      child: (() {
-                        switch (weekly?.emotion) {
-                          case 'smile':
-                            return Image.asset(
-                              'images/emotion/smile.gif',
-                              height: 45,
-                              width: 45,
-                            );
-                          case 'flutter':
-                            return Image.asset(
-                              'images/emotion/flutter.gif',
-                              height: 45,
-                              width: 45,
-                            );
-                          case 'angry':
-                            return Image.asset(
-                              'images/emotion/angry.png',
-                              height: 45,
-                              width: 45,
-                            );
-                          case 'annoying':
-                            return Image.asset(
-                              'images/emotion/annoying.gif',
-                              height: 45,
-                              width: 45,
-                            );
-                          case 'tired':
-                            return Image.asset(
-                              'images/emotion/tired.gif',
-                              height: 45,
-                              width: 45,
-                            );
-                          case 'sad':
-                            return Image.asset(
-                              'images/emotion/sad.gif',
-                              height: 45,
-                              width: 45,
-                            );
-                          case 'calmness':
-                            return Image.asset(
-                              'images/emotion/calmness.gif',
-                              height: 45,
-                              width: 45,
-                            );
-                        }
-                      })(),
+                    Container(
+                      child: weekly !=null ? SizedBox(
+                        width: sizeX * 0.3,
+                        height: sizeY * 0.12,
+                        child: (() {
+                            switch (weekly?.emotion) {
+                              case 'smile':
+                                return Image.asset(
+                                  'images/emotion/smile.gif',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              case 'flutter':
+                                return Image.asset(
+                                  'images/emotion/flutter.gif',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              case 'angry':
+                                return Image.asset(
+                                  'images/emotion/angry.png',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              case 'annoying':
+                                return Image.asset(
+                                  'images/emotion/annoying.gif',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              case 'tired':
+                                return Image.asset(
+                                  'images/emotion/tired.gif',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              case 'sad':
+                                return Image.asset(
+                                  'images/emotion/sad.gif',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              case 'calmness':
+                                return Image.asset(
+                                  'images/emotion/calmness.gif',
+                                  height: 45,
+                                  width: 45,
+                                );
+                              default:
+                                return Container(); // 기본값은 빈 컨테이너 반환
+                            }
+                        })(),
+                      )
+                      :Container(),
                     ),
+
                   ],
                 ),
               ),
+
               Container(
                 margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                 width: sizeX * 0.9,
@@ -247,16 +269,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[0] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly !=null ?SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[0] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ):Container()
                           ),
                         ],
                       ),
@@ -274,16 +298,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[1] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly != null ? SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[1] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ):Container()
                           ),
                         ],
                       ),
@@ -301,16 +327,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[2] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly != null ? SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[2] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ):Container()
                           ),
                         ],
                       ),
@@ -328,16 +356,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[3] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly != null ? SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[3] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ) : Container()
                           ),
                         ],
                       ),
@@ -355,16 +385,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[4] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly != null ? SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[4] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ):Container()
                           ),
                         ],
                       ),
@@ -382,16 +414,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[5] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly != null ? SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[5] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ): Container()
                           ),
                         ],
                       ),
@@ -409,16 +443,18 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          SizedBox(
-                            width: sizeX * 0.6,
-                            child: Text(
-                              weekly!.summary?[6] ?? ' ',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'kim',
+                          Container(
+                            child: weekly !=null ?SizedBox(
+                              width: sizeX * 0.6,
+                              child: Text(
+                                weekly!.summary?[6] ?? ' ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'kim',
+                                ),
+                                textAlign: TextAlign.right,
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ):Container()
                           ),
                         ],
                       ),

@@ -1321,7 +1321,7 @@ class ApiManager {
 
   Future<Weekly> getWeeklySummary() async {
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "api/diaries/ai";
+    String endPoint = "api/aiReport/read";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
