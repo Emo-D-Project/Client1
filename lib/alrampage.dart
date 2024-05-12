@@ -294,7 +294,6 @@ class _FirstScreenState extends State<FirstScreen> {
     }
   }
 
-// fetchNotificationDataFromServer 함수 내부에서 처리
   Future<void> fetchNotificationDataFromServer() async {
     try {
       fetchMyIDFromServer();
@@ -426,7 +425,6 @@ class _FirstScreenState extends State<FirstScreen> {
             sevenDaysAgoWidgets.add(sevenDaysAgoWidget);
           }
         }
-        // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
         // 각 항목의 알림 위젯들을 해당 항목의 contentList에 추가
         itemList
             .firstWhere((item) => item.title == '오늘')

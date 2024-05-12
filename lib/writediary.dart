@@ -348,7 +348,7 @@ class _writediaryState extends State<writediary> {
             onPressed: () async{
               PostWriteDiary("/api/diaries/create");
               fetchDataFromServer();
-              //await Future.delayed(Duration(seconds: 5));
+              await Future.delayed(Duration(seconds: 3));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>
                   MyApp()));

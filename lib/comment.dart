@@ -30,7 +30,9 @@ class _commentState extends State<comment> {
       int targetUserId = userid;
       print(userid);
 
-      apiManager.sendNotification(targetUserId, title, body);
+      int post_id = postId;
+
+      apiManager.sendNotification(targetUserId, title, body, post_id);
       print('댓글 알람실행');
 
       setState(() {
@@ -49,7 +51,6 @@ class _commentState extends State<comment> {
   late int postId;
   late String comment;
   int id = 0;
-
   int Myid = 0;
 
   final Map<int, List<int>> userTitle = {};
@@ -161,7 +162,7 @@ class _commentState extends State<comment> {
 
       String body = text.length > 6 ? text.substring(0, 6) + "..." : text;
 
-      if (Myid == userid) {
+      if (Myid != userid) {
         _sendNotification(title, body);
         print(title);
         print(body);
@@ -178,10 +179,8 @@ class _commentState extends State<comment> {
   Widget build(BuildContext context) {
     final sizeY = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        height: sizeY,
+    return Container(
+        height: sizeY * 0.7,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -231,7 +230,6 @@ class _commentState extends State<comment> {
                                         padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                         child: Text(
                                           '삼냥이 ${catCount[commentList[index].user_id]}',
-                                          //null이 아니면 마지막 요소 반환하고, null이거나 비어있으면 1을 반환
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontSize: 13,
@@ -412,7 +410,7 @@ class _commentState extends State<comment> {
             ),
           ],
         ),
-      ),
+
     );
   }
 }

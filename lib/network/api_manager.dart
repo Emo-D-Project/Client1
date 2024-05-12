@@ -20,7 +20,6 @@ import '../models/Mypage.dart';
 import '../models/Comment.dart';
 import 'package:http_parser/http_parser.dart';
 import '../models/notification.dart';
-final storage = FlutterSecureStorage();
 
 
 class ApiManager {
@@ -274,7 +273,7 @@ class ApiManager {
 
     if (response.statusCode == 200) {
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("댓글 data: " + response.body);
+      print("쪽지 대화 data: " + response.body);
 
       List<Message> messages = rawData.map((data) {
         return Message(
@@ -1210,7 +1209,7 @@ class ApiManager {
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
 
-        print("잠금띠예 $data");
+        print("잠금 상태 $data");
         return data.toString();
       } else {
         throw Exception("Failed to fetch data from the API. Status code: ${response.statusCode}");
@@ -1281,7 +1280,7 @@ class ApiManager {
 
 
   // notification
-  void sendNotification(int targetUserId, String title, String body) async {
+  void sendNotification(int targetUserId, String title, String body,int postId) async {
     String endpoint = "/api/v1/notification";
     String accessToken = tokenManager.getAccessToken();
 
@@ -1299,6 +1298,7 @@ class ApiManager {
           "targetUserId": targetUserId,
           "title": title,
           "body": body,
+          "postId" : postId
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
