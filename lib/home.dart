@@ -1,5 +1,6 @@
 import 'package:capston1/writediary.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'models/Diary.dart';
 import 'network/api_manager.dart';
@@ -23,12 +24,49 @@ class _homeState extends State<home> {
   int lat=0;
   int lon=0;
   String weather='';
+  String day = DateFormat.E('ko_KR').format(now);
+  List<Diary> _diaryInfo = [];
+  bool _myDiaryExists = false;
 
   @override
   void initState() {
     super.initState();
     fetchDataFromServer();
+    checkMyDiaryExists();
+  }
 
+  Future<void> fetchMyDataFromServer() async {
+    try {
+      final diaryData = await apiManager.getDiaryData();
+
+      setState(() {
+        _diaryInfo = diaryData;
+      });
+    } catch (error) {
+      print('Error fetching data: ${error.toString()}');
+    }
+  }
+
+  //오늘 본인일기 있는지 확인
+  Future<void> checkMyDiaryExists() async {
+    try {
+      await fetchMyDataFromServer();
+      // 오늘 작성한 본인의 일기가 있는지 확인
+      bool myDiaryExists = _diaryInfo.any((diary) =>
+      DateFormat('yyyy년 MM월 dd일').format(diary.date) == formattedDate);
+
+      setState(() {
+        _myDiaryExists = myDiaryExists; // 필드 설정
+      });
+
+      if (_myDiaryExists) {
+        print('home : 오늘 작성한 본인의 일기가 있습니다.');
+      } else {
+        print('home : 오늘 작성한 본인의 일기가 없습니다.');
+      }
+    } catch (error) {
+      print('Error checking my diary existence: $error');
+    }
   }
 
   String getTime() {
@@ -139,6 +177,7 @@ class _homeState extends State<home> {
   @override
   Widget build(BuildContext context) {
     print("emotionToday: $emotionToday");
+    print("요일 : $day");
 
     if (emotionToday == null) {
       return CircularProgressIndicator(); // 데이터를 기다리는 동안 로딩 표시
@@ -220,179 +259,183 @@ class _homeState extends State<home> {
                       return Container();
                   }
                 }())),
-                Positioned(
-                  top: 450,
-                  left: 150,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0.0,
-                        backgroundColor: Color(0xFFF8F5EB),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                Container(
+                  child: day == "일" ? Positioned(
+                    top: 450,
+                    left: 150,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0.0,
+                          backgroundColor: Color(0xFFF8F5EB),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => weeklySummary()));
-                      },
-                      child: Text("이번주 요약 보기",style: TextStyle(color: Colors.black, fontFamily: 'kim',),)
-                  ),
+                        onPressed: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => weeklySummary()));
+                        },
+                        child: Text("이번주 요약 보기",style: TextStyle(color: Colors.black, fontFamily: 'kim',),)
+                    ),
+                  ):Container()
                 )
               ],
             ),
           ),
           floatingActionButton: Builder(builder: (context) {
-            return FloatingActionButton(
-              backgroundColor: Color(0xFFD2C6BC),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        backgroundColor: Colors.transparent,
-                        child: Container(
-                          width: 250,
-                          height: 270,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Color(0xFFF8F5EB),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                child: Image.asset(
-                                  'images/emotion/pinkfootprint.png',
-                                  width: 60,
-                                  height: 60,
-                                ),
-                              ), //냥발바닥
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                                child: Text(
-                                  "오늘의 감정을 선택해주세요.",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'fontnanum'),
-                                ),
-                              ), //오늘의 감정을 선택해주세요
-                              SizedBox(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => writediary(
-                                                        emotion: 'smile',
-                                                      )));
-                                        },
-                                        icon: Image.asset(
-                                          'images/emotion/smile.gif',
-                                          width: 50,
-                                          height: 50,
-                                        )),
-                                    IconButton(
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => writediary(
-                                                        emotion: 'flutter',
-                                                      )));
-                                        },
-                                        icon: Image.asset(
-                                            'images/emotion/flutter.gif')),
-                                    Container(
-                                      child: IconButton(
-                                          iconSize: 40,
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        writediary(
-                                                          emotion: 'angry',
-                                                        )));
-                                          },
-                                          icon: Image.asset(
-                                              'images/emotion/angry.png')),
-                                    )
-                                  ],
-                                ),
-                              ), //감정 첫째줄
-                              SizedBox(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => writediary(
-                                                        emotion: 'annoying',
-                                                      )));
-                                        },
-                                        icon: Image.asset(
-                                            'images/emotion/annoying.gif')),
-                                    IconButton(
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => writediary(
-                                                        emotion: 'tired',
-                                                      )));
-                                        },
-                                        icon: Image.asset(
-                                            'images/emotion/tired.gif')),
-                                    IconButton(
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => writediary(
-                                                        emotion: 'sad',
-                                                      )));
-                                        },
-                                        icon:
-                                            Image.asset('images/emotion/sad.gif')),
-                                    IconButton(
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => writediary(
-                                                        emotion: 'calmness',
-                                                      )));
-                                        },
-                                        icon: Image.asset(
-                                            'images/emotion/calmness.gif'))
-                                  ],
-                                ),
-                              ), //감정 둘째줄
-                            ],
-                          ),
-                        ),
-                      );
-                    });
-              },
-              child: Image.asset(
-                'images/emotion/footprint.png',
-                width: 40,
-                height: 40,
-              ),
+            return Container(
+              child: _myDiaryExists == false ? FloatingActionButton(
+                backgroundColor: Color(0xFFD2C6BC),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: Container(
+                              width: 250,
+                              height: 270,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                color: Color(0xFFF8F5EB),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                    child: Image.asset(
+                                      'images/emotion/pinkfootprint.png',
+                                      width: 60,
+                                      height: 60,
+                                    ),
+                                  ), //냥발바닥
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                    child: Text(
+                                      "오늘의 감정을 선택해주세요.",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'fontnanum'),
+                                    ),
+                                  ), //오늘의 감정을 선택해주세요
+                                  SizedBox(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => writediary(
+                                                            emotion: 'smile',
+                                                          )));
+                                            },
+                                            icon: Image.asset(
+                                              'images/emotion/smile.gif',
+                                              width: 50,
+                                              height: 50,
+                                            )),
+                                        IconButton(
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => writediary(
+                                                            emotion: 'flutter',
+                                                          )));
+                                            },
+                                            icon: Image.asset(
+                                                'images/emotion/flutter.gif')),
+                                        Container(
+                                          child: IconButton(
+                                              iconSize: 40,
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            writediary(
+                                                              emotion: 'angry',
+                                                            )));
+                                              },
+                                              icon: Image.asset(
+                                                  'images/emotion/angry.png')),
+                                        )
+                                      ],
+                                    ),
+                                  ), //감정 첫째줄
+                                  SizedBox(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => writediary(
+                                                            emotion: 'annoying',
+                                                          )));
+                                            },
+                                            icon: Image.asset(
+                                                'images/emotion/annoying.gif')),
+                                        IconButton(
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => writediary(
+                                                            emotion: 'tired',
+                                                          )));
+                                            },
+                                            icon: Image.asset(
+                                                'images/emotion/tired.gif')),
+                                        IconButton(
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => writediary(
+                                                            emotion: 'sad',
+                                                          )));
+                                            },
+                                            icon:
+                                                Image.asset('images/emotion/sad.gif')),
+                                        IconButton(
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => writediary(
+                                                            emotion: 'calmness',
+                                                          )));
+                                            },
+                                            icon: Image.asset(
+                                                'images/emotion/calmness.gif'))
+                                      ],
+                                    ),
+                                  ), //감정 둘째줄
+                                ],
+                              ),
+                            ),
+                        );
+                      });
+                },
+                child: Image.asset(
+                  'images/emotion/footprint.png',
+                  width: 40,
+                  height: 40,
+                ),
+              ):Container()
             );
           }),
         ),

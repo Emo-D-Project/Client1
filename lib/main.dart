@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:capston1/network/api_manager.dart';
 import 'package:capston1/screens/LoginedUserInfo.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'models/Diary.dart';
@@ -24,7 +25,8 @@ import 'models/Navigator.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
  WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(

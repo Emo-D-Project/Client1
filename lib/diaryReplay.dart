@@ -104,8 +104,7 @@ class _writediaryState extends State<DiaryReplay> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                child: diaries != null
-                    ? Container(
+                child: diaries != null ? Container(
                   child: (() {
                     if (diaries!.imagePath!.isNotEmpty &&
                         diaries!.audio == "") {
