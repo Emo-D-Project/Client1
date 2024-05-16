@@ -21,24 +21,51 @@ class _weeklySummaryState extends State<weeklySummary> {
     fetchDataFromServer();
   }
 
+  // Future<void> fetchDataFromServer() async {
+  //   try {
+  //     final data = await apiManager.getWeeklySummary();
+  //     setState(() {
+  //       weekly = data;
+  //     });
+  //   } catch (error) {
+  //     // 에러 제어하는 부분
+  //     print('Error getting chat list: $error');
+  //   }
+  // }
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getWeeklySummary();
       setState(() {
         weekly = data;
+
       });
     } catch (error) {
-      // 에러 제어하는 부분
-      print('Error getting chat list: $error');
+      // 포트 번호 형식 오류를 처리합니다.
+      if (error.toString().contains('FormatException')) {
+        print('포트 번호 형식이 올바르지 않습니다.');
+        // 또는 다른 작업 수행 가능
+      } else {
+        // 다른 예외를 처리합니다.
+        print('서버에서 데이터를 가져오는 동안 오류가 발생했습니다: $error');
+      }
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    print(weekly?.summary);
+    // print(weekly!.summary?[0]);
+    // print(weekly!.summary?[1]);
+    // print(weekly!.summary?[2]);
+    // print(weekly!.summary?[3]);
+    // print(weekly!.summary?[4]);
+    // print(weekly!.summary?[5]);
+    // print(weekly!.summary?[6]);
     print(weekly?.positiveEvent);
     print(weekly?.emotion);
     print(weekly?.negativeEvent);
+    print("요약들");
+
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -86,7 +113,7 @@ class _weeklySummaryState extends State<weeklySummary> {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(3, 13, 50, 20),
+                          margin: EdgeInsets.fromLTRB(3, 13, 50, 0),
                           child: Text(
                             "가장 좋았던 일",
                             style: TextStyle(
@@ -98,12 +125,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                           ),
                         ),
                         Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: weekly != null ? Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: Text(
                               weekly?.positiveEvent ?? ' ',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontFamily: 'kim',
                               ),
                             ),
@@ -124,24 +152,25 @@ class _weeklySummaryState extends State<weeklySummary> {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(3, 13, 50, 20),
+                          margin: EdgeInsets.fromLTRB(3, 13, 50, 0),
                           child: Text(
                             "가장 나빴던 일",
                             style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'kim',
-                              color: Color(0xFFFF9898),
+                              color: Colors.black54,
                               fontWeight: FontWeight.bold
                             ),
                           ),
                         ),
                         Container(
-                          child: weekly != null ? Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            child: weekly != null ? Container(
+                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: Text(
                               weekly?.negativeEvent ?? ' ',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontFamily: 'kim',
                               ),
                             ),
@@ -250,7 +279,7 @@ class _weeklySummaryState extends State<weeklySummary> {
               Container(
                 margin: EdgeInsets.fromLTRB(0, 5, 0, 10),
                 width: sizeX * 0.9,
-                height: 350,
+                height: sizeY * 0.6,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white),
@@ -261,7 +290,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.black87,
                             width: sizeX * 0.2,
                             child: Text("MON",
                                 style: TextStyle(
@@ -269,13 +299,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
-                            child: weekly !=null ?SizedBox(
+                          Container(color: Colors.purple,
+                            child: weekly !=null ? SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[0] ?? ' ',
+                                weekly!.summary![0],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
@@ -290,7 +320,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.deepOrangeAccent,
                             width: sizeX * 0.2,
                             child: Text("TUE",
                                 style: TextStyle(
@@ -299,12 +330,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontWeight: FontWeight.bold)),
                           ),
                           Container(
+                            color: Colors.pink,
                             child: weekly != null ? SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[1] ?? ' ',
+                                weekly!.summary![1],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
@@ -319,7 +351,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.purple,
                             width: sizeX * 0.2,
                             child: Text("WED",
                                 style: TextStyle(
@@ -327,13 +360,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
+                          Container(color: Colors.brown,
                             child: weekly != null ? SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[2] ?? ' ',
+                                weekly!.summary![2],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
@@ -348,7 +381,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.brown,
                             width: sizeX * 0.2,
                             child: Text("THR",
                                 style: TextStyle(
@@ -356,13 +390,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
+                          Container(color: Colors.black87,
                             child: weekly != null ? SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[3] ?? ' ',
+                                weekly!.summary![3],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
@@ -377,7 +411,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.pink,
                             width: sizeX * 0.2,
                             child: Text("FRI",
                                 style: TextStyle(
@@ -385,13 +420,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
+                          Container(color: Colors.brown,
                             child: weekly != null ? SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[4] ?? ' ',
+                                weekly!.summary![4],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
@@ -406,7 +441,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.blueGrey,
                             width: sizeX * 0.2,
                             child: Text("SAT",
                                 style: TextStyle(
@@ -414,13 +450,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
+                          Container(color: Colors.grey,
                             child: weekly != null ? SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[5] ?? ' ',
+                                weekly!.summary![5],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
@@ -435,7 +471,8 @@ class _weeklySummaryState extends State<weeklySummary> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: Colors.blueAccent,
                             width: sizeX * 0.2,
                             child: Text("SUN",
                                 style: TextStyle(
@@ -443,13 +480,13 @@ class _weeklySummaryState extends State<weeklySummary> {
                                     fontFamily: 'kim',
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
+                          Container(color: Colors.pink,
                             child: weekly !=null ?SizedBox(
                               width: sizeX * 0.6,
                               child: Text(
-                                weekly!.summary?[6] ?? ' ',
+                                weekly!.summary![6],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: 'kim',
                                 ),
                                 textAlign: TextAlign.right,
