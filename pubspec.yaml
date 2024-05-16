@@ -69,6 +69,7 @@ dependencies:
   firebase_analytics: ^10.7.1
   http_parser: ^4.0.0
   geolocator: ^11.0.0
+  auto_size_text: ^3.0.0
 
   path_provider: ^2.0.5  # 최신 버전을 확인하여 적용해 주세요
   ntp: ^2.0.0

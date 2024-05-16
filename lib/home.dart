@@ -24,7 +24,8 @@ class _homeState extends State<home> {
   int lat=0;
   int lon=0;
   String weather='';
-  String day = DateFormat.E('ko_KR').format(now);
+  //String day = DateFormat.E('ko_KR').format(now);
+  String day = '일';
   List<Diary> _diaryInfo = [];
   bool _myDiaryExists = false;
 
