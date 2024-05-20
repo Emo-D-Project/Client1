@@ -30,7 +30,7 @@ class ApiManager {
     return apiManager;
   }
 
-  String baseUrl = "http://34.64.255.126:8000";
+  String baseUrl = "http://35.216.51.23:8000";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
