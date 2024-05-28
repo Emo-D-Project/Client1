@@ -31,6 +31,8 @@ class ApiManager {
   }
 
   String baseUrl = "http://35.216.51.23:8000";
+  String baseUrl2 = "http://35.216.51.23:8002";
+  String baseUrl3 = "http://35.216.51.23:8003";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
@@ -174,7 +176,7 @@ class ApiManager {
     String endPoint = "/api/calendars/date";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken', // 요청 헤더 설정
       },
@@ -197,7 +199,7 @@ class ApiManager {
     String endPoint = "/api/messages/chatList";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl3$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -228,7 +230,7 @@ class ApiManager {
     String endPoint = "/api/diaries/mine/{userid}";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -265,7 +267,7 @@ class ApiManager {
     String endPoint = "/api/messages/chat/$otherUserId";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl3$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -303,7 +305,7 @@ class ApiManager {
 
     try {
       var response = await _dio.post(
-        '$baseUrl$endpoint',
+        '$baseUrl3$endpoint',
         data: {
           "content": message,
           "sentAt": DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateTime.toUtc()),
@@ -332,7 +334,7 @@ class ApiManager {
     String endPoint = "/api/report/read";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -367,7 +369,7 @@ class ApiManager {
     String endPoint = "/api/report/analysis";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -409,7 +411,7 @@ class ApiManager {
 
     try {
       var response = await _dio.post(
-        '$baseUrl$endpoint',
+        '$baseUrl2$endpoint',
         data: {
           "comment": comment,
 
@@ -581,7 +583,7 @@ class ApiManager {
     String endPoint = "/api/diaries/read";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -663,7 +665,7 @@ class ApiManager {
     print("put favoriteCount diary id: $id");
 
     final response = await http.put(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -680,7 +682,7 @@ class ApiManager {
     String endPoint = "/api/diaries/read/${id}";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -700,7 +702,7 @@ class ApiManager {
     String endPoint = "/api/diaries/recommend/$diaryId";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -735,7 +737,7 @@ class ApiManager {
 
     try {
       var response = await _dio.post(
-        '$baseUrl$endpoint',
+        '$baseUrl3$endpoint',
         data: {
           "content": content,
           "post_id": postId,
@@ -764,7 +766,7 @@ class ApiManager {
     String endPoint = "/api/comments/read/${postId}";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl3$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -873,7 +875,7 @@ class ApiManager {
     };
     try {
       var response = await _dio.delete(
-        '$baseUrl$endPoint',
+        '$baseUrl2$endPoint',
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
@@ -940,7 +942,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("http://34.64.255.126:8000/api/diaries/create");
+    var url = Uri.parse("http://34.64.255.126:8002/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {
@@ -1027,7 +1029,7 @@ class ApiManager {
     };
     try {
       var response = await _dio.delete(
-        '$baseUrl$endPoint',
+        '$baseUrl3$endPoint',
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
@@ -1048,7 +1050,7 @@ class ApiManager {
     String endPoint = "/api/diaries/read/${id}";
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
@@ -1089,7 +1091,7 @@ class ApiManager {
 
     try {
       var response = await _dio.put(
-        '$baseUrl$endpoint',
+        '$baseUrl2$endpoint',
         data: {
           "emotion": emotion,
           "content": content,
@@ -1157,7 +1159,7 @@ class ApiManager {
 
     try {
       var response = await _dio.post(
-        '$baseUrl$endpoint',
+        '$baseUrl2$endpoint',
         data: {
           "comment":comment,
         }, // 요청 데이터
@@ -1326,7 +1328,7 @@ class ApiManager {
     print("요약 통신 시도");
 
     final response = await http.get(
-      Uri.parse('$baseUrl$endPoint'),
+      Uri.parse('$baseUrl2$endPoint'),
       headers: <String, String>{
         'Authorization': 'Bearer $accessToken',
       },
