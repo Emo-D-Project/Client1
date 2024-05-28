@@ -34,10 +34,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
-  await FirebaseApi().setupInteractedMessage();
-  await FirebaseApi().GetComments();
-  await FirebaseApi().fetchDataFromServer();
-  await FirebaseApi().fetchMyDataFromServer();
+//  await FirebaseApi().setupInteractedMessage();
+  //await FirebaseApi().GetComments();
+//  await FirebaseApi().fetchDataFromServer();
+ // await FirebaseApi().fetchMyDataFromServer();
 
  // await FirebaseApi().checkMyDiaryExists();
 

@@ -30,7 +30,7 @@ class ApiManager {
     return apiManager;
   }
 
-  String baseUrl = "http://34.64.255.126:8000";
+  String baseUrl = "http://35.216.51.23:8000";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
@@ -1321,7 +1321,9 @@ class ApiManager {
 
   Future<Weekly> getWeeklySummary() async {
     String accessToken = tokenManager.getAccessToken();
-    String endPoint = "api/diaries/ai";
+    String endPoint = "/api/aiReport/read";
+
+    print("요약 통신 시도");
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
@@ -1330,23 +1332,27 @@ class ApiManager {
       },
     );
 
+    print("요약 통신 시도2");
+
     if (response.statusCode == 200) {
       dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("Alram data: " + response.body);
+      print("Summary data: " + response.body);
 
       Weekly Weeklydata = Weekly(
-        positiveEvent: rawData['id'],
-        negativeEvent: rawData['userId'],
-        emotion: rawData['allowMsg'],
-        summary: rawData['magAlarm'],
+        positiveEvent: rawData['positiveEvent'],
+        negativeEvent: rawData['negativeEvent'],
+        emotion: rawData['emotion'],
+        summary: List<String>.from(rawData['summary']),
       );
-
+      print("요약 통신 시도3");
       return Weeklydata;
     } else {
-      throw Exception("Fail to load alram data from the API");
+      throw Exception("Fail to load Weeklydata from the API ㄹㄹ");
 
     }
   }
+
+
   Future<void> putFirebaseToken(String firebasetoken) async {
     String accessToken = tokenManager.getAccessToken();
     String endPoint = "/user/firebaseToken";
