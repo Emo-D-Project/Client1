@@ -31,8 +31,8 @@ class ApiManager {
   }
 
   String baseUrl = "http://35.216.51.23:8000";
-  String baseUrl2 = "http://35.216.51.23:8002";
-  String baseUrl3 = "http://35.216.51.23:8003";
+  String baseUrl2 = "http://35.216.51.23:8000";
+  String baseUrl3 = "http://35.216.51.23:8000";
 
   // 정보 받아올 때
   Future<List<dynamic>> GetMessage(String endpoint) async {
@@ -942,7 +942,7 @@ class ApiManager {
 
   Future<void> sendPostDiary(dynamic data, List<XFile?> images,
       dynamic audio) async {
-    var url = Uri.parse("http://34.64.255.126:8002/api/diaries/create");
+    var url = Uri.parse("http://35.216.51.23:8000/api/diaries/create");
     String accessToken = tokenManager.getAccessToken();
 
     var requestData = {
@@ -1007,7 +1007,7 @@ class ApiManager {
     try {
       var response = await request.send();
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         print('Uploaded!');
         print(await response.stream.bytesToString());
       } else {

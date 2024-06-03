@@ -140,6 +140,7 @@ class _writediaryState extends State<writediary> {
   Future<void> PostWriteDiary(String endpoint) async {
     ApiManager apiManager = ApiManager().getApiManager();
 
+    print("일기작성 시도 1");
     try {
       final postData = {
         'content': content,
@@ -147,19 +148,20 @@ class _writediaryState extends State<writediary> {
         'is_share': _isCheckedShare,
         'is_comm': _isChecked,
       };
-
+      print("일기작성 시도 2");
       print("diaryImage : $diaryImage");
       print("write diary의 audioPath: $audioPath");
       print(postData);
 
-
+      print("일기작성 시도 3");
       await apiManager.sendPostDiary(postData, diaryImage, audioPath);
 
       fetchDataFromServer();
-
+      print("일기작성 시도 4");
       //final postImage = {'imageFile' : diaryImage ?? 'default_image_path'};
       //final postAudio = {'audioFile': audioPath ?? 'default_audio_path'};
     } catch (e) {
+      print("일기작성 시도 5");
       // apiManager.sendPostDiary에서 발생한 오류 처리
       print('Error sending post diary: $e');
       // 에러를 더 자세히 처리하거나 사용자에게 알릴 수 있습니다.
@@ -346,8 +348,12 @@ class _writediaryState extends State<writediary> {
         actions: [
           IconButton(
             onPressed: () async{
+              print("저장버튼 누름 1");
               PostWriteDiary("/api/diaries/create");
+              print("저장버튼 누름 2");
               fetchDataFromServer();
+              print("저장버튼 누름 3");
+
               await Future.delayed(Duration(seconds: 3));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>

@@ -28,48 +28,23 @@ import 'models/Navigator.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting();
- WidgetsFlutterBinding.ensureInitialized();
-
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await initializeDateFormatting();
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
+  //
   // await FirebaseApi().initNotifications();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  // await FirebaseApi().initNotifications();
-  // await FirebaseApi().fetchMyDataFromServer();
-  // await FirebaseApi().checkMyDiaryExists();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  await FirebaseApi().initNotifications();
- // await FirebaseApi().setupInteractedMessage();
-  //await FirebaseApi().GetComments();
- // await FirebaseApi().fetchDataFromServer();
-//  await FirebaseApi().fetchMyDataFromServer();
-
-  //await FirebaseApi().checkMyDiaryExists();
-
-  // 매월 1일에 알림 보내기
-  /*sendMonthlyNotification();
-  sendDiaryNotification();*/
-
-
- int myId = await ApiManager().getApiManager().GetMyId() as int;
- LoginedUserInfo.loginedUserInfo.id = myId;
-
+  int myId = await ApiManager().getApiManager().GetMyId() as int;
+  LoginedUserInfo.loginedUserInfo.id = myId;
 
   runApp(MaterialApp(
       navigatorKey: GlobalVariable.navState,
       routes: {
         '/diaryshare': (context) => diaryshare(),
-       // '/comment' : (context) => comment(postId: postId, userid: ),
-       // '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
+        // '/comment' : (context) => comment(postId: postId, userid: ),
+        // '/messageroom' : (context) => MessageRoom(otherUserId: senderId),
       },
       theme: style.theme,
       home: MyApp(

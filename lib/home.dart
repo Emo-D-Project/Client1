@@ -262,7 +262,7 @@ class _homeState extends State<home> {
                 }())),
                 Container(
                   child: day == "일" ? Positioned(
-                    top: 450,
+                    top: 400,
                     left: 150,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
