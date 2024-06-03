@@ -1005,7 +1005,7 @@ class _customWidget2State extends State<customWidget2> {
                               // 좋아요가 눌렸을 때만 알림을 보냅니다.
                               String title = "누군가가 당신의 일기에 좋아요를 눌렀습니다!";
                               String body = " ";
-                              if (userId !=
+                              if (userId ==
                                   LoginedUserInfo.loginedUserInfo.id) {
                                 _sendNotification(title, body);
                               }

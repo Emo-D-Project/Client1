@@ -428,8 +428,10 @@ class FirebaseApi {
 
       if (data != null) {
         final String? title = data['senderId'] as String?;
-        //   sendId = int.parse(title!);
-        sendId = 2;
+        sendId = int.parse(title!);
+
+        print('헥헥헥ㅎ겧겧겧겧게');
+        //  sendId = 2;
         print(sendId);
         fetchDataFromServer();
         print("Message from ${title ?? 'No Title'}:");
