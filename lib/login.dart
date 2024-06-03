@@ -23,6 +23,7 @@ import 'tokenManager.dart' as tk;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+
 final navigatorKey = GlobalKey<NavigatorState>();
 final storage = FlutterSecureStorage();
 
@@ -257,6 +258,11 @@ class _MyLoginState extends State<MyLogin> {
                     borderRadius: BorderRadius.circular(10)),
                 child: IconButton(
                   onPressed: () async {
+                   // var keyHash = Utility.getKeyHash(this)
+                    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                    print(await KakaoSdk.origin);
+                    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
                     if (await _handleKakaoLogin() == 1) {
                       // 카카오 로그인 성공 시
                       Navigator.push(
