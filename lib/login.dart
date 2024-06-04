@@ -124,7 +124,7 @@ class _MyLoginState extends State<MyLogin> {
   Future<void> authenticate(String token) async {
     MyInfo myInfo = MyInfo().getMyInfo();
     tk.TokenManager tokenManager = tk.TokenManager().getTokenManager();
-    final url = Uri.parse('http://34.64.255.126:8000/user/auth/kakao');
+    final url = Uri.parse('http://35.216.51.23:8000/user/auth/kakao');
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'kakaoAccessToken': token,
