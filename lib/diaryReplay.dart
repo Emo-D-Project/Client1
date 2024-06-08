@@ -251,7 +251,7 @@ class _customWidget1State extends State<customWidget1> {
         child: Column(children: [
       Container(
         width: sizeX * 0.9,
-        height: sizeY * 0.8,
+        height: sizeY * 0.7,
         margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -780,7 +780,7 @@ class _customWidget3State extends State<customWidget3> {
         children: [
           Container(
             width: sizeX * 0.9,
-            height: sizeY * 0.8,
+            height: sizeY * 0.7,
             margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -1160,7 +1160,7 @@ class _customWidget4State extends State<customWidget4> {
         children: [
           Container(
             width: sizeX * 0.9,
-            height: sizeY * 0.8,
+            height: sizeY * 0.7,
             margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
             decoration: BoxDecoration(
               color: Colors.white,
